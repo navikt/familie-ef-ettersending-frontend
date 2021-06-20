@@ -27,7 +27,13 @@
     "scripts": {
         "start": "webpack serve --config webpack.dev.config.ts",
         "build": "webpack --config webpack.prod.config.ts",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "pretest": "/node_modules/.bin/eslint --ignore-path .gitignore . --fix"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run pretest"
+        }
     },
     "devDependencies": {
         "@babel/core": "^7.14.6",
@@ -46,7 +52,7 @@
         "@typescript-eslint/parser": "^4.27.0",
         "babel-loader": "^8.2.2",
         "clean-webpack-plugin": "^4.0.0-alpha.0",
-        "eslint": "^7.28.0",
+        "eslint": "^7.29.0",
         "eslint-plugin-react": "^7.24.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "eslint-webpack-plugin": "^2.5.4",
