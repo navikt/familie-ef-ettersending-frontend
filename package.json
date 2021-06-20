@@ -36,9 +36,9 @@
         }
     },
     "lint-staged": {
-        "**/*.tsx": [
+        "src/**/*.{js,jsx,ts,tsx,json,css}": [
             "eslint --fix",
-            "git add"
+            "prettier --write"
         ]
     },
     "devDependencies": {
