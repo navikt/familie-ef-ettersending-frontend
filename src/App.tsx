@@ -7,9 +7,6 @@ const App = () => {
   return (
     <>
       <p>Dette er en endring</p>
-
-
-      
       <h1>My React and TypeScript App! {" "} {new Date().toLocaleDateString()}</h1>
       <Knapp type={"standard"}>HEI</Knapp>
       <Checkbox label={"Checkbox"} />
