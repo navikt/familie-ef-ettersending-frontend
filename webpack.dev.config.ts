@@ -3,7 +3,6 @@ import { Configuration as WebpackConfiguration } from "webpack";
 import { Configuration as WebpackDevServerConfiguration } from "webpack-dev-server";
 import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import ts from "typescript";
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import ESLintPlugin from "eslint-webpack-plugin";
 
