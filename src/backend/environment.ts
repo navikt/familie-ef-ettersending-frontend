@@ -9,7 +9,8 @@ export default function () {
   } else if (process.env.ENV === 'dev') {
     return {
       apiUrl: 'http://familie-ef',
-      dekoratørUrl: 'https://www-q1.nav.no/dekoratoren/?simple=true',
+      dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
+      //dekoratørUrl: 'https://www-q1.nav.no/dekoratoren/?simple=true',
       port: 9000,
     };
   } else {

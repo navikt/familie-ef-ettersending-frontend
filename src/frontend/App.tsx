@@ -5,7 +5,7 @@ import './app.less';
 
 const App = () => {
   return (
-    <>
+    <div className="fullside">
       <p>Dette er en endring</p>
 
       <h1>
@@ -14,7 +14,7 @@ const App = () => {
 
       <Knapp type={'standard'}>HEI</Knapp>
       <Checkbox label={'Checkbox'} />
-    </>
+    </div>
   );
 };
 
