@@ -50,18 +50,17 @@ const getDecorator = (): Promise<DekoratørRespons> =>
   });
 
 export const indexHandler: RequestHandler = (_req, res) => {
-  res.render('index.html');
-  // getDecorator()
-  //     .then(fragments => {
-  //         console.log(fragments)
-  //         // eslint-disable-next-line
-  //         // @ts-ignore
-  //         res.render('index.html', fragments);
-  //     })
-  //     .catch(e => {
-  //         console.log(e);
-  //         const error = `En feil oppstod. Klikk <a href="https://www.nav.no">her</a> for å gå tilbake til nav.no. Kontakt kundestøtte hvis problemet vedvarer.`;
-  //         res.status(500).send(error);
-  //     });
+  getDecorator()
+    .then((fragments) => {
+      console.log(fragments);
+      // eslint-disable-next-line
+      // @ts-ignore
+      res.render('index.html', fragments);
+    })
+    .catch((e) => {
+      console.log(e);
+      const error = `En feil oppstod. Klikk <a href="https://www.nav.no">her</a> for å gå tilbake til nav.no. Kontakt kundestøtte hvis problemet vedvarer.`;
+      res.status(500).send(error);
+    });
 };
 export default indexHandler;

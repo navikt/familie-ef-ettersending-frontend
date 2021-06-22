@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import * as React from 'react';
 import App from './App';
-import Foo from './Foo';
+import Foo from './komponenter/Foo';
 
 const Routes: React.FC = () => {
   return (

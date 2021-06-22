@@ -19,8 +19,8 @@ const frontendMappe = path.join(process.cwd(), 'dist');
 app.set('views', frontendMappe);
 app.set('view engine', 'mustache');
 
-app.get('/', indexHandler);
-//app.get("/", (req, res) => res.render("index.html"));
+//app.get('/', indexHandler);
+app.get('/', (req, res) => res.render('index.html'));
 
 if (process.env.NODE_ENV === 'development') {
   // eslint-disable-next-line
@@ -42,7 +42,7 @@ app.get(/^\/(internal\/)?(isAlive|isReady)\/?$/, (_req, res) =>
   res.sendStatus(200)
 );
 
-app.get('*', indexHandler);
+app.get('*', (req, res) => res.render('index.html'));
 
 console.log('server listening on port', environment().port);
 

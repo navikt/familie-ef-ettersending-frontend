@@ -7,7 +7,7 @@ import InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin.js';
 import webpackModule from 'webpack';
 import webpack from 'webpack';
 
-import { unslash } from '../unslash';
+import { unslash } from '../shared-utils/unslash';
 const { DefinePlugin } = webpackModule;
 
 export const publicUrl = '/public';
