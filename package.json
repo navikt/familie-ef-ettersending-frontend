@@ -1,7 +1,8 @@
 {
     "name": "familie-ef-ettersending",
     "version": "0.5.0",
-    "type": "module",
+    "main": "main.js",
+    "module": "main.js",
     "dependencies": {
         "@navikt/fnrvalidator": "^1.1.4",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
@@ -12,6 +13,7 @@
         "css-loader": "^5.2.6",
         "css-minimizer-webpack-plugin": "^3.0.1",
         "eslint-config-airbnb": "^18.2.1",
+        "esm": "^3.2.25",
         "express": "^4.17.1",
         "jsdom": "^16.6.0",
         "less-loader": "^10.0.0",
@@ -40,7 +42,7 @@
         "webpack-hot-middleware": "^2.25.0"
     },
     "scripts": {
-        "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node --es-module-specifier-resolution=node build/backend/server.js",
+        "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node --es-module-specifier-resolution=node -r esm build/backend/server.js",
         "start": "NODE_ENV=production node --es-module-specifier-resolution=node build/backend/server.js",
         "build": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=production webpack --config src/webpack/webpack.production.config.ts && tsc -p tsconfig.backend.json"
     },
