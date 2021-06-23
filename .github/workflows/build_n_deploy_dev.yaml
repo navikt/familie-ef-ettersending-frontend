@@ -6,7 +6,7 @@ env:
 
 jobs: 
   build:
-    name: Build amnd push Docker container
+    name: Build and push Docker container
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,17 +17,17 @@ jobs:
           docker build -t ${IMAGE} .
           echo ${GITHUB_TOKEN} | docker login ghcr.io --username ${GITHUB_REPOSITORY} --password-stdin
           docker push ${IMAGE}
-  #deoploy:
-  #  name: Deploy to NAIS
- #   needs: build
- #   runs-on: ubuntu-latest
- #   steps:
- #     - uses: actions/checkout@v2
- #     - uses: nais/deploy/actions/delpoy@v1
- #       env:
- #         APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }} 
- #         CLUSTER: dev-gcp
- #         RESOURCE: build_n_deploy/naiserator/nais.yaml
- #         VARS: build_n_deploy/naiserator/dev.json
+  deoploy:
+    name: Deploy to NAIS
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nais/deploy/actions/delpoy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }} 
+          CLUSTER: dev-gcp
+          RESOURCE: build_n_deploy/naiserator/nais.yaml
+          VARS: build_n_deploy/naiserator/dev.json
 
 
