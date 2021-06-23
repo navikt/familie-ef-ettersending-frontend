@@ -1,0 +1,15 @@
+name: Build app
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    name: Bygg app og Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Bygg app 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        run: docker build -t ${IMAGE} .
+ 
