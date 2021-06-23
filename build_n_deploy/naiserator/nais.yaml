@@ -14,18 +14,13 @@ spec:
     cpuThresholdPercentage: 50
   port: 8000
   liveness:
-    path: /isAlive
+    path: /internal/isAlive
     initialDelay: 5
   readiness:
-    path: /isReady
+    path: /internal/isReady
     initialDelay: 5
-  prometheus:
-    enabled: true
-    path: /metrics
   ingresses:
-  {{#each ingresses as |url|}}
-    - {{url}}
-  {{/each}}
+    - "https://ensligmorellerfar.dev.nav.no/familie/alene-med-barn/ettersending"
   resources:
     limits:
       cpu: 2000m
