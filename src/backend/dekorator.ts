@@ -29,7 +29,6 @@ const getDecorator = (): Promise<DekoratørRespons> =>
     if (decorator) {
       resolve(decorator);
     } else {
-      console.log('HERE ELSE');
       request(environment().dekoratørUrl, (error, response, body) => {
         if (!error && response.statusCode >= 200 && response.statusCode < 400) {
           const { document } = new JSDOM(body).window;
@@ -41,7 +40,6 @@ const getDecorator = (): Promise<DekoratørRespons> =>
             NAV_FOOTER: document.getElementById('footer-withmenu')[prop],
           };
           cache.set('main-cache', data);
-          resolve(data);
         } else {
           reject(new Error(error));
         }
@@ -52,7 +50,6 @@ const getDecorator = (): Promise<DekoratørRespons> =>
 export const indexHandler: RequestHandler = (_req, res) => {
   getDecorator()
     .then((fragments) => {
-      console.log(fragments);
       // eslint-disable-next-line
       // @ts-ignore
       res.render('index.html', fragments);
