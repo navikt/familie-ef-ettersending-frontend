@@ -14,6 +14,7 @@ const app = express();
 app.engine('html', mustacheExpress());
 
 const basePath = process.env.BASE_PATH ?? '/';
+console.log('base path: ', basePath);
 const frontendMappe = path.join(process.cwd(), 'dist');
 
 app.set('views', frontendMappe);
