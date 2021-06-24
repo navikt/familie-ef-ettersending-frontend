@@ -2,18 +2,16 @@ import React from 'react';
 import { Knapp } from 'nav-frontend-knapper';
 import { Checkbox } from 'nav-frontend-skjema';
 import './app.less';
+import Filopplasting from './komponenter/Filopplasting';
 
 const App = () => {
   return (
-    <div className="fullside">
-      <p>Dette er en endring</p>
-
-      <h1>
-        My React and TypeScript App! Simen!! {new Date().toLocaleDateString()}
-      </h1>
-
-      <Knapp type={'standard'}>HEI</Knapp>
-      <Checkbox label={'Checkbox'} />
+    <div className="app-konteiner">
+      <h1>Ettersending av dokumentasjon</h1>
+      <Filopplasting />
+      <Knapp className="innsendingsknapp" type={'standard'}>
+        Send inn
+      </Knapp>
     </div>
   );
 };
