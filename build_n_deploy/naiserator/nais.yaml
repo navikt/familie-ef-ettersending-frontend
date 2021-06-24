@@ -34,3 +34,5 @@ spec:
     - name: {{@key}}
       value: "{{this}}"
     {{/each}}
+    - name: BASE_PATH
+      value: {{base_path}
