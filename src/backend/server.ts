@@ -13,8 +13,6 @@ const app = express();
 
 app.engine('html', mustacheExpress());
 
-const basePath = process.env.BASE_PATH ?? '/';
-console.log('base path: ', basePath);
 const frontendMappe = path.join(process.cwd(), 'dist');
 
 app.set('views', frontendMappe);
@@ -34,7 +32,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(webpackHotMiddleware(compiler));
 } else {
   // Static files
-  app.use(basePath, express.static(frontendMappe, { index: false }));
+  app.use(
+    '/familie/alene-med-barn/ettersending/',
+    express.static(frontendMappe, { index: false })
+  );
 }
 
 // Nais functions
