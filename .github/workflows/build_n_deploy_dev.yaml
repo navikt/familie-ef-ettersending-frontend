@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Teste variabel
-        run: echo "base path er &{{ env.BASE_PATH }}"
+        run: echo "base path er ${{ env.BASE_PATH }}"
   build:
     name: Build and push Docker container
     runs-on: ubuntu-latest
