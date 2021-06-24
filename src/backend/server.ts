@@ -6,13 +6,14 @@ import webpack from 'webpack';
 import mustacheExpress from 'mustache-express';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import cors from 'cors';
 
 import projectWebpackDevConfig from '../webpack/webpack.development.config';
 
 const app = express();
 
 app.engine('html', mustacheExpress());
-
+app.use(cors());
 const basePath = process.env.BASE_PATH ?? '/';
 const frontendMappe = path.join(process.cwd(), 'dist');
 
