@@ -2,23 +2,18 @@ import React from 'react';
 import { Checkbox } from 'nav-frontend-skjema';
 import './app.less';
 
-import Foo from './komponenter/Foo';
-import Faa from './komponenter/Faa';
-
-import { AppProvider } from './context/AppContext';
+import Display from './komponenter/Display';
+import Form from './komponenter/Form';
 
 const App = () => {
   return (
     <div className="fullside">
-      <AppProvider>
-        <h1>My React and TypeScript App!</h1>
+      <h1>My React and TypeScript App!</h1>
 
-        <Checkbox label={'Checkbox'} />
+      <Checkbox label={'Checkbox'} />
 
-        <Foo></Foo>
-
-        <Faa></Faa>
-      </AppProvider>
+      <Display></Display>
+      <Form></Form>
     </div>
   );
 };
