@@ -35,4 +35,4 @@ spec:
       value: "{{this}}"
     {{/each}}
     - name: BASE_PATH
-      value: {{base_path}
+      value: {{base_path}}
