@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Teste variabel
-        run: echo "base path er &{{env.BASE_PATH}}"
+        run: echo "base path er &{{ env.BASE_PATH }}"
   build:
     name: Build and push Docker container
     runs-on: ubuntu-latest
@@ -22,7 +22,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: |
-          docker build -t ${IMAGE} . --build-arg base_path=${{env.BASE_PATH}}
+          docker build -t ${IMAGE} . --build-arg base_path=${{ env.BASE_PATH }}
           echo ${GITHUB_TOKEN} | docker login ghcr.io --username ${GITHUB_REPOSITORY} --password-stdin
           docker push ${IMAGE}
   deoploy:
