@@ -3,6 +3,7 @@ name: Build, push, and deploy app to dev
 on: [workflow_dispatch]
 env:
   IMAGE: ghcr.io/navikt/familie-ef-ettersending:${{ github.sha }}
+  BASE_PATH: /familie/alene-med-barn/ettersending/
 
 jobs: 
   build:
