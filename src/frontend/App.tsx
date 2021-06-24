@@ -1,19 +1,24 @@
 import React from 'react';
-import { Knapp } from 'nav-frontend-knapper';
 import { Checkbox } from 'nav-frontend-skjema';
 import './app.less';
+
+import Foo from './komponenter/Foo';
+import Faa from './komponenter/Faa';
+
+import { AppProvider } from './context/AppContext';
 
 const App = () => {
   return (
     <div className="fullside">
-      <p>Dette er en endring</p>
+      <AppProvider>
+        <h1>My React and TypeScript App!</h1>
 
-      <h1>
-        My React and TypeScript App! Simen!! {new Date().toLocaleDateString()}
-      </h1>
+        <Checkbox label={'Checkbox'} />
 
-      <Knapp type={'standard'}>HEI</Knapp>
-      <Checkbox label={'Checkbox'} />
+        <Foo></Foo>
+
+        <Faa></Faa>
+      </AppProvider>
     </div>
   );
 };

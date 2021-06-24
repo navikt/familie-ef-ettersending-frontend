@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useApp } from '../context/AppContext';
 
 const Foo = () => {
-  return <h1>Teamfamilie! {new Date().toLocaleDateString()}</h1>;
+  const test = useApp();
+  console.log(test.testVerdi);
+  return (
+    <div>
+      <h1>Context: {test.testVerdi}</h1>
+    </div>
+  );
 };
 
 export default Foo;
