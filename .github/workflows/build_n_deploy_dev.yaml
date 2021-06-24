@@ -6,6 +6,13 @@ env:
   BASE_PATH: /familie/alene-med-barn/ettersending/
 
 jobs: 
+  test:
+    name: Teste variabel
+    runs-on: ubuntu-latest
+    stpes:
+      - uses: actions/checkout@v2
+      - name: Teste variabel
+        run: echo "base path er &{{env.BASE_PATH}}"
   build:
     name: Build and push Docker container
     runs-on: ubuntu-latest
