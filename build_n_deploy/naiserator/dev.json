@@ -3,6 +3,6 @@
         "https://ensligmorellerfar.dev.nav.no/familie/alene-med-barn/ettersending"
     ],
     "env": {
-        "ENV": "preprod"
+        "ENV": "dev"
     }
 }
