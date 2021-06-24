@@ -7,9 +7,11 @@ const Filopplasting = () => {
       className="filopplasting"
       beforeFileDrop={() => console.log('Before drop')}
       afterFileDrop={() => console.log('After drop')}
-      onFilesChanged={(files) =>
-        console.log('I have ' + files.length + ' files')
-      }
+      onFilesChanged={(files) => {
+        const test = files.map((file) => file.name);
+        console.log('I have ' + files.length + ' files');
+        console.log(test);
+      }}
     />
   );
 };
