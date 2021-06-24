@@ -9,7 +9,7 @@ jobs:
   test:
     name: Teste variabel
     runs-on: ubuntu-latest
-    stpes:
+    steps:
       - uses: actions/checkout@v2
       - name: Teste variabel
         run: echo "base path er &{{env.BASE_PATH}}"
