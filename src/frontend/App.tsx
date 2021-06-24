@@ -6,12 +6,14 @@ import Filopplasting from './komponenter/Filopplasting';
 
 const App = () => {
   return (
-    <div className="app-konteiner">
-      <h1>Ettersending av dokumentasjon</h1>
-      <Filopplasting />
-      <Knapp className="innsendingsknapp" type={'standard'}>
-        Send inn
-      </Knapp>
+    <div className="innhold">
+      <div className="app-konteiner">
+        <h1>Ettersending av dokumentasjon</h1>
+        <Filopplasting />
+        <Knapp className="innsendingsknapp" type={'standard'}>
+          Send inn
+        </Knapp>
+      </div>
     </div>
   );
 };
