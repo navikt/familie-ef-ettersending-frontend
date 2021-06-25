@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import createUseContext from 'constate';
 import axios from 'axios';
 
 export enum InnloggetStatus {
-  AUTENTISERT,
-  FEILET,
-  IKKE_VERIFISERT,
+  AUTENTISERT = 'innlogget',
+  FEILET = 'innlogging feilet',
+  IKKE_VERIFISERT = 'ikke logget inn',
 }
 
 const [AppProvider, useApp] = createUseContext(() => {
