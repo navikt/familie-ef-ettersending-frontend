@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Knapp } from 'nav-frontend-knapper';
 
-const Form = () => {
+const InputForm = () => {
   const context = useApp();
 
   const [input, endreInput] = useState('');
@@ -21,4 +21,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default InputForm;

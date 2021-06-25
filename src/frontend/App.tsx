@@ -1,14 +1,14 @@
 import React from 'react';
 import './app.less';
 
-import Display from './komponenter/Display';
-import Form from './komponenter/Form';
+import DisplayContext from './komponenter/DisplayContext';
+import InputForm from './komponenter/InputForm';
 
 const App = () => {
   return (
     <div className="fullside">
-      <Display></Display>
-      <Form></Form>
+      <DisplayContext></DisplayContext>
+      <InputForm></InputForm>
     </div>
   );
 };
