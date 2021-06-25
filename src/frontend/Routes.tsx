@@ -13,8 +13,8 @@ const Routes: React.FC = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/hjem" component={App} />
-        <Redirect from="/" to="/hjem" />
+        <Route path="/" component={App} />
+        <Redirect from="/" to="/" />
       </Switch>
     </Router>
   );
