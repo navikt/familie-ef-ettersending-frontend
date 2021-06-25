@@ -6,7 +6,7 @@ import Filopplasting from './komponenter/Filopplasting';
 
 const App = () => {
   return (
-    <div className="innhold">
+    <div className="bakgrunn">
       <div className="app-konteiner">
         <h1>Ettersending av dokumentasjon</h1>
         <Filopplasting />
