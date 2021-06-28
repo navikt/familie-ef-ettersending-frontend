@@ -1,5 +1,5 @@
 const getEnv = () => {
-  if (process.env.NODE_ENV === 'prod') {
+  if (process.env.ENV === 'prod') {
     return {
       innloggingUrl:
         'https://nav.no/familie/barnetrygd/soknad/ordinaer/api/innlogget',
@@ -7,7 +7,7 @@ const getEnv = () => {
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
       port: 9000,
     };
-  } else if (process.env.NODE_ENV === 'dev') {
+  } else if (process.env.ENV === 'dev') {
     return {
       innloggingUrl:
         'https://familie-ba-soknad.dev.nav.no/familie/barnetrygd/soknad/ordinaer/api/innlogget',
