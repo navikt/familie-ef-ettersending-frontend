@@ -1,24 +1,28 @@
-//TODO: Updated these
-export default function () {
-  if (process.env.ENV === 'prod') {
+const getEnv = () => {
+  if (process.env.NODE_ENV === 'prod') {
     return {
+      innloggingUrl:
+        'https://nav.no/familie/barnetrygd/soknad/ordinaer/api/innlogget',
       apiUrl: 'https://www.nav.no/familie/alene-med-barn/soknad-api',
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
       port: 9000,
     };
-  } else if (process.env.ENV === 'dev') {
+  } else if (process.env.NODE_ENV === 'dev') {
     return {
+      innloggingUrl:
+        'https://familie-ba-soknad.dev.nav.no/familie/barnetrygd/soknad/ordinaer/api/innlogget',
       apiUrl: 'https://www.nav.no/familie/alene-med-barn/soknad-api', //Må opppdateres
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
-      //dekoratørUrl: 'https://www-q1.nav.no/dekoratoren/?simple=true',
       port: 9000,
     };
   } else {
-    console.log('YWY');
     return {
+      innlogginUrl: 'http://localhost:8091/api/innlogget',
       apiUrl: 'https://www.nav.no/familie/alene-med-barn/soknad-api',
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
       port: 3000,
     };
   }
-}
+};
+
+export default getEnv;
