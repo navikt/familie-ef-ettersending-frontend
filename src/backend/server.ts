@@ -12,7 +12,6 @@ import projectWebpackDevConfig from '../webpack/webpack.development.config';
 const app = express();
 
 app.engine('html', mustacheExpress());
-
 const frontendMappe = path.join(process.cwd(), 'dist');
 
 app.set('views', frontendMappe);
