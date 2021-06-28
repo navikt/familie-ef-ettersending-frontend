@@ -2,11 +2,17 @@ import React from 'react';
 import './app.less';
 import Filopplasting from './komponenter/Filopplasting';
 import { Knapp } from 'nav-frontend-knapper';
-import { InnloggetStatus, useApp } from './context/AppContext';
+import { useApp } from './context/AppContext';
 import NavFrontendSpinner from 'nav-frontend-spinner';
+import {
+  autentiseringsInterceptor,
+  InnloggetStatus,
+} from '../shared-utils/autentisering';
 
 const App = () => {
   const context = useApp();
+
+  autentiseringsInterceptor();
 
   if (context.innloggetStatus === InnloggetStatus.AUTENTISERT) {
     return (

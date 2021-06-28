@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
-import enviroment from '../../backend/environment';
 import createUseContext from 'constate';
-import axios from 'axios';
-
-export enum InnloggetStatus {
-  AUTENTISERT = 'innlogget',
-  FEILET = 'ikke logget inn (innlogging feilet)',
-  IKKE_VERIFISERT = 'ikke logget inn',
-}
+import {
+  InnloggetStatus,
+  verifiserAtBrukerErAutentisert,
+} from '../../shared-utils/autentisering';
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [testVerdi, setTestVerdi] = useState('Default testverdi');
@@ -16,15 +12,8 @@ const [AppProvider, useApp] = createUseContext(() => {
   );
 
   useEffect(() => {
-    verifiserAtBrukerErAutentisert();
+    verifiserAtBrukerErAutentisert(setInnloggetStatus);
   }, []);
-
-  const verifiserAtBrukerErAutentisert = () => {
-    axios
-      .get(enviroment().innlogginUrl, { withCredentials: true })
-      .then(() => setInnloggetStatus(InnloggetStatus.AUTENTISERT))
-      .catch(() => setInnloggetStatus(InnloggetStatus.FEILET));
-  };
 
   return {
     testVerdi,
