@@ -26,6 +26,10 @@ const [AppProvider, useApp] = createUseContext(() => {
       .catch(() => setInnloggetStatus(InnloggetStatus.FEILET));
   };
 
+  useEffect(() => {
+    verifiserAtBrukerErAutentisert();
+  }, []);
+
   return {
     testVerdi,
     setTestVerdi,
