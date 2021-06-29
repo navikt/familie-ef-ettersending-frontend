@@ -13,7 +13,7 @@ const er401Feil = (error: AxiosError) =>
 const getLoginUrl = () => {
   return (
     environment().loginService +
-    `&redirect=${process.env.PUBLIC_URL}/familie/alene-med-barn/ettersending`
+    `&redirect=${window.location.origin}/familie/alene-med-barn/ettersending`
   );
 };
 
