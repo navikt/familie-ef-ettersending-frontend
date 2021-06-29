@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 
 export const Dokumentasjonsbehov: React.FC = () => {
-  const [data, settData] = useState();
+  const [data, settData] = useState(null);
 
   const hentData = () => {
     axios
@@ -15,15 +15,12 @@ export const Dokumentasjonsbehov: React.FC = () => {
         }
       )
       .then((response: { data: any }) => {
-        console.log(response.data);
+        // console.log(response.data);
         settData(response.data);
       });
   };
 
-  useEffect(hentData, []);
-  return (
-    <div>
-      <h1>Dokumentasjonsbehov</h1>
-    </div>
-  );
+  useEffect(() => hentData(), []);
+
+  return <div className="app-konteiner"></div>;
 };

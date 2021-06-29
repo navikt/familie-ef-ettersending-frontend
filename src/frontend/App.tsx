@@ -10,34 +10,35 @@ import { Dokumentasjonsbehov } from './komponenter/Dokumentasjonsbehov';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 
 const App = () => {
-  const [navn, settNavn] = useState('');
+  // const [navn, settNavn] = useState('');
 
-  const hentData = () => {
-    return axios
-      .get('http://localhost:8091/api/oppslag/sokerinfo', {
-        withCredentials: true,
-      })
-      .then((response: { data: any }) => {
-        console.log(response.data);
-      });
-  };
+  // const hentData = () => {
+  //   return axios
+  //     .get('http://localhost:8091/api/oppslag/sokerinfo', {
+  //       withCredentials: true,
+  //     })
+  //     .then((response: { data: any }) => {
+  //       console.log(response.data);
+  //     });
+  // };
 
-  const hentPerson = () => {
-    return axios
-      .get('http://localhost:8091/api/oppslag/sokerinfo', {
-        withCredentials: true,
-      })
-      .then((response: { data: any }) => {
-        console.log(response.data.søker.forkortetNavn);
-        settNavn(response.data.søker.forkortetNavn);
-      });
-  };
+  // const hentPerson = () => {
+  //   return axios
+  //     .get('http://localhost:8091/api/oppslag/sokerinfo', {
+  //       withCredentials: true,
+  //     })
+  //     .then((response: { data: any }) => {
+  //       console.log(response.data.søker.forkortetNavn);
+  //       settNavn(response.data.søker.forkortetNavn);
+  //     });
+  // };
 
-  hentData();
-  hentPerson();
+  // hentData();
+  // hentPerson();
 
   return (
     <div className="bakgrunn">
+      <Dokumentasjonsbehov />
       <div className="app-konteiner">
         <h1>Ettersending av dokumentasjon</h1>
         <Ekspanderbartpanel tittel="Klikk her for å åpne/lukke panelet">
