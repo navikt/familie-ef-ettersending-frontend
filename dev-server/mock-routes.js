@@ -15,10 +15,8 @@ const lesMockFil = (filnavn) => {
     }
 };
 
-app.get('/', (req, res) => {
+app.get('/hallo', (req, res) => {
     setTimeout(() => res.send(lesMockFil(`test-1.json`)), delayMs);
 });
-
-
 
 export default app;
