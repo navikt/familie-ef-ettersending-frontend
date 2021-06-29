@@ -6,6 +6,7 @@ import InputForm from './komponenter/InputForm';
 import { Knapp } from 'nav-frontend-knapper';
 import axios from 'axios';
 import { response } from 'express';
+import { Dokumentasjonsbehov } from './komponenter/Dokumentasjonsbehov';
 
 const App = () => {
   const [navn, settNavn] = useState('');
@@ -38,6 +39,7 @@ const App = () => {
     <div className="bakgrunn">
       <div className="app-konteiner">
         <h1>Ettersending av dokumentasjon for {navn}</h1>
+        <Dokumentasjonsbehov />
         <Filopplasting />
         <Knapp className="innsendingsknapp" type={'standard'}>
           Send inn
