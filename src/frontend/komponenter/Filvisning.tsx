@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Knapp } from 'nav-frontend-knapper';
 
 interface Iprops {
   children: any;
