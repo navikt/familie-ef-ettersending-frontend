@@ -1,6 +1,7 @@
 import React from 'react';
 import Filopplasting from './Filopplasting';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
+import Alertstripe from 'nav-frontend-alertstriper';
 
 interface IProps {
   krav: IKrav;
@@ -20,11 +21,23 @@ const Krav: React.FC<IProps> = ({ krav }: IProps) => {
   return (
     <>
       {isTrue() ? (
-        <Ekspanderbartpanel tittel={krav.label}>
+        <Ekspanderbartpanel
+          tittel={
+            <Alertstripe type="suksess" form="inline">
+              {krav.label}
+            </Alertstripe>
+          }
+        >
           <Filopplasting />
         </Ekspanderbartpanel>
       ) : (
-        <Ekspanderbartpanel tittel={<i>krav.label</i>}>
+        <Ekspanderbartpanel
+          tittel={
+            <Alertstripe type="feil" form="inline">
+              {krav.label}
+            </Alertstripe>
+          }
+        >
           <Filopplasting />
         </Ekspanderbartpanel>
       )}
