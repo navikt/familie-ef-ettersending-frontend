@@ -25,7 +25,8 @@ const getEnv = () => {
     console.log('Miljø -> Dev');
     return {
       loginService: 'https://loginservice.dev.nav.no/login?',
-      apiUrl: 'https://www-q0.nav.no/familie/alene-med-barn/soknad-api',
+      apiUrl:
+        'https://familie-ef-soknad-api.dev.nav.no/familie/alene-med-barn/soknad-api',
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
       port: 9000,
     };
