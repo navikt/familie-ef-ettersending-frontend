@@ -2,21 +2,34 @@ import React from 'react';
 import './app.less';
 import Filopplasting from './komponenter/Filopplasting';
 import { Knapp } from 'nav-frontend-knapper';
-import DisplayContext from './komponenter/DisplayContext';
-import InputForm from './komponenter/InputForm';
+import { useApp } from './context/AppContext';
+import NavFrontendSpinner from 'nav-frontend-spinner';
+import {
+  autentiseringsInterceptor,
+  InnloggetStatus,
+} from '../shared-utils/autentisering';
 
 const App = () => {
-  return (
-    <div className="bakgrunn">
-      <div className="app-konteiner">
-        <h1>Ettersending av dokumentasjon</h1>
-        <Filopplasting />
-        <Knapp className="innsendingsknapp" type={'standard'}>
-          Send inn
-        </Knapp>
+  const context = useApp();
+
+  autentiseringsInterceptor();
+
+  if (context.innloggetStatus === InnloggetStatus.AUTENTISERT) {
+    return (
+      <div className="bakgrunn">
+        <div className="app-konteiner">
+          <h1>Ettersending av dokumentasjon</h1>
+          <h3>Bruker er {context.innloggetStatus}</h3>
+          <Filopplasting />
+          <Knapp className="innsendingsknapp" type={'standard'}>
+            Send inn
+          </Knapp>
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return <NavFrontendSpinner className="spinner" />;
+  }
 };
 
 export default App;
