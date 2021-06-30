@@ -8,13 +8,27 @@ interface IProps {
 
 interface IKrav {
   label: string;
+  harSendtInn: boolean;
+  opplastedeVedlegg: Array<any>;
 }
 
 const Krav: React.FC<IProps> = ({ krav }: IProps) => {
+  const isTrue = (): boolean => {
+    return krav.harSendtInn || krav.opplastedeVedlegg.length > 0;
+  };
+
   return (
-    <Ekspanderbartpanel tittel={krav.label}>
-      <Filopplasting />
-    </Ekspanderbartpanel>
+    <>
+      {isTrue() ? (
+        <Ekspanderbartpanel tittel={krav.label}>
+          <Filopplasting />
+        </Ekspanderbartpanel>
+      ) : (
+        <Ekspanderbartpanel tittel={<i>krav.label</i>}>
+          <Filopplasting />
+        </Ekspanderbartpanel>
+      )}
+    </>
   );
 };
 

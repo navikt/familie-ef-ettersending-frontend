@@ -18,7 +18,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
         }
       )
       .then((response: { data: any }) => {
-        // console.log(response.data);
+        console.log(response.data);
         settData(response.data);
         setLoading(false);
       });
@@ -30,7 +30,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
     return <NavFrontendSpinner />;
   }
   return (
-    <div className="app-container">
+    <div>
       {data.dokumentasjonsbehov.map((krav) => (
         <Krav key={krav.id} krav={krav} />
       ))}

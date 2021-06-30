@@ -31,7 +31,7 @@ const App = () => {
 
   return (
     <div className="bakgrunn">
-      <div className="app-konteiner">
+      <div className="app-container">
         <h1>Ettersending av dokumentasjon</h1>
         <Dokumentasjonsbehov />
       </div>
