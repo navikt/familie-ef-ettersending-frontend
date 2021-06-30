@@ -1,5 +1,5 @@
 const getEnv = () => {
-  if (process.env.ENV === 'prod') {
+  if (window.location.hostname.indexOf('www') > -1) {
     console.log('Miljø -> Prod');
     return {
       loginService: 'https://loginservice.nav.no/login?',
@@ -7,7 +7,7 @@ const getEnv = () => {
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
       port: 9000,
     };
-  } else if (process.env.ENV === 'dev') {
+  } else if (window.location.hostname.indexOf('dev') > -1) {
     console.log('Miljø -> Dev');
     return {
       loginService: 'https://loginservice.dev.nav.no/login?',
