@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import './app.less';
+import React from 'react';
 import Filopplasting from './Filopplasting';
-import DisplayContext from './DisplayContext';
-import InputForm from './InputForm';
-import { Knapp } from 'nav-frontend-knapper';
-import axios from 'axios';
-import { response } from 'express';
-import { Dokumentasjonsbehov } from './Dokumentasjonsbehov';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 
-const Krav = () => {
+interface IProps {
+  krav: IKrav;
+}
+
+interface IKrav {
+  label: string;
+}
+
+const Krav: React.FC<IProps> = ({ krav }: IProps) => {
   return (
-    <Ekspanderbartpanel tittel="Klikk her for å åpne/lukke panelet">
+    <Ekspanderbartpanel tittel={krav.label}>
       <Filopplasting />
     </Ekspanderbartpanel>
   );

@@ -1,13 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './app.less';
-import Filopplasting from './komponenter/Filopplasting';
-import DisplayContext from './komponenter/DisplayContext';
-import InputForm from './komponenter/InputForm';
-import { Knapp } from 'nav-frontend-knapper';
-import axios from 'axios';
-import { response } from 'express';
 import { Dokumentasjonsbehov } from './komponenter/Dokumentasjonsbehov';
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 
 const App = () => {
   // const [navn, settNavn] = useState('');
@@ -38,12 +31,9 @@ const App = () => {
 
   return (
     <div className="bakgrunn">
-      <Dokumentasjonsbehov />
       <div className="app-konteiner">
         <h1>Ettersending av dokumentasjon</h1>
-        <Ekspanderbartpanel tittel="Klikk her for å åpne/lukke panelet">
-          <Filopplasting />
-        </Ekspanderbartpanel>
+        <Dokumentasjonsbehov />
       </div>
     </div>
   );
