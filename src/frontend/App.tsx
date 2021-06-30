@@ -1,7 +1,6 @@
 import React from 'react';
 import './app.less';
-import Filopplasting from './komponenter/Filopplasting';
-import { Knapp } from 'nav-frontend-knapper';
+import { Dokumentasjonsbehov } from './komponenter/Dokumentasjonsbehov';
 import { useApp } from './context/AppContext';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
@@ -17,13 +16,10 @@ const App = () => {
   if (context.innloggetStatus === InnloggetStatus.AUTENTISERT) {
     return (
       <div className="bakgrunn">
-        <div className="app-konteiner">
+        <div className="app-container">
           <h1>Ettersending av dokumentasjon</h1>
           <h3>Bruker er {context.innloggetStatus}</h3>
-          <Filopplasting />
-          <Knapp className="innsendingsknapp" type={'standard'}>
-            Send inn
-          </Knapp>
+          <Dokumentasjonsbehov />
         </div>
       </div>
     );
