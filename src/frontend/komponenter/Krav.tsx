@@ -3,7 +3,7 @@ import Filopplasting from './Filopplasting';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
 
-interface IProps {
+interface IKravliste {
   krav: IKrav;
 }
 
@@ -13,14 +13,14 @@ interface IKrav {
   opplastedeVedlegg: Array<any>;
 }
 
-const Krav: React.FC<IProps> = ({ krav }: IProps) => {
-  const isTrue = (): boolean => {
+const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
+  const dokumentasjonSendt = (): boolean => {
     return krav.harSendtInn || krav.opplastedeVedlegg.length > 0;
   };
 
   return (
     <>
-      {isTrue() ? (
+      {dokumentasjonSendt() ? (
         <Ekspanderbartpanel
           tittel={
             <Alertstripe type="suksess" form="inline">

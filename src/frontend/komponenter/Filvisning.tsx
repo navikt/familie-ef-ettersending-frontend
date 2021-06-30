@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
-interface Iprops {
-  children: any;
+interface IFilvisning {
+  children: Array<any>;
 }
 
-const Filvisning = (props: Iprops) => {
+const Filvisning = (props: IFilvisning) => {
+  console.log(props.children);
+  console.log(props);
   return (
     <div className="filviser">
       <ul>

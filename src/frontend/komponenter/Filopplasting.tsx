@@ -2,7 +2,6 @@ import React from 'react';
 import FileUpload from 'filopplasting';
 import Filvisning from './Filvisning';
 import { useState } from 'react';
-import { Knapp } from 'nav-frontend-knapper';
 
 const Filopplasting = () => {
   const [filer, setFiler] = useState([]);
@@ -18,9 +17,6 @@ const Filopplasting = () => {
           setFiler(filer);
         }}
       />
-      <Knapp className="innsendingsknapp" type={'standard'}>
-        Send inn
-      </Knapp>
     </div>
   );
 };

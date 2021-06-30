@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 
 export const Dokumentasjonsbehov: React.FC = () => {
-  const [data, settData] = useState(null);
+  const [søknadsdata, settSøknadsdata] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
   const hentData = () => {
@@ -19,7 +19,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
       )
       .then((response: { data: any }) => {
         console.log(response.data);
-        settData(response.data);
+        settSøknadsdata(response.data);
         setLoading(false);
       });
   };
@@ -31,7 +31,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
   }
   return (
     <div>
-      {data.dokumentasjonsbehov.map((krav) => (
+      {søknadsdata.dokumentasjonsbehov.map((krav) => (
         <Krav key={krav.id} krav={krav} />
       ))}
     </div>
