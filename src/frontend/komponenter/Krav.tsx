@@ -11,6 +11,7 @@ interface IKrav {
   label: string;
   harSendtInn: boolean;
   opplastedeVedlegg: Array<any>;
+  id: number;
 }
 
 const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
@@ -28,7 +29,7 @@ const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
             </Alertstripe>
           }
         >
-          <Filopplasting />
+          <Filopplasting props={krav.id} />
         </Ekspanderbartpanel>
       ) : (
         <Ekspanderbartpanel
@@ -38,7 +39,7 @@ const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
             </Alertstripe>
           }
         >
-          <Filopplasting />
+          <Filopplasting props={krav.id}></Filopplasting>
         </Ekspanderbartpanel>
       )}
     </>

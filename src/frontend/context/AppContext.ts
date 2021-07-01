@@ -6,7 +6,8 @@ import {
 } from '../../shared-utils/autentisering';
 
 const [AppProvider, useApp] = createUseContext(() => {
-  const [testVerdi, setTestVerdi] = useState('Default testverdi');
+  const [søknadsdataNy, settSøkndadsdataNy] = useState([]);
+  const [dokumentMedKrav, settDokumentMedKrav] = useState([]);
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
@@ -15,9 +16,19 @@ const [AppProvider, useApp] = createUseContext(() => {
     verifiserAtBrukerErAutentisert(setInnloggetStatus);
   }, []);
 
+  const leggTilFiler = (fil) => {
+    settSøkndadsdataNy((søknadsdataNy) => [...søknadsdataNy, fil]);
+  };
+
+  const leggTilTuppel = (tuppel) => {
+    settDokumentMedKrav((dokumentMedKrav) => [...dokumentMedKrav, tuppel]);
+  };
+
   return {
-    testVerdi,
-    setTestVerdi,
+    leggTilFiler,
+    leggTilTuppel,
+    dokumentMedKrav,
+    søknadsdataNy,
     innloggetStatus,
   };
 });

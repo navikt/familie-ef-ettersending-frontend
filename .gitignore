@@ -5,3 +5,4 @@ dist
 .env
 .eslintcache
 frontend_development
+package-lock.json

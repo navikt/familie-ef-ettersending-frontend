@@ -5,8 +5,6 @@ interface IFilvisning {
 }
 
 const Filvisning = (props: IFilvisning) => {
-  console.log(props.children);
-  console.log(props);
   return (
     <div className="filviser">
       <ul>

@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import FileUpload from 'filopplasting';
 import Filvisning from './Filvisning';
 import { useState } from 'react';
+import { useApp } from '../context/AppContext';
 
-const Filopplasting = () => {
-  const [filer, setFiler] = useState([]);
+interface Props {
+  props: any;
+}
+
+const Filopplasting = (props: Props) => {
+  const [filer, settFiler] = useState([]);
+  const context = useApp();
+
   return (
     <div>
       <p>Dette er mine filer: </p>
       <Filvisning>{filer}</Filvisning>
       <FileUpload
         className="filopplasting"
-        beforeFileDrop={() => console.log('Before drop')}
-        afterFileDrop={() => console.log('After drop')}
-        onFilesChanged={(filer) => {
-          setFiler(filer);
+        onFilesChanged={(enFil) => {
+          console.log(enFil[0]);
+          context.leggTilTuppel([enFil[0], props.props]);
         }}
       />
     </div>
