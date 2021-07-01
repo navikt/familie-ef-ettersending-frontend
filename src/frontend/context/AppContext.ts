@@ -21,6 +21,7 @@ const [AppProvider, useApp] = createUseContext(() => {
       })
       .then((response: { data: any }) => {
         settSøker(response.data.søker);
+        console.log('okiii');
       });
     return;
   };
@@ -29,8 +30,10 @@ const [AppProvider, useApp] = createUseContext(() => {
   }, []);
 
   useEffect(() => {
-    hentPersoninfo();
-  }, []);
+    if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
+      hentPersoninfo();
+    }
+  }, [innloggetStatus]);
 
   return {
     testVerdi,
