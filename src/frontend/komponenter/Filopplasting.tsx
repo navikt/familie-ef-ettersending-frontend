@@ -9,7 +9,7 @@ interface Props {
 }
 
 const Filopplasting = (krav: Props) => {
-  const [filer, settFil] = useState([]);
+  const [filer, leggTilFil] = useState([]);
   const context = useApp();
 
   return (
@@ -19,7 +19,7 @@ const Filopplasting = (krav: Props) => {
       <FileUpload
         className="filopplasting"
         onFilesChanged={(fil) => {
-          settFil(fil);
+          leggTilFil(fil);
           context.leggTilDokument([fil[0], krav.id]);
         }}
       />

@@ -7,7 +7,6 @@ import {
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [søknadsdataNy, settSøkndadsdataNy] = useState([]);
-
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
