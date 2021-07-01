@@ -10,7 +10,7 @@ import '../stil/Filopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 
 const Filopplaster: React.FC = () => {
-  const [filerTilOpplasting, setFilerTilOpplasting] = useState<IVedlegg[]>([]);
+  const [filerTilOpplasting, settFilerTilOpplasting] = useState<IVedlegg[]>([]);
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
 
@@ -29,31 +29,34 @@ const Filopplaster: React.FC = () => {
     const oppdatertFilliste = filerTilOpplasting.filter(
       (fil) => fil !== vedlegg
     );
-    setFilerTilOpplasting(oppdatertFilliste);
+    settFilerTilOpplasting(oppdatertFilliste);
   };
 
-  const onDrop = useCallback((filer) => {
-    const feilmeldingsliste: string[] = [];
-    const nyeFiler: IVedlegg[] = [];
+  const onDrop = useCallback(
+    (filer) => {
+      const feilmeldingsliste: string[] = [];
+      const nyeFiler: IVedlegg[] = [];
 
-    filer.forEach((fil) => {
-      if (!sjekkTillatFiltype(fil.type)) {
-        feilmeldingsliste.push(fil.name + ' - Ugyldig filtype');
-        settFeilmeldinger(feilmeldingsliste);
-        settÅpenModal(true);
-        return;
-      }
+      filer.forEach((fil) => {
+        if (!sjekkTillatFiltype(fil.type)) {
+          feilmeldingsliste.push(fil.name + ' - Ugyldig filtype');
+          settFeilmeldinger(feilmeldingsliste);
+          settÅpenModal(true);
+          return;
+        }
 
-      nyeFiler.push({
-        dokumentId: fil.lastModified, //TODO denne blir generert av backend, forløbig random verdi
-        navn: fil.name,
-        størrelse: fil.size,
-        tidspunkt: dagensDatoMedTidspunktStreng,
+        nyeFiler.push({
+          dokumentId: fil.lastModified, //TODO denne blir generert av backend, forløbig random verdi
+          navn: fil.name,
+          størrelse: fil.size,
+          tidspunkt: dagensDatoMedTidspunktStreng,
+        });
       });
-    });
-    setFilerTilOpplasting(filerTilOpplasting.concat(nyeFiler));
-    //TODO: Koble opp mot context og api kall laget av Simen
-  }, []);
+      settFilerTilOpplasting(nyeFiler.concat(filerTilOpplasting));
+      //TODO: Koble opp mot context og api kall laget av Simen
+    },
+    [filerTilOpplasting]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
