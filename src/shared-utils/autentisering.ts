@@ -11,9 +11,10 @@ const er401Feil = (error: AxiosError) =>
   error && error.response && error.response.status === 401;
 
 const getLoginUrl = () => {
-  return environment().loginService;
-  //TODO: Redirecten må være godkjent av nav for å funke riktig
-  //return environment().loginService + '&redirect=' + window.location.href;
+  return (
+    environment().loginService +
+    `&redirect=${window.location.origin}/familie/alene-med-barn/ettersending`
+  );
 };
 
 export const autentiseringsInterceptor = () => {
