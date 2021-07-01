@@ -4,9 +4,10 @@ import {
   InnloggetStatus,
   verifiserAtBrukerErAutentisert,
 } from '../../shared-utils/autentisering';
+import { IVedleggMedKrav } from '../typer/søknadsdata';
 
 const [AppProvider, useApp] = createUseContext(() => {
-  const [søknadsdataNy, settSøkndadsdataNy] = useState([]);
+  const [vedleggMedKrav, settVedleggMedKrav] = useState<IVedleggMedKrav[]>([]);
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
@@ -15,13 +16,13 @@ const [AppProvider, useApp] = createUseContext(() => {
     verifiserAtBrukerErAutentisert(setInnloggetStatus);
   }, []);
 
-  const leggTilDokument = (tuppel) => {
-    settSøkndadsdataNy((søknadsdataNy) => [...søknadsdataNy, tuppel]);
+  const leggTilDokument = (vedleggMedKrav: IVedleggMedKrav) => {
+    settVedleggMedKrav((søknadsdataNy) => [...søknadsdataNy, vedleggMedKrav]);
   };
 
   return {
     leggTilDokument,
-    søknadsdataNy,
+    vedleggMedKrav,
     innloggetStatus,
   };
 });

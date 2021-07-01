@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Filopplasting from './Filopplasting';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
+import { useApp } from '../context/AppContext';
 
 interface IKravliste {
   krav: IKrav;

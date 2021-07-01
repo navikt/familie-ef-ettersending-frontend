@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
+import { IVedleggMedKrav } from '../typer/søknadsdata';
 
 export const Dokumentasjonsbehov: React.FC = () => {
   const [søknadsdata, settSøknadsdata] = useState(null);
@@ -27,7 +28,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
       });
   };
 
-  const sendInnDokumenter = (dokumenter) => {
+  const sendInnDokumenter = (dokumenter: IVedleggMedKrav[]) => {
     console.log(dokumenter);
   };
   useEffect(() => hentData(), []);
@@ -44,7 +45,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
         ))}
       </div>
       <div>
-        <Hovedknapp onClick={() => sendInnDokumenter(context.søknadsdataNy)}>
+        <Hovedknapp onClick={() => sendInnDokumenter(context.vedleggMedKrav)}>
           Send inn
         </Hovedknapp>
       </div>
