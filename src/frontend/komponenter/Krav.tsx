@@ -2,16 +2,7 @@ import React from 'react';
 import Filopplasting from './Filopplasting';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
-
-interface IKravliste {
-  krav: IKrav;
-}
-
-interface IKrav {
-  label: string;
-  harSendtInn: boolean;
-  opplastedeVedlegg: Array<any>;
-}
+import { IKravliste } from '../typer/krav';
 
 const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
   const dokumentasjonSendt = (): boolean => {
