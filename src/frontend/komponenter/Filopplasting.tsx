@@ -18,9 +18,8 @@ const Filopplasting = (props: Props) => {
       <Filvisning>{filer}</Filvisning>
       <FileUpload
         className="filopplasting"
-        onFilesChanged={(enFil) => {
-          console.log(enFil[0]);
-          context.leggTilTuppel([enFil[0], props.props]);
+        onFilesChanged={(fil) => {
+          context.leggTilDokument([fil[0], props.props]);
         }}
       />
     </div>

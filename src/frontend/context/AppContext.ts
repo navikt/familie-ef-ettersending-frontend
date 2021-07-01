@@ -7,7 +7,7 @@ import {
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [søknadsdataNy, settSøkndadsdataNy] = useState([]);
-  const [dokumentMedKrav, settDokumentMedKrav] = useState([]);
+
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
@@ -16,18 +16,12 @@ const [AppProvider, useApp] = createUseContext(() => {
     verifiserAtBrukerErAutentisert(setInnloggetStatus);
   }, []);
 
-  const leggTilFiler = (fil) => {
-    settSøkndadsdataNy((søknadsdataNy) => [...søknadsdataNy, fil]);
-  };
-
-  const leggTilTuppel = (tuppel) => {
-    settDokumentMedKrav((dokumentMedKrav) => [...dokumentMedKrav, tuppel]);
+  const leggTilDokument = (tuppel) => {
+    settSøkndadsdataNy((søknadsdataNy) => [...søknadsdataNy, tuppel]);
   };
 
   return {
-    leggTilFiler,
-    leggTilTuppel,
-    dokumentMedKrav,
+    leggTilDokument,
     søknadsdataNy,
     innloggetStatus,
   };

@@ -45,7 +45,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
         ))}
       </div>
       <div>
-        <Hovedknapp onClick={() => sendInnDokumenter(context.dokumentMedKrav)}>
+        <Hovedknapp onClick={() => sendInnDokumenter(context.søknadsdataNy)}>
           Send inn
         </Hovedknapp>
       </div>
