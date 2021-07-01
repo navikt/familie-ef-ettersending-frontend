@@ -22,7 +22,6 @@ export const Dokumentasjonsbehov: React.FC = () => {
         }
       )
       .then((response: { data: any }) => {
-        //console.log(response.data);
         settSøknadsdata(response.data);
         setLoading(false);
       });

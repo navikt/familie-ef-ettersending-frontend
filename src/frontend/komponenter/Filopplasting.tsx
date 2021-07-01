@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
 interface Props {
-  props: any;
+  id: number;
 }
 
-const Filopplasting = (props: Props) => {
-  const [filer, settFiler] = useState([]);
+const Filopplasting = (krav: Props) => {
+  const [filer, settFil] = useState([]);
   const context = useApp();
 
   return (
@@ -19,7 +19,8 @@ const Filopplasting = (props: Props) => {
       <FileUpload
         className="filopplasting"
         onFilesChanged={(fil) => {
-          context.leggTilDokument([fil[0], props.props]);
+          settFil(fil);
+          context.leggTilDokument([fil[0], krav.id]);
         }}
       />
     </div>

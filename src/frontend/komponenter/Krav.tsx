@@ -29,7 +29,7 @@ const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
             </Alertstripe>
           }
         >
-          <Filopplasting props={krav.id} />
+          <Filopplasting id={krav.id}></Filopplasting>
         </Ekspanderbartpanel>
       ) : (
         <Ekspanderbartpanel
@@ -39,7 +39,7 @@ const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
             </Alertstripe>
           }
         >
-          <Filopplasting props={krav.id}></Filopplasting>
+          <Filopplasting id={krav.id}></Filopplasting>
         </Ekspanderbartpanel>
       )}
     </>
