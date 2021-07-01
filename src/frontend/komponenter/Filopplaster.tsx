@@ -7,6 +7,7 @@ import OpplastedeFiler from './OpplastedeFiler';
 import Modal from 'nav-frontend-modal';
 import { IVedlegg } from '../typer/filer';
 import '../stil/Filopplaster.less';
+import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 
 const Filopplaster: React.FC = () => {
   const [filerTilOpplasting, setFilerTilOpplasting] = useState<IVedlegg[]>([]);
@@ -15,13 +16,13 @@ const Filopplaster: React.FC = () => {
 
   const sjekkTillatFiltype = (filtype: string) => {
     const tillateFilTyper = ['pdf', 'jpg', 'svg', 'png', 'jpeg', 'gif', 'ico'];
-    let tillatFiltype = false;
+    let godkjentFiltype = false;
     tillateFilTyper.forEach((tillatFilType) => {
       if (filtype.includes(tillatFilType)) {
-        tillatFiltype = true;
+        godkjentFiltype = true;
       }
     });
-    return tillatFiltype;
+    return godkjentFiltype;
   };
 
   const slettVedlegg = (vedlegg: IVedlegg) => {
@@ -47,7 +48,7 @@ const Filopplaster: React.FC = () => {
         dokumentId: fil.lastModified, //TODO denne blir generert av backend, forløbig random verdi
         navn: fil.name,
         størrelse: fil.size,
-        tidspunkt: 'nå',
+        tidspunkt: dagensDatoMedTidspunktStreng,
       });
     });
     setFilerTilOpplasting(filerTilOpplasting.concat(nyeFiler));
