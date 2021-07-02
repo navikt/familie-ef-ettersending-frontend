@@ -5,6 +5,7 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { IKravliste } from '../typer/krav';
 import '../stil/Filopplaster.less';
+import '../stil/Dokumentasjonsbehov.less';
 
 const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
   const dokumentasjonSendt = (): boolean => {
