@@ -41,6 +41,7 @@ const commonConfig: webpack.Configuration = {
     new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.BASE_PATH': JSON.stringify(process.env.BASE_PATH ?? '/'),
+      'process.env.ENV': JSON.stringify(process.env.ENV),
     }),
   ],
   resolve: {

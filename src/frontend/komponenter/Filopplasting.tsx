@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+/*import React, { useEffect } from 'react';
 import FileUpload from 'filopplasting';
 import Filvisning from './Filvisning';
 import { useState } from 'react';
@@ -28,3 +28,4 @@ const Filopplasting = (krav: Props) => {
 };
 
 export default Filopplasting;
+*/

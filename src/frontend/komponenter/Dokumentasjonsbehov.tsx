@@ -29,6 +29,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
   };
 
   const sendInnDokumenter = (dokumenter: IVedleggMedKrav[]) => {
+    //console.log(dokumenter);
     console.log(dokumenter);
   };
   useEffect(() => hentData(), []);

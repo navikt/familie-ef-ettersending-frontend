@@ -1,49 +1,40 @@
 import React, { useState } from 'react';
-import Filopplasting from './Filopplasting';
+import { useApp } from '../context/AppContext';
+import Filopplaster from './Filopplaster';
+import OpplastedeFiler from './OpplastedeFiler';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
-import { useApp } from '../context/AppContext';
-
-interface IKravliste {
-  krav: IKrav;
-}
-
-interface IKrav {
-  label: string;
-  harSendtInn: boolean;
-  opplastedeVedlegg: Array<any>;
-  id: number;
-}
+import { IKravliste } from '../typer/krav';
+import '../stil/Filopplaster.less';
 
 const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
   const dokumentasjonSendt = (): boolean => {
     return krav.harSendtInn || krav.opplastedeVedlegg.length > 0;
   };
 
+  console.log('ekspanderbart panel!');
   return (
-    <>
-      {dokumentasjonSendt() ? (
-        <Ekspanderbartpanel
-          tittel={
-            <Alertstripe type="suksess" form="inline">
-              {krav.label}
-            </Alertstripe>
-          }
+    <Ekspanderbartpanel
+      tittel={
+        <Alertstripe
+          type={dokumentasjonSendt() ? 'suksess' : 'feil'}
+          form="inline"
         >
-          <Filopplasting id={krav.id}></Filopplasting>
-        </Ekspanderbartpanel>
-      ) : (
-        <Ekspanderbartpanel
-          tittel={
-            <Alertstripe type="feil" form="inline">
-              {krav.label}
-            </Alertstripe>
-          }
-        >
-          <Filopplasting id={krav.id}></Filopplasting>
-        </Ekspanderbartpanel>
+          {krav.label}
+        </Alertstripe>
+      }
+    >
+      {krav.opplastedeVedlegg.length > 0 && (
+        <div className="opplastede-filer">
+          <p>Tidligere opplastede filer:</p>
+          <OpplastedeFiler
+            filliste={krav.opplastedeVedlegg}
+            kanSlettes={false}
+          />
+        </div>
       )}
-    </>
+      <Filopplaster id={krav.id} />
+    </Ekspanderbartpanel>
   );
 };
 
