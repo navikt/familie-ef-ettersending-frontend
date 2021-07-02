@@ -21,7 +21,6 @@ const [AppProvider, useApp] = createUseContext(() => {
       })
       .then((response: { data: any }) => {
         settSøker(response.data.søker);
-        console.log('okiii');
       });
     return;
   };
