@@ -1,8 +1,10 @@
 import React from 'react';
-import Filopplasting from './Filopplasting';
+import Filopplaster from './Filopplaster';
+import OpplastedeFiler from './OpplastedeFiler';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { IKravliste } from '../typer/krav';
+import '../stil/Filopplaster.less';
 
 const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
   const dokumentasjonSendt = (): boolean => {
@@ -10,29 +12,27 @@ const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
   };
 
   return (
-    <>
-      {dokumentasjonSendt() ? (
-        <Ekspanderbartpanel
-          tittel={
-            <Alertstripe type="suksess" form="inline">
-              {krav.label}
-            </Alertstripe>
-          }
+    <Ekspanderbartpanel
+      tittel={
+        <Alertstripe
+          type={dokumentasjonSendt() ? 'suksess' : 'feil'}
+          form="inline"
         >
-          <Filopplasting />
-        </Ekspanderbartpanel>
-      ) : (
-        <Ekspanderbartpanel
-          tittel={
-            <Alertstripe type="feil" form="inline">
-              {krav.label}
-            </Alertstripe>
-          }
-        >
-          <Filopplasting />
-        </Ekspanderbartpanel>
+          {krav.label}
+        </Alertstripe>
+      }
+    >
+      {krav.opplastedeVedlegg.length > 0 && (
+        <div className="opplastede-filer">
+          <p>Tidligere opplastede filer:</p>
+          <OpplastedeFiler
+            filliste={krav.opplastedeVedlegg}
+            kanSlettes={false}
+          />
+        </div>
       )}
-    </>
+      <Filopplaster />
+    </Ekspanderbartpanel>
   );
 };
 
