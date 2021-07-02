@@ -3,17 +3,8 @@ import Filopplaster from './Filopplaster';
 import OpplastedeFiler from './OpplastedeFiler';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
+import { IKravliste } from '../typer/krav';
 import '../stil/Filopplaster.less';
-
-interface IKravliste {
-  krav: IKrav;
-}
-
-interface IKrav {
-  label: string;
-  harSendtInn: boolean;
-  opplastedeVedlegg: Array<any>;
-}
 
 const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
   const dokumentasjonSendt = (): boolean => {
