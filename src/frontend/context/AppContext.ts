@@ -35,7 +35,7 @@ const [AppProvider, useApp] = createUseContext(() => {
 
   const slettVedleggMedKrav = (dokumentId) => {
     const oppdatertVedleggMedKrav = vedleggMedKrav.filter(
-      (e) => e.vedlegg.dokumentId !== dokumentId
+      (element) => element.vedlegg.dokumentId !== dokumentId
     );
     settVedleggMedKrav(oppdatertVedleggMedKrav);
   };

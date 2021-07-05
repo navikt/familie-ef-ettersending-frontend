@@ -5,29 +5,28 @@ import opplasting from '../icons/opplasting.svg';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import OpplastedeFiler from './OpplastedeFiler';
 import Modal from 'nav-frontend-modal';
-import { IVedlegg } from '../typer/filer';
+import { IVedlegg } from '../typer/søknadsdata';
 import '../stil/Filopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
 
-interface Props {
-  id: string;
+interface IFilopplaster {
+  kravId: string;
 }
 
-const Filopplaster: React.FC<Props> = (krav: Props) => {
+const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
-
   const [filerTilOpplasting, settFilerTilOpplasting] = useState<IVedlegg[]>([]);
 
   useEffect(() => settFilerTilOpplasting(filtrerVedleggPåKrav), []);
 
   const filtrerVedleggPåKrav = () => {
     const filtrerteVedlegg = [];
-    context.vedleggMedKrav.map((e) => {
-      if (e.kravId === krav.id) {
-        filtrerteVedlegg.push(e.vedlegg);
+    context.vedleggMedKrav.forEach((element) => {
+      if (element.kravId === kravId) {
+        filtrerteVedlegg.push(element.vedlegg);
       }
     });
     return filtrerteVedlegg;
@@ -76,7 +75,7 @@ const Filopplaster: React.FC<Props> = (krav: Props) => {
 
         const vedleggMedKrav: IVedleggMedKrav = {
           vedlegg: vedlegg,
-          kravId: krav.id,
+          kravId: kravId,
         };
 
         nyeFiler.push(vedlegg);
