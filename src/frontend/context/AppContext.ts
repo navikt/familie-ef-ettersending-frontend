@@ -4,11 +4,12 @@ import {
   InnloggetStatus,
   verifiserAtBrukerErAutentisert,
 } from '../../shared-utils/autentisering';
+import { IVedleggMedKrav } from '../typer/søknadsdata';
 import axios from 'axios';
 import { ISøker } from '../typer/person';
 
 const [AppProvider, useApp] = createUseContext(() => {
-  const [testVerdi, setTestVerdi] = useState('Default testverdi');
+  const [vedleggMedKrav, settVedleggMedKrav] = useState<IVedleggMedKrav[]>([]);
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
@@ -28,6 +29,17 @@ const [AppProvider, useApp] = createUseContext(() => {
     verifiserAtBrukerErAutentisert(setInnloggetStatus);
   }, []);
 
+  const leggTilVedleggMedKrav = (vedleggMedKrav: IVedleggMedKrav) => {
+    settVedleggMedKrav((søknadsdataNy) => [...søknadsdataNy, vedleggMedKrav]);
+  };
+
+  const slettVedleggMedKrav = (dokumentId) => {
+    const oppdatertVedleggMedKrav = vedleggMedKrav.filter(
+      (element) => element.vedlegg.dokumentId !== dokumentId
+    );
+    settVedleggMedKrav(oppdatertVedleggMedKrav);
+  };
+
   useEffect(() => {
     if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
       hentPersoninfo();
@@ -35,8 +47,9 @@ const [AppProvider, useApp] = createUseContext(() => {
   }, [innloggetStatus]);
 
   return {
-    testVerdi,
-    setTestVerdi,
+    leggTilVedleggMedKrav,
+    slettVedleggMedKrav,
+    vedleggMedKrav,
     innloggetStatus,
     søker,
   };

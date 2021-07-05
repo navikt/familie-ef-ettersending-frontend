@@ -1,18 +1,38 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import OpplastedeFiler from './OpplastedeFiler';
 import Modal from 'nav-frontend-modal';
-import { IVedlegg } from '../typer/filer';
+import { IVedlegg } from '../typer/søknadsdata';
 import '../stil/Filopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
+import { useApp } from '../context/AppContext';
+import { IVedleggMedKrav } from '../typer/søknadsdata';
 
-const Filopplaster: React.FC = () => {
-  const [filerTilOpplasting, settFilerTilOpplasting] = useState<IVedlegg[]>([]);
+interface IFilopplaster {
+  kravId: string;
+}
+
+const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
+  const [filerTilOpplasting, settFilerTilOpplasting] = useState<IVedlegg[]>([]);
+
+  useEffect(() => settFilerTilOpplasting(filtrerVedleggPåKrav), []);
+
+  const filtrerVedleggPåKrav = () => {
+    const filtrerteVedlegg = [];
+    context.vedleggMedKrav.forEach((element) => {
+      if (element.kravId === kravId) {
+        filtrerteVedlegg.push(element.vedlegg);
+      }
+    });
+    return filtrerteVedlegg;
+  };
+
+  const context = useApp();
 
   const sjekkTillatFiltype = (filtype: string) => {
     const tillateFilTyper = ['pdf', 'jpg', 'svg', 'png', 'jpeg', 'gif', 'ico'];
@@ -26,6 +46,7 @@ const Filopplaster: React.FC = () => {
   };
 
   const slettVedlegg = (vedlegg: IVedlegg) => {
+    context.slettVedleggMedKrav(vedlegg.dokumentId);
     const oppdatertFilliste = filerTilOpplasting.filter(
       (fil) => fil !== vedlegg
     );
@@ -45,15 +66,22 @@ const Filopplaster: React.FC = () => {
           return;
         }
 
-        nyeFiler.push({
+        const vedlegg: IVedlegg = {
           dokumentId: fil.lastModified, //TODO denne blir generert av backend, forløbig random verdi
           navn: fil.name,
           størrelse: fil.size,
           tidspunkt: dagensDatoMedTidspunktStreng,
-        });
+        };
+
+        const vedleggMedKrav: IVedleggMedKrav = {
+          vedlegg: vedlegg,
+          kravId: kravId,
+        };
+
+        nyeFiler.push(vedlegg);
+        context.leggTilVedleggMedKrav(vedleggMedKrav);
       });
       settFilerTilOpplasting(nyeFiler.concat(filerTilOpplasting));
-      //TODO: Koble opp mot context og api kall laget av Simen
     },
     [filerTilOpplasting]
   );
@@ -64,6 +92,7 @@ const Filopplaster: React.FC = () => {
     <div className="filopplaster-wrapper">
       <div className="opplastede-filer">
         <p>Nye filer:</p>
+
         <OpplastedeFiler
           filliste={filerTilOpplasting}
           kanSlettes={true}

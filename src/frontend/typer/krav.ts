@@ -3,6 +3,7 @@ export interface IKravliste {
 }
 
 interface IKrav {
+  id: string;
   label: string;
   harSendtInn: boolean;
   opplastedeVedlegg: Array<any>;

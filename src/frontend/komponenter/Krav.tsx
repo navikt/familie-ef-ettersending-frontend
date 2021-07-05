@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useApp } from '../context/AppContext';
 import Filopplaster from './Filopplaster';
 import OpplastedeFiler from './OpplastedeFiler';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
@@ -32,7 +33,7 @@ const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
           />
         </div>
       )}
-      <Filopplaster />
+      <Filopplaster kravId={krav.id} />
     </Ekspanderbartpanel>
   );
 };
