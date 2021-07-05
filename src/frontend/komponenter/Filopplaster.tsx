@@ -21,16 +21,16 @@ const Filopplaster: React.FC<Props> = (krav: Props) => {
 
   const [filerTilOpplasting, settFilerTilOpplasting] = useState<IVedlegg[]>([]);
 
-  useEffect(() => settFilerTilOpplasting(filtrer()), []);
+  useEffect(() => settFilerTilOpplasting(filtrerVedleggPåKrav), []);
 
-  const filtrer = () => {
-    const liste = [];
-    context.vedleggMedKrav.map((k) => {
-      if (k.kravId === krav.id) {
-        liste.push(k.vedlegg);
+  const filtrerVedleggPåKrav = () => {
+    const filtrerteVedlegg = [];
+    context.vedleggMedKrav.map((e) => {
+      if (e.kravId === krav.id) {
+        filtrerteVedlegg.push(e.vedlegg);
       }
     });
-    return liste;
+    return filtrerteVedlegg;
   };
 
   const context = useApp();
@@ -47,6 +47,7 @@ const Filopplaster: React.FC<Props> = (krav: Props) => {
   };
 
   const slettVedlegg = (vedlegg: IVedlegg) => {
+    context.slettVedleggMedKrav(vedlegg.dokumentId);
     const oppdatertFilliste = filerTilOpplasting.filter(
       (fil) => fil !== vedlegg
     );
@@ -82,7 +83,6 @@ const Filopplaster: React.FC<Props> = (krav: Props) => {
         context.leggTilVedleggMedKrav(vedleggMedKrav);
       });
       settFilerTilOpplasting(nyeFiler.concat(filerTilOpplasting));
-      //filtrer();
     },
     [filerTilOpplasting]
   );

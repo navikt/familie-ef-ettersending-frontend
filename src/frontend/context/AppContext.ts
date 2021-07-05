@@ -30,8 +30,14 @@ const [AppProvider, useApp] = createUseContext(() => {
   }, []);
 
   const leggTilVedleggMedKrav = (vedleggMedKrav: IVedleggMedKrav) => {
-    console.log('setter vedlegg emd krav');
     settVedleggMedKrav((søknadsdataNy) => [...søknadsdataNy, vedleggMedKrav]);
+  };
+
+  const slettVedleggMedKrav = (dokumentId) => {
+    const oppdatertVedleggMedKrav = vedleggMedKrav.filter(
+      (e) => e.vedlegg.dokumentId !== dokumentId
+    );
+    settVedleggMedKrav(oppdatertVedleggMedKrav);
   };
 
   useEffect(() => {
@@ -42,6 +48,7 @@ const [AppProvider, useApp] = createUseContext(() => {
 
   return {
     leggTilVedleggMedKrav,
+    slettVedleggMedKrav,
     vedleggMedKrav,
     innloggetStatus,
     søker,

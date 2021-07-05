@@ -12,7 +12,6 @@ const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
     return krav.harSendtInn || krav.opplastedeVedlegg.length > 0;
   };
 
-  console.log('ekspanderbart panel!');
   return (
     <Ekspanderbartpanel
       tittel={
