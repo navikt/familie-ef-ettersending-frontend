@@ -32,7 +32,7 @@ const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
           />
         </div>
       )}
-      <Filopplaster id={krav.id} />
+      <Filopplaster kravId={krav.id} />
     </Ekspanderbartpanel>
   );
 };
