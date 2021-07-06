@@ -38,10 +38,16 @@ export const hentDokumentasjonsbehov = () => {
 
 export const sendVedlegg = (formData): Promise<string> => {
   return axios
-    .post(`${environment().dokumentUrl}`, formData, {
-      headers: { 'content-type': 'multipart/form-data' },
-      withCredentials: true,
-    })
+    .post(
+      `${
+        environment().dokumentUrl
+      }/familie/dokument/api/mapper/familievedlegg/`,
+      formData,
+      {
+        headers: { 'content-type': 'multipart/form-data' },
+        withCredentials: true,
+      }
+    )
     .then((response: { data: any }) => {
       return response.data;
     })
