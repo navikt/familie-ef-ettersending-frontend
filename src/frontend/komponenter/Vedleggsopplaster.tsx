@@ -71,6 +71,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     const formData = new FormData();
     formData.append('file', fil);
     const id = await sendVedlegg(formData);
+    console.log(id);
     const vedlegg: IVedlegg = {
       dokumentId: id,
       navn: fil.name,
@@ -107,9 +108,9 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div className="vedleggsopplaster-wrapper">
-      <div className="opplastede-vedlegg">
-        <p>Nye vedlegg:</p>
+    <div className="filopplaster-wrapper">
+      <div className="opplastede-filer">
+        <p>Nye filer:</p>
 
         <OpplastedeVedlegg
           vedleggsliste={vedleggTilOpplasting}
@@ -118,7 +119,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
         />
       </div>
 
-      <div className="vedleggsopplaster">
+      <div className="filopplaster">
         <Modal
           isOpen={åpenModal}
           onRequestClose={() => settÅpenModal(false)}

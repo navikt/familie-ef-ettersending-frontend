@@ -30,15 +30,15 @@ const Krav: React.FC<IDokumentasjonsbehovListe> = ({
       }
     >
       {dokumentasjonsbehov.opplastedeVedlegg.length > 0 && (
-        <div className="opplastede-vedlegg">
-          <p>Tidligere opplastede vedlegg:</p>
+        <div className="opplastede-filer">
+          <p>Tidligere opplastede filer:</p>
           <OpplastedeVedlegg
             vedleggsliste={dokumentasjonsbehov.opplastedeVedlegg}
             kanSlettes={false}
           />
         </div>
       )}
-      <Vedleggsopplaster kravId={dokumentasjonsbehov.id} />
+      <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
     </Ekspanderbartpanel>
   );
 };
