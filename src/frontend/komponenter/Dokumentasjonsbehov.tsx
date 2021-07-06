@@ -22,7 +22,6 @@ export const Dokumentasjonsbehov: React.FC = () => {
     const hentOgSettDokumentasjonsbehov = async () => {
       settDokumentasjonsbehov(await hentDokumentasjonsbehov());
       settLaster(false);
-      console.log(hentDokumentasjonsbehov());
     };
     hentOgSettDokumentasjonsbehov();
   }, []);
