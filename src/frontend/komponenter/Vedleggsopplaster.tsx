@@ -3,24 +3,28 @@ import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import OpplastedeFiler from './OpplastedeFiler';
+import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Modal from 'nav-frontend-modal';
 import { IVedlegg } from '../typer/søknadsdata';
-import '../stil/Filopplaster.less';
+import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
 
-interface IFilopplaster {
+interface IVedleggsopplaster {
   kravId: string;
 }
 
-const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
+const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
+  kravId,
+}: IVedleggsopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
-  const [filerTilOpplasting, settFilerTilOpplasting] = useState<IVedlegg[]>([]);
+  const [vedleggTilOpplasting, settVedleggTilOpplasting] = useState<IVedlegg[]>(
+    []
+  );
 
-  useEffect(() => settFilerTilOpplasting(filtrerVedleggPåKrav), []);
+  useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåKrav), []);
 
   const filtrerVedleggPåKrav = () => {
     const filtrerteVedlegg = [];
@@ -47,18 +51,18 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
 
   const slettVedlegg = (vedlegg: IVedlegg) => {
     context.slettVedleggMedKrav(vedlegg.dokumentId);
-    const oppdatertFilliste = filerTilOpplasting.filter(
+    const oppdatertVedleggsliste = vedleggTilOpplasting.filter(
       (fil) => fil !== vedlegg
     );
-    settFilerTilOpplasting(oppdatertFilliste);
+    settVedleggTilOpplasting(oppdatertVedleggsliste);
   };
 
   const onDrop = useCallback(
-    (filer) => {
+    (vedlegg) => {
       const feilmeldingsliste: string[] = [];
-      const nyeFiler: IVedlegg[] = [];
+      const nyeVedlegg: IVedlegg[] = [];
 
-      filer.forEach((fil) => {
+      vedlegg.forEach((fil) => {
         if (!sjekkTillatFiltype(fil.type)) {
           feilmeldingsliste.push(fil.name + ' - Ugyldig filtype');
           settFeilmeldinger(feilmeldingsliste);
@@ -78,29 +82,29 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
           kravId: kravId,
         };
 
-        nyeFiler.push(vedlegg);
+        nyeVedlegg.push(vedlegg);
         context.leggTilVedleggMedKrav(vedleggMedKrav);
       });
-      settFilerTilOpplasting(nyeFiler.concat(filerTilOpplasting));
+      settVedleggTilOpplasting(nyeVedlegg.concat(vedleggTilOpplasting));
     },
-    [filerTilOpplasting]
+    [vedleggTilOpplasting]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div className="filopplaster-wrapper">
-      <div className="opplastede-filer">
-        <p>Nye filer:</p>
+    <div className="vedleggsopplaster-wrapper">
+      <div className="opplastede-vedlegg">
+        <p>Nye vedlegg:</p>
 
-        <OpplastedeFiler
-          filliste={filerTilOpplasting}
+        <OpplastedeVedlegg
+          vedleggsliste={vedleggTilOpplasting}
           kanSlettes={true}
           slettVedlegg={slettVedlegg}
         />
       </div>
 
-      <div className="filopplaster">
+      <div className="vedleggsopplaster">
         <Modal
           isOpen={åpenModal}
           onRequestClose={() => settÅpenModal(false)}
@@ -131,4 +135,4 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
   );
 };
 
-export default Filopplaster;
+export default Vedleggsopplaster;

@@ -28,7 +28,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
       });
   };
 
-  const sendInnDokumenter = (dokumenter: IVedleggMedKrav[]) => {
+  const sendInnVedlegg = (dokumenter: IVedleggMedKrav[]) => {
     console.log(dokumenter);
   };
   useEffect(() => hentData(), []);
@@ -45,7 +45,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
         ))}
       </div>
       <div>
-        <Hovedknapp onClick={() => sendInnDokumenter(context.vedleggMedKrav)}>
+        <Hovedknapp onClick={() => sendInnVedlegg(context.vedleggMedKrav)}>
           Send inn
         </Hovedknapp>
       </div>

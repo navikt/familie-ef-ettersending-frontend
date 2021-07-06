@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-interface IFilvisning {
+interface IVedleggsvisning {
   children: Array<any>;
 }
 
-const Filvisning = (props: IFilvisning) => {
+const Vedleggsvisning = (props: IVedleggsvisning) => {
   return (
-    <div className="filviser">
+    <div className="vedleggsviser">
       <ul>
         {props.children.map((prop, index) => (
           <li key={index}>{prop.name}</li>
@@ -16,4 +16,4 @@ const Filvisning = (props: IFilvisning) => {
   );
 };
 
-export default Filvisning;
+export default Vedleggsvisning;

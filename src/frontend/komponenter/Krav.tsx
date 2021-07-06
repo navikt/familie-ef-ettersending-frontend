@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import Filopplaster from './Filopplaster';
-import OpplastedeFiler from './OpplastedeFiler';
+import Vedleggsopplaster from './Vedleggsopplaster';
+import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { IKravliste } from '../typer/krav';
-import '../stil/Filopplaster.less';
+import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
 
 const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
@@ -25,15 +25,15 @@ const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
       }
     >
       {krav.opplastedeVedlegg.length > 0 && (
-        <div className="opplastede-filer">
-          <p>Tidligere opplastede filer:</p>
-          <OpplastedeFiler
-            filliste={krav.opplastedeVedlegg}
+        <div className="opplastede-vedlegg">
+          <p>Tidligere opplastede vedlegg:</p>
+          <OpplastedeVedlegg
+            vedleggsliste={krav.opplastedeVedlegg}
             kanSlettes={false}
           />
         </div>
       )}
-      <Filopplaster kravId={krav.id} />
+      <Vedleggsopplaster kravId={krav.id} />
     </Ekspanderbartpanel>
   );
 };
