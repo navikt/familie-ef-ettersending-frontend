@@ -12,6 +12,7 @@ import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
 import axios from 'axios';
 import environment from '../../backend/environment';
+import { sendVedlegg } from '../api-service';
 
 interface IVedleggsopplaster {
   dokumentasjonsbehovId: string;
@@ -66,33 +67,23 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     settVedleggTilOpplasting(oppdatertVedleggsliste);
   };
 
-  const lastOppVedlegg = (fil) => {
+  const lastOppVedlegg = async (fil) => {
     const formData = new FormData();
     formData.append('file', fil);
-    const dokumentUrl = `${
-      environment().dokumentUrl
-    }/familie/dokument/api/mapper/familievedlegg/`;
+    const id = await sendVedlegg(formData);
+    const vedlegg: IVedlegg = {
+      dokumentId: id,
+      navn: fil.name,
+      størrelse: fil.size,
+      tidspunkt: dagensDatoMedTidspunktStreng,
+    };
 
-    axios
-      .post(dokumentUrl, formData, {
-        headers: { 'content-type': 'multipart/form-data' },
-        withCredentials: true,
-      })
-      .then((response: { data: string }) => {
-        const vedlegg: IVedlegg = {
-          dokumentId: response.data,
-          navn: fil.name,
-          størrelse: fil.size,
-          tidspunkt: dagensDatoMedTidspunktStreng,
-        };
-
-        const vedleggMedKrav: IVedleggMedKrav = {
-          vedlegg: vedlegg,
-          kravId: dokumentasjonsbehovId,
-        };
-        context.leggTilVedleggMedKrav(vedleggMedKrav);
-        leggTilFilTilOpplasting(vedlegg);
-      });
+    const vedleggMedKrav: IVedleggMedKrav = {
+      vedlegg: vedlegg,
+      kravId: dokumentasjonsbehovId,
+    };
+    context.leggTilVedleggMedKrav(vedleggMedKrav);
+    leggTilFilTilOpplasting(vedlegg);
   };
 
   const onDrop = useCallback(
