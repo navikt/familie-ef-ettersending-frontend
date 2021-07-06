@@ -5,8 +5,8 @@ import {
   verifiserAtSøkerErAutentisert,
 } from '../../shared-utils/autentisering';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
-import axios from 'axios';
 import { ISøker } from '../typer/søker';
+import { hentSøkerinfo } from '../api-service';
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [vedleggMedKrav, settVedleggMedKrav] = useState<IVedleggMedKrav[]>([]);
@@ -15,16 +15,6 @@ const [AppProvider, useApp] = createUseContext(() => {
   );
   const [søker, settSøker] = useState<ISøker>(null);
 
-  const hentSøkerinfo = () => {
-    axios
-      .get('http://localhost:8091/api/oppslag/sokerinfo', {
-        withCredentials: true,
-      })
-      .then((response: { data: any }) => {
-        settSøker(response.data.søker);
-      });
-    return;
-  };
   useEffect(() => {
     verifiserAtSøkerErAutentisert(setInnloggetStatus);
   }, []);
@@ -41,9 +31,12 @@ const [AppProvider, useApp] = createUseContext(() => {
   };
 
   useEffect(() => {
-    if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
-      hentSøkerinfo();
-    }
+    const hentOgSettSøker = async () => {
+      if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
+        settSøker(await hentSøkerinfo());
+      }
+    };
+    hentOgSettSøker();
   }, [innloggetStatus]);
 
   return {
