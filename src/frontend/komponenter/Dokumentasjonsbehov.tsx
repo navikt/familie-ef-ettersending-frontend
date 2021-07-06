@@ -7,40 +7,34 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
+import { hentDokumentasjonsbehov } from '../api-service';
 
 export const Dokumentasjonsbehov: React.FC = () => {
-  const [søknadsdata, settSøknadsdata] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+  const [dokumentasjonsbehov, settDokumentasjonsbehov] = useState(null);
+  const [laster, settLaster] = useState(true);
 
   const context = useApp();
-
-  const hentData = () => {
-    axios
-      .get(
-        'http://localhost:8091/api/dokumentasjonsbehov/e0c4a9cf-8422-4385-aa4b-409f5a718da3',
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response: { data: any }) => {
-        settSøknadsdata(response.data);
-        setLoading(false);
-      });
-  };
 
   const sendInnVedlegg = (dokumenter: IVedleggMedKrav[]) => {
     console.log(dokumenter);
   };
-  useEffect(() => hentData(), []);
+  useEffect(() => {
+    const hentOgSettDokumentasjonsbehov = async () => {
+      settDokumentasjonsbehov(await hentDokumentasjonsbehov());
+      settLaster(false);
+      console.log(hentDokumentasjonsbehov());
+    };
+    hentOgSettDokumentasjonsbehov();
+  }, []);
 
-  if (isLoading) {
+  if (laster) {
     return <NavFrontendSpinner />;
   }
 
   return (
     <div>
       <div>
-        {søknadsdata.dokumentasjonsbehov.map((krav) => (
+        {dokumentasjonsbehov.dokumentasjonsbehov.map((krav) => (
           <Krav key={krav.id} krav={krav} />
         ))}
       </div>
