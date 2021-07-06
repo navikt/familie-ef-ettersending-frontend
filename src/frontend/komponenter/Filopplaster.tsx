@@ -10,6 +10,8 @@ import '../stil/Filopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
+import axios from 'axios';
+import environment from '../../backend/environment';
 
 interface IFilopplaster {
   kravId: string;
@@ -21,6 +23,13 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
   const [filerTilOpplasting, settFilerTilOpplasting] = useState<IVedlegg[]>([]);
 
   useEffect(() => settFilerTilOpplasting(filtrerVedleggPåKrav), []);
+
+  const leggTilFilTilOpplasting = (vedlegg: IVedlegg) => {
+    settFilerTilOpplasting((nyListeMedVedlegg) => [
+      ...nyListeMedVedlegg,
+      vedlegg,
+    ]);
+  };
 
   const filtrerVedleggPåKrav = () => {
     const filtrerteVedlegg = [];
@@ -53,21 +62,21 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
     settFilerTilOpplasting(oppdatertFilliste);
   };
 
-  const onDrop = useCallback(
-    (filer) => {
-      const feilmeldingsliste: string[] = [];
-      const nyeFiler: IVedlegg[] = [];
+  const lastOppVedlegg = (fil) => {
+    const formData = new FormData();
+    formData.append('file', fil);
+    const dokumentUrl = `${
+      environment().dokumentUrl
+    }/familie/dokument/api/mapper/familievedlegg/`;
 
-      filer.forEach((fil) => {
-        if (!sjekkTillatFiltype(fil.type)) {
-          feilmeldingsliste.push(fil.name + ' - Ugyldig filtype');
-          settFeilmeldinger(feilmeldingsliste);
-          settÅpenModal(true);
-          return;
-        }
-
+    axios
+      .post(dokumentUrl, formData, {
+        headers: { 'content-type': 'multipart/form-data' },
+        withCredentials: true,
+      })
+      .then((response: { data: string }) => {
         const vedlegg: IVedlegg = {
-          dokumentId: fil.lastModified, //TODO denne blir generert av backend, forløbig random verdi
+          dokumentId: response.data,
           navn: fil.name,
           størrelse: fil.size,
           tidspunkt: dagensDatoMedTidspunktStreng,
@@ -77,11 +86,25 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
           vedlegg: vedlegg,
           kravId: kravId,
         };
-
-        nyeFiler.push(vedlegg);
         context.leggTilVedleggMedKrav(vedleggMedKrav);
+        leggTilFilTilOpplasting(vedlegg);
       });
-      settFilerTilOpplasting(nyeFiler.concat(filerTilOpplasting));
+  };
+
+  const onDrop = useCallback(
+    (filer) => {
+      const feilmeldingsliste: string[] = [];
+
+      filer.forEach((fil) => {
+        if (!sjekkTillatFiltype(fil.type)) {
+          feilmeldingsliste.push(fil.name + ' - Ugyldig filtype');
+          settFeilmeldinger(feilmeldingsliste);
+          settÅpenModal(true);
+          return;
+        }
+
+        lastOppVedlegg(fil);
+      });
     },
     [filerTilOpplasting]
   );
