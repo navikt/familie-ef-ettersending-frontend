@@ -21,14 +21,6 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [filerTilOpplasting, settFilerTilOpplasting] = useState<IVedlegg[]>([]);
 
-  //const [nyeFilerX, settNyeFilerX] = useState<IVedlegg[]>([]);
-
-  const [count, setCount] = useState(0);
-
-  const leggTilNyeFiler = (fil) => {
-    settNyeFilerX((nyFil) => [...nyFil, fil]);
-  };
-
   useEffect(() => settFilerTilOpplasting(filtrerVedleggPåKrav), []);
 
   const filtrerVedleggPåKrav = () => {
@@ -60,25 +52,23 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
       (fil) => fil !== vedlegg
     );
     settFilerTilOpplasting(oppdatertFilliste);
-    console.log('sletter vedlegg med krav');
   };
 
   const lastOppVedlegg = async (fil) => {
-    const bodyFormData = new FormData();
-    bodyFormData.append('file', fil);
+    const formData = new FormData();
+    formData.append('file', fil);
+
     const nyeFiler: IVedlegg[] = [];
     await axios
       .post(
         'http://localhost:8082/familie/dokument/api/mapper/familievedlegg/',
-        bodyFormData,
+        formData,
         {
           headers: { 'content-type': 'multipart/form-data' },
           withCredentials: true,
         }
       )
       .then((response: { data: any }) => {
-        console.log(response.data);
-
         const vedlegg: IVedlegg = {
           dokumentId: response.data,
           navn: fil.name,
@@ -90,15 +80,10 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
           vedlegg: vedlegg,
           kravId: kravId,
         };
-
         context.leggTilVedleggMedKrav(vedleggMedKrav);
         nyeFiler.push(vedlegg);
-        console.log('.then');
       });
     settFilerTilOpplasting(nyeFiler.concat(filerTilOpplasting));
-    console.log('utfor');
-    setCount(200);
-    console.log('dww' + count);
   };
 
   const onDrop = useCallback(
@@ -113,26 +98,6 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
           return;
         }
 
-        /*
-        const vedlegg: IVedlegg = {
-          dokumentId: fil.lastModified,
-          navn: fil.name,
-          størrelse: fil.size,
-          tidspunkt: dagensDatoMedTidspunktStreng,
-        };
-
-        const vedleggMedKrav: IVedleggMedKrav = {
-          vedlegg: vedlegg,
-          kravId: kravId,
-        };
-
-        context.leggTilVedleggMedKrav(vedleggMedKrav);
-        console.log('legger til vedlegg med krav');
-
-        nyeFiler.push(vedlegg);
-
-        */
-
         lastOppVedlegg(fil);
       });
     },
@@ -141,13 +106,10 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  useEffect(() => console.log('useEffect'), [count]);
-
   return (
     <div className="filopplaster-wrapper">
       <div className="opplastede-filer">
         <p>Nye filer:</p>
-        <p>{count}</p>
 
         <OpplastedeFiler
           filliste={filerTilOpplasting}
