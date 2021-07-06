@@ -11,6 +11,7 @@ import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
 import axios from 'axios';
+import environment from '../../backend/environment';
 
 interface IFilopplaster {
   kravId: string;
@@ -22,6 +23,13 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
   const [filerTilOpplasting, settFilerTilOpplasting] = useState<IVedlegg[]>([]);
 
   useEffect(() => settFilerTilOpplasting(filtrerVedleggPåKrav), []);
+
+  const leggTilFilTilOpplasting = (vedlegg: IVedlegg) => {
+    settFilerTilOpplasting((nyListeMedVedlegg) => [
+      ...nyListeMedVedlegg,
+      vedlegg,
+    ]);
+  };
 
   const filtrerVedleggPåKrav = () => {
     const filtrerteVedlegg = [];
@@ -54,20 +62,18 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
     settFilerTilOpplasting(oppdatertFilliste);
   };
 
-  const lastOppVedlegg = async (fil) => {
+  const lastOppVedlegg = (fil) => {
     const formData = new FormData();
     formData.append('file', fil);
+    const dokumentUrl = `${
+      environment().dokumentUrl
+    }/familie/dokument/api/mapper/familievedlegg/`;
 
-    const nyeFiler: IVedlegg[] = [];
-    await axios
-      .post(
-        'http://localhost:8082/familie/dokument/api/mapper/familievedlegg/',
-        formData,
-        {
-          headers: { 'content-type': 'multipart/form-data' },
-          withCredentials: true,
-        }
-      )
+    axios
+      .post(dokumentUrl, formData, {
+        headers: { 'content-type': 'multipart/form-data' },
+        withCredentials: true,
+      })
       .then((response: { data: any }) => {
         const vedlegg: IVedlegg = {
           dokumentId: response.data,
@@ -81,9 +87,8 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
           kravId: kravId,
         };
         context.leggTilVedleggMedKrav(vedleggMedKrav);
-        nyeFiler.push(vedlegg);
+        leggTilFilTilOpplasting(vedlegg);
       });
-    settFilerTilOpplasting(nyeFiler.concat(filerTilOpplasting));
   };
 
   const onDrop = useCallback(
