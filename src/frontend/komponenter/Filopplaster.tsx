@@ -74,7 +74,7 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
         headers: { 'content-type': 'multipart/form-data' },
         withCredentials: true,
       })
-      .then((response: { data: any }) => {
+      .then((response: { data: string }) => {
         const vedlegg: IVedlegg = {
           dokumentId: response.data,
           navn: fil.name,
