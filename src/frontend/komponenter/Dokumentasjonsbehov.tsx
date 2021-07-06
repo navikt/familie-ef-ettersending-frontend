@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React from 'react';
 import { useState } from 'react';
 import Krav from './Krav';
@@ -11,7 +10,7 @@ import { hentDokumentasjonsbehov } from '../api-service';
 
 export const Dokumentasjonsbehov: React.FC = () => {
   const [dokumentasjonsbehov, settDokumentasjonsbehov] = useState(null);
-  const [laster, settLaster] = useState(true);
+  const [laster, settLasterverdi] = useState(true);
 
   const context = useApp();
 
@@ -21,7 +20,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
   useEffect(() => {
     const hentOgSettDokumentasjonsbehov = async () => {
       settDokumentasjonsbehov(await hentDokumentasjonsbehov());
-      settLaster(false);
+      settLasterverdi(false);
     };
     hentOgSettDokumentasjonsbehov();
   }, []);
@@ -33,8 +32,8 @@ export const Dokumentasjonsbehov: React.FC = () => {
   return (
     <div>
       <div>
-        {dokumentasjonsbehov.dokumentasjonsbehov.map((krav) => (
-          <Krav key={krav.id} krav={krav} />
+        {dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => (
+          <Krav key={behov.id} dokumentasjonsbehov={behov} />
         ))}
       </div>
       <div>
