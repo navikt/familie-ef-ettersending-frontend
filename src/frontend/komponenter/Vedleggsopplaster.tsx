@@ -10,13 +10,15 @@ import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
+import axios from 'axios';
+import environment from '../../backend/environment';
 
 interface IVedleggsopplaster {
-  kravId: string;
+  dokumentasjonsbehovId: string;
 }
 
 const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
-  kravId,
+  dokumentasjonsbehovId,
 }: IVedleggsopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
@@ -26,10 +28,17 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 
   useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåKrav), []);
 
+  const leggTilFilTilOpplasting = (vedlegg: IVedlegg) => {
+    settVedleggTilOpplasting((nyListeMedVedlegg) => [
+      ...nyListeMedVedlegg,
+      vedlegg,
+    ]);
+  };
+
   const filtrerVedleggPåKrav = () => {
     const filtrerteVedlegg = [];
     context.vedleggMedKrav.forEach((element) => {
-      if (element.kravId === kravId) {
+      if (element.kravId === dokumentasjonsbehovId) {
         filtrerteVedlegg.push(element.vedlegg);
       }
     });
@@ -57,10 +66,38 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     settVedleggTilOpplasting(oppdatertVedleggsliste);
   };
 
+  const lastOppVedlegg = (fil) => {
+    const formData = new FormData();
+    formData.append('file', fil);
+    const dokumentUrl = `${
+      environment().dokumentUrl
+    }/familie/dokument/api/mapper/familievedlegg/`;
+
+    axios
+      .post(dokumentUrl, formData, {
+        headers: { 'content-type': 'multipart/form-data' },
+        withCredentials: true,
+      })
+      .then((response: { data: string }) => {
+        const vedlegg: IVedlegg = {
+          dokumentId: response.data,
+          navn: fil.name,
+          størrelse: fil.size,
+          tidspunkt: dagensDatoMedTidspunktStreng,
+        };
+
+        const vedleggMedKrav: IVedleggMedKrav = {
+          vedlegg: vedlegg,
+          kravId: dokumentasjonsbehovId,
+        };
+        context.leggTilVedleggMedKrav(vedleggMedKrav);
+        leggTilFilTilOpplasting(vedlegg);
+      });
+  };
+
   const onDrop = useCallback(
     (vedlegg) => {
       const feilmeldingsliste: string[] = [];
-      const nyeVedlegg: IVedlegg[] = [];
 
       vedlegg.forEach((fil) => {
         if (!sjekkTillatFiltype(fil.type)) {
@@ -70,22 +107,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
           return;
         }
 
-        const vedlegg: IVedlegg = {
-          dokumentId: fil.lastModified, //TODO denne blir generert av backend, forløbig random verdi
-          navn: fil.name,
-          størrelse: fil.size,
-          tidspunkt: dagensDatoMedTidspunktStreng,
-        };
-
-        const vedleggMedKrav: IVedleggMedKrav = {
-          vedlegg: vedlegg,
-          kravId: kravId,
-        };
-
-        nyeVedlegg.push(vedlegg);
-        context.leggTilVedleggMedKrav(vedleggMedKrav);
+        lastOppVedlegg(fil);
       });
-      settVedleggTilOpplasting(nyeVedlegg.concat(vedleggTilOpplasting));
     },
     [vedleggTilOpplasting]
   );

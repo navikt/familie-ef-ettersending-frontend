@@ -1,5 +1,5 @@
 export interface IDokumentasjonsbehovListe {
-  krav: IDokumentasjonsbehov;
+  dokumentasjonsbehov: IDokumentasjonsbehov;
 }
 
 interface IDokumentasjonsbehov {

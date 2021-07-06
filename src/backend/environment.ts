@@ -18,6 +18,8 @@ const getEnv = () => {
       loginService: 'https://loginservice.nav.no/login?',
       apiUrl: 'https://www.nav.no/familie/alene-med-barn/soknad-api',
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
+      dokumentUrl:
+        'https://www.nav.no/familie/dokument/api/mapper/familievedlegg',
       port: 9000,
     };
   } else if (isDev()) {
@@ -26,6 +28,8 @@ const getEnv = () => {
       apiUrl:
         'https://familie-ef-soknad-api.dev.nav.no/familie/alene-med-barn/soknad-api',
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
+      dokumentUrl:
+        'https://familie-dokument.dev.nav.no/familie/dokument/api/mapper/familievedlegg',
       port: 9000,
     };
   } else {
@@ -33,6 +37,7 @@ const getEnv = () => {
       loginService: 'https://loginservice.dev.nav.no/login?',
       apiUrl: 'http://localhost:8091',
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
+      dokumentUrl: 'http://localhost:8082',
       port: 3000,
     };
   }
