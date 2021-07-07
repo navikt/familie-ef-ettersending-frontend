@@ -21,6 +21,7 @@ export const hentSøkerinfo = (): Promise<ISøker> => {
     });
 };
 
+// må endre til post. sende med et objekt med et felt indent
 export const hentDokumentasjonsbehov = () => {
   return axios
     .get(
@@ -37,7 +38,6 @@ export const hentDokumentasjonsbehov = () => {
 };
 
 export const sendVedleggTilMellomlager = (formData): Promise<string> => {
-  // se på dokmenturlen
   return axios
     .post(`${environment().dokumentUrl}`, formData, {
       headers: { 'content-type': 'multipart/form-data' },
@@ -50,5 +50,3 @@ export const sendVedleggTilMellomlager = (formData): Promise<string> => {
       return error;
     });
 };
-
-// /familie/dokument/api/mapper/familievedlegg/

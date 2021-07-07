@@ -39,7 +39,8 @@ const getEnv = () => {
       loginService: 'https://loginservice.dev.nav.no/login?',
       apiUrl: 'http://localhost:8091',
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
-      dokumentUrl: 'http://localhost:8082',
+      dokumentUrl:
+        'http://localhost:8082/familie/dokument/api/mapper/familievedlegg/',
       port: 3000,
     };
   }
