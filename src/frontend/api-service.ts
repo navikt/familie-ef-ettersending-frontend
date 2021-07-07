@@ -22,16 +22,16 @@ export const hentSøkerinfo = (): Promise<ISøker> => {
     });
 };
 
-export const hentDokumentasjonsbehov = () => {
+export const hentDokumentasjonsbehov = (personIdent) => {
   return axios
     .post(
       `${environment().apiUrl}/api/dokumentasjonsbehov/person`,
-      { ident: '12345678910' },
+      { ident: personIdent },
       {
         withCredentials: true,
       }
     )
-    .then((response: { data: IDokumentasjonsbehovListe }) => {
+    .then((response: { data: IDokumentasjonsbehovListe[] }) => {
       return response.data;
     });
 };
