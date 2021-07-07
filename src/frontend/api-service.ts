@@ -2,26 +2,25 @@ import axios from 'axios';
 import { ISøker } from './typer/søker';
 import environment from '../backend/environment';
 
+interface ISøkerinfo {
+  søker: ISøker;
+}
+
+interface Ifamilievedlegg {
+  dokumentId: string;
+  filnavn: string;
+}
+
 export const hentSøkerinfo = (): Promise<ISøker> => {
   return axios
     .get(`${environment().apiUrl}/api/oppslag/sokerinfo`, {
       withCredentials: true,
     })
-    .then((response: { data: any }) => {
-      const søker = response.data.søker;
-      return {
-        adresse: søker.adresse,
-        egenansatt: søker.egenansatt,
-        fnr: søker.fnr,
-        forkortetNavn: søker.forkortetNavn,
-        harAdressesperre: søker.harAdressesperre,
-        siviltilstand: søker.siviltilstand,
-        statsborgerskap: søker.statsborgerskap,
-      };
+    .then((response: { data: ISøkerinfo }) => {
+      return response.data.søker;
     });
 };
 
-// må endre til post. sende med et objekt med et felt indent
 export const hentDokumentasjonsbehov = () => {
   return axios
     .get(
@@ -43,8 +42,8 @@ export const sendVedleggTilMellomlager = (formData): Promise<string> => {
       headers: { 'content-type': 'multipart/form-data' },
       withCredentials: true,
     })
-    .then((response: { data: any }) => {
-      return response.data;
+    .then((response: { data: Ifamilievedlegg }) => {
+      return response.data.dokumentId;
     })
     .catch((error) => {
       return error;
