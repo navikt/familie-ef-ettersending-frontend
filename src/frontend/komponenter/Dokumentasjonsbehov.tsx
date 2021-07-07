@@ -33,7 +33,14 @@ export const Dokumentasjonsbehov: React.FC = () => {
       },
     };
 
+    /*
     const dokumentasjonsbehovNy = { ...dokumentasjonsbehov };
+
+    */
+
+    const dokumentasjonsbehovNy = JSON.parse(
+      JSON.stringify(dokumentasjonsbehov)
+    );
 
     if (dokumenter.length > 0) {
       dokumenter.forEach((dokument) => {
@@ -53,6 +60,7 @@ export const Dokumentasjonsbehov: React.FC = () => {
 
     console.log(dokumentasjonsbehovNy);
   };
+
   useEffect(() => {
     const hentOgSettDokumentasjonsbehov = async () => {
       settDokumentasjonsbehov(await hentDokumentasjonsbehov());
@@ -64,6 +72,10 @@ export const Dokumentasjonsbehov: React.FC = () => {
   if (laster) {
     return <NavFrontendSpinner />;
   }
+
+  dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
+    console.log(behov.opplastedeVedlegg);
+  });
 
   return (
     <div>
