@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ISøker } from './typer/søker';
 import environment from '../backend/environment';
+import { IDokumentasjonsbehovListe } from './typer/dokumentasjonsbehov';
 
 interface ISøkerinfo {
   søker: ISøker;
@@ -23,15 +24,14 @@ export const hentSøkerinfo = (): Promise<ISøker> => {
 
 export const hentDokumentasjonsbehov = () => {
   return axios
-    .get(
-      `${
-        environment().apiUrl
-      }/api/dokumentasjonsbehov/e0c4a9cf-8422-4385-aa4b-409f5a718da3`,
+    .post(
+      `${environment().apiUrl}/api/dokumentasjonsbehov/person`,
+      { ident: '12345678910' },
       {
         withCredentials: true,
       }
     )
-    .then((response: { data: any }) => {
+    .then((response: { data: IDokumentasjonsbehovListe }) => {
       return response.data;
     });
 };
