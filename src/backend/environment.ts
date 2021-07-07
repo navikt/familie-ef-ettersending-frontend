@@ -12,6 +12,8 @@ const isDev = () => {
   return window.location.hostname.indexOf('dev') > -1;
 };
 
+// Se på disse url-ene. Her lenker dev og env til hele lenken, mens den siste har bare port 8082 og sender med resten i api-service
+
 const getEnv = () => {
   if (isProd()) {
     return {
@@ -37,7 +39,8 @@ const getEnv = () => {
       loginService: 'https://loginservice.dev.nav.no/login?',
       apiUrl: 'http://localhost:8091',
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
-      dokumentUrl: 'http://localhost:8082',
+      dokumentUrl:
+        'http://localhost:8082/familie/dokument/api/mapper/familievedlegg/',
       port: 3000,
     };
   }

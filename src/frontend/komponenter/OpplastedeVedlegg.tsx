@@ -2,23 +2,23 @@ import React from 'react';
 import slett from '../icons/slett.svg';
 import vedlegg from '../icons/vedlegg.svg';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { IVedlegg } from '../typer/filer';
-import '../stil/Filopplaster.less';
+import { IVedlegg } from '../typer/søknadsdata';
+import '../stil/Vedleggsopplaster.less';
 
-interface IOpplastedeFiler {
-  filliste: IVedlegg[];
+interface IOpplastedeVedlegg {
+  vedleggsliste: IVedlegg[];
   kanSlettes: boolean;
   slettVedlegg?: (vedlegg: IVedlegg) => void;
 }
 
-const OpplastedeFiler: React.FC<IOpplastedeFiler> = ({
-  filliste,
+const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
+  vedleggsliste,
   slettVedlegg,
   kanSlettes,
-}: IOpplastedeFiler) => {
+}: IOpplastedeVedlegg) => {
   return (
     <>
-      {filliste.map((fil: IVedlegg, index: number) => {
+      {vedleggsliste.map((fil: IVedlegg, index: number) => {
         return (
           <div key={index}>
             <div className="fil">
@@ -45,7 +45,7 @@ const OpplastedeFiler: React.FC<IOpplastedeFiler> = ({
                 </div>
               )}
             </div>
-            {index === filliste.length - 1 ? '' : <hr />}
+            {index === vedleggsliste.length - 1 ? '' : <hr />}
           </div>
         );
       })}
@@ -53,4 +53,4 @@ const OpplastedeFiler: React.FC<IOpplastedeFiler> = ({
   );
 };
 
-export default OpplastedeFiler;
+export default OpplastedeVedlegg;

@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import Filopplaster from './Filopplaster';
-import OpplastedeFiler from './OpplastedeFiler';
+import Vedleggsopplaster from './Vedleggsopplaster';
+import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
-import { IKravliste } from '../typer/krav';
-import '../stil/Filopplaster.less';
+import { IDokumentasjonsbehovListe } from '../typer/dokumentasjonsbehov';
+import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
 
-const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
+const Krav: React.FC<IDokumentasjonsbehovListe> = ({
+  dokumentasjonsbehov,
+}: IDokumentasjonsbehovListe) => {
   const dokumentasjonSendt = (): boolean => {
-    return krav.harSendtInn || krav.opplastedeVedlegg.length > 0;
+    return (
+      dokumentasjonsbehov.harSendtInn ||
+      dokumentasjonsbehov.opplastedeVedlegg.length > 0
+    );
   };
 
   return (
@@ -20,20 +25,20 @@ const Krav: React.FC<IKravliste> = ({ krav }: IKravliste) => {
           type={dokumentasjonSendt() ? 'suksess' : 'feil'}
           form="inline"
         >
-          {krav.label}
+          {dokumentasjonsbehov.label}
         </Alertstripe>
       }
     >
-      {krav.opplastedeVedlegg.length > 0 && (
+      {dokumentasjonsbehov.opplastedeVedlegg.length > 0 && (
         <div className="opplastede-filer">
           <p>Tidligere opplastede filer:</p>
-          <OpplastedeFiler
-            filliste={krav.opplastedeVedlegg}
+          <OpplastedeVedlegg
+            vedleggsliste={dokumentasjonsbehov.opplastedeVedlegg}
             kanSlettes={false}
           />
         </div>
       )}
-      <Filopplaster kravId={krav.id} />
+      <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
     </Ekspanderbartpanel>
   );
 };

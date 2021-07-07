@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-interface IFilvisning {
+interface IVedleggsvisning {
   children: Array<any>;
 }
 
-const Filvisning = (props: IFilvisning) => {
+const Vedleggsvisning = (props: IVedleggsvisning) => {
   return (
     <div className="filviser">
       <ul>
@@ -16,4 +16,4 @@ const Filvisning = (props: IFilvisning) => {
   );
 };
 
-export default Filvisning;
+export default Vedleggsvisning;

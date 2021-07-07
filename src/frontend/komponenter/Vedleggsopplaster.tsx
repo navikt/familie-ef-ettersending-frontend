@@ -3,29 +3,35 @@ import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import OpplastedeFiler from './OpplastedeFiler';
+import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Modal from 'nav-frontend-modal';
 import { IVedlegg } from '../typer/søknadsdata';
-import '../stil/Filopplaster.less';
+import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
 import axios from 'axios';
 import environment from '../../backend/environment';
+import { sendVedleggTilMellomlager } from '../api-service';
+import { response } from 'express';
 
-interface IFilopplaster {
-  kravId: string;
+interface IVedleggsopplaster {
+  dokumentasjonsbehovId: string;
 }
 
-const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
+const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
+  dokumentasjonsbehovId,
+}: IVedleggsopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
-  const [filerTilOpplasting, settFilerTilOpplasting] = useState<IVedlegg[]>([]);
+  const [vedleggTilOpplasting, settVedleggTilOpplasting] = useState<IVedlegg[]>(
+    []
+  );
 
-  useEffect(() => settFilerTilOpplasting(filtrerVedleggPåKrav), []);
+  useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåKrav), []);
 
   const leggTilFilTilOpplasting = (vedlegg: IVedlegg) => {
-    settFilerTilOpplasting((nyListeMedVedlegg) => [
+    settVedleggTilOpplasting((nyListeMedVedlegg) => [
       ...nyListeMedVedlegg,
       vedlegg,
     ]);
@@ -34,7 +40,7 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
   const filtrerVedleggPåKrav = () => {
     const filtrerteVedlegg = [];
     context.vedleggMedKrav.forEach((element) => {
-      if (element.kravId === kravId) {
+      if (element.kravId === dokumentasjonsbehovId) {
         filtrerteVedlegg.push(element.vedlegg);
       }
     });
@@ -56,46 +62,37 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
 
   const slettVedlegg = (vedlegg: IVedlegg) => {
     context.slettVedleggMedKrav(vedlegg.dokumentId);
-    const oppdatertFilliste = filerTilOpplasting.filter(
+    const oppdatertVedleggsliste = vedleggTilOpplasting.filter(
       (fil) => fil !== vedlegg
     );
-    settFilerTilOpplasting(oppdatertFilliste);
+    settVedleggTilOpplasting(oppdatertVedleggsliste);
   };
 
-  const lastOppVedlegg = (fil) => {
+  const lastOppVedlegg = async (fil) => {
     const formData = new FormData();
     formData.append('file', fil);
-    const dokumentUrl = `${
-      environment().dokumentUrl
-    }/familie/dokument/api/mapper/familievedlegg/`;
+    const respons = await sendVedleggTilMellomlager(formData);
+    console.log(respons);
+    const vedlegg: IVedlegg = {
+      dokumentId: respons,
+      navn: fil.name,
+      størrelse: fil.size,
+      tidspunkt: dagensDatoMedTidspunktStreng,
+    };
 
-    axios
-      .post(dokumentUrl, formData, {
-        headers: { 'content-type': 'multipart/form-data' },
-        withCredentials: true,
-      })
-      .then((response: { data: string }) => {
-        const vedlegg: IVedlegg = {
-          dokumentId: response.data,
-          navn: fil.name,
-          størrelse: fil.size,
-          tidspunkt: dagensDatoMedTidspunktStreng,
-        };
-
-        const vedleggMedKrav: IVedleggMedKrav = {
-          vedlegg: vedlegg,
-          kravId: kravId,
-        };
-        context.leggTilVedleggMedKrav(vedleggMedKrav);
-        leggTilFilTilOpplasting(vedlegg);
-      });
+    const vedleggMedKrav: IVedleggMedKrav = {
+      vedlegg: vedlegg,
+      kravId: dokumentasjonsbehovId,
+    };
+    context.leggTilVedleggMedKrav(vedleggMedKrav);
+    leggTilFilTilOpplasting(vedlegg);
   };
 
   const onDrop = useCallback(
-    (filer) => {
+    (vedlegg) => {
       const feilmeldingsliste: string[] = [];
 
-      filer.forEach((fil) => {
+      vedlegg.forEach((fil) => {
         if (!sjekkTillatFiltype(fil.type)) {
           feilmeldingsliste.push(fil.name + ' - Ugyldig filtype');
           settFeilmeldinger(feilmeldingsliste);
@@ -106,7 +103,7 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
         lastOppVedlegg(fil);
       });
     },
-    [filerTilOpplasting]
+    [vedleggTilOpplasting]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -116,8 +113,8 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
       <div className="opplastede-filer">
         <p>Nye filer:</p>
 
-        <OpplastedeFiler
-          filliste={filerTilOpplasting}
+        <OpplastedeVedlegg
+          vedleggsliste={vedleggTilOpplasting}
           kanSlettes={true}
           slettVedlegg={slettVedlegg}
         />
@@ -154,4 +151,4 @@ const Filopplaster: React.FC<IFilopplaster> = ({ kravId }: IFilopplaster) => {
   );
 };
 
-export default Filopplaster;
+export default Vedleggsopplaster;

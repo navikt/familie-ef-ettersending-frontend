@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import createUseContext from 'constate';
 import {
   InnloggetStatus,
-  verifiserAtBrukerErAutentisert,
+  verifiserAtSøkerErAutentisert,
 } from '../../shared-utils/autentisering';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
-import axios from 'axios';
-import { ISøker } from '../typer/person';
+import { ISøker } from '../typer/søker';
+import { hentSøkerinfo } from '../api-service';
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [vedleggMedKrav, settVedleggMedKrav] = useState<IVedleggMedKrav[]>([]);
@@ -15,18 +15,8 @@ const [AppProvider, useApp] = createUseContext(() => {
   );
   const [søker, settSøker] = useState<ISøker>(null);
 
-  const hentPersoninfo = () => {
-    axios
-      .get('http://localhost:8091/api/oppslag/sokerinfo', {
-        withCredentials: true,
-      })
-      .then((response: { data: any }) => {
-        settSøker(response.data.søker);
-      });
-    return;
-  };
   useEffect(() => {
-    verifiserAtBrukerErAutentisert(setInnloggetStatus);
+    verifiserAtSøkerErAutentisert(setInnloggetStatus);
   }, []);
 
   const leggTilVedleggMedKrav = (vedleggMedKrav: IVedleggMedKrav) => {
@@ -41,9 +31,12 @@ const [AppProvider, useApp] = createUseContext(() => {
   };
 
   useEffect(() => {
-    if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
-      hentPersoninfo();
-    }
+    const hentOgSettSøker = async () => {
+      if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
+        settSøker(await hentSøkerinfo());
+      }
+    };
+    hentOgSettSøker();
   }, [innloggetStatus]);
 
   return {

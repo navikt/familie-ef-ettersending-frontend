@@ -32,7 +32,7 @@ export const autentiseringsInterceptor = () => {
   );
 };
 
-export const verifiserAtBrukerErAutentisert = (
+export const verifiserAtSøkerErAutentisert = (
   settAutentisering: (autentisering: InnloggetStatus) => void
 ) => {
   return verifiserInnloggetApi().then((response) => {
