@@ -4,13 +4,16 @@ import Vedleggsopplaster from './Vedleggsopplaster';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
-import { IDokumentasjonsbehovListe } from '../typer/dokumentasjonsbehov';
+import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
 
-const Krav: React.FC<IDokumentasjonsbehovListe> = ({
-  dokumentasjonsbehov,
-}: IDokumentasjonsbehovListe) => {
+interface Props {
+  dokumentasjonsbehov: IDokumentasjonsbehov;
+}
+
+const Krav: React.FC<Props> = (props: Props) => {
+  const { dokumentasjonsbehov } = props;
   const dokumentasjonSendt = (): boolean => {
     return (
       dokumentasjonsbehov.harSendtInn ||

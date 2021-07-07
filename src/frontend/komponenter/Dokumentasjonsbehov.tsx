@@ -7,9 +7,11 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
 import { hentDokumentasjonsbehov } from '../api-service';
+import { IDokumentasjonsbehovListe } from '../typer/dokumentasjonsbehov';
 
 export const Dokumentasjonsbehov: React.FC = () => {
-  const [dokumentasjonsbehov, settDokumentasjonsbehov] = useState(null);
+  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
+    useState<IDokumentasjonsbehovListe[]>(null);
   const [laster, settLasterverdi] = useState(true);
 
   const context = useApp();
@@ -19,11 +21,12 @@ export const Dokumentasjonsbehov: React.FC = () => {
   };
   useEffect(() => {
     const hentOgSettDokumentasjonsbehov = async () => {
-      settDokumentasjonsbehov(await hentDokumentasjonsbehov());
+      const dokumenter = await hentDokumentasjonsbehov(context.søker.fnr);
+      settDokumentasjonsbehov(dokumenter);
       settLasterverdi(false);
     };
-    hentOgSettDokumentasjonsbehov();
-  }, []);
+    if (context.søker != null) hentOgSettDokumentasjonsbehov();
+  }, [context.søker]);
 
   if (laster) {
     return <NavFrontendSpinner />;
@@ -32,9 +35,12 @@ export const Dokumentasjonsbehov: React.FC = () => {
   return (
     <div>
       <div>
-        {dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => (
-          <Krav key={behov.id} dokumentasjonsbehov={behov} />
-        ))}
+        {dokumentasjonsbehov &&
+          dokumentasjonsbehov.map((behovPerSøknad) => {
+            return behovPerSøknad.dokumentasjonsbehov.map((behov) => {
+              return <Krav key={behov.id} dokumentasjonsbehov={behov} />;
+            });
+          })}
       </div>
       <div>
         <Hovedknapp onClick={() => sendInnVedlegg(context.vedleggMedKrav)}>

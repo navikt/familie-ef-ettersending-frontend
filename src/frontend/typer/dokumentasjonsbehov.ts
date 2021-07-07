@@ -1,8 +1,8 @@
 export interface IDokumentasjonsbehovListe {
-  dokumentasjonsbehov: IDokumentasjonsbehov;
+  dokumentasjonsbehov: Array<IDokumentasjonsbehov>;
 }
 
-interface IDokumentasjonsbehov {
+export interface IDokumentasjonsbehov {
   id: string;
   label: string;
   harSendtInn: boolean;
