@@ -12,7 +12,8 @@ import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
 import axios from 'axios';
 import environment from '../../backend/environment';
-import { sendVedlegg } from '../api-service';
+import { sendVedleggTilMellomlager } from '../api-service';
+import { response } from 'express';
 
 interface IVedleggsopplaster {
   dokumentasjonsbehovId: string;
@@ -70,10 +71,10 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   const lastOppVedlegg = async (fil) => {
     const formData = new FormData();
     formData.append('file', fil);
-    const id = await sendVedlegg(formData);
-    console.log(id);
+    const respons = await sendVedleggTilMellomlager(formData);
+    console.log(respons);
     const vedlegg: IVedlegg = {
-      dokumentId: id,
+      dokumentId: respons,
       navn: fil.name,
       størrelse: fil.size,
       tidspunkt: dagensDatoMedTidspunktStreng,

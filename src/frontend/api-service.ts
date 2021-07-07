@@ -36,24 +36,19 @@ export const hentDokumentasjonsbehov = () => {
     });
 };
 
-export const sendVedlegg = (formData): Promise<string> => {
+export const sendVedleggTilMellomlager = (formData): Promise<string> => {
+  // se på dokmenturlen
   return axios
-    .post(
-      `${
-        environment().dokumentUrl
-      }/familie/dokument/api/mapper/familievedlegg/`,
-      formData,
-      {
-        headers: { 'content-type': 'multipart/form-data' },
-        withCredentials: true,
-      }
-    )
+    .post(`${environment().dokumentUrl}`, formData, {
+      headers: { 'content-type': 'multipart/form-data' },
+      withCredentials: true,
+    })
     .then((response: { data: any }) => {
       return response.data;
     })
     .catch((error) => {
-      if (error.response) {
-        return error.response;
-      }
+      return error;
     });
 };
+
+// /familie/dokument/api/mapper/familievedlegg/
