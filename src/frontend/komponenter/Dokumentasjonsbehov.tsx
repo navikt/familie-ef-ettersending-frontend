@@ -21,13 +21,12 @@ export const Dokumentasjonsbehov: React.FC = () => {
   };
   useEffect(() => {
     const hentOgSettDokumentasjonsbehov = async () => {
-      const dokumenter = await hentDokumentasjonsbehov('12345678910');
-      console.log(dokumenter);
+      const dokumenter = await hentDokumentasjonsbehov(context.søker.fnr);
       settDokumentasjonsbehov(dokumenter);
       settLasterverdi(false);
     };
-    hentOgSettDokumentasjonsbehov();
-  }, []);
+    if (context.søker != null) hentOgSettDokumentasjonsbehov();
+  }, [context.søker]);
 
   if (laster) {
     return <NavFrontendSpinner />;
