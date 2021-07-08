@@ -6,6 +6,7 @@ import Alertstripe from 'nav-frontend-alertstriper';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
+import { Checkbox } from 'nav-frontend-skjema';
 
 interface Props {
   dokumentasjonsbehov: IDokumentasjonsbehov;
@@ -41,6 +42,7 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
         </div>
       )}
       <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
+      <Checkbox className="leveranseCheckbox" label={'Checkbox'} />
     </Ekspanderbartpanel>
   );
 };
