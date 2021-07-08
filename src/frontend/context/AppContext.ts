@@ -5,8 +5,9 @@ import {
   verifiserAtSøkerErAutentisert,
 } from '../../shared-utils/autentisering';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
+
+import { hentPersoninfo } from '../api-service';
 import { ISøker } from '../typer/søker';
-import { hentSøkerinfo } from '../api-service';
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [vedleggMedKrav, settVedleggMedKrav] = useState<IVedleggMedKrav[]>([]);
@@ -25,15 +26,24 @@ const [AppProvider, useApp] = createUseContext(() => {
 
   const slettVedleggMedKrav = (dokumentId) => {
     const oppdatertVedleggMedKrav = vedleggMedKrav.filter(
-      (element) => element.vedlegg.dokumentId !== dokumentId
+      (element) => element.vedlegg.id !== dokumentId
     );
     settVedleggMedKrav(oppdatertVedleggMedKrav);
   };
 
+  // useEffect(() => {
+  //   const hentOgSettSøker = async () => {
+  //     if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
+  //       settSøker(await hentSøkerinfo());
+  //     }
+  //   };
+  //   hentOgSettSøker();
+  // }, [innloggetStatus]);
+
   useEffect(() => {
     const hentOgSettSøker = async () => {
       if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
-        settSøker(await hentSøkerinfo());
+        settSøker(await (await hentPersoninfo()).søker);
       }
     };
     hentOgSettSøker();

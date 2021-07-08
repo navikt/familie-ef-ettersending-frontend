@@ -13,3 +13,18 @@ interface IAdresse {
   postnummer: string;
   poststed: string;
 }
+
+interface IBarn {
+  alder: string;
+  fnr: string;
+  fødselsdato: string;
+  harAdressesperre: boolean;
+  harSammeAdresse: boolean;
+  medForelder: any; //må settes
+  navn: string;
+}
+
+export interface IPersoninfo {
+  søker: ISøker;
+  barn: Array<IBarn>;
+}

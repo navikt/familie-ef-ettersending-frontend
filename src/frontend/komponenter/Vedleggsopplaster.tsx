@@ -61,7 +61,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   };
 
   const slettVedlegg = (vedlegg: IVedlegg) => {
-    context.slettVedleggMedKrav(vedlegg.dokumentId);
+    context.slettVedleggMedKrav(vedlegg.id);
     const oppdatertVedleggsliste = vedleggTilOpplasting.filter(
       (fil) => fil !== vedlegg
     );
@@ -74,7 +74,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     const respons = await sendVedleggTilMellomlager(formData);
     // console.log(respons);
     const vedlegg: IVedlegg = {
-      dokumentId: respons,
+      id: respons,
       navn: fil.name,
       størrelse: fil.size,
       tidspunkt: dagensDatoMedTidspunktStreng,

@@ -1,5 +1,5 @@
 export interface IVedlegg {
-  dokumentId: string;
+  id: string;
   navn: string;
   størrelse: number;
   tidspunkt: string;
