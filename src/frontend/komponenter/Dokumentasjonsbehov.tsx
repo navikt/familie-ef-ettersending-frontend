@@ -7,6 +7,8 @@ import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
 import { Checkbox } from 'nav-frontend-skjema';
+import { useState } from 'react';
+import { Console } from 'console';
 
 interface Props {
   dokumentasjonsbehov: IDokumentasjonsbehov;
@@ -20,6 +22,7 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
       dokumentasjonsbehov.opplastedeVedlegg.length > 0
     );
   };
+  const [checked, settCheckboxverdi] = useState<boolean>(false);
 
   return (
     <Ekspanderbartpanel
@@ -44,6 +47,8 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
       <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
       <Checkbox
         className="leveranseCheckbox"
+        onChange={() => settCheckboxverdi(!checked)}
+        checked={checked}
         label={'Jeg har levert på annen måte'}
       />
     </Ekspanderbartpanel>
