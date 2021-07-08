@@ -10,10 +10,7 @@ import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
-import axios from 'axios';
-import environment from '../../backend/environment';
 import { sendVedleggTilMellomlager } from '../api-service';
-import { response } from 'express';
 
 interface IVedleggsopplaster {
   dokumentasjonsbehovId: string;

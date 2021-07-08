@@ -1,52 +1,48 @@
 import React from 'react';
-import { useState } from 'react';
-import Krav from './Krav';
-import { useEffect } from 'react';
-import NavFrontendSpinner from 'nav-frontend-spinner';
-import { Hovedknapp } from 'nav-frontend-knapper';
-import { useApp } from '../context/AppContext';
-import { IVedleggMedKrav } from '../typer/søknadsdata';
-import { hentDokumentasjonsbehov } from '../api-service';
-import { IDokumentasjonsbehovListe } from '../typer/dokumentasjonsbehov';
+import Vedleggsopplaster from './Vedleggsopplaster';
+import OpplastedeVedlegg from './OpplastedeVedlegg';
+import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
+import Alertstripe from 'nav-frontend-alertstriper';
+import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
+import '../stil/Vedleggsopplaster.less';
+import '../stil/Dokumentasjonsbehov.less';
 
-export const Dokumentasjonsbehov: React.FC = () => {
-  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
-    useState<IDokumentasjonsbehovListe[]>(null);
-  const [laster, settLasterverdi] = useState(true);
+interface Props {
+  dokumentasjonsbehov: IDokumentasjonsbehov;
+}
 
-  const context = useApp();
-
-  const sendInnVedlegg = (dokumenter: IVedleggMedKrav[]) => {
-    console.log(dokumenter);
+const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
+  const { dokumentasjonsbehov } = props;
+  const dokumentasjonSendt = (): boolean => {
+    return (
+      dokumentasjonsbehov.harSendtInn ||
+      dokumentasjonsbehov.opplastedeVedlegg.length > 0
+    );
   };
-  useEffect(() => {
-    const hentOgSettDokumentasjonsbehov = async () => {
-      const dokumenter = await hentDokumentasjonsbehov(context.søker.fnr);
-      settDokumentasjonsbehov(dokumenter);
-      settLasterverdi(false);
-    };
-    if (context.søker != null) hentOgSettDokumentasjonsbehov();
-  }, [context.søker]);
-
-  if (laster) {
-    return <NavFrontendSpinner />;
-  }
 
   return (
-    <div>
-      <div>
-        {dokumentasjonsbehov &&
-          dokumentasjonsbehov.map((behovPerSøknad) => {
-            return behovPerSøknad.dokumentasjonsbehov.map((behov) => {
-              return <Krav key={behov.id} dokumentasjonsbehov={behov} />;
-            });
-          })}
-      </div>
-      <div>
-        <Hovedknapp onClick={() => sendInnVedlegg(context.vedleggMedKrav)}>
-          Send inn
-        </Hovedknapp>
-      </div>
-    </div>
+    <Ekspanderbartpanel
+      tittel={
+        <Alertstripe
+          type={dokumentasjonSendt() ? 'suksess' : 'feil'}
+          form="inline"
+        >
+          {dokumentasjonsbehov.label}
+        </Alertstripe>
+      }
+    >
+      {dokumentasjonsbehov.opplastedeVedlegg.length > 0 && (
+        <div className="opplastede-filer">
+          <p>Tidligere opplastede filer:</p>
+          <OpplastedeVedlegg
+            vedleggsliste={dokumentasjonsbehov.opplastedeVedlegg}
+            kanSlettes={false}
+          />
+        </div>
+      )}
+      <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
+    </Ekspanderbartpanel>
   );
 };
+
+export default Dokumentasjonsbehov;
