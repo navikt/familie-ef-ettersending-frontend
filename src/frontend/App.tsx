@@ -1,6 +1,6 @@
 import React from 'react';
 import './app.less';
-import { Dokumentasjonsbehov } from './komponenter/Dokumentasjonsbehov';
+import { DokumentasjonsbehovOversikt } from './komponenter/DokumentasjonsbehovOversikt';
 import { useApp } from './context/AppContext';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
@@ -19,7 +19,7 @@ const App = () => {
         <div className="app-container">
           <h1>Ettersending av dokumentasjon</h1>
           <h3>Bruker er {context.innloggetStatus}</h3>
-          <Dokumentasjonsbehov />
+          <DokumentasjonsbehovOversikt />
         </div>
       </div>
     );
