@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState } from 'react';
-import Krav from './Dokumentasjonsbehov';
 import { useEffect } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -8,6 +7,7 @@ import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
 import { hentDokumentasjonsbehov } from '../api-service';
 import { IDokumentasjonsbehovListe } from '../typer/dokumentasjonsbehov';
+import Dokumentasjonsbehov from './Dokumentasjonsbehov';
 
 export const DokumentasjonsbehovOversikt: React.FC = () => {
   const [dokumentasjonsbehov, settDokumentasjonsbehov] =
@@ -38,7 +38,12 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
         {dokumentasjonsbehov &&
           dokumentasjonsbehov.map((behovPerSøknad) => {
             return behovPerSøknad.dokumentasjonsbehov.map((behov) => {
-              return <Krav key={behov.id} dokumentasjonsbehov={behov} />;
+              return (
+                <Dokumentasjonsbehov
+                  key={behov.id}
+                  dokumentasjonsbehov={behov}
+                />
+              );
             });
           })}
       </div>
