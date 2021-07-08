@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useApp } from '../context/AppContext';
+import React from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
