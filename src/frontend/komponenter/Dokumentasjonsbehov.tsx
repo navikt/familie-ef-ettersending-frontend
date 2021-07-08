@@ -42,7 +42,10 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
         </div>
       )}
       <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
-      <Checkbox className="leveranseCheckbox" label={'Checkbox'} />
+      <Checkbox
+        className="leveranseCheckbox"
+        label={'Jeg har levert på annen måte'}
+      />
     </Ekspanderbartpanel>
   );
 };
