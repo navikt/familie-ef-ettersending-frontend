@@ -57,6 +57,7 @@ export const sendVedleggTilMellomlager = (formData): Promise<string> => {
       return response.data.dokumentId;
     })
     .catch((error) => {
+      console.log(error);
       return error;
     });
 };
