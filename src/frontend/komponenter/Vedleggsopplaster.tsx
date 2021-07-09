@@ -72,7 +72,6 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     const formData = new FormData();
     formData.append('file', fil);
     const respons = await sendVedleggTilMellomlager(formData);
-    // console.log(respons);
     const vedlegg: IVedlegg = {
       id: respons,
       navn: fil.name,

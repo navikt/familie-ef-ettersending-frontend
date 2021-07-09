@@ -3,34 +3,25 @@ import { ISøker } from './typer/søker';
 import environment from '../backend/environment';
 import { IDokumentasjonsbehovListe } from './typer/dokumentasjonsbehov';
 import { IPersoninfo } from './typer/søker';
+import { response } from 'express';
 
 interface Ifamilievedlegg {
   dokumentId: string;
   filnavn: string;
 }
 
-/*
-export const hentSøkerinfo = (): Promise<ISøker> => {
+export const sendEttersending = (ettersendingsdata): Promise<string> => {
   return axios
-    .get(`${environment().apiUrl}/api/oppslag/sokerinfo`, {
+    .post('http://localhost:8091/api/ettersending', ettersendingsdata, {
       withCredentials: true,
     })
-    .then((response: { data: IPersoninfo }) => {
-      return response.data.søker;
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return error;
     });
-  }
-
-export const hentBarn = (): Promise<any> => {
-    return axios
-      .get(`${environment().apiUrl}/api/oppslag/sokerinfo`, {
-        withCredentials: true,
-      })
-      .then((response: { data: IPersoninfo }) => {
-        return response.data.barn;
-      });
-    }
-
-    */
+};
 
 export const hentPersoninfo = (): Promise<IPersoninfo> => {
   return axios
