@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
@@ -8,7 +8,6 @@ import { IHarSendtInnMedKrav } from '../typer/søknadsdata';
 import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
 import { Checkbox } from 'nav-frontend-skjema';
-import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
 interface Props {
@@ -23,18 +22,18 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
       dokumentasjonsbehov.opplastedeVedlegg.length > 0
     );
   };
-  const [checked, settCheckboxverdi] = useState<boolean>(false);
+  const [checked, settCheckboxverdi] = useState<boolean>(false); //må endres til å hente verdi fra dokumentajsonsbehov
 
   const context = useApp();
 
-  const oppdaterHarSendtInn = () => {
+  const oppdaterHarSendtInnMedKrav = () => {
     const invertedChecked = !checked;
     settCheckboxverdi(invertedChecked);
-    const kravOgHarSendtInn: IHarSendtInnMedKrav = {
+    const harSendtInnMedKrav: IHarSendtInnMedKrav = {
       harSendtInn: invertedChecked,
       kravId: dokumentasjonsbehov.id,
     };
-    context.oppdaterHarSendtInn(kravOgHarSendtInn);
+    context.oppdaterHarSendtInnMedKrav(harSendtInnMedKrav);
   };
 
   return (
@@ -60,7 +59,7 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
       <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
       <Checkbox
         className="leveranseCheckbox"
-        onChange={() => oppdaterHarSendtInn()}
+        onChange={() => oppdaterHarSendtInnMedKrav()}
         checked={checked}
         label={'Jeg har levert på annen måte'}
       />

@@ -10,14 +10,11 @@ interface Ifamilievedlegg {
 
 export const sendEttersending = (ettersendingsdata): Promise<string> => {
   return axios
-    .post('http://localhost:8091/api/ettersending', ettersendingsdata, {
+    .post(`${environment().apiUrl}/api/ettersending`, ettersendingsdata, {
       withCredentials: true,
     })
     .then((response) => {
       return response.data;
-    })
-    .catch((error) => {
-      return error;
     });
 };
 
@@ -53,9 +50,5 @@ export const sendVedleggTilMellomlager = (formData): Promise<string> => {
     })
     .then((response: { data: Ifamilievedlegg }) => {
       return response.data.dokumentId;
-    })
-    .catch((error) => {
-      console.log(error);
-      return error;
     });
 };

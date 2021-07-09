@@ -10,7 +10,6 @@ import {
   sendEttersending,
 } from '../api-service';
 import { IDokumentasjonsbehovListe } from '../typer/dokumentasjonsbehov';
-import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 
 export const DokumentasjonsbehovOversikt: React.FC = () => {
   const [dokumentasjonsbehov, settDokumentasjonsbehov] =
@@ -32,39 +31,37 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
           behovListe.dokumentasjonsbehov.forEach((behov) => {
             if (dokument.kravId === behov.id) {
               const idMedNavn = {
-                id: '123', //må legges inn dokument.vedlegg.id
+                //id: '123', //denne må være med for at det skal funke lokalt.
+                id: dokument.vedlegg.id,
                 navn: dokument.vedlegg.navn,
               };
               behov.opplastedeVedlegg.push(idMedNavn);
             }
-            context.harSendtinn.forEach((harSendtInnMedKrav) => {
-              if (harSendtInnMedKrav.kravId === behov.id) {
-                behov.harSendtInn = harSendtInnMedKrav.harSendtInn;
-              }
-            });
           });
         });
       });
     } else {
-      alert('Nå må kje du varta graudnauden diu');
+      console.log('Du har ikke lastet opp noen vedlegg');
     }
 
-    const personObjekt = {
-      søker: person.søker,
-      barn: [], // må legges in person.barn og fikse typer
-    };
+    dokumentasjonsbehovKopi.forEach((behovListe) => {
+      behovListe.dokumentasjonsbehov.forEach((behov) => {
+        context.harSendtInnMedKrav.forEach((harSendtInnMedKrav) => {
+          if (harSendtInnMedKrav.kravId === behov.id) {
+            behov.harSendtInn = harSendtInnMedKrav.harSendtInn;
+          }
+        });
+      });
+    });
 
     const ettersendingsdata = {
-      person: personObjekt,
+      person: {
+        søker: person.søker,
+        barn: [], // må legges in person.barn og fikse typer
+      },
       dokumentasjonsbehov: dokumentasjonsbehovKopi[0].dokumentasjonsbehov,
     };
-
-    console.log(ettersendingsdata.dokumentasjonsbehov);
-    console.log(personObjekt);
-
-    const respons = await sendEttersending(ettersendingsdata);
-
-    console.log(respons);
+    sendEttersending(ettersendingsdata);
   };
 
   useEffect(() => {

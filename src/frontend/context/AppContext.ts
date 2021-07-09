@@ -14,7 +14,9 @@ const [AppProvider, useApp] = createUseContext(() => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
-  const [harSendtinn, settHarSendtInn] = useState<IHarSendtInnMedKrav[]>([]);
+  const [harSendtInnMedKrav, settHarSendtInnMedKrav] = useState<
+    IHarSendtInnMedKrav[]
+  >([]);
   const [søker, settSøker] = useState<ISøker>(null);
 
   useEffect(() => {
@@ -25,8 +27,13 @@ const [AppProvider, useApp] = createUseContext(() => {
     settVedleggMedKrav((søknadsdataNy) => [...søknadsdataNy, vedleggMedKrav]);
   };
 
-  const oppdaterHarSendtInn = (harSendtInnMedLabel: IHarSendtInnMedKrav) => {
-    settHarSendtInn((harSendtInnNy) => [...harSendtInnNy, harSendtInnMedLabel]);
+  const oppdaterHarSendtInnMedKrav = (
+    harSendtInnMedKrav: IHarSendtInnMedKrav
+  ) => {
+    settHarSendtInnMedKrav((harSendtInnNy) => [
+      ...harSendtInnNy,
+      harSendtInnMedKrav,
+    ]);
   };
 
   const slettVedleggMedKrav = (dokumentId) => {
@@ -48,8 +55,8 @@ const [AppProvider, useApp] = createUseContext(() => {
   return {
     leggTilVedleggMedKrav,
     slettVedleggMedKrav,
-    oppdaterHarSendtInn,
-    harSendtinn,
+    oppdaterHarSendtInnMedKrav,
+    harSendtInnMedKrav,
     vedleggMedKrav,
     innloggetStatus,
     søker,
