@@ -1,9 +1,7 @@
 import axios from 'axios';
-import { ISøker } from './typer/søker';
 import environment from '../backend/environment';
 import { IDokumentasjonsbehovListe } from './typer/dokumentasjonsbehov';
 import { IPersoninfo } from './typer/søker';
-import { response } from 'express';
 
 interface Ifamilievedlegg {
   dokumentId: string;
