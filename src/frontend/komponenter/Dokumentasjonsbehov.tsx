@@ -4,10 +4,12 @@ import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
+import { IHarSendtInnMedKrav } from '../typer/søknadsdata';
 import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
 import { Checkbox } from 'nav-frontend-skjema';
 import { useState } from 'react';
+import { useApp } from '../context/AppContext';
 
 interface Props {
   dokumentasjonsbehov: IDokumentasjonsbehov;
@@ -22,6 +24,18 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
     );
   };
   const [checked, settCheckboxverdi] = useState<boolean>(false);
+
+  const context = useApp();
+
+  const oppdaterHarSendtInn = () => {
+    const invertedChecked = !checked;
+    settCheckboxverdi(invertedChecked);
+    const kravOgHarSendtInn: IHarSendtInnMedKrav = {
+      harSendtInn: invertedChecked,
+      kravId: dokumentasjonsbehov.id,
+    };
+    context.oppdaterHarSendtInn(kravOgHarSendtInn);
+  };
 
   return (
     <Ekspanderbartpanel
@@ -46,7 +60,7 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
       <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
       <Checkbox
         className="leveranseCheckbox"
-        onChange={() => settCheckboxverdi(!checked)}
+        onChange={() => oppdaterHarSendtInn()}
         checked={checked}
         label={'Jeg har levert på annen måte'}
       />

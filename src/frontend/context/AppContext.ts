@@ -4,7 +4,7 @@ import {
   InnloggetStatus,
   verifiserAtSøkerErAutentisert,
 } from '../../shared-utils/autentisering';
-import { IVedleggMedKrav } from '../typer/søknadsdata';
+import { IHarSendtInnMedKrav, IVedleggMedKrav } from '../typer/søknadsdata';
 
 import { hentPersoninfo } from '../api-service';
 import { ISøker } from '../typer/søker';
@@ -14,6 +14,7 @@ const [AppProvider, useApp] = createUseContext(() => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
+  const [harSendtinn, settHarSendtInn] = useState<IHarSendtInnMedKrav[]>([]);
   const [søker, settSøker] = useState<ISøker>(null);
 
   useEffect(() => {
@@ -24,21 +25,16 @@ const [AppProvider, useApp] = createUseContext(() => {
     settVedleggMedKrav((søknadsdataNy) => [...søknadsdataNy, vedleggMedKrav]);
   };
 
+  const oppdaterHarSendtInn = (harSendtInnMedLabel: IHarSendtInnMedKrav) => {
+    settHarSendtInn((harSendtInnNy) => [...harSendtInnNy, harSendtInnMedLabel]);
+  };
+
   const slettVedleggMedKrav = (dokumentId) => {
     const oppdatertVedleggMedKrav = vedleggMedKrav.filter(
       (element) => element.vedlegg.id !== dokumentId
     );
     settVedleggMedKrav(oppdatertVedleggMedKrav);
   };
-
-  // useEffect(() => {
-  //   const hentOgSettSøker = async () => {
-  //     if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
-  //       settSøker(await hentSøkerinfo());
-  //     }
-  //   };
-  //   hentOgSettSøker();
-  // }, [innloggetStatus]);
 
   useEffect(() => {
     const hentOgSettSøker = async () => {
@@ -52,6 +48,8 @@ const [AppProvider, useApp] = createUseContext(() => {
   return {
     leggTilVedleggMedKrav,
     slettVedleggMedKrav,
+    oppdaterHarSendtInn,
+    harSendtinn,
     vedleggMedKrav,
     innloggetStatus,
     søker,

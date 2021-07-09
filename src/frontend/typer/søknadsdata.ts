@@ -9,3 +9,8 @@ export interface IVedleggMedKrav {
   vedlegg: IVedlegg;
   kravId: string;
 }
+
+export interface IHarSendtInnMedKrav {
+  harSendtInn: boolean;
+  kravId: string;
+}

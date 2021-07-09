@@ -10,6 +10,7 @@ import {
   sendEttersending,
 } from '../api-service';
 import { IDokumentasjonsbehovListe } from '../typer/dokumentasjonsbehov';
+import { BekreftCheckboksPanel } from 'nav-frontend-skjema';
 
 export const DokumentasjonsbehovOversikt: React.FC = () => {
   const [dokumentasjonsbehov, settDokumentasjonsbehov] =
@@ -30,14 +31,17 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
         dokumentasjonsbehovKopi.forEach((behovListe) => {
           behovListe.dokumentasjonsbehov.forEach((behov) => {
             if (dokument.kravId === behov.id) {
-              //Legge til checkbox boolean verdi her
-
               const idMedNavn = {
                 id: '123', //må legges inn dokument.vedlegg.id
                 navn: dokument.vedlegg.navn,
               };
               behov.opplastedeVedlegg.push(idMedNavn);
             }
+            context.harSendtinn.forEach((harSendtInnMedKrav) => {
+              if (harSendtInnMedKrav.kravId === behov.id) {
+                behov.harSendtInn = harSendtInnMedKrav.harSendtInn;
+              }
+            });
           });
         });
       });
