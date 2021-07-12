@@ -13,9 +13,7 @@ export const sendEttersending = (ettersendingsdata): Promise<string> => {
     .post(`${environment().apiUrl}/api/ettersending`, ettersendingsdata, {
       withCredentials: true,
     })
-    .then((response) => {
-      return response.data;
-    });
+    .then((response) => response.data);
 };
 
 export const hentPersoninfo = (): Promise<IPersoninfo> => {
@@ -23,9 +21,7 @@ export const hentPersoninfo = (): Promise<IPersoninfo> => {
     .get(`${environment().apiUrl}/api/oppslag/sokerinfo`, {
       withCredentials: true,
     })
-    .then((response: { data: IPersoninfo }) => {
-      return response.data;
-    });
+    .then((response: { data: IPersoninfo }) => response.data);
 };
 
 export const hentDokumentasjonsbehov = (personIdent) => {
@@ -37,9 +33,7 @@ export const hentDokumentasjonsbehov = (personIdent) => {
         withCredentials: true,
       }
     )
-    .then((response: { data: IDokumentasjonsbehovListe[] }) => {
-      return response.data;
-    });
+    .then((response: { data: IDokumentasjonsbehovListe[] }) => response.data);
 };
 
 export const sendVedleggTilMellomlager = (formData): Promise<string> => {
@@ -48,7 +42,5 @@ export const sendVedleggTilMellomlager = (formData): Promise<string> => {
       headers: { 'content-type': 'multipart/form-data' },
       withCredentials: true,
     })
-    .then((response: { data: Ifamilievedlegg }) => {
-      return response.data.dokumentId;
-    });
+    .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
 };

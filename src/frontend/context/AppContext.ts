@@ -30,8 +30,8 @@ const [AppProvider, useApp] = createUseContext(() => {
   const oppdaterHarSendtInnMedKrav = (
     harSendtInnMedKrav: IHarSendtInnMedKrav
   ) => {
-    settHarSendtInnMedKrav((harSendtInnNy) => [
-      ...harSendtInnNy,
+    settHarSendtInnMedKrav((harSendtInn) => [
+      ...harSendtInn,
       harSendtInnMedKrav,
     ]);
   };
