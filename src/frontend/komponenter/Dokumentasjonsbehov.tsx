@@ -29,11 +29,7 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
   const oppdaterHarSendtInnMedKrav = () => {
     const invertedChecked = !checked;
     settCheckboxverdi(invertedChecked);
-    const harSendtInnMedKrav: IHarSendtInnMedKrav = {
-      harSendtInn: invertedChecked,
-      kravId: dokumentasjonsbehov.id,
-    };
-    context.oppdaterHarSendtInnMedKrav(harSendtInnMedKrav);
+    context.leggTilHarSendtInn(invertedChecked, dokumentasjonsbehov.id);
   };
 
   return (

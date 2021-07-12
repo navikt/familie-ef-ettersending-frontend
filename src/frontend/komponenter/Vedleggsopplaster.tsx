@@ -11,6 +11,7 @@ import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
 import { IVedleggMedKrav } from '../typer/søknadsdata';
 import { sendVedleggTilMellomlager } from '../api-service';
+import Dokumentasjonsbehov from './Dokumentasjonsbehov';
 
 interface IVedleggsopplaster {
   dokumentasjonsbehovId: string;
@@ -25,7 +26,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     []
   );
 
-  useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåKrav), []);
+  useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåBehov), []);
 
   const leggTilFilTilOpplasting = (vedlegg: IVedlegg) => {
     settVedleggTilOpplasting((nyListeMedVedlegg) => [
@@ -42,6 +43,15 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       }
     });
     return filtrerteVedlegg;
+  };
+
+  const filtrerVedleggPåBehov = () => {
+    context.dokumentasjonsbehov.forEach((behov) => {
+      if (dokumentasjonsbehovId === behov.id) {
+        return behov.opplastedeVedlegg;
+      }
+    });
+    return [];
   };
 
   const context = useApp();
@@ -70,17 +80,14 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     formData.append('file', fil);
     const respons = await sendVedleggTilMellomlager(formData);
     const vedlegg: IVedlegg = {
-      id: respons,
+      //id: respons,
+      id: '122',
       navn: fil.name,
       størrelse: fil.size,
       tidspunkt: dagensDatoMedTidspunktStreng,
     };
 
-    const vedleggMedKrav: IVedleggMedKrav = {
-      vedlegg: vedlegg,
-      kravId: dokumentasjonsbehovId,
-    };
-    context.leggTilVedleggMedKrav(vedleggMedKrav);
+    context.leggTilVedlegg(vedlegg, dokumentasjonsbehovId);
     leggTilFilTilOpplasting(vedlegg);
   };
 
