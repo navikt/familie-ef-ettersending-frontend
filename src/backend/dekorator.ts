@@ -40,6 +40,7 @@ const getDecorator = (): Promise<DekoratørRespons> =>
             NAV_FOOTER: document.getElementById('footer-withmenu')[prop],
           };
           cache.set('main-cache', data);
+          resolve(data);
         } else {
           reject(new Error(error));
         }
