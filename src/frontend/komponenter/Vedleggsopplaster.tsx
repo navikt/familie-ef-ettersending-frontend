@@ -35,16 +35,6 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     ]);
   };
 
-  const filtrerVedleggPåKrav = () => {
-    const filtrerteVedlegg = [];
-    context.vedleggMedKrav.forEach((element) => {
-      if (element.kravId === dokumentasjonsbehovId) {
-        filtrerteVedlegg.push(element.vedlegg);
-      }
-    });
-    return filtrerteVedlegg;
-  };
-
   const filtrerVedleggPåBehov = () => {
     context.dokumentasjonsbehov.forEach((behov) => {
       if (dokumentasjonsbehovId === behov.id) {
@@ -68,7 +58,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   };
 
   const slettVedlegg = (vedlegg: IVedlegg) => {
-    context.slettVedleggMedKrav(vedlegg.id);
+    context.slettVedlegg(vedlegg.id, dokumentasjonsbehovId);
     const oppdatertVedleggsliste = vedleggTilOpplasting.filter(
       (fil) => fil !== vedlegg
     );

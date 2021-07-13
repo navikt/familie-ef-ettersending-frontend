@@ -15,46 +15,45 @@ import {
 } from '../typer/dokumentasjonsbehov';
 
 const [AppProvider, useApp] = createUseContext(() => {
-  const [vedleggMedKrav, settVedleggMedKrav] = useState<IVedleggMedKrav[]>([]);
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
-  const [harSendtInnMedKrav, settHarSendtInnMedKrav] = useState<
-    IHarSendtInnMedKrav[]
-  >([]);
   const [søker, settSøker] = useState<ISøker>(null);
 
   useEffect(() => {
     verifiserAtSøkerErAutentisert(setInnloggetStatus);
   }, []);
 
-  const oppdaterHarSendtInnMedKrav = (
-    harSendtInnMedKrav: IHarSendtInnMedKrav
-  ) => {
-    settHarSendtInnMedKrav((harSendtInn) => [
-      ...harSendtInn,
-      harSendtInnMedKrav,
-    ]);
-  };
+  // const slettVedleggMedKrav = (dokumentId) => {
+  //   const oppdatertVedleggMedKrav = vedleggMedKrav.filter(
+  //     (element) => element.vedlegg.id !== dokumentId
+  //   );
+  //   settVedleggMedKrav(oppdatertVedleggMedKrav);
+  // };
 
-  const slettVedleggMedKrav = (dokumentId) => {
-    const oppdatertVedleggMedKrav = vedleggMedKrav.filter(
-      (element) => element.vedlegg.id !== dokumentId
-    );
-    settVedleggMedKrav(oppdatertVedleggMedKrav);
+  const slettVedlegg = (dokumentId, behovId) => {
+    const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehov.map((behov) => {
+      if (behov.id === behovId) {
+        return {
+          ...behov,
+          opplastedeVedlegg: behov.opplastedeVedlegg.filter(
+            (vedlegg) => vedlegg.id !== dokumentId
+          ),
+        };
+      } else {
+        return behov;
+      }
+    });
+    settDokumentasjonsbehov(dokumentasjonsbehovMedVedlegg);
   };
 
   //Ny struktur under
   const [dokumentasjonsbehov, settDokumentasjonsbehov] =
     useState<IDokumentasjonsbehov[]>();
 
-  const leggTilDokumentasjonsbehov = (ny) => {
-    settVedleggMedKrav((data) => [...data, ny]);
-  };
-
   const leggTilVedlegg = (vedlegg: IVedlegg, behovId: string) => {
     const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehov.map((behov) => {
-      if ((behov.id = behovId)) {
+      if (behov.id === behovId) {
         return {
           ...behov,
           opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
@@ -69,7 +68,7 @@ const [AppProvider, useApp] = createUseContext(() => {
   const leggTilHarSendtInn = (harSendtInn: boolean, behovId: string) => {
     const dokumentasjonsbehovMedHarSendtInn = dokumentasjonsbehov.map(
       (behov) => {
-        if ((behov.id = behovId)) {
+        if (behov.id === behovId) {
           return { ...behov, harSendtInn: harSendtInn };
         } else {
           return behov;
@@ -78,10 +77,6 @@ const [AppProvider, useApp] = createUseContext(() => {
     );
     settDokumentasjonsbehov(dokumentasjonsbehovMedHarSendtInn);
   };
-
-  //Krav
-  //Vedlegg[]
-  //HarSendtinn
 
   useEffect(() => {
     const hentOgSettSøker = async () => {
@@ -94,13 +89,9 @@ const [AppProvider, useApp] = createUseContext(() => {
 
   return {
     leggTilHarSendtInn,
-    slettVedleggMedKrav,
-    oppdaterHarSendtInnMedKrav,
-    leggTilDokumentasjonsbehov,
+    slettVedlegg,
     settDokumentasjonsbehov,
     leggTilVedlegg,
-    harSendtInnMedKrav,
-    vedleggMedKrav,
     innloggetStatus,
     søker,
     dokumentasjonsbehov,
