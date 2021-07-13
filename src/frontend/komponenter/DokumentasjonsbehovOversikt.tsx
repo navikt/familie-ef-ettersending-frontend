@@ -8,6 +8,7 @@ import { IVedleggMedKrav } from '../typer/søknadsdata';
 import { hentDokumentasjonsbehov } from '../api-service';
 import { IDokumentasjonsbehovListe } from '../typer/dokumentasjonsbehov';
 import Dokumentasjonsbehov from './Dokumentasjonsbehov';
+import ÅpenInnsending from './ÅpenInnsending';
 
 export const DokumentasjonsbehovOversikt: React.FC = () => {
   const [dokumentasjonsbehov, settDokumentasjonsbehov] =
@@ -35,6 +36,7 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
   return (
     <div>
       <div>
+        <ÅpenInnsending />
         {dokumentasjonsbehov &&
           dokumentasjonsbehov.map((behovPerSøknad) => {
             return behovPerSøknad.dokumentasjonsbehov.map((behov) => {
