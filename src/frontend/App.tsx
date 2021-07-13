@@ -18,7 +18,6 @@ const App = () => {
       <div className="bakgrunn">
         <div className="app-container">
           <h1>Ettersending av dokumentasjon</h1>
-          <h3>Bruker er {context.innloggetStatus}</h3>
           <DokumentasjonsbehovOversikt />
         </div>
       </div>
