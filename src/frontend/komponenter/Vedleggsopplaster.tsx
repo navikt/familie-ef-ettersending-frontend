@@ -68,8 +68,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     formData.append('file', fil);
     const respons = await sendVedleggTilMellomlager(formData);
     const vedlegg: IVedlegg = {
-      //id: respons,
-      id: '122',
+      id: respons,
+      // id: '122', Må brukes for at det skal kunne kjøre lokalt
       navn: fil.name,
       størrelse: fil.size,
       tidspunkt: dagensDatoMedTidspunktStreng,
