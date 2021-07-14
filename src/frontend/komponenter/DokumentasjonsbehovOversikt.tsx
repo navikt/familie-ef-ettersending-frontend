@@ -20,7 +20,7 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
   const sendInnDokumentasjon = async () => {
     const person = await hentPersoninfo();
 
-    if (erDokumentasjonsbehovOppdatert) {
+    if (erDokumentasjonsbehovOppdatert()) {
       const ettersendingsdata = {
         person: {
           søker: person.søker,
@@ -46,7 +46,6 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
     context.dokumentasjonsbehovTilInnsending.filter(
       (behov) => behov.opplastedeVedlegg.length > 0
     ).length > 0;
-
   useEffect(() => {
     const hentOgSettDokumentasjonsbehov = async () => {
       const dokumentasjonsbehovListe = await hentDokumentasjonsbehov(
