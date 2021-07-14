@@ -9,7 +9,6 @@ import { IVedlegg } from '../typer/søknadsdata';
 import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
-import { IVedleggMedKrav } from '../typer/søknadsdata';
 import { sendVedleggTilMellomlager } from '../api-service';
 
 interface IVedleggsopplaster {
@@ -25,7 +24,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     []
   );
 
-  useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåKrav), []);
+  useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåBehov), []);
 
   const leggTilFilTilOpplasting = (vedlegg: IVedlegg) => {
     settVedleggTilOpplasting((nyListeMedVedlegg) => [
@@ -34,14 +33,13 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     ]);
   };
 
-  const filtrerVedleggPåKrav = () => {
-    const filtrerteVedlegg = [];
-    context.vedleggMedKrav.forEach((element) => {
-      if (element.kravId === dokumentasjonsbehovId) {
-        filtrerteVedlegg.push(element.vedlegg);
+  const filtrerVedleggPåBehov = () => {
+    context.dokumentasjonsbehov.forEach((behov) => {
+      if (dokumentasjonsbehovId === behov.id) {
+        return behov.opplastedeVedlegg;
       }
     });
-    return filtrerteVedlegg;
+    return [];
   };
 
   const context = useApp();
@@ -58,7 +56,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   };
 
   const slettVedlegg = (vedlegg: IVedlegg) => {
-    context.slettVedleggMedKrav(vedlegg.dokumentId);
+    context.slettVedlegg(vedlegg.id, dokumentasjonsbehovId);
     const oppdatertVedleggsliste = vedleggTilOpplasting.filter(
       (fil) => fil !== vedlegg
     );
@@ -69,19 +67,15 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     const formData = new FormData();
     formData.append('file', fil);
     const respons = await sendVedleggTilMellomlager(formData);
-    console.log(respons);
     const vedlegg: IVedlegg = {
-      dokumentId: respons,
+      id: respons,
+      // id: '122', Må brukes for at det skal kunne kjøre lokalt
       navn: fil.name,
       størrelse: fil.size,
       tidspunkt: dagensDatoMedTidspunktStreng,
     };
 
-    const vedleggMedKrav: IVedleggMedKrav = {
-      vedlegg: vedlegg,
-      kravId: dokumentasjonsbehovId,
-    };
-    context.leggTilVedleggMedKrav(vedleggMedKrav);
+    context.leggTilVedlegg(vedlegg, dokumentasjonsbehovId);
     leggTilFilTilOpplasting(vedlegg);
   };
 

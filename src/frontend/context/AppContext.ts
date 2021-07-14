@@ -4,47 +4,84 @@ import {
   InnloggetStatus,
   verifiserAtSøkerErAutentisert,
 } from '../../shared-utils/autentisering';
-import { IVedleggMedKrav } from '../typer/søknadsdata';
+import { hentPersoninfo } from '../api-service';
 import { ISøker } from '../typer/søker';
-import { hentSøkerinfo } from '../api-service';
+import { IVedlegg } from '../typer/søknadsdata';
+import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 
 const [AppProvider, useApp] = createUseContext(() => {
-  const [vedleggMedKrav, settVedleggMedKrav] = useState<IVedleggMedKrav[]>([]);
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
+  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
+    useState<IDokumentasjonsbehov[]>();
   const [søker, settSøker] = useState<ISøker>(null);
 
   useEffect(() => {
     verifiserAtSøkerErAutentisert(setInnloggetStatus);
   }, []);
 
-  const leggTilVedleggMedKrav = (vedleggMedKrav: IVedleggMedKrav) => {
-    settVedleggMedKrav((søknadsdataNy) => [...søknadsdataNy, vedleggMedKrav]);
+  const slettVedlegg = (dokumentId: string, behovId: string) => {
+    const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehov.map((behov) => {
+      if (behov.id === behovId) {
+        return {
+          ...behov,
+          opplastedeVedlegg: behov.opplastedeVedlegg.filter(
+            (vedlegg) => vedlegg.id !== dokumentId
+          ),
+        };
+      } else {
+        return behov;
+      }
+    });
+    settDokumentasjonsbehov(dokumentasjonsbehovMedVedlegg);
   };
 
-  const slettVedleggMedKrav = (dokumentId) => {
-    const oppdatertVedleggMedKrav = vedleggMedKrav.filter(
-      (element) => element.vedlegg.dokumentId !== dokumentId
+  const leggTilVedlegg = (vedlegg: IVedlegg, behovId: string) => {
+    const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehov.map((behov) => {
+      if (behov.id === behovId) {
+        return {
+          ...behov,
+          opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
+        };
+      } else {
+        return behov;
+      }
+    });
+    settDokumentasjonsbehov(dokumentasjonsbehovMedVedlegg);
+  };
+
+  const oppdaterHarSendtInn = (harSendtInn: boolean, behovId: string) => {
+    const dokumentasjonsbehovMedHarSendtInn = dokumentasjonsbehov.map(
+      (behov) => {
+        if (behov.id === behovId) {
+          return { ...behov, harSendtInn: harSendtInn };
+        } else {
+          return behov;
+        }
+      }
     );
-    settVedleggMedKrav(oppdatertVedleggMedKrav);
+    settDokumentasjonsbehov(dokumentasjonsbehovMedHarSendtInn);
   };
 
   useEffect(() => {
     const hentOgSettSøker = async () => {
       if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
-        settSøker(await hentSøkerinfo());
+        const personInfo = await hentPersoninfo();
+        settSøker(personInfo.søker);
       }
     };
     hentOgSettSøker();
   }, [innloggetStatus]);
 
   return {
-    leggTilVedleggMedKrav,
-    slettVedleggMedKrav,
-    vedleggMedKrav,
+    oppdaterHarSendtInn,
+    slettVedlegg,
+    settDokumentasjonsbehov,
+    leggTilVedlegg,
     innloggetStatus,
     søker,
+    dokumentasjonsbehov,
   };
 });
 
