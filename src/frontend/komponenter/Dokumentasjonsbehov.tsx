@@ -26,7 +26,7 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
 
   const context = useApp();
 
-  const oppdaterHarSendtInnMedKrav = () => {
+  const oppdaterHarSendtInn = () => {
     const invertedChecked = !checked;
     settCheckboxverdi(invertedChecked);
     context.leggTilHarSendtInn(invertedChecked, dokumentasjonsbehov.id);
@@ -55,7 +55,7 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
       <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
       <Checkbox
         className="leveranseCheckbox"
-        onChange={() => oppdaterHarSendtInnMedKrav()}
+        onChange={() => oppdaterHarSendtInn()}
         checked={checked}
         label={'Jeg har levert på annen måte'}
       />
