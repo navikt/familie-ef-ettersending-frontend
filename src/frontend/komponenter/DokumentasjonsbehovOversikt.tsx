@@ -38,9 +38,14 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
       settDokumentasjonsbehov(dokumentasjonsbehovListe);
 
       dokumentasjonsbehovListe.forEach((dokumentasjonsbehov) => {
-        context.settDokumentasjonsbehov(
-          dokumentasjonsbehov.dokumentasjonsbehov
-        );
+        context.dokumentasjonsbehov
+          ? context.settDokumentasjonsbehov([
+              ...context.dokumentasjonsbehov,
+              ...dokumentasjonsbehov.dokumentasjonsbehov,
+            ])
+          : context.settDokumentasjonsbehov(
+              dokumentasjonsbehov.dokumentasjonsbehov
+            );
       });
       settLasterverdi(false);
     };
