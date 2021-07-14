@@ -1,25 +1,27 @@
 import axios from 'axios';
-import { ISøker } from './typer/søker';
 import environment from '../backend/environment';
 import { IDokumentasjonsbehovListe } from './typer/dokumentasjonsbehov';
-
-interface ISøkerinfo {
-  søker: ISøker;
-}
+import { IPersoninfo } from './typer/søker';
 
 interface Ifamilievedlegg {
   dokumentId: string;
   filnavn: string;
 }
 
-export const hentSøkerinfo = (): Promise<ISøker> => {
+export const sendEttersending = (ettersendingsdata): Promise<string> => {
+  return axios
+    .post(`${environment().apiUrl}/api/ettersending`, ettersendingsdata, {
+      withCredentials: true,
+    })
+    .then((response) => response.data);
+};
+
+export const hentPersoninfo = (): Promise<IPersoninfo> => {
   return axios
     .get(`${environment().apiUrl}/api/oppslag/sokerinfo`, {
       withCredentials: true,
     })
-    .then((response: { data: ISøkerinfo }) => {
-      return response.data.søker;
-    });
+    .then((response: { data: IPersoninfo }) => response.data);
 };
 
 export const hentDokumentasjonsbehov = (personIdent) => {
@@ -31,9 +33,7 @@ export const hentDokumentasjonsbehov = (personIdent) => {
         withCredentials: true,
       }
     )
-    .then((response: { data: IDokumentasjonsbehovListe[] }) => {
-      return response.data;
-    });
+    .then((response: { data: IDokumentasjonsbehovListe[] }) => response.data);
 };
 
 export const sendVedleggTilMellomlager = (formData): Promise<string> => {
@@ -42,10 +42,5 @@ export const sendVedleggTilMellomlager = (formData): Promise<string> => {
       headers: { 'content-type': 'multipart/form-data' },
       withCredentials: true,
     })
-    .then((response: { data: Ifamilievedlegg }) => {
-      return response.data.dokumentId;
-    })
-    .catch((error) => {
-      return error;
-    });
+    .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
 };

@@ -1,13 +1,14 @@
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import Dokumentasjonsbehov from './Dokumentasjonsbehov';
+import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
-import { IVedleggMedKrav } from '../typer/søknadsdata';
-import { hentDokumentasjonsbehov } from '../api-service';
+import {
+  hentDokumentasjonsbehov,
+  hentPersoninfo,
+  sendEttersending,
+} from '../api-service';
 import { IDokumentasjonsbehovListe } from '../typer/dokumentasjonsbehov';
-import Dokumentasjonsbehov from './Dokumentasjonsbehov';
 import ÅpenInnsending from './ÅpenInnsending';
 
 export const DokumentasjonsbehovOversikt: React.FC = () => {
@@ -17,13 +18,36 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
 
   const context = useApp();
 
-  const sendInnVedlegg = (dokumenter: IVedleggMedKrav[]) => {
-    console.log(dokumenter);
+  const sendInnDokumentasjon = async () => {
+    const person = await hentPersoninfo();
+
+    const ettersendingsdata = {
+      person: {
+        søker: person.søker,
+        barn: [], // må legges in person.barn og fikse typer
+      },
+      dokumentasjonsbehov: context.dokumentasjonsbehov,
+    };
+    sendEttersending(ettersendingsdata);
   };
+
   useEffect(() => {
     const hentOgSettDokumentasjonsbehov = async () => {
-      const dokumenter = await hentDokumentasjonsbehov(context.søker.fnr);
-      settDokumentasjonsbehov(dokumenter);
+      const dokumentasjonsbehovListe = await hentDokumentasjonsbehov(
+        context.søker.fnr
+      );
+      settDokumentasjonsbehov(dokumentasjonsbehovListe);
+
+      dokumentasjonsbehovListe.forEach((dokumentasjonsbehov) => {
+        context.dokumentasjonsbehov
+          ? context.settDokumentasjonsbehov([
+              ...context.dokumentasjonsbehov,
+              ...dokumentasjonsbehov.dokumentasjonsbehov,
+            ])
+          : context.settDokumentasjonsbehov(
+              dokumentasjonsbehov.dokumentasjonsbehov
+            );
+      });
       settLasterverdi(false);
     };
     if (context.søker != null) hentOgSettDokumentasjonsbehov();
@@ -50,9 +74,7 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
           })}
       </div>
       <div>
-        <Hovedknapp onClick={() => sendInnVedlegg(context.vedleggMedKrav)}>
-          Send inn
-        </Hovedknapp>
+        <Hovedknapp onClick={() => sendInnDokumentasjon()}>Send inn</Hovedknapp>
       </div>
     </div>
   );
