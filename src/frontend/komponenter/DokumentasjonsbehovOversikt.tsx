@@ -8,11 +8,8 @@ import {
   hentPersoninfo,
   sendEttersending,
 } from '../api-service';
-import { IDokumentasjonsbehovListe } from '../typer/dokumentasjonsbehov';
 
 export const DokumentasjonsbehovOversikt: React.FC = () => {
-  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
-    useState<IDokumentasjonsbehovListe[]>(null);
   const [laster, settLasterverdi] = useState(true);
 
   const context = useApp();
@@ -23,9 +20,9 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
     const ettersendingsdata = {
       person: {
         søker: person.søker,
-        barn: [], // må legges in person.barn og fikse typer
+        barn: [], //TODO må legges in person.barn og fikse typer
       },
-      dokumentasjonsbehov: context.dokumentasjonsbehov,
+      dokumentasjonsbehov: context.dokumentasjonsbehovTilInnsending,
     };
     sendEttersending(ettersendingsdata);
   };
@@ -35,17 +32,18 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
       const dokumentasjonsbehovListe = await hentDokumentasjonsbehov(
         context.søker.fnr
       );
-      settDokumentasjonsbehov(dokumentasjonsbehovListe);
 
       dokumentasjonsbehovListe.forEach((dokumentasjonsbehov) => {
-        context.dokumentasjonsbehov
-          ? context.settDokumentasjonsbehov([
-              ...context.dokumentasjonsbehov,
-              ...dokumentasjonsbehov.dokumentasjonsbehov,
-            ])
-          : context.settDokumentasjonsbehov(
-              dokumentasjonsbehov.dokumentasjonsbehov
-            );
+        context.settDokumentasjonsbehov([
+          ...context.dokumentasjonsbehov,
+          ...dokumentasjonsbehov.dokumentasjonsbehov,
+        ]);
+        context.settDokumentasjonsbehovTilInnsending([
+          ...context.dokumentasjonsbehovTilInnsending,
+          ...dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
+            return { ...behov, opplastedeVedlegg: [] };
+          }),
+        ]);
       });
       settLasterverdi(false);
     };
@@ -59,16 +57,11 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
   return (
     <div>
       <div>
-        {dokumentasjonsbehov &&
-          dokumentasjonsbehov.map((behovPerSøknad) => {
-            return behovPerSøknad.dokumentasjonsbehov.map((behov) => {
-              return (
-                <Dokumentasjonsbehov
-                  key={behov.id}
-                  dokumentasjonsbehov={behov}
-                />
-              );
-            });
+        {context.dokumentasjonsbehov.length > 0 &&
+          context.dokumentasjonsbehov.map((behov) => {
+            return (
+              <Dokumentasjonsbehov key={behov.id} dokumentasjonsbehov={behov} />
+            );
           })}
       </div>
       <div>
