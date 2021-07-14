@@ -5,7 +5,7 @@ import Alertstripe from 'nav-frontend-alertstriper';
 import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
 
-const ÅpenInnsending = () => {
+const ÅpenEttersending = () => {
   return (
     <Ekspanderbartpanel
       tittel={
@@ -19,4 +19,4 @@ const ÅpenInnsending = () => {
   );
 };
 
-export default ÅpenInnsending;
+export default ÅpenEttersending;

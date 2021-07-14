@@ -10,7 +10,7 @@ import {
   sendÅpenEttersending,
 } from '../api-service';
 
-import ÅpenInnsending from './ÅpenInnsending';
+import ÅpenEttersending from './ÅpenEttersending';
 
 export const DokumentasjonsbehovOversikt: React.FC = () => {
   const [laster, settLasterverdi] = useState(true);
@@ -77,7 +77,7 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
   return (
     <div>
       <div>
-        <ÅpenInnsending />
+        <ÅpenEttersending />
         {context.dokumentasjonsbehov.length > 0 &&
           context.dokumentasjonsbehov.map((behov) => {
             return (
