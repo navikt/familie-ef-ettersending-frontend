@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Modal from 'nav-frontend-modal';
 import { IVedlegg } from '../typer/søknadsdata';
@@ -23,6 +24,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   const [vedleggTilOpplasting, settVedleggTilOpplasting] = useState<IVedlegg[]>(
     []
   );
+  const [laster, settLaster] = useState<boolean>(false);
 
   useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåBehov), []);
 
@@ -64,6 +66,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   };
 
   const lastOppVedlegg = async (fil) => {
+    settLaster(true);
     const formData = new FormData();
     formData.append('file', fil);
     const respons = await sendVedleggTilMellomlager(formData);
@@ -77,6 +80,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 
     context.leggTilVedlegg(vedlegg, dokumentasjonsbehovId);
     leggTilFilTilOpplasting(vedlegg);
+    settLaster(false);
   };
 
   const onDrop = useCallback(
@@ -103,12 +107,15 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     <div className="filopplaster-wrapper">
       <div className="opplastede-filer">
         <p>Nye filer:</p>
-
-        <OpplastedeVedlegg
-          vedleggsliste={vedleggTilOpplasting}
-          kanSlettes={true}
-          slettVedlegg={slettVedlegg}
-        />
+        {laster ? (
+          <NavFrontendSpinner />
+        ) : (
+          <OpplastedeVedlegg
+            vedleggsliste={vedleggTilOpplasting}
+            kanSlettes={true}
+            slettVedlegg={slettVedlegg}
+          />
+        )}
       </div>
 
       <div className="filopplaster">
