@@ -21,8 +21,9 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
       dokumentasjonsbehov.opplastedeVedlegg.length > 0
     );
   };
-  const [checked, settCheckboxverdi] = useState<boolean>(false); //må endres til å hente verdi fra dokumentajsonsbehov
-
+  const [checked, settCheckboxverdi] = useState<boolean>(
+    dokumentasjonsbehov.harSendtInn
+  );
   const context = useApp();
 
   const oppdaterHarSendtInn = () => {
