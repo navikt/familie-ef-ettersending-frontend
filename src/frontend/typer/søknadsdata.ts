@@ -4,13 +4,3 @@ export interface IVedlegg {
   størrelse: number;
   tidspunkt: string;
 }
-
-export interface IVedleggMedKrav {
-  vedlegg: IVedlegg;
-  kravId: string;
-}
-
-export interface IHarSendtInnMedKrav {
-  harSendtInn: boolean;
-  kravId: string;
-}

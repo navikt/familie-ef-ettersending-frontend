@@ -4,7 +4,6 @@ import {
   InnloggetStatus,
   verifiserAtSøkerErAutentisert,
 } from '../../shared-utils/autentisering';
-import { IHarSendtInnMedKrav, IVedleggMedKrav } from '../typer/søknadsdata';
 
 import { hentPersoninfo } from '../api-service';
 import { ISøker } from '../typer/søker';
@@ -24,14 +23,7 @@ const [AppProvider, useApp] = createUseContext(() => {
     verifiserAtSøkerErAutentisert(setInnloggetStatus);
   }, []);
 
-  // const slettVedleggMedKrav = (dokumentId) => {
-  //   const oppdatertVedleggMedKrav = vedleggMedKrav.filter(
-  //     (element) => element.vedlegg.id !== dokumentId
-  //   );
-  //   settVedleggMedKrav(oppdatertVedleggMedKrav);
-  // };
-
-  const slettVedlegg = (dokumentId, behovId) => {
+  const slettVedlegg = (dokumentId: string, behovId: string) => {
     const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehov.map((behov) => {
       if (behov.id === behovId) {
         return {
@@ -47,7 +39,6 @@ const [AppProvider, useApp] = createUseContext(() => {
     settDokumentasjonsbehov(dokumentasjonsbehovMedVedlegg);
   };
 
-  //Ny struktur under
   const [dokumentasjonsbehov, settDokumentasjonsbehov] =
     useState<IDokumentasjonsbehov[]>();
 

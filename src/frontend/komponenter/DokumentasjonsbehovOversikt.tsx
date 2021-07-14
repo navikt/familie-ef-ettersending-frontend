@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
-import { IVedleggMedKrav } from '../typer/søknadsdata';
 import {
   hentDokumentasjonsbehov,
   hentPersoninfo,
@@ -29,7 +28,6 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
       dokumentasjonsbehov: context.dokumentasjonsbehov,
     };
     sendEttersending(ettersendingsdata);
-
     console.log(ettersendingsdata);
   };
 

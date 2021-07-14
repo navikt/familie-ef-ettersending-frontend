@@ -9,9 +9,7 @@ import { IVedlegg } from '../typer/søknadsdata';
 import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
-import { IVedleggMedKrav } from '../typer/søknadsdata';
 import { sendVedleggTilMellomlager } from '../api-service';
-import Dokumentasjonsbehov from './Dokumentasjonsbehov';
 
 interface IVedleggsopplaster {
   dokumentasjonsbehovId: string;
