@@ -15,15 +15,16 @@ interface Props {
 
 const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
   const { dokumentasjonsbehov } = props;
+  const [checked, settCheckboxverdi] = useState<boolean>(
+    dokumentasjonsbehov.harSendtInn
+  );
   const dokumentasjonSendt = (): boolean => {
     return (
       dokumentasjonsbehov.harSendtInn ||
       dokumentasjonsbehov.opplastedeVedlegg.length > 0
     );
   };
-  const [checked, settCheckboxverdi] = useState<boolean>(
-    dokumentasjonsbehov.harSendtInn
-  );
+
   const context = useApp();
 
   const oppdaterHarSendtInn = () => {
