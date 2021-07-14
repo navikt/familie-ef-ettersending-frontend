@@ -13,9 +13,7 @@ const ÅpenInnsending = () => {
           Åpen innsending
         </Alertstripe>
       }
-    >
-      <Vedleggsopplaster dokumentasjonsbehovId="ÅPEN_INNSENDING" />
-    </Ekspanderbartpanel>
+    ></Ekspanderbartpanel>
   );
 };
 
