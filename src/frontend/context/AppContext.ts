@@ -13,8 +13,13 @@ const [AppProvider, useApp] = createUseContext(() => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
-  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
-    useState<IDokumentasjonsbehov[]>();
+  const [dokumentasjonsbehov, settDokumentasjonsbehov] = useState<
+    IDokumentasjonsbehov[]
+  >([]);
+  const [
+    dokumentasjonsbehovTilInnsending,
+    settDokumentasjonsbehovTilInnsending,
+  ] = useState<IDokumentasjonsbehov[]>([]);
   const [søker, settSøker] = useState<ISøker>(null);
 
   useEffect(() => {
@@ -22,46 +27,49 @@ const [AppProvider, useApp] = createUseContext(() => {
   }, []);
 
   const slettVedlegg = (dokumentId: string, behovId: string) => {
-    const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehov.map((behov) => {
-      if (behov.id === behovId) {
-        return {
-          ...behov,
-          opplastedeVedlegg: behov.opplastedeVedlegg.filter(
-            (vedlegg) => vedlegg.id !== dokumentId
-          ),
-        };
-      } else {
-        return behov;
-      }
-    });
-    settDokumentasjonsbehov(dokumentasjonsbehovMedVedlegg);
-  };
-
-  const leggTilVedlegg = (vedlegg: IVedlegg, behovId: string) => {
-    const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehov.map((behov) => {
-      if (behov.id === behovId) {
-        return {
-          ...behov,
-          opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
-        };
-      } else {
-        return behov;
-      }
-    });
-    settDokumentasjonsbehov(dokumentasjonsbehovMedVedlegg);
-  };
-
-  const oppdaterHarSendtInn = (harSendtInn: boolean, behovId: string) => {
-    const dokumentasjonsbehovMedHarSendtInn = dokumentasjonsbehov.map(
+    const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehovTilInnsending.map(
       (behov) => {
         if (behov.id === behovId) {
-          return { ...behov, harSendtInn: harSendtInn };
+          return {
+            ...behov,
+            opplastedeVedlegg: behov.opplastedeVedlegg.filter(
+              (vedlegg) => vedlegg.id !== dokumentId
+            ),
+          };
         } else {
           return behov;
         }
       }
     );
-    settDokumentasjonsbehov(dokumentasjonsbehovMedHarSendtInn);
+    settDokumentasjonsbehovTilInnsending(dokumentasjonsbehovMedVedlegg);
+  };
+
+  const leggTilVedlegg = (vedlegg: IVedlegg, behovId: string) => {
+    const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehovTilInnsending.map(
+      (behov) => {
+        if (behov.id === behovId) {
+          return {
+            ...behov,
+            opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
+          };
+        } else {
+          return behov;
+        }
+      }
+    );
+    settDokumentasjonsbehovTilInnsending(dokumentasjonsbehovMedVedlegg);
+  };
+
+  const oppdaterHarSendtInn = (harSendtInn: boolean, behovId: string) => {
+    const dokumentasjonsbehovMedHarSendtInn =
+      dokumentasjonsbehovTilInnsending.map((behov) => {
+        if (behov.id === behovId) {
+          return { ...behov, harSendtInn: harSendtInn };
+        } else {
+          return behov;
+        }
+      });
+    settDokumentasjonsbehovTilInnsending(dokumentasjonsbehovMedHarSendtInn);
   };
 
   useEffect(() => {
@@ -78,10 +86,12 @@ const [AppProvider, useApp] = createUseContext(() => {
     oppdaterHarSendtInn,
     slettVedlegg,
     settDokumentasjonsbehov,
+    settDokumentasjonsbehovTilInnsending,
     leggTilVedlegg,
     innloggetStatus,
     søker,
     dokumentasjonsbehov,
+    dokumentasjonsbehovTilInnsending,
   };
 });
 
