@@ -12,7 +12,7 @@ import { useApp } from '../context/AppContext';
 import { sendVedleggTilMellomlager } from '../api-service';
 
 interface IVedleggsopplaster {
-  dokumentasjonsbehovId: string;
+  dokumentasjonsbehovId?: string;
 }
 
 const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({

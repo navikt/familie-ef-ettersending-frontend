@@ -13,7 +13,9 @@ const ÅpenInnsending = () => {
           Åpen innsending
         </Alertstripe>
       }
-    ></Ekspanderbartpanel>
+    >
+      <Vedleggsopplaster />
+    </Ekspanderbartpanel>
   );
 };
 
