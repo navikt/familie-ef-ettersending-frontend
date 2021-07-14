@@ -28,7 +28,6 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
       dokumentasjonsbehov: context.dokumentasjonsbehov,
     };
     sendEttersending(ettersendingsdata);
-    console.log(ettersendingsdata);
   };
 
   useEffect(() => {

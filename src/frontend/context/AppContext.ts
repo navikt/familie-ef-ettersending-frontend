@@ -13,6 +13,8 @@ const [AppProvider, useApp] = createUseContext(() => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
+  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
+    useState<IDokumentasjonsbehov[]>();
   const [søker, settSøker] = useState<ISøker>(null);
 
   useEffect(() => {
@@ -35,9 +37,6 @@ const [AppProvider, useApp] = createUseContext(() => {
     settDokumentasjonsbehov(dokumentasjonsbehovMedVedlegg);
   };
 
-  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
-    useState<IDokumentasjonsbehov[]>();
-
   const leggTilVedlegg = (vedlegg: IVedlegg, behovId: string) => {
     const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehov.map((behov) => {
       if (behov.id === behovId) {
@@ -52,7 +51,7 @@ const [AppProvider, useApp] = createUseContext(() => {
     settDokumentasjonsbehov(dokumentasjonsbehovMedVedlegg);
   };
 
-  const leggTilHarSendtInn = (harSendtInn: boolean, behovId: string) => {
+  const oppdaterHarSendtInn = (harSendtInn: boolean, behovId: string) => {
     const dokumentasjonsbehovMedHarSendtInn = dokumentasjonsbehov.map(
       (behov) => {
         if (behov.id === behovId) {
@@ -75,7 +74,7 @@ const [AppProvider, useApp] = createUseContext(() => {
   }, [innloggetStatus]);
 
   return {
-    leggTilHarSendtInn,
+    oppdaterHarSendtInn,
     slettVedlegg,
     settDokumentasjonsbehov,
     leggTilVedlegg,
