@@ -13,17 +13,18 @@ interface Props {
   dokumentasjonsbehov: IDokumentasjonsbehov;
 }
 
-const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
-  const { dokumentasjonsbehov } = props;
-  const dokumentasjonSendt = (): boolean => {
+const Dokumentasjonsbehov: React.FC<Props> = ({
+  dokumentasjonsbehov,
+}: Props) => {
+  const [checked, settCheckboxverdi] = useState<boolean>(false); //TODO må endres til å hente verdi fra dokumentajsonsbehov
+  const context = useApp();
+
+  const erDokumentasjonSendt = (): boolean => {
     return (
       dokumentasjonsbehov.harSendtInn ||
       dokumentasjonsbehov.opplastedeVedlegg.length > 0
     );
   };
-  const [checked, settCheckboxverdi] = useState<boolean>(false); //må endres til å hente verdi fra dokumentajsonsbehov
-
-  const context = useApp();
 
   const oppdaterHarSendtInn = () => {
     const invertedChecked = !checked;
@@ -35,7 +36,7 @@ const Dokumentasjonsbehov: React.FC<Props> = (props: Props) => {
     <Ekspanderbartpanel
       tittel={
         <Alertstripe
-          type={dokumentasjonSendt() ? 'suksess' : 'feil'}
+          type={erDokumentasjonSendt() ? 'suksess' : 'feil'}
           form="inline"
         >
           {dokumentasjonsbehov.label}
