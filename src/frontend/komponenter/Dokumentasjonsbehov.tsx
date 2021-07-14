@@ -4,7 +4,6 @@ import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
-import { IHarSendtInnMedKrav } from '../typer/søknadsdata';
 import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
 import { Checkbox } from 'nav-frontend-skjema';

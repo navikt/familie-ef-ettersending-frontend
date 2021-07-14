@@ -67,7 +67,8 @@ const [AppProvider, useApp] = createUseContext(() => {
   useEffect(() => {
     const hentOgSettSøker = async () => {
       if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
-        settSøker(await (await hentPersoninfo()).søker);
+        const personInfo = await hentPersoninfo();
+        settSøker(personInfo.søker);
       }
     };
     hentOgSettSøker();
