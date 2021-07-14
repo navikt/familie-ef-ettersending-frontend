@@ -4,14 +4,10 @@ import {
   InnloggetStatus,
   verifiserAtSøkerErAutentisert,
 } from '../../shared-utils/autentisering';
-
 import { hentPersoninfo } from '../api-service';
 import { ISøker } from '../typer/søker';
 import { IVedlegg } from '../typer/søknadsdata';
-import {
-  IDokumentasjonsbehov,
-  IDokumentasjonsbehovListe,
-} from '../typer/dokumentasjonsbehov';
+import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(

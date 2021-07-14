@@ -39,7 +39,6 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
       settDokumentasjonsbehov(dokumentasjonsbehovListe);
 
       dokumentasjonsbehovListe.forEach((dokumentasjonsbehov) => {
-        console.log('Hallo');
         context.settDokumentasjonsbehov(
           dokumentasjonsbehov.dokumentasjonsbehov
         );
