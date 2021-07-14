@@ -25,6 +25,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     []
   );
   const [laster, settLaster] = useState<boolean>(false);
+  const context = useApp();
 
   useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåBehov), []);
 
@@ -44,8 +45,6 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     return [];
   };
 
-  const context = useApp();
-
   const sjekkTillatFiltype = (filtype: string) => {
     const tillateFilTyper = ['pdf', 'jpg', 'svg', 'png', 'jpeg', 'gif', 'ico'];
     let godkjentFiltype = false;
@@ -58,7 +57,11 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   };
 
   const slettVedlegg = (vedlegg: IVedlegg) => {
-    context.slettVedlegg(vedlegg.id, dokumentasjonsbehovId);
+    if (dokumentasjonsbehovId)
+      context.slettVedlegg(vedlegg.id, dokumentasjonsbehovId);
+    else {
+      context.slettVedleggForÅpenEttersending(vedlegg.id);
+    }
     const oppdatertVedleggsliste = vedleggTilOpplasting.filter(
       (fil) => fil !== vedlegg
     );
@@ -78,7 +81,11 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       tidspunkt: dagensDatoMedTidspunktStreng,
     };
 
-    context.leggTilVedlegg(vedlegg, dokumentasjonsbehovId);
+    if (dokumentasjonsbehovId) {
+      context.leggTilVedlegg(vedlegg, dokumentasjonsbehovId);
+    } else {
+      context.leggTilVedleggForÅpenEttersending(vedlegg);
+    }
     leggTilFilTilOpplasting(vedlegg);
     settLaster(false);
   };

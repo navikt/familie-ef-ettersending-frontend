@@ -21,6 +21,9 @@ const [AppProvider, useApp] = createUseContext(() => {
     settDokumentasjonsbehovTilInnsending,
   ] = useState<IDokumentasjonsbehov[]>([]);
   const [søker, settSøker] = useState<ISøker>(null);
+  const [åpenEttersendingVedlegg, settÅpenEttersendingVedlegg] = useState<
+    IVedlegg[]
+  >([]);
 
   useEffect(() => {
     verifiserAtSøkerErAutentisert(setInnloggetStatus);
@@ -60,6 +63,16 @@ const [AppProvider, useApp] = createUseContext(() => {
     settDokumentasjonsbehovTilInnsending(dokumentasjonsbehovMedVedlegg);
   };
 
+  const leggTilVedleggForÅpenEttersending = (vedlegg: IVedlegg) => {
+    settÅpenEttersendingVedlegg([...åpenEttersendingVedlegg, vedlegg]);
+  };
+
+  const slettVedleggForÅpenEttersending = (vedleggId: string) => {
+    settÅpenEttersendingVedlegg(
+      åpenEttersendingVedlegg.filter((vedlegg) => vedlegg.id !== vedleggId)
+    );
+  };
+
   const oppdaterHarSendtInn = (harSendtInn: boolean, behovId: string) => {
     const dokumentasjonsbehovMedHarSendtInn =
       dokumentasjonsbehovTilInnsending.map((behov) => {
@@ -88,10 +101,13 @@ const [AppProvider, useApp] = createUseContext(() => {
     settDokumentasjonsbehov,
     settDokumentasjonsbehovTilInnsending,
     leggTilVedlegg,
+    leggTilVedleggForÅpenEttersending,
+    slettVedleggForÅpenEttersending,
     innloggetStatus,
     søker,
     dokumentasjonsbehov,
     dokumentasjonsbehovTilInnsending,
+    åpenEttersendingVedlegg,
   };
 });
 
