@@ -9,36 +9,47 @@ import {
   sendEttersending,
   sendÅpenEttersending,
 } from '../api-service';
-
 import ÅpenEttersending from './ÅpenEttersending';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import styled from 'styled-components/macro';
+
+const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+  margin-bottom: 1rem;
+`;
 
 export const DokumentasjonsbehovOversikt: React.FC = () => {
   const [laster, settLasterverdi] = useState(true);
+  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState<boolean>(false);
 
   const context = useApp();
 
   const sendInnDokumentasjon = async () => {
-    const person = await hentPersoninfo();
+    settVisNoeGikkGalt(false);
+    try {
+      const person = await hentPersoninfo();
 
-    if (erDokumentasjonsbehovOppdatert()) {
-      const ettersendingsdata = {
-        person: {
-          søker: person.søker,
-          barn: [], //TODO må legges in person.barn og fikse typer
-        },
-        dokumentasjonsbehov: context.dokumentasjonsbehovTilInnsending,
-      };
-      sendEttersending(ettersendingsdata);
-    }
-    if (context.åpenEttersendingVedlegg.length > 0) {
-      const ettersendingsdata = {
-        person: {
-          søker: person.søker,
-          barn: [], //TODO må legges in person.barn og fikse typer
-        },
-        opplastedeVedlegg: context.åpenEttersendingVedlegg,
-      };
-      sendÅpenEttersending(ettersendingsdata);
+      if (erDokumentasjonsbehovOppdatert()) {
+        const ettersendingsdata = {
+          person: {
+            søker: person.søker,
+            barn: [], //TODO må legges in person.barn og fikse typer
+          },
+          dokumentasjonsbehov: context.dokumentasjonsbehovTilInnsending,
+        };
+        await sendEttersending(ettersendingsdata);
+      }
+      if (context.åpenEttersendingVedlegg.length > 0) {
+        const ettersendingsdata = {
+          person: {
+            søker: person.søker,
+            barn: [], //TODO må legges in person.barn og fikse typer
+          },
+          opplastedeVedlegg: context.åpenEttersendingVedlegg,
+        };
+        await sendÅpenEttersending(ettersendingsdata);
+      }
+    } catch {
+      settVisNoeGikkGalt(true);
     }
   };
 
@@ -85,6 +96,11 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
           })}
       </div>
       <div>
+        {visNoeGikkGalt && (
+          <AlertStripeFeilStyled>
+            Noe gikk galt, prøv igjen
+          </AlertStripeFeilStyled>
+        )}
         <Hovedknapp onClick={() => sendInnDokumentasjon()}>Send inn</Hovedknapp>
       </div>
     </div>
