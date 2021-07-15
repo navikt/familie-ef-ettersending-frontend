@@ -6,7 +6,6 @@ import { useApp } from '../context/AppContext';
 import { ISøknadsbehov } from '../typer/søknadsdata';
 
 import {
-  hentDokumentasjonsbehov,
   hentPersoninfo,
   sendEttersending,
   sendÅpenEttersending,
