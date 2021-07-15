@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
-import { Select } from 'nav-frontend-skjema';
+import { Select, Textarea } from 'nav-frontend-skjema';
 import styled from 'styled-components/macro';
 import { StønadType } from '../typer/stønad';
 
 const StyledSelect = styled(Select)`
-  margin-top: 1rem;
+  margin: 1rem auto;
+`;
+
+const StyledTextarea = styled(Textarea)`
+  width: 100%;
 `;
 
 interface IÅpenEttersending {
@@ -15,7 +19,8 @@ interface IÅpenEttersending {
 }
 
 const ÅpenEttersending = ({ visStønadsType }: IÅpenEttersending) => {
-  const [stønadsType, settStønadsType] = useState('');
+  const [stønadsType, settStønadsType] = useState<string>('');
+  const [kommentar, settKommentar] = useState<string>('');
 
   return (
     <Ekspanderbartpanel
@@ -25,6 +30,7 @@ const ÅpenEttersending = ({ visStønadsType }: IÅpenEttersending) => {
         </Alertstripe>
       }
     >
+      <Vedleggsopplaster />
       {visStønadsType && (
         <StyledSelect
           label="Hvilken stønadstype gjelder innsendingen for?"
@@ -42,7 +48,11 @@ const ÅpenEttersending = ({ visStønadsType }: IÅpenEttersending) => {
           </option>
         </StyledSelect>
       )}
-      <Vedleggsopplaster />
+      <StyledTextarea
+        label="Kommentar til ettersendingen"
+        value={kommentar}
+        onChange={(event) => settKommentar(event.target.value)}
+      />
     </Ekspanderbartpanel>
   );
 };
