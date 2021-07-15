@@ -42,10 +42,7 @@ export const hentDokumentasjonsbehov = (personIdent) => {
         withCredentials: true,
       }
     )
-    .then((response: { data: ISøknadsbehov[] }) => {
-      console.log('api', response.data);
-      return response.data;
-    });
+    .then((response: { data: ISøknadsbehov[] }) => response.data);
 };
 
 export const sendVedleggTilMellomlager = (formData): Promise<string> => {

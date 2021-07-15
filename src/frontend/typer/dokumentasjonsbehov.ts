@@ -1,5 +1,6 @@
 import { IVedlegg } from './søknadsdata';
 
+//TODO: denne kan fjernes og byttes med ISøknadsbehov
 export interface IDokumentasjonsbehovListe {
   dokumentasjonsbehov: Array<IDokumentasjonsbehov>;
 }
