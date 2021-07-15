@@ -16,7 +16,9 @@ interface Props {
 const Dokumentasjonsbehov: React.FC<Props> = ({
   dokumentasjonsbehov,
 }: Props) => {
-  const [checked, settCheckboxverdi] = useState<boolean>(false); //TODO må endres til å hente verdi fra dokumentajsonsbehov
+  const [checked, settCheckboxverdi] = useState<boolean>(
+    dokumentasjonsbehov.harSendtInn
+  );
   const context = useApp();
 
   const erDokumentasjonSendt = (): boolean => {

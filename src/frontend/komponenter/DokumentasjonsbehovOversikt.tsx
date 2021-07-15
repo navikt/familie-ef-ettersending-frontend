@@ -7,7 +7,10 @@ import {
   hentDokumentasjonsbehov,
   hentPersoninfo,
   sendEttersending,
+  sendÅpenEttersending,
 } from '../api-service';
+
+import ÅpenEttersending from './ÅpenEttersending';
 
 export const DokumentasjonsbehovOversikt: React.FC = () => {
   const [laster, settLasterverdi] = useState(true);
@@ -17,16 +20,32 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
   const sendInnDokumentasjon = async () => {
     const person = await hentPersoninfo();
 
-    const ettersendingsdata = {
-      person: {
-        søker: person.søker,
-        barn: [], //TODO må legges in person.barn og fikse typer
-      },
-      dokumentasjonsbehov: context.dokumentasjonsbehovTilInnsending,
-    };
-    sendEttersending(ettersendingsdata);
+    if (erDokumentasjonsbehovOppdatert()) {
+      const ettersendingsdata = {
+        person: {
+          søker: person.søker,
+          barn: [], //TODO må legges in person.barn og fikse typer
+        },
+        dokumentasjonsbehov: context.dokumentasjonsbehovTilInnsending,
+      };
+      sendEttersending(ettersendingsdata);
+    }
+    if (context.åpenEttersendingVedlegg.length > 0) {
+      const ettersendingsdata = {
+        person: {
+          søker: person.søker,
+          barn: [], //TODO må legges in person.barn og fikse typer
+        },
+        opplastedeVedlegg: context.åpenEttersendingVedlegg,
+      };
+      sendÅpenEttersending(ettersendingsdata);
+    }
   };
 
+  const erDokumentasjonsbehovOppdatert = () =>
+    context.dokumentasjonsbehovTilInnsending.filter(
+      (behov) => behov.opplastedeVedlegg.length > 0
+    ).length > 0;
   useEffect(() => {
     const hentOgSettDokumentasjonsbehov = async () => {
       const dokumentasjonsbehovListe = await hentDokumentasjonsbehov(
@@ -57,6 +76,7 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
   return (
     <div>
       <div>
+        <ÅpenEttersending />
         {context.dokumentasjonsbehov.length > 0 &&
           context.dokumentasjonsbehov.map((behov) => {
             return (
