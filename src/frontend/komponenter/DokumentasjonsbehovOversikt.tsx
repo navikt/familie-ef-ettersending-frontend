@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
+import { ISøknadsbehov } from '../typer/søknadsdata';
+
 import {
   hentDokumentasjonsbehov,
   hentPersoninfo,
@@ -11,12 +13,24 @@ import {
 } from '../api-service';
 
 import ÅpenEttersending from './ÅpenEttersending';
+import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 
-export const DokumentasjonsbehovOversikt: React.FC = () => {
+interface IProps {
+  søknad: ISøknadsbehov;
+}
+
+export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
   const [laster, settLasterverdi] = useState(true);
+  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
+    useState<IDokumentasjonsbehov[]>();
+  const [
+    dokumentasjonsbehovTilInnsending,
+    settDokumentasjonsbehovTilInnsending,
+  ] = useState<IDokumentasjonsbehov[]>();
 
   const context = useApp();
 
+  //TODO: her starter delen som må skrives om
   const sendInnDokumentasjon = async () => {
     const person = await hentPersoninfo();
 
@@ -46,27 +60,14 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
     context.dokumentasjonsbehovTilInnsending.filter(
       (behov) => behov.opplastedeVedlegg.length > 0
     ).length > 0;
-  useEffect(() => {
-    const hentOgSettDokumentasjonsbehov = async () => {
-      const dokumentasjonsbehovListe = await hentDokumentasjonsbehov(
-        context.søker.fnr
-      );
 
-      dokumentasjonsbehovListe.forEach((dokumentasjonsbehov) => {
-        context.settDokumentasjonsbehov([
-          ...context.dokumentasjonsbehov,
-          ...dokumentasjonsbehov.dokumentasjonsbehov,
-        ]);
-        context.settDokumentasjonsbehovTilInnsending([
-          ...context.dokumentasjonsbehovTilInnsending,
-          ...dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
-            return { ...behov, opplastedeVedlegg: [] };
-          }),
-        ]);
-      });
-      settLasterverdi(false);
-    };
-    if (context.søker != null) hentOgSettDokumentasjonsbehov();
+  //HER slutter delen
+
+  useEffect(() => {
+    console.log(søknad.dokumentasjonsbehov);
+    settDokumentasjonsbehov(søknad.dokumentasjonsbehov);
+    settDokumentasjonsbehovTilInnsending(søknad.dokumentasjonsbehov); //må fikse sånn at "opplastedeVedlegg" i doktilInnsending er tom
+    settLasterverdi(false);
   }, [context.søker]);
 
   if (laster) {
@@ -76,13 +77,13 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
   return (
     <div>
       <div>
-        <ÅpenEttersending />
-        {context.dokumentasjonsbehov.length > 0 &&
-          context.dokumentasjonsbehov.map((behov) => {
+        {dokumentasjonsbehov.length > 0 &&
+          dokumentasjonsbehov.map((behov) => {
             return (
               <Dokumentasjonsbehov key={behov.id} dokumentasjonsbehov={behov} />
             );
           })}
+        <ÅpenEttersending />
       </div>
       <div>
         <Hovedknapp onClick={() => sendInnDokumentasjon()}>Send inn</Hovedknapp>

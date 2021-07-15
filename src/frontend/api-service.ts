@@ -2,6 +2,7 @@ import axios from 'axios';
 import environment from '../backend/environment';
 import { IDokumentasjonsbehovListe } from './typer/dokumentasjonsbehov';
 import { IPersoninfo } from './typer/søker';
+import { ISøknadsbehov } from './typer/søknadsdata';
 
 interface Ifamilievedlegg {
   dokumentId: string;
@@ -41,7 +42,10 @@ export const hentDokumentasjonsbehov = (personIdent) => {
         withCredentials: true,
       }
     )
-    .then((response: { data: IDokumentasjonsbehovListe[] }) => response.data);
+    .then((response: { data: ISøknadsbehov[] }) => {
+      console.log('api', response.data);
+      return response.data;
+    });
 };
 
 export const sendVedleggTilMellomlager = (formData): Promise<string> => {
