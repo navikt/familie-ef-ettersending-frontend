@@ -9,48 +9,36 @@ import {
   sendEttersending,
   sendÅpenEttersending,
 } from '../api-service';
-import ÅpenEttersending from './ÅpenEttersending';
-import styled from 'styled-components/macro';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
-const StyledAlertStripeFeil = styled(AlertStripeFeil)`
-  margin-bottom: 1rem;
-`;
+import ÅpenEttersending from './ÅpenEttersending';
 
 export const DokumentasjonsbehovOversikt: React.FC = () => {
   const [laster, settLasterverdi] = useState(true);
-  const [visNoeGikkGalt, settNoeGikkGalt] = useState(false);
 
   const context = useApp();
 
   const sendInnDokumentasjon = async () => {
-    settNoeGikkGalt(false);
+    const person = await hentPersoninfo();
 
-    try {
-      const person = await hentPersoninfo();
-
-      if (erDokumentasjonsbehovOppdatert()) {
-        const ettersendingsdata = {
-          person: {
-            søker: person.søker,
-            barn: [], //TODO må legges in person.barn og fikse typer
-          },
-          dokumentasjonsbehov: context.dokumentasjonsbehovTilInnsending,
-        };
-        await sendEttersending(ettersendingsdata);
-      }
-      if (context.åpenEttersendingVedlegg.length > 0) {
-        const ettersendingsdata = {
-          person: {
-            søker: person.søker,
-            barn: [], //TODO må legges in person.barn og fikse typer
-          },
-          opplastedeVedlegg: context.åpenEttersendingVedlegg,
-        };
-        await sendÅpenEttersending(ettersendingsdata);
-      }
-    } catch {
-      settNoeGikkGalt(true);
+    if (erDokumentasjonsbehovOppdatert()) {
+      const ettersendingsdata = {
+        person: {
+          søker: person.søker,
+          barn: [], //TODO må legges in person.barn og fikse typer
+        },
+        dokumentasjonsbehov: context.dokumentasjonsbehovTilInnsending,
+      };
+      sendEttersending(ettersendingsdata);
+    }
+    if (context.åpenEttersendingVedlegg.length > 0) {
+      const ettersendingsdata = {
+        person: {
+          søker: person.søker,
+          barn: [], //TODO må legges in person.barn og fikse typer
+        },
+        opplastedeVedlegg: context.åpenEttersendingVedlegg,
+      };
+      sendÅpenEttersending(ettersendingsdata);
     }
   };
 
@@ -97,11 +85,6 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
           })}
       </div>
       <div>
-        {visNoeGikkGalt && (
-          <StyledAlertStripeFeil>
-            Noe gikk galt, prøv igjen
-          </StyledAlertStripeFeil>
-        )}
         <Hovedknapp onClick={() => sendInnDokumentasjon()}>Send inn</Hovedknapp>
       </div>
     </div>
