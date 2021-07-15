@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { ISøknadsbehov } from '../typer/søknadsdata';
+import ÅpenEttersending from './ÅpenEttersending';
+import { Hovedknapp } from 'nav-frontend-knapper';
 
 const Søknadsoversikt = () => {
   const [laster, settLasterverdi] = useState(true);
@@ -34,8 +36,14 @@ const Søknadsoversikt = () => {
       {søknader.map((søknad) => {
         return (
           <>
+            {/* Hent inn komponent fra Sigmund */}
+            <div>
+              <ÅpenEttersending />
+              <Hovedknapp>Send inn</Hovedknapp>
+            </div>
             <h3>
-              Søknad {søknad.søknadType} sendt inn {søknad.innsendingstidspunkt}
+              Søknad om {søknad.søknadType} sendt inn{' '}
+              {søknad.innsendingstidspunkt}
             </h3>
             <DokumentasjonsbehovOversikt søknad={søknad} />
           </>
