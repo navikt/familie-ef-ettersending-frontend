@@ -11,6 +11,11 @@ import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
 import { sendVedleggTilMellomlager } from '../api-service';
+import styled from 'styled-components/macro';
+
+const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+  margin-bottom: 1rem;
+`;
 
 interface IVedleggsopplaster {
   dokumentasjonsbehovId?: string;
@@ -20,6 +25,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   dokumentasjonsbehovId,
 }: IVedleggsopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
+  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState<boolean>(false);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [vedleggTilOpplasting, settVedleggTilOpplasting] = useState<IVedlegg[]>(
     []
@@ -70,24 +76,31 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 
   const lastOppVedlegg = async (fil) => {
     settLaster(true);
-    const formData = new FormData();
-    formData.append('file', fil);
-    const respons = await sendVedleggTilMellomlager(formData);
-    const vedlegg: IVedlegg = {
-      id: respons,
-      // id: '122', Må brukes for at det skal kunne kjøre lokalt
-      navn: fil.name,
-      størrelse: fil.size,
-      tidspunkt: dagensDatoMedTidspunktStreng,
-    };
+    settVisNoeGikkGalt(false);
 
-    if (dokumentasjonsbehovId) {
-      context.leggTilVedlegg(vedlegg, dokumentasjonsbehovId);
-    } else {
-      context.leggTilVedleggForÅpenEttersending(vedlegg);
+    try {
+      const formData = new FormData();
+      formData.append('file', fil);
+      const respons = await sendVedleggTilMellomlager(formData);
+      const vedlegg: IVedlegg = {
+        id: respons,
+        // id: '122', Må brukes for at det skal kunne kjøre lokalt
+        navn: fil.name,
+        størrelse: fil.size,
+        tidspunkt: dagensDatoMedTidspunktStreng,
+      };
+
+      if (dokumentasjonsbehovId) {
+        context.leggTilVedlegg(vedlegg, dokumentasjonsbehovId);
+      } else {
+        context.leggTilVedleggForÅpenEttersending(vedlegg);
+      }
+      leggTilFilTilOpplasting(vedlegg);
+    } catch {
+      settVisNoeGikkGalt(true);
+    } finally {
+      settLaster(false);
     }
-    leggTilFilTilOpplasting(vedlegg);
-    settLaster(false);
   };
 
   const onDrop = useCallback(
@@ -117,11 +130,18 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
         {laster ? (
           <NavFrontendSpinner />
         ) : (
-          <OpplastedeVedlegg
-            vedleggsliste={vedleggTilOpplasting}
-            kanSlettes={true}
-            slettVedlegg={slettVedlegg}
-          />
+          <>
+            <OpplastedeVedlegg
+              vedleggsliste={vedleggTilOpplasting}
+              kanSlettes={true}
+              slettVedlegg={slettVedlegg}
+            />
+            {visNoeGikkGalt && (
+              <AlertStripeFeilStyled>
+                Noe gikk galt, prøv igjen
+              </AlertStripeFeilStyled>
+            )}
+          </>
         )}
       </div>
 
