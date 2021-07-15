@@ -26,7 +26,7 @@ const ÅpenEttersending = ({ visStønadsType }: IÅpenEttersending) => {
     <Ekspanderbartpanel
       tittel={
         <Alertstripe type="info" form="inline">
-          Åpen innsending
+          Åpen ettersending
         </Alertstripe>
       }
     >
