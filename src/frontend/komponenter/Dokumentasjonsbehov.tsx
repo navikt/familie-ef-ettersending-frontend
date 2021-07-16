@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
@@ -11,10 +11,16 @@ import { useApp } from '../context/AppContext';
 
 interface Props {
   dokumentasjonsbehov: IDokumentasjonsbehov;
+  dokumentasjonsbehovTilInnsending: IDokumentasjonsbehov[];
+  settDokumentasjonsbehovTilInnsending: (
+    dokumentasjonsbehov: IDokumentasjonsbehov[]
+  ) => void;
 }
 
 const Dokumentasjonsbehov: React.FC<Props> = ({
   dokumentasjonsbehov,
+  settDokumentasjonsbehovTilInnsending,
+  dokumentasjonsbehovTilInnsending,
 }: Props) => {
   const [checked, settCheckboxverdi] = useState<boolean>(
     dokumentasjonsbehov.harSendtInn
@@ -54,7 +60,13 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
           />
         </div>
       )}
-      <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
+      <Vedleggsopplaster
+        dokumentasjonsbehovId={dokumentasjonsbehov.id}
+        dokumentasjonsbehovTilInnsending={dokumentasjonsbehovTilInnsending}
+        settDokumentasjonsbehovTilInnsending={
+          settDokumentasjonsbehovTilInnsending
+        }
+      />
       <Checkbox
         className="leveranseCheckbox"
         onChange={() => oppdaterHarSendtInn()}

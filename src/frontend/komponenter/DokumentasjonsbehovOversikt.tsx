@@ -29,43 +29,46 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
 
   const context = useApp();
 
-  //TODO: her starter delen som må skrives om
-  const sendInnDokumentasjon = async () => {
-    const person = await hentPersoninfo();
+  // const lagOgSendEttersending = () => {
 
-    if (erDokumentasjonsbehovOppdatert()) {
-      const ettersendingsdata = {
-        person: {
-          søker: person.søker,
-          barn: [], //TODO må legges in person.barn og fikse typer
-        },
-        dokumentasjonsbehov: context.dokumentasjonsbehovTilInnsending,
-      };
-      sendEttersending(ettersendingsdata);
-    }
-    if (context.åpenEttersendingVedlegg.length > 0) {
-      const ettersendingsdata = {
-        person: {
-          søker: person.søker,
-          barn: [], //TODO må legges in person.barn og fikse typer
-        },
-        opplastedeVedlegg: context.åpenEttersendingVedlegg,
-      };
-      sendÅpenEttersending(ettersendingsdata);
-    }
-  };
+  //   // gjøres for hver eksterne opplastning hvordan funker det og hva er de ulike feltene? hvis det ikke er noe data vil det være ingen slike felter. Må også hente denne dataen.
+  //   const åpenEttersendingFelt = {
+  //     beskrivelse: 'få dette',
+  //     dokumenttype: 'skaff dette',
+  //     vedlegg: 'fil'
+  //   }
+  //   // if (erDokumentasjonsbehovOppdatert()) {
+  //   const søknadMedVedlegg = {
+  //     søknadsId: 'hent dette når det fikses',
+  //     dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
+  //     åpenEttersending: åpenEttersendingFelt
 
-  const erDokumentasjonsbehovOppdatert = () =>
-    context.dokumentasjonsbehovTilInnsending.filter(
-      (behov) => behov.opplastedeVedlegg.length > 0
-    ).length > 0;
+  //   }
 
-  //HER slutter delen
+  //   const ettersendingsdata = {
+  //     fnr: context.søker.fnr,
+  //     søknadMedVedlegg: søknadMedVedlegg,
+  //   }
+  //   //denne må endres til å ta imot en ny type ettersending
+  //   sendEttersending(ettersendingsdata);
+  // }
+
+  // når man legger til ting i behovYilInnsending reagerer denne to ganger, men for slett kun en. Må ta en titt på det å legge til
+  useEffect(() => {
+    console.log(dokumentasjonsbehovTilInnsending);
+  }, [dokumentasjonsbehovTilInnsending]);
 
   useEffect(() => {
-    console.log(søknad.dokumentasjonsbehov);
     settDokumentasjonsbehov(søknad.dokumentasjonsbehov);
-    settDokumentasjonsbehovTilInnsending(søknad.dokumentasjonsbehov); //må fikse sånn at "opplastedeVedlegg" i doktilInnsending er tom
+
+    const nyListe = søknad.dokumentasjonsbehov.map((behov) => {
+      return {
+        ...behov,
+        opplastedeVedlegg: [],
+      };
+    });
+
+    settDokumentasjonsbehovTilInnsending(nyListe);
     settLasterverdi(false);
   }, [context.søker]);
 
@@ -79,13 +82,23 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         {dokumentasjonsbehov.length > 0 &&
           dokumentasjonsbehov.map((behov) => {
             return (
-              <Dokumentasjonsbehov key={behov.id} dokumentasjonsbehov={behov} />
+              <Dokumentasjonsbehov
+                key={behov.id}
+                dokumentasjonsbehov={behov}
+                dokumentasjonsbehovTilInnsending={
+                  dokumentasjonsbehovTilInnsending
+                }
+                settDokumentasjonsbehovTilInnsending={
+                  settDokumentasjonsbehovTilInnsending
+                }
+              />
             );
           })}
         <ÅpenEttersending />
       </div>
       <div>
-        <Hovedknapp onClick={() => sendInnDokumentasjon()}>Send inn</Hovedknapp>
+        {/* <Hovedknapp onClick={() => lagOgSendEttersending()}>Send inn</Hovedknapp> */}
+        <Hovedknapp>Send inn</Hovedknapp>
       </div>
     </div>
   );

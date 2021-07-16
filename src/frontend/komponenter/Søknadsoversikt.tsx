@@ -33,14 +33,14 @@ const Søknadsoversikt = () => {
 
   return (
     <>
+      {/* Hent inn komponent fra Sigmund */}
+      <div>
+        <ÅpenEttersending />
+        <Hovedknapp>Send inn</Hovedknapp>
+      </div>
       {søknader.map((søknad) => {
         return (
           <>
-            {/* Hent inn komponent fra Sigmund */}
-            <div>
-              <ÅpenEttersending />
-              <Hovedknapp>Send inn</Hovedknapp>
-            </div>
             <h3>
               Søknad om {søknad.søknadType} sendt inn{' '}
               {søknad.innsendingstidspunkt}

@@ -1,4 +1,10 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, {
+  useCallback,
+  useState,
+  useEffect,
+  SetStateAction,
+  Dispatch,
+} from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
@@ -11,13 +17,20 @@ import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { useApp } from '../context/AppContext';
 import { sendVedleggTilMellomlager } from '../api-service';
+import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 
 interface IVedleggsopplaster {
-  dokumentasjonsbehovId?: string;
+  dokumentasjonsbehovId?: string; //må gjøre denne obligatorisk for de som er knyttet til et behov
+  dokumentasjonsbehovTilInnsending: IDokumentasjonsbehov[];
+  settDokumentasjonsbehovTilInnsending: (
+    dokumentasjonsbehov: IDokumentasjonsbehov[]
+  ) => void;
 }
 
 const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   dokumentasjonsbehovId,
+  settDokumentasjonsbehovTilInnsending,
+  dokumentasjonsbehovTilInnsending,
 }: IVedleggsopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
@@ -29,15 +42,48 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 
   useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåBehov), []);
 
+  //OK foreløpig. Må endre til å sjekke på søknadsid ikke bare id fra dokumentasjonsbehov sånn at jeg vet at jeg legger til for riktig søknad
   const leggTilFilTilOpplasting = (vedlegg: IVedlegg) => {
-    settVedleggTilOpplasting((nyListeMedVedlegg) => [
-      ...nyListeMedVedlegg,
-      vedlegg,
-    ]);
+    const nyListe = dokumentasjonsbehovTilInnsending.map((behov) => {
+      if (behov.id == dokumentasjonsbehovId) {
+        settVedleggTilOpplasting([...behov.opplastedeVedlegg, vedlegg]);
+        return {
+          ...behov,
+          opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
+        };
+      } else {
+        return behov;
+      }
+    });
+    settDokumentasjonsbehovTilInnsending(nyListe);
   };
 
+  //OK foreløpig. Må endre til å sjekke på søknadsid ikke bare id fra dokumentasjonsbehov sånn at jeg vet at jeg fjerner fra riktig søknad
+  const slettFilTilOpplasting = (
+    dokumentId: string,
+    dokumentasjonsbehovId: string
+  ) => {
+    const nyListe = dokumentasjonsbehovTilInnsending.map((behov) => {
+      if (behov.id == dokumentasjonsbehovId) {
+        settVedleggTilOpplasting(
+          behov.opplastedeVedlegg.filter((vedlegg) => vedlegg.id !== dokumentId)
+        );
+        return {
+          ...behov,
+          opplastedeVedlegg: behov.opplastedeVedlegg.filter(
+            (vedlegg) => vedlegg.id !== dokumentId
+          ),
+        };
+      } else {
+        return behov;
+      }
+    });
+    settDokumentasjonsbehovTilInnsending(nyListe);
+  };
+
+  //OK?
   const filtrerVedleggPåBehov = () => {
-    context.dokumentasjonsbehov.forEach((behov) => {
+    dokumentasjonsbehovTilInnsending.forEach((behov) => {
       if (dokumentasjonsbehovId === behov.id) {
         return behov.opplastedeVedlegg;
       }
@@ -45,6 +91,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     return [];
   };
 
+  //OK
   const sjekkTillatFiltype = (filtype: string) => {
     const tillateFilTyper = ['pdf', 'jpg', 'svg', 'png', 'jpeg', 'gif', 'ico'];
     let godkjentFiltype = false;
@@ -56,16 +103,13 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     return godkjentFiltype;
   };
 
+  //OK
   const slettVedlegg = (vedlegg: IVedlegg) => {
     if (dokumentasjonsbehovId)
-      context.slettVedlegg(vedlegg.id, dokumentasjonsbehovId);
+      slettFilTilOpplasting(vedlegg.id, dokumentasjonsbehovId);
     else {
-      context.slettVedleggForÅpenEttersending(vedlegg.id);
+      //TODO. skal fjerne denne muligheten
     }
-    const oppdatertVedleggsliste = vedleggTilOpplasting.filter(
-      (fil) => fil !== vedlegg
-    );
-    settVedleggTilOpplasting(oppdatertVedleggsliste);
   };
 
   const lastOppVedlegg = async (fil) => {
@@ -81,10 +125,11 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       tidspunkt: dagensDatoMedTidspunktStreng,
     };
 
+    //TODO må fjerne om dokumentasjonsbehov eller ikke
     if (dokumentasjonsbehovId) {
-      context.leggTilVedlegg(vedlegg, dokumentasjonsbehovId);
+      leggTilFilTilOpplasting(vedlegg);
     } else {
-      context.leggTilVedleggForÅpenEttersending(vedlegg);
+      // context.leggTilVedleggForÅpenEttersending(vedlegg);
     }
     leggTilFilTilOpplasting(vedlegg);
     settLaster(false);
