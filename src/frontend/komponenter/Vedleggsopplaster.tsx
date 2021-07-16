@@ -6,11 +6,16 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Modal from 'nav-frontend-modal';
-import { IVedlegg, IÅpenEttersending } from '../typer/søknadsdata';
+import {
+  IVedlegg,
+  IÅpenEttersending,
+  IÅpenEttersendingMedStønadstype,
+} from '../typer/søknadsdata';
 import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { sendVedleggTilMellomlager } from '../api-service';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
+import ÅpenEttersending from './ÅpenEttersending';
 
 interface IVedleggsopplaster {
   dokumentasjonsbehovId?: string;
@@ -20,6 +25,11 @@ interface IVedleggsopplaster {
   ) => void;
   åpenEttersendingFelt?: IÅpenEttersending;
   settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
+
+  åpenEttersendingMedStønadstype?: IÅpenEttersendingMedStønadstype;
+  settÅpenEttersendingMedStønadstype?: (
+    dokumentasjonsbehov: IÅpenEttersendingMedStønadstype
+  ) => void;
 }
 
 const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
@@ -28,6 +38,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   dokumentasjonsbehovTilInnsending,
   settÅpenEttersendingFelt,
   åpenEttersendingFelt,
+  settÅpenEttersendingMedStønadstype,
+  åpenEttersendingMedStønadstype,
 }: IVedleggsopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
@@ -59,6 +71,22 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     settÅpenEttersendingFelt({
       ...åpenEttersendingFelt,
       vedlegg: [...åpenEttersendingFelt.vedlegg, vedlegg],
+    });
+    settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
+  };
+
+  const leggTilVedleggForÅpenEttersendingMedStønadstype = (
+    vedlegg: IVedlegg
+  ) => {
+    settÅpenEttersendingMedStønadstype({
+      ...åpenEttersendingMedStønadstype,
+      åpenEttersending: {
+        ...åpenEttersendingMedStønadstype.åpenEttersending,
+        vedlegg: [
+          ...åpenEttersendingMedStønadstype.åpenEttersending.vedlegg,
+          vedlegg,
+        ],
+      },
     });
     settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
   };
@@ -103,6 +131,23 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     );
   };
 
+  const slettVedleggForÅpenEttersendingMedStønadstype = (vedlegg: IVedlegg) => {
+    settÅpenEttersendingMedStønadstype({
+      ...åpenEttersendingMedStønadstype,
+      åpenEttersending: {
+        ...åpenEttersendingMedStønadstype.åpenEttersending,
+        vedlegg: åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.filter(
+          (vedleggEttersending) => vedlegg.id != vedleggEttersending.id
+        ),
+      },
+    });
+    settVedleggTilOpplasting(
+      vedleggTilOpplasting.filter(
+        (vedleggTilOpplasting) => vedleggTilOpplasting.id != vedlegg.id
+      )
+    );
+  };
+
   const filtrerVedleggPåBehov = () => {
     if (dokumentasjonsbehovId) {
       dokumentasjonsbehovTilInnsending.forEach((behov) => {
@@ -127,9 +172,10 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 
   //
   const slettVedlegg = (vedlegg: IVedlegg) => {
-    if (dokumentasjonsbehovId) {
+    if (dokumentasjonsbehovId)
       slettFilTilOpplasting(vedlegg.id, dokumentasjonsbehovId);
-    } else slettVedleggForÅpenEttersending(vedlegg);
+    else if (åpenEttersendingFelt) slettVedleggForÅpenEttersending(vedlegg);
+    else slettVedleggForÅpenEttersendingMedStønadstype(vedlegg);
   };
 
   const lastOppVedlegg = async (fil) => {
@@ -144,11 +190,9 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       størrelse: fil.size,
       tidspunkt: dagensDatoMedTidspunktStreng,
     };
-    if (dokumentasjonsbehovId) {
-      leggTilFilTilOpplasting(vedlegg);
-    } else {
-      leggTilVedleggForÅpenEttersending(vedlegg);
-    }
+    if (dokumentasjonsbehovId) leggTilFilTilOpplasting(vedlegg);
+    else if (åpenEttersendingFelt) leggTilVedleggForÅpenEttersending(vedlegg);
+    else leggTilVedleggForÅpenEttersendingMedStønadstype(vedlegg);
     settLaster(false);
   };
 

@@ -5,7 +5,10 @@ import Alertstripe from 'nav-frontend-alertstriper';
 import { Select, Textarea } from 'nav-frontend-skjema';
 import styled from 'styled-components/macro';
 import { StønadType, DokumentType } from '../typer/stønad';
-import { IÅpenEttersending } from '../typer/søknadsdata';
+import {
+  IÅpenEttersending,
+  IÅpenEttersendingMedStønadstype,
+} from '../typer/søknadsdata';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -25,12 +28,18 @@ interface IProps {
   visStønadsType?: boolean;
   åpenEttersendingFelt?: IÅpenEttersending;
   settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
+  åpenEttersendingMedStønadstype?: IÅpenEttersendingMedStønadstype;
+  settÅpenEttersendingMedStønadstype?: (
+    dokumentasjonsbehov: IÅpenEttersendingMedStønadstype
+  ) => void;
 }
 
 const ÅpenEttersending = ({
   visStønadsType,
   åpenEttersendingFelt,
   settÅpenEttersendingFelt,
+  åpenEttersendingMedStønadstype,
+  settÅpenEttersendingMedStønadstype,
 }: IProps) => {
   const [stønadsType, settStønadsType] = useState<string>('');
   const [dokumentType, settDokumentType] = useState<string>('');
@@ -63,6 +72,8 @@ const ÅpenEttersending = ({
       <Vedleggsopplaster
         settÅpenEttersendingFelt={settÅpenEttersendingFelt}
         åpenEttersendingFelt={åpenEttersendingFelt}
+        settÅpenEttersendingMedStønadstype={settÅpenEttersendingMedStønadstype}
+        åpenEttersendingMedStønadstype={åpenEttersendingMedStønadstype}
       />
       {visStønadsType && (
         <StyledSelect

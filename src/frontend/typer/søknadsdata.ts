@@ -22,3 +22,8 @@ export interface IÅpenEttersending {
   dokumenttype: string;
   vedlegg: IVedlegg[];
 }
+
+export interface IÅpenEttersendingMedStønadstype {
+  stønadstype: string;
+  åpenEttersending: IÅpenEttersending;
+}
