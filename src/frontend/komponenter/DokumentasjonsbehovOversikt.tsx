@@ -40,7 +40,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
       fnr: context.søker.fnr,
       søknadMedVedlegg: søknadMedVedlegg,
     };
-    // sjekk gjerne den andre sjekken heh
+
     if (
       åpenEttersendingFelt.vedlegg.length > 0 ||
       dokumentasjonsbehovTilInnsending
