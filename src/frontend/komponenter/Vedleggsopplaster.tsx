@@ -6,7 +6,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Modal from 'nav-frontend-modal';
-import { IVedlegg } from '../typer/søknadsdata';
+import { IVedlegg, IÅpenEttersending } from '../typer/søknadsdata';
 import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { sendVedleggTilMellomlager } from '../api-service';
@@ -18,12 +18,16 @@ interface IVedleggsopplaster {
   settDokumentasjonsbehovTilInnsending?: (
     dokumentasjonsbehov: IDokumentasjonsbehov[]
   ) => void;
+  åpenEttersendingFelt?: IÅpenEttersending;
+  settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
 }
 
 const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   dokumentasjonsbehovId,
   settDokumentasjonsbehovTilInnsending,
   dokumentasjonsbehovTilInnsending,
+  settÅpenEttersendingFelt,
+  åpenEttersendingFelt,
 }: IVedleggsopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
@@ -49,6 +53,14 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       }
     );
     settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
+  };
+
+  const leggTilVedleggForÅpenEttersending = (vedlegg: IVedlegg) => {
+    settÅpenEttersendingFelt({
+      ...åpenEttersendingFelt,
+      vedlegg: [...åpenEttersendingFelt.vedlegg, vedlegg],
+    });
+    settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
   };
 
   const slettFilTilOpplasting = (
@@ -77,6 +89,20 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
   };
 
+  const slettVedleggForÅpenEttersending = (vedlegg: IVedlegg) => {
+    settÅpenEttersendingFelt({
+      ...åpenEttersendingFelt,
+      vedlegg: åpenEttersendingFelt.vedlegg.filter(
+        (vedleggTilOpplasting) => vedleggTilOpplasting.id != vedlegg.id
+      ),
+    });
+    settVedleggTilOpplasting(
+      vedleggTilOpplasting.filter(
+        (vedleggTilOpplasting) => vedleggTilOpplasting.id != vedlegg.id
+      )
+    );
+  };
+
   const filtrerVedleggPåBehov = () => {
     if (dokumentasjonsbehovId) {
       dokumentasjonsbehovTilInnsending.forEach((behov) => {
@@ -103,12 +129,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   const slettVedlegg = (vedlegg: IVedlegg) => {
     if (dokumentasjonsbehovId) {
       slettFilTilOpplasting(vedlegg.id, dokumentasjonsbehovId);
-    } else
-      settVedleggTilOpplasting(
-        vedleggTilOpplasting.filter(
-          (vedleggIListe) => vedleggIListe.id != vedlegg.id
-        )
-      );
+    } else slettVedleggForÅpenEttersending(vedlegg);
   };
 
   const lastOppVedlegg = async (fil) => {
@@ -126,7 +147,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     if (dokumentasjonsbehovId) {
       leggTilFilTilOpplasting(vedlegg);
     } else {
-      settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
+      leggTilVedleggForÅpenEttersending(vedlegg);
     }
     settLaster(false);
   };

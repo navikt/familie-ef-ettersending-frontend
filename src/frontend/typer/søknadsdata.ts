@@ -16,3 +16,9 @@ export interface IVedlegg {
   størrelse: number;
   tidspunkt: string;
 }
+
+export interface IÅpenEttersending {
+  beskrivelse: string;
+  dokumenttype: string;
+  vedlegg: IVedlegg[];
+}

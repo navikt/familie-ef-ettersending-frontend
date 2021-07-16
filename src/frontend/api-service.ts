@@ -41,18 +41,6 @@ export const hentDokumentasjonsbehov = (): Promise<ISøknadsbehov[]> => {
     .then((response: { data: ISøknadsbehov[] }) => response.data);
 };
 
-// export const hentDokumentasjonsbehov = (personIdent) => {
-//   return axios
-//     .post(
-//       `${environment().apiUrl}/api/dokumentasjonsbehov/person`,
-//       { ident: personIdent },
-//       {
-//         withCredentials: true,
-//       }
-//     )
-//     .then((response: { data: ISøknadsbehov[] }) => response.data);
-// };
-
 export const sendVedleggTilMellomlager = (formData): Promise<string> => {
   return axios
     .post(`${environment().dokumentUrl}`, formData, {

@@ -3,7 +3,11 @@ import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
-import { ISøknadsbehov, IVedlegg } from '../typer/søknadsdata';
+import {
+  ISøknadsbehov,
+  IVedlegg,
+  IÅpenEttersending,
+} from '../typer/søknadsdata';
 import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
@@ -23,8 +27,12 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
     settDokumentasjonsbehovTilInnsending,
   ] = useState<IDokumentasjonsbehov[]>();
 
-  // se på dette. prøv å hent selve feltet fra åpenettersending
-  const [åpenEttersendingFelt, settÅpenEttersendingFelt] = useState<any[]>();
+  const [åpenEttersendingFelt, settÅpenEttersendingFelt] =
+    useState<IÅpenEttersending>({
+      beskrivelse: '',
+      dokumenttype: '',
+      vedlegg: [],
+    });
 
   const context = useApp();
 
@@ -80,7 +88,10 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
             );
           })}
         {/* deal med denne */}
-        <ÅpenEttersending />
+        <ÅpenEttersending
+          settÅpenEttersendingFelt={settÅpenEttersendingFelt}
+          åpenEttersendingFelt={åpenEttersendingFelt}
+        />
       </div>
       <div>
         <Hovedknapp onClick={() => lagOgSendEttersending()}>

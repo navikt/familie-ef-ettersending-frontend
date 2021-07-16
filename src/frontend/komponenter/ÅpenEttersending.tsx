@@ -5,6 +5,7 @@ import Alertstripe from 'nav-frontend-alertstriper';
 import { Select, Textarea } from 'nav-frontend-skjema';
 import styled from 'styled-components/macro';
 import { StønadType, DokumentType } from '../typer/stønad';
+import { IÅpenEttersending } from '../typer/søknadsdata';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -20,14 +21,36 @@ const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
   }
 `;
 
-interface IÅpenEttersending {
+interface IProps {
   visStønadsType?: boolean;
+  åpenEttersendingFelt?: IÅpenEttersending;
+  settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
 }
 
-const ÅpenEttersending = ({ visStønadsType }: IÅpenEttersending) => {
+const ÅpenEttersending = ({
+  visStønadsType,
+  åpenEttersendingFelt,
+  settÅpenEttersendingFelt,
+}: IProps) => {
   const [stønadsType, settStønadsType] = useState<string>('');
   const [dokumentType, settDokumentType] = useState<string>('');
-  const [kommentar, settKommentar] = useState<string>('');
+  const [beskrivelse, settBeskrivelse] = useState<string>('');
+
+  const oppdaterBeskrivelse = (beskrivelse: string) => {
+    settBeskrivelse(beskrivelse);
+    settÅpenEttersendingFelt({
+      ...åpenEttersendingFelt,
+      beskrivelse: beskrivelse,
+    });
+  };
+
+  const oppdaterDokumentType = (dokumentType: string) => {
+    settDokumentType(dokumentType);
+    settÅpenEttersendingFelt({
+      ...åpenEttersendingFelt,
+      dokumenttype: dokumentType,
+    });
+  };
 
   return (
     <StyledEkspanderbartpanel
@@ -37,7 +60,10 @@ const ÅpenEttersending = ({ visStønadsType }: IÅpenEttersending) => {
         </Alertstripe>
       }
     >
-      <Vedleggsopplaster />
+      <Vedleggsopplaster
+        settÅpenEttersendingFelt={settÅpenEttersendingFelt}
+        åpenEttersendingFelt={åpenEttersendingFelt}
+      />
       {visStønadsType && (
         <StyledSelect
           label="Hvilken stønadstype gjelder innsendingen for?"
@@ -57,7 +83,7 @@ const ÅpenEttersending = ({ visStønadsType }: IÅpenEttersending) => {
       )}
       <StyledSelect
         label="Hvilken dokumenttype gjelder innsendingen for?"
-        onChange={(event) => settDokumentType(event.target.value)}
+        onChange={(event) => oppdaterDokumentType(event.target.value)}
       >
         <option value="">Velg dokumenttype</option>
         {Object.keys(DokumentType).map((dokumentType) => (
@@ -69,8 +95,8 @@ const ÅpenEttersending = ({ visStønadsType }: IÅpenEttersending) => {
       </StyledSelect>
       <StyledTextarea
         label="Kommentar til ettersendingen"
-        value={kommentar}
-        onChange={(event) => settKommentar(event.target.value)}
+        value={beskrivelse}
+        onChange={(event) => oppdaterBeskrivelse(event.target.value)}
       />
     </StyledEkspanderbartpanel>
   );
