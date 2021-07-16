@@ -19,6 +19,7 @@ const Søknadsoversikt = () => {
   useEffect(() => {
     const hentOgSettSøknader = async () => {
       const søknadsliste = await hentDokumentasjonsbehov();
+      console.log(søknadsliste);
 
       settSøknader(søknadsliste);
       settLasterverdi(false);
@@ -30,11 +31,12 @@ const Søknadsoversikt = () => {
 
   return (
     <>
-      {/* Hent inn komponent fra Sigmund */}
+      {/* Hent inn komponent fra Sigmund. Skal åpen innsending uten tilknytning sendes herfra??? */}
       <div>
         <ÅpenEttersending />
         <Hovedknapp>Send inn</Hovedknapp>
       </div>
+      {/* komponent fra sigmund slutt */}
       {søknader.map((søknad) => {
         return (
           <>
