@@ -8,8 +8,6 @@ import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 
-//Herfra skal søknadsdataen for post request ettersending lages og sendes (fordi vi her har en søknadsid + dokumentasjonsbehov og liste med dokumenter per)
-
 interface IProps {
   søknad: ISøknadsbehov;
 }
@@ -42,7 +40,14 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
       fnr: context.søker.fnr,
       søknadMedVedlegg: søknadMedVedlegg,
     };
-    sendEttersending(ettersendingsdata);
+    // sjekk gjerne den andre sjekken heh
+    if (
+      åpenEttersendingFelt.vedlegg.length > 0 ||
+      dokumentasjonsbehovTilInnsending
+        .map((behov) => behov.opplastedeVedlegg.length)
+        .reduce((total, verdi) => total + verdi) > 0
+    )
+      sendEttersending(ettersendingsdata);
   };
 
   useEffect(() => {

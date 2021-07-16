@@ -1,6 +1,5 @@
 import axios from 'axios';
 import environment from '../backend/environment';
-import { IDokumentasjonsbehovListe } from './typer/dokumentasjonsbehov';
 import { IPersoninfo } from './typer/søker';
 import { ISøknadsbehov } from './typer/søknadsdata';
 

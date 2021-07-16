@@ -43,7 +43,8 @@ const Søknadsoversikt = () => {
       fnr: context.søker.fnr,
       åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
     };
-    sendEttersending(ettersending);
+    if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0)
+      sendEttersending(ettersending);
   };
 
   if (laster) return <NavFrontendSpinner />;
