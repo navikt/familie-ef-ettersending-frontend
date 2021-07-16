@@ -3,11 +3,7 @@ import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
-import {
-  ISøknadsbehov,
-  IVedlegg,
-  IÅpenEttersending,
-} from '../typer/søknadsdata';
+import { ISøknadsbehov, IÅpenEttersending } from '../typer/søknadsdata';
 import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
@@ -46,7 +42,6 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
       fnr: context.søker.fnr,
       søknadMedVedlegg: søknadMedVedlegg,
     };
-    // sjekk at "sendEttersending" peker på riktig sted og at formatet er rett
     sendEttersending(ettersendingsdata);
   };
 

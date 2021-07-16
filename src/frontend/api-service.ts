@@ -17,14 +17,6 @@ export const sendEttersending = (ettersendingsdata): Promise<string> => {
     .then((response) => response.data);
 };
 
-export const sendÅpenEttersending = (ettersendingsdata): Promise<string> => {
-  return axios
-    .post(`${environment().apiUrl}/api/åpen-ettersending`, ettersendingsdata, {
-      withCredentials: true,
-    })
-    .then((response) => response.data);
-};
-
 export const hentPersoninfo = (): Promise<IPersoninfo> => {
   return axios
     .get(`${environment().apiUrl}/api/oppslag/sokerinfo`, {

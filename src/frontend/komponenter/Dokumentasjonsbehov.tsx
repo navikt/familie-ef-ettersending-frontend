@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
