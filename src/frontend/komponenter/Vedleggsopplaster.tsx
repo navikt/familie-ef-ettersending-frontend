@@ -38,24 +38,25 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     []
   );
   const [laster, settLaster] = useState<boolean>(false);
-  const context = useApp();
 
   useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåBehov), []);
 
   //OK foreløpig. Må endre til å sjekke på søknadsid ikke bare id fra dokumentasjonsbehov sånn at jeg vet at jeg legger til for riktig søknad
   const leggTilFilTilOpplasting = (vedlegg: IVedlegg) => {
-    const nyListe = dokumentasjonsbehovTilInnsending.map((behov) => {
-      if (behov.id == dokumentasjonsbehovId) {
-        settVedleggTilOpplasting([...behov.opplastedeVedlegg, vedlegg]);
-        return {
-          ...behov,
-          opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
-        };
-      } else {
-        return behov;
+    const oppdatertDokumentasjonsbehov = dokumentasjonsbehovTilInnsending.map(
+      (behov) => {
+        if (behov.id == dokumentasjonsbehovId) {
+          settVedleggTilOpplasting([...behov.opplastedeVedlegg, vedlegg]);
+          return {
+            ...behov,
+            opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
+          };
+        } else {
+          return behov;
+        }
       }
-    });
-    settDokumentasjonsbehovTilInnsending(nyListe);
+    );
+    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
   };
 
   //OK foreløpig. Må endre til å sjekke på søknadsid ikke bare id fra dokumentasjonsbehov sånn at jeg vet at jeg fjerner fra riktig søknad
@@ -63,22 +64,26 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     dokumentId: string,
     dokumentasjonsbehovId: string
   ) => {
-    const nyListe = dokumentasjonsbehovTilInnsending.map((behov) => {
-      if (behov.id == dokumentasjonsbehovId) {
-        settVedleggTilOpplasting(
-          behov.opplastedeVedlegg.filter((vedlegg) => vedlegg.id !== dokumentId)
-        );
-        return {
-          ...behov,
-          opplastedeVedlegg: behov.opplastedeVedlegg.filter(
-            (vedlegg) => vedlegg.id !== dokumentId
-          ),
-        };
-      } else {
-        return behov;
+    const oppdatertDokumentasjonsbehov = dokumentasjonsbehovTilInnsending.map(
+      (behov) => {
+        if (behov.id == dokumentasjonsbehovId) {
+          settVedleggTilOpplasting(
+            behov.opplastedeVedlegg.filter(
+              (vedlegg) => vedlegg.id !== dokumentId
+            )
+          );
+          return {
+            ...behov,
+            opplastedeVedlegg: behov.opplastedeVedlegg.filter(
+              (vedlegg) => vedlegg.id !== dokumentId
+            ),
+          };
+        } else {
+          return behov;
+        }
       }
-    });
-    settDokumentasjonsbehovTilInnsending(nyListe);
+    );
+    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
   };
 
   //OK?

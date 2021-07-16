@@ -37,7 +37,19 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
   const oppdaterHarSendtInn = () => {
     const invertedChecked = !checked;
     settCheckboxverdi(invertedChecked);
-    context.oppdaterHarSendtInn(invertedChecked, dokumentasjonsbehov.id);
+    const oppdatertDokumentasjonsbehov = dokumentasjonsbehovTilInnsending.map(
+      (behov) => {
+        if (behov.id == dokumentasjonsbehov.id) {
+          return {
+            ...behov,
+            harSendtInn: invertedChecked,
+          };
+        } else {
+          return behov;
+        }
+      }
+    );
+    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
   };
 
   return (

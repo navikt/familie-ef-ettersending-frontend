@@ -14,6 +14,8 @@ import {
 import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 
+//Herfra skal søknadsdataen for post request ettersending lages
+
 interface IProps {
   søknad: ISøknadsbehov;
 }
@@ -58,16 +60,15 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
   useEffect(() => {
     settDokumentasjonsbehov(søknad.dokumentasjonsbehov.dokumentasjonsbehov);
 
-    const nyListe = søknad.dokumentasjonsbehov.dokumentasjonsbehov.map(
-      (behov) => {
+    const oppdatertDokumentasjonsbehov =
+      søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
         return {
           ...behov,
           opplastedeVedlegg: [],
         };
-      }
-    );
+      });
 
-    settDokumentasjonsbehovTilInnsending(nyListe);
+    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
     settLasterverdi(false);
   }, [context.søker]);
 
