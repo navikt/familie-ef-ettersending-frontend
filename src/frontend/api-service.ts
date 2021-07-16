@@ -33,17 +33,25 @@ export const hentPersoninfo = (): Promise<IPersoninfo> => {
     .then((response: { data: IPersoninfo }) => response.data);
 };
 
-export const hentDokumentasjonsbehov = (personIdent) => {
+export const hentDokumentasjonsbehov = (): Promise<ISøknadsbehov[]> => {
   return axios
-    .post(
-      `${environment().apiUrl}/api/dokumentasjonsbehov/person`,
-      { ident: personIdent },
-      {
-        withCredentials: true,
-      }
-    )
+    .get(`${environment().apiUrl}/api/dokumentasjonsbehov/person`, {
+      withCredentials: true,
+    })
     .then((response: { data: ISøknadsbehov[] }) => response.data);
 };
+
+// export const hentDokumentasjonsbehov = (personIdent) => {
+//   return axios
+//     .post(
+//       `${environment().apiUrl}/api/dokumentasjonsbehov/person`,
+//       { ident: personIdent },
+//       {
+//         withCredentials: true,
+//       }
+//     )
+//     .then((response: { data: ISøknadsbehov[] }) => response.data);
+// };
 
 export const sendVedleggTilMellomlager = (formData): Promise<string> => {
   return axios

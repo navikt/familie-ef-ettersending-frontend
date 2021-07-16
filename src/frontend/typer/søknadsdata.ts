@@ -1,10 +1,13 @@
-import { IDokumentasjonsbehov } from './dokumentasjonsbehov';
+import {
+  IDokumentasjonsbehov,
+  IDokumentasjonsbehovWrapper,
+} from './dokumentasjonsbehov';
 
 export interface ISøknadsbehov {
-  dokumentasjonsbehov: Array<IDokumentasjonsbehov>;
-  innsendingstidspunkt: any;
-  personIdent: string;
-  søknadType: string;
+  dokumentasjonsbehov: IDokumentasjonsbehovWrapper;
+  søknadDato: any;
+  stønadType: string;
+  søknadId: string;
 }
 
 export interface IVedlegg {

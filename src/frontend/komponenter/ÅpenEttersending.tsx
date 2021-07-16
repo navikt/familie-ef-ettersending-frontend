@@ -14,7 +14,8 @@ const ÅpenEttersending = () => {
         </Alertstripe>
       }
     >
-      <Vedleggsopplaster />
+      {/* TODO: må få denne til å fungere */}
+      {/* <Vedleggsopplaster /> */}
     </Ekspanderbartpanel>
   );
 };

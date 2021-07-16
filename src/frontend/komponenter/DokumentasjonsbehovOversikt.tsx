@@ -29,44 +29,43 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
 
   const context = useApp();
 
-  // const lagOgSendEttersending = () => {
+  const lagOgSendEttersending = () => {
+    //   // gjøres for hver eksterne opplastning hvordan funker det og hva er de ulike feltene? hvis det ikke er noe data vil det være ingen slike felter. Må også hente denne dataen.
+    //   const åpenEttersendingFelt = {
+    //     beskrivelse: 'få dette',
+    //     dokumenttype: 'skaff dette',
+    //     vedlegg: 'fil'
+    //   }
+    //   // if (erDokumentasjonsbehovOppdatert()) {
+    //   const søknadMedVedlegg = {
+    //     søknadsId: 'hent dette når det fikses',
+    //     dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
+    //     åpenEttersending: åpenEttersendingFelt
+    //   }
+    //   const ettersendingsdata = {
+    //     fnr: context.søker.fnr,
+    //     søknadMedVedlegg: søknadMedVedlegg,
+    //   }
+    //   //denne må endres til å ta imot en ny type ettersending
+    //   sendEttersending(ettersendingsdata);
+  };
 
-  //   // gjøres for hver eksterne opplastning hvordan funker det og hva er de ulike feltene? hvis det ikke er noe data vil det være ingen slike felter. Må også hente denne dataen.
-  //   const åpenEttersendingFelt = {
-  //     beskrivelse: 'få dette',
-  //     dokumenttype: 'skaff dette',
-  //     vedlegg: 'fil'
-  //   }
-  //   // if (erDokumentasjonsbehovOppdatert()) {
-  //   const søknadMedVedlegg = {
-  //     søknadsId: 'hent dette når det fikses',
-  //     dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
-  //     åpenEttersending: åpenEttersendingFelt
-
-  //   }
-
-  //   const ettersendingsdata = {
-  //     fnr: context.søker.fnr,
-  //     søknadMedVedlegg: søknadMedVedlegg,
-  //   }
-  //   //denne må endres til å ta imot en ny type ettersending
-  //   sendEttersending(ettersendingsdata);
-  // }
-
-  // når man legger til ting i behovYilInnsending reagerer denne to ganger, men for slett kun en. Må ta en titt på det å legge til
+  // når man legger til ting i behovTilInnsending reagerer denne to ganger, men for slett kun en. Må ta en titt på det å legge til
   useEffect(() => {
     console.log(dokumentasjonsbehovTilInnsending);
   }, [dokumentasjonsbehovTilInnsending]);
 
   useEffect(() => {
-    settDokumentasjonsbehov(søknad.dokumentasjonsbehov);
+    settDokumentasjonsbehov(søknad.dokumentasjonsbehov.dokumentasjonsbehov);
 
-    const nyListe = søknad.dokumentasjonsbehov.map((behov) => {
-      return {
-        ...behov,
-        opplastedeVedlegg: [],
-      };
-    });
+    const nyListe = søknad.dokumentasjonsbehov.dokumentasjonsbehov.map(
+      (behov) => {
+        return {
+          ...behov,
+          opplastedeVedlegg: [],
+        };
+      }
+    );
 
     settDokumentasjonsbehovTilInnsending(nyListe);
     settLasterverdi(false);
@@ -97,8 +96,9 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         <ÅpenEttersending />
       </div>
       <div>
-        {/* <Hovedknapp onClick={() => lagOgSendEttersending()}>Send inn</Hovedknapp> */}
-        <Hovedknapp>Send inn</Hovedknapp>
+        <Hovedknapp onClick={() => lagOgSendEttersending()}>
+          Send inn
+        </Hovedknapp>
       </div>
     </div>
   );

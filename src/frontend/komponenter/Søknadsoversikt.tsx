@@ -18,12 +18,9 @@ const Søknadsoversikt = () => {
 
   useEffect(() => {
     const hentOgSettSøknader = async () => {
-      const søknadsliste = await hentDokumentasjonsbehov(context.søker.fnr);
+      const søknadsliste = await hentDokumentasjonsbehov();
 
       settSøknader(søknadsliste);
-
-      console.log('søknadsliste:', søknadsliste);
-
       settLasterverdi(false);
     };
     if (context.søker != null) hentOgSettSøknader();
@@ -42,8 +39,7 @@ const Søknadsoversikt = () => {
         return (
           <>
             <h3>
-              Søknad om {søknad.søknadType} sendt inn{' '}
-              {søknad.innsendingstidspunkt}
+              Søknad om {søknad.stønadType} sendt inn {søknad.søknadDato}
             </h3>
             <DokumentasjonsbehovOversikt søknad={søknad} />
           </>

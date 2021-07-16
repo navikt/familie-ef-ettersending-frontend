@@ -11,3 +11,7 @@ export interface IDokumentasjonsbehov {
   harSendtInn: boolean;
   opplastedeVedlegg: Array<IVedlegg>;
 }
+
+export interface IDokumentasjonsbehovWrapper {
+  dokumentasjonsbehov: Array<IDokumentasjonsbehov>;
+}
