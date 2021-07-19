@@ -12,6 +12,13 @@ import {
 } from '../typer/søknadsdata';
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import styled from 'styled-components/macro';
+
+const SoknadContainer = styled.div`
+  margin-bottom: 5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid lightgray;
+`;
 
 const Søknadsoversikt = () => {
   const [laster, settLasterverdi] = useState(true);
@@ -51,7 +58,7 @@ const Søknadsoversikt = () => {
 
   return (
     <>
-      <div>
+      <SoknadContainer>
         <ÅpenEttersending
           visStønadsType={true}
           åpenEttersendingMedStønadstype={åpenEttersendingMedStønadstype}
@@ -62,15 +69,15 @@ const Søknadsoversikt = () => {
         <Hovedknapp onClick={() => sendÅpenEttersendingMedStønadstype()}>
           Send inn
         </Hovedknapp>
-      </div>
-      {søknader.map((søknad) => {
+      </SoknadContainer>
+      {søknader.map((søknad, index) => {
         return (
-          <>
+          <SoknadContainer key={index}>
             <h3>
               Søknad om {søknad.stønadType} sendt inn {søknad.søknadDato}
             </h3>
             <DokumentasjonsbehovOversikt søknad={søknad} />
-          </>
+          </SoknadContainer>
         );
       })}
     </>
