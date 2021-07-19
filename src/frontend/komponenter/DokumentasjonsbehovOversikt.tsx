@@ -61,8 +61,9 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
           await sendEttersending(ettersendingsdata);
         } catch {
           settVisNoeGikkGalt(true);
+        } finally {
+          settSenderEttersending(false);
         }
-        settSenderEttersending(false);
       }
     }
   };
