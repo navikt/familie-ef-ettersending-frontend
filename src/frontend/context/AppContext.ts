@@ -7,19 +7,11 @@ import {
 import { hentPersoninfo } from '../api-service';
 import { ISøker } from '../typer/søker';
 import { IVedlegg } from '../typer/søknadsdata';
-import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
-  const [dokumentasjonsbehov, settDokumentasjonsbehov] = useState<
-    IDokumentasjonsbehov[]
-  >([]);
-  const [
-    dokumentasjonsbehovTilInnsending,
-    settDokumentasjonsbehovTilInnsending,
-  ] = useState<IDokumentasjonsbehov[]>([]);
   const [søker, settSøker] = useState<ISøker>(null);
   const [åpenEttersendingVedlegg, settÅpenEttersendingVedlegg] = useState<
     IVedlegg[]
@@ -28,62 +20,6 @@ const [AppProvider, useApp] = createUseContext(() => {
   useEffect(() => {
     verifiserAtSøkerErAutentisert(setInnloggetStatus);
   }, []);
-
-  const slettVedlegg = (dokumentId: string, behovId: string) => {
-    const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehovTilInnsending.map(
-      (behov) => {
-        if (behov.id === behovId) {
-          return {
-            ...behov,
-            opplastedeVedlegg: behov.opplastedeVedlegg.filter(
-              (vedlegg) => vedlegg.id !== dokumentId
-            ),
-          };
-        } else {
-          return behov;
-        }
-      }
-    );
-    settDokumentasjonsbehovTilInnsending(dokumentasjonsbehovMedVedlegg);
-  };
-
-  const leggTilVedlegg = (vedlegg: IVedlegg, behovId: string) => {
-    const dokumentasjonsbehovMedVedlegg = dokumentasjonsbehovTilInnsending.map(
-      (behov) => {
-        if (behov.id === behovId) {
-          return {
-            ...behov,
-            opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
-          };
-        } else {
-          return behov;
-        }
-      }
-    );
-    settDokumentasjonsbehovTilInnsending(dokumentasjonsbehovMedVedlegg);
-  };
-
-  const leggTilVedleggForÅpenEttersending = (vedlegg: IVedlegg) => {
-    settÅpenEttersendingVedlegg([...åpenEttersendingVedlegg, vedlegg]);
-  };
-
-  const slettVedleggForÅpenEttersending = (vedleggId: string) => {
-    settÅpenEttersendingVedlegg(
-      åpenEttersendingVedlegg.filter((vedlegg) => vedlegg.id !== vedleggId)
-    );
-  };
-
-  const oppdaterHarSendtInn = (harSendtInn: boolean, behovId: string) => {
-    const dokumentasjonsbehovMedHarSendtInn =
-      dokumentasjonsbehovTilInnsending.map((behov) => {
-        if (behov.id === behovId) {
-          return { ...behov, harSendtInn: harSendtInn };
-        } else {
-          return behov;
-        }
-      });
-    settDokumentasjonsbehovTilInnsending(dokumentasjonsbehovMedHarSendtInn);
-  };
 
   useEffect(() => {
     const hentOgSettSøker = async () => {
@@ -96,17 +32,8 @@ const [AppProvider, useApp] = createUseContext(() => {
   }, [innloggetStatus]);
 
   return {
-    oppdaterHarSendtInn,
-    slettVedlegg,
-    settDokumentasjonsbehov,
-    settDokumentasjonsbehovTilInnsending,
-    leggTilVedlegg,
-    leggTilVedleggForÅpenEttersending,
-    slettVedleggForÅpenEttersending,
     innloggetStatus,
     søker,
-    dokumentasjonsbehov,
-    dokumentasjonsbehovTilInnsending,
     åpenEttersendingVedlegg,
   };
 });

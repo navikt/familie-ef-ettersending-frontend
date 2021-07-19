@@ -11,10 +11,16 @@ import { useApp } from '../context/AppContext';
 
 interface Props {
   dokumentasjonsbehov: IDokumentasjonsbehov;
+  dokumentasjonsbehovTilInnsending: IDokumentasjonsbehov[];
+  settDokumentasjonsbehovTilInnsending: (
+    dokumentasjonsbehov: IDokumentasjonsbehov[]
+  ) => void;
 }
 
 const Dokumentasjonsbehov: React.FC<Props> = ({
   dokumentasjonsbehov,
+  settDokumentasjonsbehovTilInnsending,
+  dokumentasjonsbehovTilInnsending,
 }: Props) => {
   const [checked, settCheckboxverdi] = useState<boolean>(
     dokumentasjonsbehov.harSendtInn
@@ -31,7 +37,19 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
   const oppdaterHarSendtInn = () => {
     const invertedChecked = !checked;
     settCheckboxverdi(invertedChecked);
-    context.oppdaterHarSendtInn(invertedChecked, dokumentasjonsbehov.id);
+    const oppdatertDokumentasjonsbehov = dokumentasjonsbehovTilInnsending.map(
+      (behov) => {
+        if (behov.id == dokumentasjonsbehov.id) {
+          return {
+            ...behov,
+            harSendtInn: invertedChecked,
+          };
+        } else {
+          return behov;
+        }
+      }
+    );
+    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
   };
 
   return (
@@ -54,7 +72,13 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
           />
         </div>
       )}
-      <Vedleggsopplaster dokumentasjonsbehovId={dokumentasjonsbehov.id} />
+      <Vedleggsopplaster
+        dokumentasjonsbehovId={dokumentasjonsbehov.id}
+        dokumentasjonsbehovTilInnsending={dokumentasjonsbehovTilInnsending}
+        settDokumentasjonsbehovTilInnsending={
+          settDokumentasjonsbehovTilInnsending
+        }
+      />
       <Checkbox
         className="leveranseCheckbox"
         onChange={() => oppdaterHarSendtInn()}

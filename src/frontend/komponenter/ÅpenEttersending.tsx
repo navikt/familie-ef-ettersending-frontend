@@ -4,33 +4,77 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { Select, Textarea } from 'nav-frontend-skjema';
 import styled from 'styled-components/macro';
-import { StønadType } from '../typer/stønad';
+import { StønadType, DokumentType } from '../typer/stønad';
+import {
+  IÅpenEttersending,
+  IÅpenEttersendingMedStønadstype,
+} from '../typer/søknadsdata';
 
 const StyledSelect = styled(Select)`
-  margin: 1rem auto;
+  margin-top: 1rem;
 `;
 
 const StyledTextarea = styled(Textarea)`
   width: 100%;
 `;
 
-interface IÅpenEttersending {
+const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
+  .textarea__container {
+    margin-top: 1rem;
+  }
+`;
+
+interface IProps {
   visStønadsType?: boolean;
+  åpenEttersendingFelt?: IÅpenEttersending;
+  settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
+  åpenEttersendingMedStønadstype?: IÅpenEttersendingMedStønadstype;
+  settÅpenEttersendingMedStønadstype?: (
+    dokumentasjonsbehov: IÅpenEttersendingMedStønadstype
+  ) => void;
 }
 
-const ÅpenEttersending = ({ visStønadsType }: IÅpenEttersending) => {
+const ÅpenEttersending = ({
+  visStønadsType,
+  åpenEttersendingFelt,
+  settÅpenEttersendingFelt,
+  åpenEttersendingMedStønadstype,
+  settÅpenEttersendingMedStønadstype,
+}: IProps) => {
   const [stønadsType, settStønadsType] = useState<string>('');
-  const [kommentar, settKommentar] = useState<string>('');
+  const [dokumentType, settDokumentType] = useState<string>('');
+  const [beskrivelse, settBeskrivelse] = useState<string>('');
+
+  const oppdaterBeskrivelse = (beskrivelse: string) => {
+    settBeskrivelse(beskrivelse);
+    settÅpenEttersendingFelt({
+      ...åpenEttersendingFelt,
+      beskrivelse: beskrivelse,
+    });
+  };
+
+  const oppdaterDokumentType = (dokumentType: string) => {
+    settDokumentType(dokumentType);
+    settÅpenEttersendingFelt({
+      ...åpenEttersendingFelt,
+      dokumenttype: dokumentType,
+    });
+  };
 
   return (
-    <Ekspanderbartpanel
+    <StyledEkspanderbartpanel
       tittel={
         <Alertstripe type="info" form="inline">
           Åpen ettersending
         </Alertstripe>
       }
     >
-      <Vedleggsopplaster />
+      <Vedleggsopplaster
+        settÅpenEttersendingFelt={settÅpenEttersendingFelt}
+        åpenEttersendingFelt={åpenEttersendingFelt}
+        settÅpenEttersendingMedStønadstype={settÅpenEttersendingMedStønadstype}
+        åpenEttersendingMedStønadstype={åpenEttersendingMedStønadstype}
+      />
       {visStønadsType && (
         <StyledSelect
           label="Hvilken stønadstype gjelder innsendingen for?"
@@ -48,12 +92,24 @@ const ÅpenEttersending = ({ visStønadsType }: IÅpenEttersending) => {
           </option>
         </StyledSelect>
       )}
+      <StyledSelect
+        label="Hvilken dokumenttype gjelder innsendingen for?"
+        onChange={(event) => oppdaterDokumentType(event.target.value)}
+      >
+        <option value="">Velg dokumenttype</option>
+        {Object.keys(DokumentType).map((dokumentType) => (
+          <option key={dokumentType} value={DokumentType[dokumentType]}>
+            {DokumentType[dokumentType]}
+          </option>
+        ))}
+        <option value="Annet">Annet</option>
+      </StyledSelect>
       <StyledTextarea
         label="Kommentar til ettersendingen"
-        value={kommentar}
-        onChange={(event) => settKommentar(event.target.value)}
+        value={beskrivelse}
+        onChange={(event) => oppdaterBeskrivelse(event.target.value)}
       />
-    </Ekspanderbartpanel>
+    </StyledEkspanderbartpanel>
   );
 };
 

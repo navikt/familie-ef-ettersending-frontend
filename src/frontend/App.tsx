@@ -9,6 +9,7 @@ import {
 } from '../shared-utils/autentisering';
 import Veileder from 'nav-frontend-veileder';
 import { FileContent } from '@navikt/ds-icons';
+import Søknadsoversikt from './komponenter/Søknadsoversikt';
 
 const App = () => {
   const context = useApp();
@@ -28,7 +29,7 @@ const App = () => {
           </Veileder>
           <h1>Ettersending av dokumentasjon</h1>
           <p>Her kan du sende inn manglende dokumentasjon til din søknad</p>
-          <DokumentasjonsbehovOversikt />
+          <Søknadsoversikt />
         </div>
       </div>
     );
