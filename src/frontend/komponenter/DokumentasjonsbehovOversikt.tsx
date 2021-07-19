@@ -3,81 +3,79 @@ import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
-import {
-  hentDokumentasjonsbehov,
-  hentPersoninfo,
-  sendEttersending,
-  sendÅpenEttersending,
-} from '../api-service';
+import { ISøknadsbehov, IÅpenEttersending } from '../typer/søknadsdata';
+import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
+import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
+import styled from 'styled-components';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import styled from 'styled-components/macro';
 
 const AlertStripeFeilStyled = styled(AlertStripeFeil)`
-  margin-bottom: 1rem;
+  margin-top: 1rem;
 `;
 
-export const DokumentasjonsbehovOversikt: React.FC = () => {
+interface IProps {
+  søknad: ISøknadsbehov;
+}
+
+export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
   const [laster, settLasterverdi] = useState(true);
-  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState<boolean>(false);
+  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
+    useState<IDokumentasjonsbehov[]>();
+  const [
+    dokumentasjonsbehovTilInnsending,
+    settDokumentasjonsbehovTilInnsending,
+  ] = useState<IDokumentasjonsbehov[]>();
+  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
+
+  const [åpenEttersendingFelt, settÅpenEttersendingFelt] =
+    useState<IÅpenEttersending>({
+      beskrivelse: '',
+      dokumenttype: '',
+      vedlegg: [],
+    });
 
   const context = useApp();
 
-  const sendInnDokumentasjon = async () => {
-    settVisNoeGikkGalt(false);
-    try {
-      const person = await hentPersoninfo();
+  const lagOgSendEttersending = async () => {
+    const søknadMedVedlegg = {
+      søknadsId: søknad.søknadId,
+      dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
+      åpenEttersending: åpenEttersendingFelt,
+    };
+    const ettersendingsdata = {
+      fnr: context.søker.fnr,
+      søknadMedVedlegg: søknadMedVedlegg,
+    };
 
-      if (erDokumentasjonsbehovOppdatert()) {
-        const ettersendingsdata = {
-          person: {
-            søker: person.søker,
-            barn: [], //TODO må legges in person.barn og fikse typer
-          },
-          dokumentasjonsbehov: context.dokumentasjonsbehovTilInnsending,
-        };
+    if (
+      åpenEttersendingFelt.vedlegg.length > 0 ||
+      dokumentasjonsbehovTilInnsending
+        .map((behov) => behov.opplastedeVedlegg.length)
+        .reduce((total, verdi) => total + verdi) > 0
+    ) {
+      settVisNoeGikkGalt(false);
+      try {
         await sendEttersending(ettersendingsdata);
+      } catch {
+        settVisNoeGikkGalt(true);
       }
-      if (context.åpenEttersendingVedlegg.length > 0) {
-        const ettersendingsdata = {
-          person: {
-            søker: person.søker,
-            barn: [], //TODO må legges in person.barn og fikse typer
-          },
-          opplastedeVedlegg: context.åpenEttersendingVedlegg,
-        };
-        await sendÅpenEttersending(ettersendingsdata);
-      }
-    } catch {
-      settVisNoeGikkGalt(true);
     }
   };
 
-  const erDokumentasjonsbehovOppdatert = () =>
-    context.dokumentasjonsbehovTilInnsending.filter(
-      (behov) => behov.opplastedeVedlegg.length > 0
-    ).length > 0;
   useEffect(() => {
-    const hentOgSettDokumentasjonsbehov = async () => {
-      const dokumentasjonsbehovListe = await hentDokumentasjonsbehov(
-        context.søker.fnr
-      );
+    settDokumentasjonsbehov(søknad.dokumentasjonsbehov.dokumentasjonsbehov);
 
-      dokumentasjonsbehovListe.forEach((dokumentasjonsbehov) => {
-        context.settDokumentasjonsbehov([
-          ...context.dokumentasjonsbehov,
-          ...dokumentasjonsbehov.dokumentasjonsbehov,
-        ]);
-        context.settDokumentasjonsbehovTilInnsending([
-          ...context.dokumentasjonsbehovTilInnsending,
-          ...dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
-            return { ...behov, opplastedeVedlegg: [] };
-          }),
-        ]);
+    const oppdatertDokumentasjonsbehov =
+      søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
+        return {
+          ...behov,
+          opplastedeVedlegg: [],
+        };
       });
-      settLasterverdi(false);
-    };
-    if (context.søker != null) hentOgSettDokumentasjonsbehov();
+
+    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
+    settLasterverdi(false);
   }, [context.søker]);
 
   if (laster) {
@@ -87,21 +85,35 @@ export const DokumentasjonsbehovOversikt: React.FC = () => {
   return (
     <div>
       <div>
-        <ÅpenEttersending />
-        {context.dokumentasjonsbehov.length > 0 &&
-          context.dokumentasjonsbehov.map((behov) => {
+        {dokumentasjonsbehov.length > 0 &&
+          dokumentasjonsbehov.map((behov) => {
             return (
-              <Dokumentasjonsbehov key={behov.id} dokumentasjonsbehov={behov} />
+              <Dokumentasjonsbehov
+                key={behov.id}
+                dokumentasjonsbehov={behov}
+                dokumentasjonsbehovTilInnsending={
+                  dokumentasjonsbehovTilInnsending
+                }
+                settDokumentasjonsbehovTilInnsending={
+                  settDokumentasjonsbehovTilInnsending
+                }
+              />
             );
           })}
+        <ÅpenEttersending
+          settÅpenEttersendingFelt={settÅpenEttersendingFelt}
+          åpenEttersendingFelt={åpenEttersendingFelt}
+        />
       </div>
       <div>
+        <Hovedknapp onClick={() => lagOgSendEttersending()}>
+          Send inn
+        </Hovedknapp>
         {visNoeGikkGalt && (
           <AlertStripeFeilStyled>
             Noe gikk galt, prøv igjen
           </AlertStripeFeilStyled>
         )}
-        <Hovedknapp onClick={() => sendInnDokumentasjon()}>Send inn</Hovedknapp>
       </div>
     </div>
   );

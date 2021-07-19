@@ -1,7 +1,7 @@
 import axios from 'axios';
 import environment from '../backend/environment';
-import { IDokumentasjonsbehovListe } from './typer/dokumentasjonsbehov';
 import { IPersoninfo } from './typer/søker';
+import { ISøknadsbehov } from './typer/søknadsdata';
 
 interface Ifamilievedlegg {
   dokumentId: string;
@@ -16,14 +16,6 @@ export const sendEttersending = (ettersendingsdata): Promise<string> => {
     .then((response) => response.data);
 };
 
-export const sendÅpenEttersending = (ettersendingsdata): Promise<string> => {
-  return axios
-    .post(`${environment().apiUrl}/api/åpen-ettersending`, ettersendingsdata, {
-      withCredentials: true,
-    })
-    .then((response) => response.data);
-};
-
 export const hentPersoninfo = (): Promise<IPersoninfo> => {
   return axios
     .get(`${environment().apiUrl}/api/oppslag/sokerinfo`, {
@@ -32,16 +24,12 @@ export const hentPersoninfo = (): Promise<IPersoninfo> => {
     .then((response: { data: IPersoninfo }) => response.data);
 };
 
-export const hentDokumentasjonsbehov = (personIdent) => {
+export const hentDokumentasjonsbehov = (): Promise<ISøknadsbehov[]> => {
   return axios
-    .post(
-      `${environment().apiUrl}/api/dokumentasjonsbehov/person`,
-      { ident: personIdent },
-      {
-        withCredentials: true,
-      }
-    )
-    .then((response: { data: IDokumentasjonsbehovListe[] }) => response.data);
+    .get(`${environment().apiUrl}/api/dokumentasjonsbehov/person`, {
+      withCredentials: true,
+    })
+    .then((response: { data: ISøknadsbehov[] }) => response.data);
 };
 
 export const sendVedleggTilMellomlager = (formData): Promise<string> => {
