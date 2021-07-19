@@ -33,7 +33,6 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
 
   const lagOgSendEttersending = async () => {
     if (!senderEttersending) {
-      console.log('sender');
       settSenderEttersending(true);
       const søknadMedVedlegg = {
         søknadsId: søknad.søknadId,
@@ -53,6 +52,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
       ) {
         const responsEttersending = await sendEttersending(ettersendingsdata);
         if (responsEttersending) {
+          //kan man teste på denne måten?
           settSenderEttersending(false);
         }
       }

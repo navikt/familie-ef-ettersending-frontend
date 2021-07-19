@@ -25,6 +25,7 @@ const Søknadsoversikt = () => {
         vedlegg: [],
       },
     });
+  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
 
   const context = useApp();
 
@@ -38,13 +39,21 @@ const Søknadsoversikt = () => {
     if (context.søker != null) hentOgSettSøknader();
   }, [context.søker]);
 
-  const sendÅpenEttersendingMedStønadstype = () => {
-    const ettersending = {
-      fnr: context.søker.fnr,
-      åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
-    };
-    if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0)
-      sendEttersending(ettersending);
+  const sendÅpenEttersendingMedStønadstype = async () => {
+    if (!senderEttersending) {
+      settSenderEttersending(true);
+      const ettersending = {
+        fnr: context.søker.fnr,
+        åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
+      };
+      if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0) {
+        const responsEttersending = await sendEttersending(ettersending);
+        if (responsEttersending) {
+          //kan man teste på denne måten?
+          settSenderEttersending(false);
+        }
+      }
+    }
   };
 
   if (laster) return <NavFrontendSpinner />;
@@ -59,8 +68,11 @@ const Søknadsoversikt = () => {
             settÅpenEttersendingMedStønadstype
           }
         />
-        <Hovedknapp onClick={() => sendÅpenEttersendingMedStønadstype()}>
-          Send inn
+        <Hovedknapp
+          spinner={senderEttersending}
+          onClick={() => sendÅpenEttersendingMedStønadstype()}
+        >
+          {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
       </div>
       {søknader.map((søknad) => {
