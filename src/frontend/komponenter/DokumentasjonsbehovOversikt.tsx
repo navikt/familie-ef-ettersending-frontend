@@ -87,7 +87,6 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
               />
             );
           })}
-        {/* deal med denne */}
         <ÅpenEttersending
           settÅpenEttersendingFelt={settÅpenEttersendingFelt}
           åpenEttersendingFelt={åpenEttersendingFelt}
