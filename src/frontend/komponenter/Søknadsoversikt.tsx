@@ -47,11 +47,8 @@ const Søknadsoversikt = () => {
         åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
       };
       if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0) {
-        const responsEttersending = await sendEttersending(ettersending);
-        if (responsEttersending) {
-          //kan man teste på denne måten?
-          settSenderEttersending(false);
-        }
+        await sendEttersending(ettersending);
+        settSenderEttersending(false);
       }
     }
   };

@@ -50,11 +50,8 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
           .map((behov) => behov.opplastedeVedlegg.length)
           .reduce((total, verdi) => total + verdi) > 0
       ) {
-        const responsEttersending = await sendEttersending(ettersendingsdata);
-        if (responsEttersending) {
-          //kan man teste på denne måten?
-          settSenderEttersending(false);
-        }
+        await sendEttersending(ettersendingsdata);
+        settSenderEttersending(false);
       }
     }
   };
