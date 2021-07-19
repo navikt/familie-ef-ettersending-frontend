@@ -33,23 +33,23 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
 
   const lagOgSendEttersending = async () => {
     if (!senderEttersending) {
-      settSenderEttersending(true);
-      const søknadMedVedlegg = {
-        søknadsId: søknad.søknadId,
-        dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
-        åpenEttersending: åpenEttersendingFelt,
-      };
-      const ettersendingsdata = {
-        fnr: context.søker.fnr,
-        søknadMedVedlegg: søknadMedVedlegg,
-      };
-
       if (
         åpenEttersendingFelt.vedlegg.length > 0 ||
         dokumentasjonsbehovTilInnsending
           .map((behov) => behov.opplastedeVedlegg.length)
           .reduce((total, verdi) => total + verdi) > 0
       ) {
+        //må her også sjekke om eventuelle sjekkbokser er avhuket i stedet slik at det er mulig å bare gjøre det.
+        settSenderEttersending(true);
+        const søknadMedVedlegg = {
+          søknadsId: søknad.søknadId,
+          dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
+          åpenEttersending: åpenEttersendingFelt,
+        };
+        const ettersendingsdata = {
+          fnr: context.søker.fnr,
+          søknadMedVedlegg: søknadMedVedlegg,
+        };
         await sendEttersending(ettersendingsdata);
         settSenderEttersending(false);
       }

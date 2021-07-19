@@ -41,12 +41,12 @@ const Søknadsoversikt = () => {
 
   const sendÅpenEttersendingMedStønadstype = async () => {
     if (!senderEttersending) {
-      settSenderEttersending(true);
-      const ettersending = {
-        fnr: context.søker.fnr,
-        åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
-      };
       if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0) {
+        settSenderEttersending(true);
+        const ettersending = {
+          fnr: context.søker.fnr,
+          åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
+        };
         await sendEttersending(ettersending);
         settSenderEttersending(false);
       }
