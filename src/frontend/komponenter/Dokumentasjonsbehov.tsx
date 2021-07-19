@@ -56,7 +56,7 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
     <Ekspanderbartpanel
       tittel={
         <Alertstripe
-          type={erDokumentasjonSendt() ? 'suksess' : 'feil'}
+          type={erDokumentasjonSendt() ? 'suksess' : 'advarsel'}
           form="inline"
         >
           {dokumentasjonsbehov.label}
