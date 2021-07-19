@@ -7,6 +7,12 @@ import { ISøknadsbehov, IÅpenEttersending } from '../typer/søknadsdata';
 import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
+import styled from 'styled-components';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+
+const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+  margin-top: 1rem;
+`;
 
 interface IProps {
   søknad: ISøknadsbehov;
@@ -21,6 +27,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
     settDokumentasjonsbehovTilInnsending,
   ] = useState<IDokumentasjonsbehov[]>();
   const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
+  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
 
   const [åpenEttersendingFelt, settÅpenEttersendingFelt] =
     useState<IÅpenEttersending>({
@@ -50,7 +57,12 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
           fnr: context.søker.fnr,
           søknadMedVedlegg: søknadMedVedlegg,
         };
-        await sendEttersending(ettersendingsdata);
+        settVisNoeGikkGalt(false);
+        try {
+          await sendEttersending(ettersendingsdata);
+        } catch {
+          settVisNoeGikkGalt(true);
+        }
         settSenderEttersending(false);
       }
     }
@@ -105,6 +117,11 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         >
           {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
+        {visNoeGikkGalt && (
+          <AlertStripeFeilStyled>
+            Noe gikk galt, prøv igjen
+          </AlertStripeFeilStyled>
+        )}
       </div>
     </div>
   );
