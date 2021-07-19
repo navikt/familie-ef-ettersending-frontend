@@ -20,6 +20,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
     dokumentasjonsbehovTilInnsending,
     settDokumentasjonsbehovTilInnsending,
   ] = useState<IDokumentasjonsbehov[]>();
+  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
 
   const [åpenEttersendingFelt, settÅpenEttersendingFelt] =
     useState<IÅpenEttersending>({
@@ -30,24 +31,32 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
 
   const context = useApp();
 
-  const lagOgSendEttersending = () => {
-    const søknadMedVedlegg = {
-      søknadsId: søknad.søknadId,
-      dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
-      åpenEttersending: åpenEttersendingFelt,
-    };
-    const ettersendingsdata = {
-      fnr: context.søker.fnr,
-      søknadMedVedlegg: søknadMedVedlegg,
-    };
+  const lagOgSendEttersending = async () => {
+    if (!senderEttersending) {
+      console.log('sender');
+      settSenderEttersending(true);
+      const søknadMedVedlegg = {
+        søknadsId: søknad.søknadId,
+        dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
+        åpenEttersending: åpenEttersendingFelt,
+      };
+      const ettersendingsdata = {
+        fnr: context.søker.fnr,
+        søknadMedVedlegg: søknadMedVedlegg,
+      };
 
-    if (
-      åpenEttersendingFelt.vedlegg.length > 0 ||
-      dokumentasjonsbehovTilInnsending
-        .map((behov) => behov.opplastedeVedlegg.length)
-        .reduce((total, verdi) => total + verdi) > 0
-    )
-      sendEttersending(ettersendingsdata);
+      if (
+        åpenEttersendingFelt.vedlegg.length > 0 ||
+        dokumentasjonsbehovTilInnsending
+          .map((behov) => behov.opplastedeVedlegg.length)
+          .reduce((total, verdi) => total + verdi) > 0
+      ) {
+        const responsEttersending = await sendEttersending(ettersendingsdata);
+        if (responsEttersending) {
+          settSenderEttersending(false);
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -93,8 +102,11 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         />
       </div>
       <div>
-        <Hovedknapp onClick={() => lagOgSendEttersending()}>
-          Send inn
+        <Hovedknapp
+          spinner={senderEttersending}
+          onClick={() => lagOgSendEttersending()}
+        >
+          {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
       </div>
     </div>
