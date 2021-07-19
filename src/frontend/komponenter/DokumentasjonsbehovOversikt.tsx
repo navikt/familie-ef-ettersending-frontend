@@ -46,7 +46,6 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
           .map((behov) => behov.opplastedeVedlegg.length)
           .reduce((total, verdi) => total + verdi) > 0
       ) {
-        //må her også sjekke om eventuelle sjekkbokser er avhuket i stedet slik at det er mulig å bare gjøre det.
         settSenderEttersending(true);
         const søknadMedVedlegg = {
           søknadsId: søknad.søknadId,
