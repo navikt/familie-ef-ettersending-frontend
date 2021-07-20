@@ -25,9 +25,11 @@ const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
 `;
 
 interface IProps {
-  visStønadsType?: boolean;
+  visStønadstype?: boolean;
+
   åpenEttersendingFelt?: IÅpenEttersending;
   settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
+
   ettersendingUtenSøknad?: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad?: (
     dokumentasjonsbehov: IEttersendingUtenSøknad
@@ -35,29 +37,55 @@ interface IProps {
 }
 
 const ÅpenEttersending = ({
-  visStønadsType,
-  åpenEttersendingFelt,
-  settÅpenEttersendingFelt,
+  visStønadstype,
+  // åpenEttersendingFelt,
+  // settÅpenEttersendingFelt,
   ettersendingUtenSøknad,
   settEttersendingUtenSøknad,
 }: IProps) => {
-  const [stønadsType, settStønadsType] = useState<string>('');
-  const [dokumentType, settDokumentType] = useState<string>('');
+  const [stønadstype, settStønadstype] = useState<string>('');
+  const [dokumenttype, settDokumenttype] = useState<string>('');
   const [beskrivelse, settBeskrivelse] = useState<string>('');
 
   const oppdaterBeskrivelse = (beskrivelse: string) => {
     settBeskrivelse(beskrivelse);
-    settÅpenEttersendingFelt({
-      ...åpenEttersendingFelt,
-      beskrivelse: beskrivelse,
-    });
+    // settÅpenEttersendingFelt({
+    //   ...åpenEttersendingFelt,
+    //   beskrivelse: beskrivelse,
+    // });
+    if (ettersendingUtenSøknad) {
+      settEttersendingUtenSøknad({
+        ...ettersendingUtenSøknad,
+        åpenEttersending: {
+          ...ettersendingUtenSøknad.åpenEttersending,
+          beskrivelse: beskrivelse,
+        },
+      });
+    }
   };
 
-  const oppdaterDokumentType = (dokumentType: string) => {
-    settDokumentType(dokumentType);
-    settÅpenEttersendingFelt({
-      ...åpenEttersendingFelt,
-      dokumenttype: dokumentType,
+  const oppdaterDokumenttype = (dokumenttype: string) => {
+    settDokumenttype(dokumenttype);
+    // settÅpenEttersendingFelt({
+    //   ...åpenEttersendingFelt,
+    //   dokumenttype: dokumenttype,
+    // });
+    if (ettersendingUtenSøknad) {
+      settEttersendingUtenSøknad({
+        ...ettersendingUtenSøknad,
+        åpenEttersending: {
+          ...ettersendingUtenSøknad.åpenEttersending,
+          dokumenttype: dokumenttype,
+        },
+      });
+    }
+  };
+
+  const oppdaterStønadstype = (stønadstype: string) => {
+    settStønadstype(stønadstype);
+    settEttersendingUtenSøknad({
+      ...ettersendingUtenSøknad,
+      stønadstype: stønadstype,
     });
   };
 
@@ -70,15 +98,15 @@ const ÅpenEttersending = ({
       }
     >
       <Vedleggsopplaster
-        settÅpenEttersendingFelt={settÅpenEttersendingFelt}
-        åpenEttersendingFelt={åpenEttersendingFelt}
+        // settÅpenEttersendingFelt={settÅpenEttersendingFelt}
+        // åpenEttersendingFelt={åpenEttersendingFelt}
         settEttersendingUtenSøknad={settEttersendingUtenSøknad}
         ettersendingUtenSøknad={ettersendingUtenSøknad}
       />
-      {visStønadsType && (
+      {visStønadstype && (
         <StyledSelect
           label="Hvilken stønadstype gjelder innsendingen for?"
-          onChange={(event) => settStønadsType(event.target.value)}
+          onChange={(event) => oppdaterStønadstype(event.target.value)}
         >
           <option value="">Velg stønadstype</option>
           <option value={StønadType.OVERGANGSSTØNAD}>
@@ -92,14 +120,15 @@ const ÅpenEttersending = ({
           </option>
         </StyledSelect>
       )}
+
       <StyledSelect
         label="Hvilken dokumenttype gjelder innsendingen for?"
-        onChange={(event) => oppdaterDokumentType(event.target.value)}
+        onChange={(event) => oppdaterDokumenttype(event.target.value)}
       >
         <option value="">Velg dokumenttype</option>
-        {Object.keys(DokumentType).map((dokumentType) => (
-          <option key={dokumentType} value={DokumentType[dokumentType]}>
-            {DokumentType[dokumentType]}
+        {Object.keys(DokumentType).map((dokumenttype) => (
+          <option key={dokumenttype} value={DokumentType[dokumenttype]}>
+            {DokumentType[dokumenttype]}
           </option>
         ))}
         <option value="Annet">Annet</option>

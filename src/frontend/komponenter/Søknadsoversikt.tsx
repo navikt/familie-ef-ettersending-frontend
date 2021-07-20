@@ -69,7 +69,7 @@ const Søknadsoversikt = () => {
     <>
       <div>
         <ÅpenEttersending
-          visStønadsType={true}
+          visStønadstype={true}
           ettersendingUtenSøknad={ettersendingUtenSøknad}
           settEttersendingUtenSøknad={settEttersendingUtenSøknad}
         />

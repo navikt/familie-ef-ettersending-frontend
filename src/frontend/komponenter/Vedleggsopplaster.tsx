@@ -22,10 +22,12 @@ const AlertStripeFeilStyled = styled(AlertStripeFeil)`
 `;
 interface IVedleggsopplaster {
   dokumentasjonsbehovId?: string;
+
   dokumentasjonsbehovTilInnsending?: IDokumentasjonsbehov[];
   settDokumentasjonsbehovTilInnsending?: (
     dokumentasjonsbehov: IDokumentasjonsbehov[]
   ) => void;
+
   åpenEttersendingFelt?: IÅpenEttersending;
   settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
 
@@ -84,10 +86,10 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       ...ettersendingUtenSøknad,
       åpenEttersending: {
         ...ettersendingUtenSøknad.åpenEttersending,
-        vedlegg: [...ettersendingUtenSøknad.åpenEttersending.vedlegg, vedlegg],
+        vedlegg: [vedlegg],
       },
     });
-    settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
+    settVedleggTilOpplasting([vedlegg]);
   };
 
   const slettFilTilOpplasting = (
@@ -135,16 +137,10 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       ...ettersendingUtenSøknad,
       åpenEttersending: {
         ...ettersendingUtenSøknad.åpenEttersending,
-        vedlegg: ettersendingUtenSøknad.åpenEttersending.vedlegg.filter(
-          (vedleggEttersending) => vedlegg.id != vedleggEttersending.id
-        ),
+        vedlegg: [],
       },
     });
-    settVedleggTilOpplasting(
-      vedleggTilOpplasting.filter(
-        (vedleggTilOpplasting) => vedleggTilOpplasting.id != vedlegg.id
-      )
-    );
+    settVedleggTilOpplasting([]);
   };
 
   const filtrerVedleggPåBehov = () => {
