@@ -23,7 +23,7 @@ const Søknadsoversikt = () => {
   const [laster, settLasterverdi] = useState(true);
   const [søknader, settSøknader] = useState<ISøknadsbehov[]>();
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
-    alertMelding.tom
+    alertMelding.TOM
   );
   const [åpenEttersendingMedStønadstype, settÅpenEttersendingMedStønadstype] =
     useState<IÅpenEttersendingMedStønadstype>({
@@ -55,9 +55,9 @@ const Søknadsoversikt = () => {
     if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0)
       try {
         await sendEttersending(ettersending);
-        settAlertStripeMelding(alertMelding.sendtInn);
+        settAlertStripeMelding(alertMelding.SENDTINN);
       } catch {
-        settAlertStripeMelding(alertMelding.feil);
+        settAlertStripeMelding(alertMelding.FEIL);
       }
   };
 

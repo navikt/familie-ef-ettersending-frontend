@@ -48,7 +48,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 }: IVedleggsopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
-    alertMelding.tom
+    alertMelding.TOM
   );
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [vedleggTilOpplasting, settVedleggTilOpplasting] = useState<IVedlegg[]>(
@@ -188,7 +188,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 
   const lastOppVedlegg = async (fil) => {
     settLaster(true);
-    settAlertStripeMelding(alertMelding.tom);
+    settAlertStripeMelding(alertMelding.TOM);
 
     try {
       const formData = new FormData();
@@ -205,7 +205,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       else if (åpenEttersendingFelt) leggTilVedleggForÅpenEttersending(vedlegg);
       else leggTilVedleggForÅpenEttersendingMedStønadstype(vedlegg);
     } catch {
-      settAlertStripeMelding(alertMelding.feil);
+      settAlertStripeMelding(alertMelding.FEIL);
     } finally {
       settLaster(false);
     }

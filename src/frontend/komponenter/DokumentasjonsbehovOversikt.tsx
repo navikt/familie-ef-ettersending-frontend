@@ -29,7 +29,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
     settDokumentasjonsbehovTilInnsending,
   ] = useState<IDokumentasjonsbehov[]>([]);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
-    alertMelding.tom
+    alertMelding.TOM
   );
 
   const [åpenEttersendingFelt, settÅpenEttersendingFelt] =
@@ -58,12 +58,12 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         .map((behov) => behov.opplastedeVedlegg.length)
         .reduce((total, verdi) => total + verdi) > 0
     ) {
-      settAlertStripeMelding(alertMelding.tom);
+      settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersendingsdata);
-        settAlertStripeMelding(alertMelding.sendtInn);
+        settAlertStripeMelding(alertMelding.SENDTINN);
       } catch {
-        settAlertStripeMelding(alertMelding.feil);
+        settAlertStripeMelding(alertMelding.FEIL);
       }
     }
   };
