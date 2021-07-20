@@ -27,8 +27,10 @@ const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
 interface IProps {
   visStønadstype?: boolean;
 
-  åpenEttersendingFelt?: IÅpenEttersending;
-  settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
+  åpenEttersendingMedSøknad?: IÅpenEttersending;
+  settÅpenEttersendingMedSøknad?: (
+    dokumentasjonsbehov: IÅpenEttersending
+  ) => void;
 
   ettersendingUtenSøknad?: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad?: (
@@ -38,8 +40,8 @@ interface IProps {
 
 const ÅpenEttersending = ({
   visStønadstype,
-  // åpenEttersendingFelt,
-  // settÅpenEttersendingFelt,
+  åpenEttersendingMedSøknad,
+  settÅpenEttersendingMedSøknad,
   ettersendingUtenSøknad,
   settEttersendingUtenSøknad,
 }: IProps) => {
@@ -49,11 +51,7 @@ const ÅpenEttersending = ({
 
   const oppdaterBeskrivelse = (beskrivelse: string) => {
     settBeskrivelse(beskrivelse);
-    // settÅpenEttersendingFelt({
-    //   ...åpenEttersendingFelt,
-    //   beskrivelse: beskrivelse,
-    // });
-    if (ettersendingUtenSøknad) {
+    if (visStønadstype) {
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
         åpenEttersending: {
@@ -61,22 +59,28 @@ const ÅpenEttersending = ({
           beskrivelse: beskrivelse,
         },
       });
+    } else {
+      settÅpenEttersendingMedSøknad({
+        ...åpenEttersendingMedSøknad,
+        beskrivelse: beskrivelse,
+      });
     }
   };
 
   const oppdaterDokumenttype = (dokumenttype: string) => {
     settDokumenttype(dokumenttype);
-    // settÅpenEttersendingFelt({
-    //   ...åpenEttersendingFelt,
-    //   dokumenttype: dokumenttype,
-    // });
-    if (ettersendingUtenSøknad) {
+    if (visStønadstype) {
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
         åpenEttersending: {
           ...ettersendingUtenSøknad.åpenEttersending,
           dokumenttype: dokumenttype,
         },
+      });
+    } else {
+      settÅpenEttersendingMedSøknad({
+        ...åpenEttersendingMedSøknad,
+        dokumenttype: dokumenttype,
       });
     }
   };
@@ -98,8 +102,8 @@ const ÅpenEttersending = ({
       }
     >
       <Vedleggsopplaster
-        // settÅpenEttersendingFelt={settÅpenEttersendingFelt}
-        // åpenEttersendingFelt={åpenEttersendingFelt}
+        settÅpenEttersendingMedSøknad={settÅpenEttersendingMedSøknad}
+        åpenEttersendingMedSøknad={åpenEttersendingMedSøknad}
         settEttersendingUtenSøknad={settEttersendingUtenSøknad}
         ettersendingUtenSøknad={ettersendingUtenSøknad}
       />

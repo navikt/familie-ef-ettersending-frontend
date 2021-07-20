@@ -49,8 +49,14 @@ const Søknadsoversikt = () => {
         settSenderEttersending(true);
         const ettersending = {
           fnr: context.søker.fnr,
-          ettersendingUtenSøknad: ettersendingUtenSøknad,
+          ettersendingerUtenSøknad: ettersendingUtenSøknad,
+          ettersendingerForSøknad: {
+            søknadsid: '',
+            dokumentasjonsbehov: [],
+            innsending: [],
+          }, // se på denne
         };
+
         settVisNoeGikkGalt(false);
         try {
           await sendEttersending(ettersending);

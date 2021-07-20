@@ -28,8 +28,10 @@ interface IVedleggsopplaster {
     dokumentasjonsbehov: IDokumentasjonsbehov[]
   ) => void;
 
-  åpenEttersendingFelt?: IÅpenEttersending;
-  settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
+  åpenEttersendingMedSøknad?: IÅpenEttersending;
+  settÅpenEttersendingMedSøknad?: (
+    dokumentasjonsbehov: IÅpenEttersending
+  ) => void;
 
   ettersendingUtenSøknad?: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad?: (
@@ -41,8 +43,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   dokumentasjonsbehovId,
   settDokumentasjonsbehovTilInnsending,
   dokumentasjonsbehovTilInnsending,
-  settÅpenEttersendingFelt,
-  åpenEttersendingFelt,
+  settÅpenEttersendingMedSøknad,
+  åpenEttersendingMedSøknad,
   settEttersendingUtenSøknad,
   ettersendingUtenSøknad,
 }: IVedleggsopplaster) => {
@@ -73,10 +75,10 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
   };
 
-  const leggTilVedleggForÅpenEttersending = (vedlegg: IVedlegg) => {
-    settÅpenEttersendingFelt({
-      ...åpenEttersendingFelt,
-      vedlegg: [...åpenEttersendingFelt.vedlegg, vedlegg],
+  const leggTilVedleggForÅpenEttersendingMedSøknad = (vedlegg: IVedlegg) => {
+    settÅpenEttersendingMedSøknad({
+      ...åpenEttersendingMedSøknad,
+      vedlegg: vedlegg,
     });
     settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
   };
@@ -86,7 +88,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       ...ettersendingUtenSøknad,
       åpenEttersending: {
         ...ettersendingUtenSøknad.åpenEttersending,
-        vedlegg: [vedlegg],
+        vedlegg: vedlegg,
       },
     });
     settVedleggTilOpplasting([vedlegg]);
@@ -118,12 +120,10 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
   };
 
-  const slettVedleggForÅpenEttersending = (vedlegg: IVedlegg) => {
-    settÅpenEttersendingFelt({
-      ...åpenEttersendingFelt,
-      vedlegg: åpenEttersendingFelt.vedlegg.filter(
-        (vedleggTilOpplasting) => vedleggTilOpplasting.id != vedlegg.id
-      ),
+  const slettVedleggForÅpenEttersendingMedSøknad = (vedlegg: IVedlegg) => {
+    settÅpenEttersendingMedSøknad({
+      ...åpenEttersendingMedSøknad,
+      vedlegg: null,
     });
     settVedleggTilOpplasting(
       vedleggTilOpplasting.filter(
@@ -137,7 +137,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       ...ettersendingUtenSøknad,
       åpenEttersending: {
         ...ettersendingUtenSøknad.åpenEttersending,
-        vedlegg: [],
+        vedlegg: null,
       },
     });
     settVedleggTilOpplasting([]);
@@ -169,7 +169,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   const slettVedlegg = (vedlegg: IVedlegg) => {
     if (dokumentasjonsbehovId)
       slettFilTilOpplasting(vedlegg.id, dokumentasjonsbehovId);
-    else if (åpenEttersendingFelt) slettVedleggForÅpenEttersending(vedlegg);
+    else if (åpenEttersendingMedSøknad)
+      slettVedleggForÅpenEttersendingMedSøknad(vedlegg);
     else slettVedleggForEttersendingUtenSøknad(vedlegg);
   };
 
@@ -189,7 +190,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
         tidspunkt: dagensDatoMedTidspunktStreng,
       };
       if (dokumentasjonsbehovId) leggTilFilTilOpplasting(vedlegg);
-      else if (åpenEttersendingFelt) leggTilVedleggForÅpenEttersending(vedlegg);
+      else if (åpenEttersendingMedSøknad)
+        leggTilVedleggForÅpenEttersendingMedSøknad(vedlegg);
       else leggTilVedleggForEttersendingUtenSøknad(vedlegg);
     } catch {
       settVisNoeGikkGalt(true);

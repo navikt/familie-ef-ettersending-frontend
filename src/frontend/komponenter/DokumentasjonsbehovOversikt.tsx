@@ -26,31 +26,34 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
     dokumentasjonsbehovTilInnsending,
     settDokumentasjonsbehovTilInnsending,
   ] = useState<IDokumentasjonsbehov[]>();
-  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
+  const [senderEttersendingSpinner, settSenderEttersendingSpinner] =
+    useState<boolean>(false);
   const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
 
-  const [åpenEttersendingFelt, settÅpenEttersendingFelt] =
+  const [åpenEttersendingMedSøknad, settÅpenEttersendingMedSøknad] =
     useState<IÅpenEttersending>({
       beskrivelse: '',
       dokumenttype: '',
-      vedlegg: [],
+      vedlegg: null,
     });
 
   const context = useApp();
 
   const lagOgSendEttersending = async () => {
-    if (!senderEttersending) {
+    if (!senderEttersendingSpinner) {
       if (
-        åpenEttersendingFelt.vedlegg.length > 0 ||
+        !åpenEttersendingMedSøknad.vedlegg ||
         dokumentasjonsbehovTilInnsending
           .map((behov) => behov.opplastedeVedlegg.length)
           .reduce((total, verdi) => total + verdi) > 0
       ) {
-        settSenderEttersending(true);
+        settSenderEttersendingSpinner(true);
         const søknadMedVedlegg = {
           søknadsId: søknad.søknadId,
           dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
-          åpenEttersending: åpenEttersendingFelt,
+          åpenEttersending: åpenEttersendingMedSøknad.vedlegg
+            ? åpenEttersendingMedSøknad
+            : [],
         };
         const ettersendingsdata = {
           fnr: context.søker.fnr,
@@ -62,7 +65,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         } catch {
           settVisNoeGikkGalt(true);
         } finally {
-          settSenderEttersending(false);
+          settSenderEttersendingSpinner(false);
         }
       }
     }
@@ -106,16 +109,16 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
             );
           })}
         <ÅpenEttersending
-          settÅpenEttersendingFelt={settÅpenEttersendingFelt}
-          åpenEttersendingFelt={åpenEttersendingFelt}
+          settÅpenEttersendingMedSøknad={settÅpenEttersendingMedSøknad}
+          åpenEttersendingMedSøknad={åpenEttersendingMedSøknad}
         />
       </div>
       <div>
         <Hovedknapp
-          spinner={senderEttersending}
+          spinner={senderEttersendingSpinner}
           onClick={() => lagOgSendEttersending()}
         >
-          {senderEttersending ? 'Sender...' : 'Send inn'}
+          {senderEttersendingSpinner ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
         {visNoeGikkGalt && (
           <AlertStripeFeilStyled>

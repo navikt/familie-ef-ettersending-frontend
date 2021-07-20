@@ -20,7 +20,7 @@ export interface IVedlegg {
 export interface IÅpenEttersending {
   beskrivelse: string;
   dokumenttype: string;
-  vedlegg: IVedlegg[];
+  vedlegg: IVedlegg;
 }
 
 export interface IEttersendingUtenSøknad {
