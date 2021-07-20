@@ -55,7 +55,7 @@ const Søknadsoversikt = () => {
     if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0)
       try {
         await sendEttersending(ettersending);
-        settAlertStripeMelding(alertMelding.SENDTINN);
+        settAlertStripeMelding(alertMelding.SENDT_INN);
       } catch {
         settAlertStripeMelding(alertMelding.FEIL);
       }

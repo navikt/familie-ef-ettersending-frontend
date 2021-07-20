@@ -8,7 +8,6 @@ import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import styled from 'styled-components';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import AlertStripe, { alertMelding } from './AlertStripe';
 
 const StyledAlertStripe = styled(AlertStripe)`
@@ -61,7 +60,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
       settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersendingsdata);
-        settAlertStripeMelding(alertMelding.SENDTINN);
+        settAlertStripeMelding(alertMelding.SENDT_INN);
       } catch {
         settAlertStripeMelding(alertMelding.FEIL);
       }

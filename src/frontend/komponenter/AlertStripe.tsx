@@ -1,9 +1,8 @@
 import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import React from 'react';
-import styled from 'styled-components';
 
 export enum alertMelding {
-  SENDTINN = 'Ettersending er sendt inn',
+  SENDT_INN = 'Ettersending er sendt inn',
   FEIL = 'Noe gikk galt, prøv igjen',
   TOM = '',
 }
@@ -22,10 +21,10 @@ const AlertStripe: React.FC<IProps> = ({ className, melding }: IProps) => {
     );
   }
 
-  if (melding === alertMelding.SENDTINN) {
+  if (melding === alertMelding.SENDT_INN) {
     return (
       <AlertStripeSuksess className={className}>
-        {alertMelding.SENDTINN}
+        {alertMelding.SENDT_INN}
       </AlertStripeSuksess>
     );
   }
