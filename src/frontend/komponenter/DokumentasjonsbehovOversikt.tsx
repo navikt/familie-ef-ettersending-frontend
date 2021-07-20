@@ -62,6 +62,11 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         settAlertStripeMelding(alertMelding.TOM);
         try {
           await sendEttersending(ettersendingsdata);
+          settDokumentasjonsbehov([
+            ...dokumentasjonsbehov,
+            ...dokumentasjonsbehovTilInnsending,
+          ]);
+          settDokumentasjonsbehovTilInnsending([]);
           settAlertStripeMelding(alertMelding.SENDT_INN);
         } catch {
           settAlertStripeMelding(alertMelding.FEIL);
