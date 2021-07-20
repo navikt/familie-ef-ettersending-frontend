@@ -3,7 +3,12 @@ import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
-import { ISøknadsbehov, IÅpenEttersending } from '../typer/søknadsdata';
+import {
+  IEttersending,
+  IEttersendingForSøknad,
+  IInnsending,
+  ISøknadsbehov,
+} from '../typer/ettersending';
 import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
@@ -31,7 +36,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
   const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
 
   const [åpenEttersendingMedSøknad, settÅpenEttersendingMedSøknad] =
-    useState<IÅpenEttersending>({
+    useState<IInnsending>({
       beskrivelse: '',
       dokumenttype: '',
       vedlegg: null,
@@ -48,17 +53,19 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
           .reduce((total, verdi) => total + verdi) > 0
       ) {
         settSenderEttersendingSpinner(true);
-        const søknadMedVedlegg = {
-          søknadsId: søknad.søknadId,
+        const søknadMedVedlegg: IEttersendingForSøknad = {
+          søknadId: søknad.søknadId,
           dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
-          åpenEttersending: åpenEttersendingMedSøknad.vedlegg
-            ? åpenEttersendingMedSøknad
+          innsending: åpenEttersendingMedSøknad.vedlegg
+            ? [åpenEttersendingMedSøknad]
             : [],
         };
-        const ettersendingsdata = {
+        const ettersendingsdata: IEttersending = {
           fnr: context.søker.fnr,
-          søknadMedVedlegg: søknadMedVedlegg,
+          ettersendingUtenSøknad: { stønadstype: '', innsending: [] },
+          ettersendingForSøknad: søknadMedVedlegg,
         };
+        console.log(ettersendingsdata);
         settVisNoeGikkGalt(false);
         try {
           await sendEttersending(ettersendingsdata);

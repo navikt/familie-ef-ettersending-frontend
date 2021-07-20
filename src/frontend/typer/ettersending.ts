@@ -13,11 +13,9 @@ export interface ISøknadsbehov {
 export interface IVedlegg {
   id: string;
   navn: string;
-  størrelse: number;
-  tidspunkt: string;
 }
 
-export interface IÅpenEttersending {
+export interface IInnsending {
   beskrivelse: string;
   dokumenttype: string;
   vedlegg: IVedlegg;
@@ -25,5 +23,16 @@ export interface IÅpenEttersending {
 
 export interface IEttersendingUtenSøknad {
   stønadstype: string;
-  innsending: IÅpenEttersending;
+  innsending: IInnsending[];
+}
+export interface IEttersendingForSøknad {
+  søknadId: string;
+  dokumentasjonsbehov: IDokumentasjonsbehov[];
+  innsending: IInnsending[];
+}
+
+export interface IEttersending {
+  fnr: string;
+  ettersendingForSøknad: IEttersendingForSøknad;
+  ettersendingUtenSøknad: IEttersendingUtenSøknad;
 }

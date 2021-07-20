@@ -8,9 +8,9 @@ import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Modal from 'nav-frontend-modal';
 import {
   IVedlegg,
-  IÅpenEttersending,
   IEttersendingUtenSøknad,
-} from '../typer/søknadsdata';
+  IInnsending,
+} from '../typer/ettersending';
 import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { sendVedleggTilMellomlager } from '../api-service';
@@ -28,10 +28,8 @@ interface IVedleggsopplaster {
     dokumentasjonsbehov: IDokumentasjonsbehov[]
   ) => void;
 
-  åpenEttersendingMedSøknad?: IÅpenEttersending;
-  settÅpenEttersendingMedSøknad?: (
-    dokumentasjonsbehov: IÅpenEttersending
-  ) => void;
+  åpenEttersendingMedSøknad?: IInnsending;
+  settÅpenEttersendingMedSøknad?: (dokumentasjonsbehov: IInnsending) => void;
 
   ettersendingUtenSøknad?: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad?: (
@@ -86,10 +84,9 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   const leggTilVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
     settEttersendingUtenSøknad({
       ...ettersendingUtenSøknad,
-      innsending: {
-        ...ettersendingUtenSøknad.innsending,
-        vedlegg: vedlegg,
-      },
+      innsending: [
+        { ...ettersendingUtenSøknad.innsending[0], vedlegg: vedlegg },
+      ], //obs se på dette. dette fungerer heller ikke hvis vi laster opp flere innsendinger
     });
     settVedleggTilOpplasting([vedlegg]);
   };
@@ -135,10 +132,12 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   const slettVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
     settEttersendingUtenSøknad({
       ...ettersendingUtenSøknad,
-      innsending: {
-        ...ettersendingUtenSøknad.innsending,
-        vedlegg: null,
-      },
+      innsending: [
+        {
+          ...ettersendingUtenSøknad.innsending[0], //TODO
+          vedlegg: null,
+        },
+      ],
     });
     settVedleggTilOpplasting([]);
   };
@@ -183,11 +182,10 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       formData.append('file', fil);
       const respons = await sendVedleggTilMellomlager(formData);
       const vedlegg: IVedlegg = {
-        id: respons,
-        // id: '122', Må brukes for at det skal kunne kjøre lokalt
+        // id: respons,
+        id: '122',
+        // Må brukes for at det skal kunne kjøre lokalt
         navn: fil.name,
-        størrelse: fil.size,
-        tidspunkt: dagensDatoMedTidspunktStreng,
       };
       if (dokumentasjonsbehovId) leggTilFilTilOpplasting(vedlegg);
       else if (åpenEttersendingMedSøknad)

@@ -6,7 +6,11 @@ import { hentDokumentasjonsbehov, sendEttersending } from '../api-service';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { ISøknadsbehov, IEttersendingUtenSøknad } from '../typer/søknadsdata';
+import {
+  ISøknadsbehov,
+  IEttersendingUtenSøknad,
+  IEttersending,
+} from '../typer/ettersending';
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -22,11 +26,7 @@ const Søknadsoversikt = () => {
   const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
     useState<IEttersendingUtenSøknad>({
       stønadstype: '',
-      innsending: {
-        beskrivelse: '',
-        dokumenttype: '',
-        vedlegg: null,
-      },
+      innsending: [],
     });
   const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
   const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
@@ -45,13 +45,13 @@ const Søknadsoversikt = () => {
 
   const sendEttersendingUtenSøknad = async () => {
     if (!senderEttersending) {
-      if (ettersendingUtenSøknad.innsending.vedlegg) {
+      if (ettersendingUtenSøknad.innsending.length > 0) {
         settSenderEttersending(true);
-        const ettersending = {
+        const ettersending: IEttersending = {
           fnr: context.søker.fnr,
           ettersendingUtenSøknad: ettersendingUtenSøknad,
           ettersendingForSøknad: {
-            søknadsid: '',
+            søknadId: '',
             dokumentasjonsbehov: [],
             innsending: [],
           },

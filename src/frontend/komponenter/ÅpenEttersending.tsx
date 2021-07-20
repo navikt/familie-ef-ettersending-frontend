@@ -5,10 +5,7 @@ import Alertstripe from 'nav-frontend-alertstriper';
 import { Select, Textarea } from 'nav-frontend-skjema';
 import styled from 'styled-components/macro';
 import { StønadType, DokumentType } from '../typer/stønad';
-import {
-  IÅpenEttersending,
-  IEttersendingUtenSøknad,
-} from '../typer/søknadsdata';
+import { IInnsending, IEttersendingUtenSøknad } from '../typer/ettersending';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -27,10 +24,8 @@ const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
 interface IProps {
   visStønadstype?: boolean;
 
-  åpenEttersendingMedSøknad?: IÅpenEttersending;
-  settÅpenEttersendingMedSøknad?: (
-    dokumentasjonsbehov: IÅpenEttersending
-  ) => void;
+  åpenEttersendingMedSøknad?: IInnsending;
+  settÅpenEttersendingMedSøknad?: (dokumentasjonsbehov: IInnsending) => void;
 
   ettersendingUtenSøknad?: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad?: (
@@ -54,10 +49,12 @@ const ÅpenEttersending = ({
     if (visStønadstype) {
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
-        innsending: {
-          ...ettersendingUtenSøknad.innsending,
-          beskrivelse: beskrivelse,
-        },
+        innsending: [
+          {
+            ...ettersendingUtenSøknad.innsending[0],
+            beskrivelse: beskrivelse,
+          },
+        ],
       });
     } else {
       settÅpenEttersendingMedSøknad({
@@ -72,10 +69,12 @@ const ÅpenEttersending = ({
     if (visStønadstype) {
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
-        innsending: {
-          ...ettersendingUtenSøknad.innsending,
-          dokumenttype: dokumenttype,
-        },
+        innsending: [
+          {
+            ...ettersendingUtenSøknad.innsending[0],
+            dokumenttype: dokumenttype,
+          },
+        ],
       });
     } else {
       settÅpenEttersendingMedSøknad({
