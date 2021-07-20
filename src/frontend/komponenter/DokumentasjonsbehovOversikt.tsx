@@ -8,6 +8,8 @@ import {
   IEttersendingForSøknad,
   IInnsending,
   ISøknadsbehov,
+  tomEttersendingUtenSøknad,
+  tomInnsending,
 } from '../typer/ettersending';
 import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
@@ -34,46 +36,39 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
   const [senderEttersendingSpinner, settSenderEttersendingSpinner] =
     useState<boolean>(false);
   const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
-
-  const [åpenEttersendingMedSøknad, settÅpenEttersendingMedSøknad] =
-    useState<IInnsending>({
-      beskrivelse: '',
-      dokumenttype: '',
-      vedlegg: null,
-    });
+  const [innsending, settInnsending] = useState<IInnsending>(tomInnsending);
 
   const context = useApp();
 
   const lagOgSendEttersending = async () => {
-    if (!senderEttersendingSpinner) {
-      if (
-        !åpenEttersendingMedSøknad.vedlegg ||
+    if (
+      !senderEttersendingSpinner &&
+      (innsending.vedlegg ||
         dokumentasjonsbehovTilInnsending
           .map((behov) => behov.opplastedeVedlegg.length)
-          .reduce((total, verdi) => total + verdi) > 0
-      ) {
-        settSenderEttersendingSpinner(true);
-        const søknadMedVedlegg: IEttersendingForSøknad = {
-          søknadId: søknad.søknadId,
-          dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
-          innsending: åpenEttersendingMedSøknad.vedlegg
-            ? [åpenEttersendingMedSøknad]
-            : [],
-        };
-        const ettersendingsdata: IEttersending = {
-          fnr: context.søker.fnr,
-          ettersendingUtenSøknad: { stønadstype: '', innsending: [] },
-          ettersendingForSøknad: søknadMedVedlegg,
-        };
-        console.log(ettersendingsdata);
-        settVisNoeGikkGalt(false);
-        try {
-          await sendEttersending(ettersendingsdata);
-        } catch {
-          settVisNoeGikkGalt(true);
-        } finally {
-          settSenderEttersendingSpinner(false);
-        }
+          .reduce((total, verdi) => total + verdi) > 0)
+    ) {
+      settSenderEttersendingSpinner(true);
+
+      const ettersendingForSøknad: IEttersendingForSøknad = {
+        søknadId: søknad.søknadId,
+        dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
+        innsending: innsending.vedlegg ? [innsending] : [],
+      };
+
+      const ettersendingsdata: IEttersending = {
+        fnr: context.søker.fnr,
+        ettersendingUtenSøknad: tomEttersendingUtenSøknad,
+        ettersendingForSøknad: ettersendingForSøknad,
+      };
+
+      settVisNoeGikkGalt(false);
+      try {
+        await sendEttersending(ettersendingsdata);
+      } catch {
+        settVisNoeGikkGalt(true);
+      } finally {
+        settSenderEttersendingSpinner(false);
       }
     }
   };
@@ -116,14 +111,14 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
             );
           })}
         <ÅpenEttersending
-          settÅpenEttersendingMedSøknad={settÅpenEttersendingMedSøknad}
-          åpenEttersendingMedSøknad={åpenEttersendingMedSøknad}
+          settInnsending={settInnsending}
+          innsending={innsending}
         />
       </div>
       <div>
         <Hovedknapp
           spinner={senderEttersendingSpinner}
-          onClick={() => lagOgSendEttersending()}
+          onClick={lagOgSendEttersending}
         >
           {senderEttersendingSpinner ? 'Sender...' : 'Send inn'}
         </Hovedknapp>

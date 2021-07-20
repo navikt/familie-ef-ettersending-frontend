@@ -28,8 +28,8 @@ interface IVedleggsopplaster {
     dokumentasjonsbehov: IDokumentasjonsbehov[]
   ) => void;
 
-  åpenEttersendingMedSøknad?: IInnsending;
-  settÅpenEttersendingMedSøknad?: (dokumentasjonsbehov: IInnsending) => void;
+  innsending?: IInnsending;
+  settInnsending?: (dokumentasjonsbehov: IInnsending) => void;
 
   ettersendingUtenSøknad?: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad?: (
@@ -41,8 +41,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   dokumentasjonsbehovId,
   settDokumentasjonsbehovTilInnsending,
   dokumentasjonsbehovTilInnsending,
-  settÅpenEttersendingMedSøknad,
-  åpenEttersendingMedSøknad,
+  settInnsending,
+  innsending,
   settEttersendingUtenSøknad,
   ettersendingUtenSøknad,
 }: IVedleggsopplaster) => {
@@ -73,12 +73,12 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
   };
 
-  const leggTilVedleggForÅpenEttersendingMedSøknad = (vedlegg: IVedlegg) => {
-    settÅpenEttersendingMedSøknad({
-      ...åpenEttersendingMedSøknad,
+  const leggTilVedleggForInnsending = (vedlegg: IVedlegg) => {
+    settInnsending({
+      ...innsending,
       vedlegg: vedlegg,
     });
-    settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
+    settVedleggTilOpplasting([vedlegg]);
   };
 
   const leggTilVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
@@ -117,9 +117,9 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
   };
 
-  const slettVedleggForÅpenEttersendingMedSøknad = (vedlegg: IVedlegg) => {
-    settÅpenEttersendingMedSøknad({
-      ...åpenEttersendingMedSøknad,
+  const slettVedleggForInnsending = (vedlegg: IVedlegg) => {
+    settInnsending({
+      ...innsending,
       vedlegg: null,
     });
     settVedleggTilOpplasting(
@@ -129,12 +129,12 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     );
   };
 
-  const slettVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
+  const slettVedleggForEttersendingUtenSøknad = () => {
     settEttersendingUtenSøknad({
       ...ettersendingUtenSøknad,
       innsending: [
         {
-          ...ettersendingUtenSøknad.innsending[0], //TODO
+          ...ettersendingUtenSøknad.innsending[0], //TODO I fremtiden skal vi støtte flere innsendinger i denne listen
           vedlegg: null,
         },
       ],
@@ -164,13 +164,11 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     return godkjentFiltype;
   };
 
-  //
   const slettVedlegg = (vedlegg: IVedlegg) => {
     if (dokumentasjonsbehovId)
       slettFilTilOpplasting(vedlegg.id, dokumentasjonsbehovId);
-    else if (åpenEttersendingMedSøknad)
-      slettVedleggForÅpenEttersendingMedSøknad(vedlegg);
-    else slettVedleggForEttersendingUtenSøknad(vedlegg);
+    else if (innsending) slettVedleggForInnsending(vedlegg);
+    else slettVedleggForEttersendingUtenSøknad();
   };
 
   const lastOppVedlegg = async (fil) => {
@@ -183,13 +181,11 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       const respons = await sendVedleggTilMellomlager(formData);
       const vedlegg: IVedlegg = {
         // id: respons,
-        id: '122',
-        // Må brukes for at det skal kunne kjøre lokalt
+        id: '122', // Må brukes for at det skal kunne kjøre lokalt
         navn: fil.name,
       };
       if (dokumentasjonsbehovId) leggTilFilTilOpplasting(vedlegg);
-      else if (åpenEttersendingMedSøknad)
-        leggTilVedleggForÅpenEttersendingMedSøknad(vedlegg);
+      else if (innsending) leggTilVedleggForInnsending(vedlegg);
       else leggTilVedleggForEttersendingUtenSøknad(vedlegg);
     } catch {
       settVisNoeGikkGalt(true);

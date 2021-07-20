@@ -10,6 +10,8 @@ import {
   ISøknadsbehov,
   IEttersendingUtenSøknad,
   IEttersending,
+  tomEttersendingForSøknad,
+  tomEttersendingUtenSøknad,
 } from '../typer/ettersending';
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -24,10 +26,7 @@ const Søknadsoversikt = () => {
   const [laster, settLasterverdi] = useState(true);
   const [søknader, settSøknader] = useState<ISøknadsbehov[]>();
   const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
-    useState<IEttersendingUtenSøknad>({
-      stønadstype: '',
-      innsending: [],
-    });
+    useState<IEttersendingUtenSøknad>(tomEttersendingUtenSøknad);
   const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
   const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
 
@@ -36,7 +35,6 @@ const Søknadsoversikt = () => {
   useEffect(() => {
     const hentOgSettSøknader = async () => {
       const søknadsliste = await hentDokumentasjonsbehov();
-
       settSøknader(søknadsliste);
       settLasterverdi(false);
     };
@@ -44,28 +42,21 @@ const Søknadsoversikt = () => {
   }, [context.søker]);
 
   const sendEttersendingUtenSøknad = async () => {
-    if (!senderEttersending) {
-      if (ettersendingUtenSøknad.innsending.length > 0) {
-        settSenderEttersending(true);
-        const ettersending: IEttersending = {
-          fnr: context.søker.fnr,
-          ettersendingUtenSøknad: ettersendingUtenSøknad,
-          ettersendingForSøknad: {
-            søknadId: '',
-            dokumentasjonsbehov: [],
-            innsending: [],
-          },
-        };
-        console.log(ettersending);
+    if (!senderEttersending && ettersendingUtenSøknad.innsending.length > 0) {
+      settSenderEttersending(true);
+      const ettersending: IEttersending = {
+        fnr: context.søker.fnr,
+        ettersendingUtenSøknad: ettersendingUtenSøknad,
+        ettersendingForSøknad: tomEttersendingForSøknad,
+      };
 
-        settVisNoeGikkGalt(false);
-        try {
-          await sendEttersending(ettersending);
-        } catch {
-          settVisNoeGikkGalt(true);
-        } finally {
-          settSenderEttersending(false);
-        }
+      settVisNoeGikkGalt(false);
+      try {
+        await sendEttersending(ettersending);
+      } catch {
+        settVisNoeGikkGalt(true);
+      } finally {
+        settSenderEttersending(false);
       }
     }
   };

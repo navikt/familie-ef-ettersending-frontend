@@ -36,3 +36,20 @@ export interface IEttersending {
   ettersendingForSøknad: IEttersendingForSøknad;
   ettersendingUtenSøknad: IEttersendingUtenSøknad;
 }
+
+export const tomEttersendingUtenSøknad: IEttersendingUtenSøknad = {
+  stønadstype: '',
+  innsending: [],
+};
+
+export const tomEttersendingForSøknad: IEttersendingForSøknad = {
+  søknadId: '',
+  dokumentasjonsbehov: [],
+  innsending: [],
+};
+
+export const tomInnsending: IInnsending = {
+  beskrivelse: '',
+  dokumenttype: '',
+  vedlegg: null,
+};

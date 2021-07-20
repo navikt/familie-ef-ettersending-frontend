@@ -24,8 +24,8 @@ const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
 interface IProps {
   visStønadstype?: boolean;
 
-  åpenEttersendingMedSøknad?: IInnsending;
-  settÅpenEttersendingMedSøknad?: (dokumentasjonsbehov: IInnsending) => void;
+  innsending?: IInnsending;
+  settInnsending?: (dokumentasjonsbehov: IInnsending) => void;
 
   ettersendingUtenSøknad?: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad?: (
@@ -35,13 +35,11 @@ interface IProps {
 
 const ÅpenEttersending = ({
   visStønadstype,
-  åpenEttersendingMedSøknad,
-  settÅpenEttersendingMedSøknad,
+  innsending,
+  settInnsending,
   ettersendingUtenSøknad,
   settEttersendingUtenSøknad,
 }: IProps) => {
-  const [stønadstype, settStønadstype] = useState<string>('');
-  const [dokumenttype, settDokumenttype] = useState<string>('');
   const [beskrivelse, settBeskrivelse] = useState<string>('');
 
   const oppdaterBeskrivelse = (beskrivelse: string) => {
@@ -57,15 +55,14 @@ const ÅpenEttersending = ({
         ],
       });
     } else {
-      settÅpenEttersendingMedSøknad({
-        ...åpenEttersendingMedSøknad,
+      settInnsending({
+        ...innsending,
         beskrivelse: beskrivelse,
       });
     }
   };
 
   const oppdaterDokumenttype = (dokumenttype: string) => {
-    settDokumenttype(dokumenttype);
     if (visStønadstype) {
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
@@ -77,15 +74,14 @@ const ÅpenEttersending = ({
         ],
       });
     } else {
-      settÅpenEttersendingMedSøknad({
-        ...åpenEttersendingMedSøknad,
+      settInnsending({
+        ...innsending,
         dokumenttype: dokumenttype,
       });
     }
   };
 
   const oppdaterStønadstype = (stønadstype: string) => {
-    settStønadstype(stønadstype);
     settEttersendingUtenSøknad({
       ...ettersendingUtenSøknad,
       stønadstype: stønadstype,
@@ -101,8 +97,8 @@ const ÅpenEttersending = ({
       }
     >
       <Vedleggsopplaster
-        settÅpenEttersendingMedSøknad={settÅpenEttersendingMedSøknad}
-        åpenEttersendingMedSøknad={åpenEttersendingMedSøknad}
+        settInnsending={settInnsending}
+        innsending={innsending}
         settEttersendingUtenSøknad={settEttersendingUtenSøknad}
         ettersendingUtenSøknad={ettersendingUtenSøknad}
       />
@@ -112,15 +108,11 @@ const ÅpenEttersending = ({
           onChange={(event) => oppdaterStønadstype(event.target.value)}
         >
           <option value="">Velg stønadstype</option>
-          <option value={StønadType.OVERGANGSSTØNAD}>
-            {StønadType.OVERGANGSSTØNAD}
-          </option>
-          <option value={StønadType.BARNETILSYN}>
-            {StønadType.BARNETILSYN}
-          </option>
-          <option value={StønadType.SKOLEPENGER}>
-            {StønadType.SKOLEPENGER}
-          </option>
+          {Object.keys(StønadType).map((stønadType) => (
+            <option key={stønadType} value={stønadType}>
+              {stønadType}
+            </option>
+          ))}
         </StyledSelect>
       )}
 
