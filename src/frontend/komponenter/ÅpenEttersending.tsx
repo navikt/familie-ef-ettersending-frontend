@@ -7,7 +7,7 @@ import styled from 'styled-components/macro';
 import { StønadType, DokumentType } from '../typer/stønad';
 import {
   IÅpenEttersending,
-  IÅpenEttersendingMedStønadstype,
+  IEttersendingUtenSøknad,
 } from '../typer/søknadsdata';
 
 const StyledSelect = styled(Select)`
@@ -28,9 +28,9 @@ interface IProps {
   visStønadsType?: boolean;
   åpenEttersendingFelt?: IÅpenEttersending;
   settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
-  åpenEttersendingMedStønadstype?: IÅpenEttersendingMedStønadstype;
-  settÅpenEttersendingMedStønadstype?: (
-    dokumentasjonsbehov: IÅpenEttersendingMedStønadstype
+  ettersendingUtenSøknad?: IEttersendingUtenSøknad;
+  settEttersendingUtenSøknad?: (
+    dokumentasjonsbehov: IEttersendingUtenSøknad
   ) => void;
 }
 
@@ -38,8 +38,8 @@ const ÅpenEttersending = ({
   visStønadsType,
   åpenEttersendingFelt,
   settÅpenEttersendingFelt,
-  åpenEttersendingMedStønadstype,
-  settÅpenEttersendingMedStønadstype,
+  ettersendingUtenSøknad,
+  settEttersendingUtenSøknad,
 }: IProps) => {
   const [stønadsType, settStønadsType] = useState<string>('');
   const [dokumentType, settDokumentType] = useState<string>('');
@@ -72,8 +72,8 @@ const ÅpenEttersending = ({
       <Vedleggsopplaster
         settÅpenEttersendingFelt={settÅpenEttersendingFelt}
         åpenEttersendingFelt={åpenEttersendingFelt}
-        settÅpenEttersendingMedStønadstype={settÅpenEttersendingMedStønadstype}
-        åpenEttersendingMedStønadstype={åpenEttersendingMedStønadstype}
+        settEttersendingUtenSøknad={settEttersendingUtenSøknad}
+        ettersendingUtenSøknad={ettersendingUtenSøknad}
       />
       {visStønadsType && (
         <StyledSelect

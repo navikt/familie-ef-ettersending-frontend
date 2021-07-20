@@ -9,7 +9,7 @@ import Modal from 'nav-frontend-modal';
 import {
   IVedlegg,
   IÅpenEttersending,
-  IÅpenEttersendingMedStønadstype,
+  IEttersendingUtenSøknad,
 } from '../typer/søknadsdata';
 import '../stil/Vedleggsopplaster.less';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
@@ -29,9 +29,9 @@ interface IVedleggsopplaster {
   åpenEttersendingFelt?: IÅpenEttersending;
   settÅpenEttersendingFelt?: (dokumentasjonsbehov: IÅpenEttersending) => void;
 
-  åpenEttersendingMedStønadstype?: IÅpenEttersendingMedStønadstype;
-  settÅpenEttersendingMedStønadstype?: (
-    dokumentasjonsbehov: IÅpenEttersendingMedStønadstype
+  ettersendingUtenSøknad?: IEttersendingUtenSøknad;
+  settEttersendingUtenSøknad?: (
+    dokumentasjonsbehov: IEttersendingUtenSøknad
   ) => void;
 }
 
@@ -41,8 +41,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   dokumentasjonsbehovTilInnsending,
   settÅpenEttersendingFelt,
   åpenEttersendingFelt,
-  settÅpenEttersendingMedStønadstype,
-  åpenEttersendingMedStønadstype,
+  settEttersendingUtenSøknad,
+  ettersendingUtenSøknad,
 }: IVedleggsopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [visNoeGikkGalt, settVisNoeGikkGalt] = useState<boolean>(false);
@@ -79,17 +79,12 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
   };
 
-  const leggTilVedleggForÅpenEttersendingMedStønadstype = (
-    vedlegg: IVedlegg
-  ) => {
-    settÅpenEttersendingMedStønadstype({
-      ...åpenEttersendingMedStønadstype,
+  const leggTilVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
+    settEttersendingUtenSøknad({
+      ...ettersendingUtenSøknad,
       åpenEttersending: {
-        ...åpenEttersendingMedStønadstype.åpenEttersending,
-        vedlegg: [
-          ...åpenEttersendingMedStønadstype.åpenEttersending.vedlegg,
-          vedlegg,
-        ],
+        ...ettersendingUtenSøknad.åpenEttersending,
+        vedlegg: [...ettersendingUtenSøknad.åpenEttersending.vedlegg, vedlegg],
       },
     });
     settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
@@ -135,12 +130,12 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     );
   };
 
-  const slettVedleggForÅpenEttersendingMedStønadstype = (vedlegg: IVedlegg) => {
-    settÅpenEttersendingMedStønadstype({
-      ...åpenEttersendingMedStønadstype,
+  const slettVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
+    settEttersendingUtenSøknad({
+      ...ettersendingUtenSøknad,
       åpenEttersending: {
-        ...åpenEttersendingMedStønadstype.åpenEttersending,
-        vedlegg: åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.filter(
+        ...ettersendingUtenSøknad.åpenEttersending,
+        vedlegg: ettersendingUtenSøknad.åpenEttersending.vedlegg.filter(
           (vedleggEttersending) => vedlegg.id != vedleggEttersending.id
         ),
       },
@@ -179,7 +174,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     if (dokumentasjonsbehovId)
       slettFilTilOpplasting(vedlegg.id, dokumentasjonsbehovId);
     else if (åpenEttersendingFelt) slettVedleggForÅpenEttersending(vedlegg);
-    else slettVedleggForÅpenEttersendingMedStønadstype(vedlegg);
+    else slettVedleggForEttersendingUtenSøknad(vedlegg);
   };
 
   const lastOppVedlegg = async (fil) => {
@@ -199,7 +194,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       };
       if (dokumentasjonsbehovId) leggTilFilTilOpplasting(vedlegg);
       else if (åpenEttersendingFelt) leggTilVedleggForÅpenEttersending(vedlegg);
-      else leggTilVedleggForÅpenEttersendingMedStønadstype(vedlegg);
+      else leggTilVedleggForEttersendingUtenSøknad(vedlegg);
     } catch {
       settVisNoeGikkGalt(true);
     } finally {

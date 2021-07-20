@@ -6,10 +6,7 @@ import { hentDokumentasjonsbehov, sendEttersending } from '../api-service';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import {
-  ISøknadsbehov,
-  IÅpenEttersendingMedStønadstype,
-} from '../typer/søknadsdata';
+import { ISøknadsbehov, IEttersendingUtenSøknad } from '../typer/søknadsdata';
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
@@ -22,8 +19,8 @@ const AlertStripeFeilStyled = styled(AlertStripeFeil)`
 const Søknadsoversikt = () => {
   const [laster, settLasterverdi] = useState(true);
   const [søknader, settSøknader] = useState<ISøknadsbehov[]>();
-  const [åpenEttersendingMedStønadstype, settÅpenEttersendingMedStønadstype] =
-    useState<IÅpenEttersendingMedStønadstype>({
+  const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
+    useState<IEttersendingUtenSøknad>({
       stønadstype: '',
       åpenEttersending: {
         beskrivelse: '',
@@ -46,13 +43,13 @@ const Søknadsoversikt = () => {
     if (context.søker != null) hentOgSettSøknader();
   }, [context.søker]);
 
-  const sendÅpenEttersendingMedStønadstype = async () => {
+  const sendEttersendingUtenSøknad = async () => {
     if (!senderEttersending) {
-      if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0) {
+      if (ettersendingUtenSøknad.åpenEttersending.vedlegg.length > 0) {
         settSenderEttersending(true);
         const ettersending = {
           fnr: context.søker.fnr,
-          åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
+          ettersendingUtenSøknad: ettersendingUtenSøknad,
         };
         settVisNoeGikkGalt(false);
         try {
@@ -73,14 +70,12 @@ const Søknadsoversikt = () => {
       <div>
         <ÅpenEttersending
           visStønadsType={true}
-          åpenEttersendingMedStønadstype={åpenEttersendingMedStønadstype}
-          settÅpenEttersendingMedStønadstype={
-            settÅpenEttersendingMedStønadstype
-          }
+          ettersendingUtenSøknad={ettersendingUtenSøknad}
+          settEttersendingUtenSøknad={settEttersendingUtenSøknad}
         />
         <Hovedknapp
           spinner={senderEttersending}
-          onClick={() => sendÅpenEttersendingMedStønadstype()}
+          onClick={() => sendEttersendingUtenSøknad()}
         >
           {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>

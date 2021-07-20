@@ -23,7 +23,7 @@ export interface IÅpenEttersending {
   vedlegg: IVedlegg[];
 }
 
-export interface IÅpenEttersendingMedStønadstype {
+export interface IEttersendingUtenSøknad {
   stønadstype: string;
   åpenEttersending: IÅpenEttersending;
 }
