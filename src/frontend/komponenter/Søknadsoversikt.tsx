@@ -34,6 +34,7 @@ const Søknadsoversikt = () => {
         vedlegg: [],
       },
     });
+  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
 
   const context = useApp();
 
@@ -48,17 +49,24 @@ const Søknadsoversikt = () => {
   }, [context.søker]);
 
   const sendÅpenEttersendingMedStønadstype = async () => {
-    const ettersending = {
-      fnr: context.søker.fnr,
-      åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
-    };
-    if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0)
-      try {
-        await sendEttersending(ettersending);
-        settAlertStripeMelding(alertMelding.SENDT_INN);
-      } catch {
-        settAlertStripeMelding(alertMelding.FEIL);
+    if (!senderEttersending) {
+      if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0) {
+        settSenderEttersending(true);
+        const ettersending = {
+          fnr: context.søker.fnr,
+          åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
+        };
+        settAlertStripeMelding(alertMelding.TOM);
+        try {
+          await sendEttersending(ettersending);
+          settAlertStripeMelding(alertMelding.SENDT_INN);
+        } catch {
+          settAlertStripeMelding(alertMelding.FEIL);
+        } finally {
+          settSenderEttersending(false);
+        }
       }
+    }
   };
 
   if (laster) return <NavFrontendSpinner />;
@@ -73,8 +81,11 @@ const Søknadsoversikt = () => {
             settÅpenEttersendingMedStønadstype
           }
         />
-        <Hovedknapp onClick={() => sendÅpenEttersendingMedStønadstype()}>
-          Send inn
+        <Hovedknapp
+          spinner={senderEttersending}
+          onClick={() => sendÅpenEttersendingMedStønadstype()}
+        >
+          {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
         <StyledAlertStripe melding={alertStripeMelding} />
       </div>

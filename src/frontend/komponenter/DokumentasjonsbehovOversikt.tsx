@@ -30,6 +30,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
     alertMelding.TOM
   );
+  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
 
   const [åpenEttersendingFelt, settÅpenEttersendingFelt] =
     useState<IÅpenEttersending>({
@@ -41,28 +42,32 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
   const context = useApp();
 
   const lagOgSendEttersending = async () => {
-    const søknadMedVedlegg = {
-      søknadsId: søknad.søknadId,
-      dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
-      åpenEttersending: åpenEttersendingFelt,
-    };
-    const ettersendingsdata = {
-      fnr: context.søker.fnr,
-      søknadMedVedlegg: søknadMedVedlegg,
-    };
-
-    if (
-      åpenEttersendingFelt.vedlegg.length > 0 ||
-      dokumentasjonsbehovTilInnsending
-        .map((behov) => behov.opplastedeVedlegg.length)
-        .reduce((total, verdi) => total + verdi) > 0
-    ) {
-      settAlertStripeMelding(alertMelding.TOM);
-      try {
-        await sendEttersending(ettersendingsdata);
-        settAlertStripeMelding(alertMelding.SENDT_INN);
-      } catch {
-        settAlertStripeMelding(alertMelding.FEIL);
+    if (!senderEttersending) {
+      if (
+        åpenEttersendingFelt.vedlegg.length > 0 ||
+        dokumentasjonsbehovTilInnsending
+          .map((behov) => behov.opplastedeVedlegg.length)
+          .reduce((total, verdi) => total + verdi) > 0
+      ) {
+        settSenderEttersending(true);
+        const søknadMedVedlegg = {
+          søknadsId: søknad.søknadId,
+          dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
+          åpenEttersending: åpenEttersendingFelt,
+        };
+        const ettersendingsdata = {
+          fnr: context.søker.fnr,
+          søknadMedVedlegg: søknadMedVedlegg,
+        };
+        settAlertStripeMelding(alertMelding.TOM);
+        try {
+          await sendEttersending(ettersendingsdata);
+          settAlertStripeMelding(alertMelding.SENDT_INN);
+        } catch {
+          settAlertStripeMelding(alertMelding.FEIL);
+        } finally {
+          settSenderEttersending(false);
+        }
       }
     }
   };
@@ -110,8 +115,11 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         />
       </div>
       <div>
-        <Hovedknapp onClick={() => lagOgSendEttersending()}>
-          Send inn
+        <Hovedknapp
+          spinner={senderEttersending}
+          onClick={() => lagOgSendEttersending()}
+        >
+          {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
         <StyledAlertStripe melding={alertStripeMelding} />
       </div>
