@@ -7,6 +7,12 @@ import { ISøknadsbehov, IÅpenEttersending } from '../typer/søknadsdata';
 import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
+import styled from 'styled-components';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+
+const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+  margin-top: 1rem;
+`;
 
 interface IProps {
   søknad: ISøknadsbehov;
@@ -20,6 +26,8 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
     dokumentasjonsbehovTilInnsending,
     settDokumentasjonsbehovTilInnsending,
   ] = useState<IDokumentasjonsbehov[]>();
+  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
+  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
 
   const [åpenEttersendingFelt, settÅpenEttersendingFelt] =
     useState<IÅpenEttersending>({
@@ -30,24 +38,34 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
 
   const context = useApp();
 
-  const lagOgSendEttersending = () => {
-    const søknadMedVedlegg = {
-      søknadsId: søknad.søknadId,
-      dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
-      åpenEttersending: åpenEttersendingFelt,
-    };
-    const ettersendingsdata = {
-      fnr: context.søker.fnr,
-      søknadMedVedlegg: søknadMedVedlegg,
-    };
-
-    if (
-      åpenEttersendingFelt.vedlegg.length > 0 ||
-      dokumentasjonsbehovTilInnsending
-        .map((behov) => behov.opplastedeVedlegg.length)
-        .reduce((total, verdi) => total + verdi) > 0
-    )
-      sendEttersending(ettersendingsdata);
+  const lagOgSendEttersending = async () => {
+    if (!senderEttersending) {
+      if (
+        åpenEttersendingFelt.vedlegg.length > 0 ||
+        dokumentasjonsbehovTilInnsending
+          .map((behov) => behov.opplastedeVedlegg.length)
+          .reduce((total, verdi) => total + verdi) > 0
+      ) {
+        settSenderEttersending(true);
+        const søknadMedVedlegg = {
+          søknadsId: søknad.søknadId,
+          dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
+          åpenEttersending: åpenEttersendingFelt,
+        };
+        const ettersendingsdata = {
+          fnr: context.søker.fnr,
+          søknadMedVedlegg: søknadMedVedlegg,
+        };
+        settVisNoeGikkGalt(false);
+        try {
+          await sendEttersending(ettersendingsdata);
+        } catch {
+          settVisNoeGikkGalt(true);
+        } finally {
+          settSenderEttersending(false);
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -93,9 +111,17 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         />
       </div>
       <div>
-        <Hovedknapp onClick={() => lagOgSendEttersending()}>
-          Send inn
+        <Hovedknapp
+          spinner={senderEttersending}
+          onClick={() => lagOgSendEttersending()}
+        >
+          {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
+        {visNoeGikkGalt && (
+          <AlertStripeFeilStyled>
+            Noe gikk galt, prøv igjen
+          </AlertStripeFeilStyled>
+        )}
       </div>
     </div>
   );

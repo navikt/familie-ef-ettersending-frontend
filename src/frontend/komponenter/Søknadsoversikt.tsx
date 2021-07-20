@@ -13,11 +13,16 @@ import {
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components/macro';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 
 const SoknadContainer = styled.div`
   margin-bottom: 5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid lightgray;
+`;
+
+const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+  margin-top: 1rem;
 `;
 
 const Søknadsoversikt = () => {
@@ -32,6 +37,8 @@ const Søknadsoversikt = () => {
         vedlegg: [],
       },
     });
+  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
+  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
 
   const context = useApp();
 
@@ -45,13 +52,24 @@ const Søknadsoversikt = () => {
     if (context.søker != null) hentOgSettSøknader();
   }, [context.søker]);
 
-  const sendÅpenEttersendingMedStønadstype = () => {
-    const ettersending = {
-      fnr: context.søker.fnr,
-      åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
-    };
-    if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0)
-      sendEttersending(ettersending);
+  const sendÅpenEttersendingMedStønadstype = async () => {
+    if (!senderEttersending) {
+      if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0) {
+        settSenderEttersending(true);
+        const ettersending = {
+          fnr: context.søker.fnr,
+          åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
+        };
+        settVisNoeGikkGalt(false);
+        try {
+          await sendEttersending(ettersending);
+        } catch {
+          settVisNoeGikkGalt(true);
+        } finally {
+          settSenderEttersending(false);
+        }
+      }
+    }
   };
 
   if (laster) return <NavFrontendSpinner />;
@@ -66,16 +84,23 @@ const Søknadsoversikt = () => {
             settÅpenEttersendingMedStønadstype
           }
         />
-        <Hovedknapp onClick={() => sendÅpenEttersendingMedStønadstype()}>
-          Send inn
+        <Hovedknapp
+          spinner={senderEttersending}
+          onClick={() => sendÅpenEttersendingMedStønadstype()}
+        >
+          {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
       </SoknadContainer>
+      {visNoeGikkGalt && (
+        <AlertStripeFeilStyled>Noe gikk galt, prøv igjen</AlertStripeFeilStyled>
+      )}
       {søknader.map((søknad, index) => {
         return (
           <SoknadContainer key={index}>
-            <h3>
-              Søknad om {søknad.stønadType} sendt inn {søknad.søknadDato}
-            </h3>
+            <h2>
+              Søknad om {søknad.stønadType.toLocaleLowerCase()} sendt inn{' '}
+              {new Date(søknad.søknadDato).toLocaleDateString()}
+            </h2>
             <DokumentasjonsbehovOversikt søknad={søknad} />
           </SoknadContainer>
         );
