@@ -25,5 +25,5 @@ export interface IÅpenEttersending {
 
 export interface IEttersendingUtenSøknad {
   stønadstype: string;
-  åpenEttersending: IÅpenEttersending;
+  innsending: IÅpenEttersending;
 }

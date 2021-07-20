@@ -86,8 +86,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   const leggTilVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
     settEttersendingUtenSøknad({
       ...ettersendingUtenSøknad,
-      åpenEttersending: {
-        ...ettersendingUtenSøknad.åpenEttersending,
+      innsending: {
+        ...ettersendingUtenSøknad.innsending,
         vedlegg: vedlegg,
       },
     });
@@ -135,8 +135,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   const slettVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
     settEttersendingUtenSøknad({
       ...ettersendingUtenSøknad,
-      åpenEttersending: {
-        ...ettersendingUtenSøknad.åpenEttersending,
+      innsending: {
+        ...ettersendingUtenSøknad.innsending,
         vedlegg: null,
       },
     });

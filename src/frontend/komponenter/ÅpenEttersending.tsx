@@ -54,8 +54,8 @@ const ÅpenEttersending = ({
     if (visStønadstype) {
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
-        åpenEttersending: {
-          ...ettersendingUtenSøknad.åpenEttersending,
+        innsending: {
+          ...ettersendingUtenSøknad.innsending,
           beskrivelse: beskrivelse,
         },
       });
@@ -72,8 +72,8 @@ const ÅpenEttersending = ({
     if (visStønadstype) {
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
-        åpenEttersending: {
-          ...ettersendingUtenSøknad.åpenEttersending,
+        innsending: {
+          ...ettersendingUtenSøknad.innsending,
           dokumenttype: dokumenttype,
         },
       });

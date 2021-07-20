@@ -22,10 +22,10 @@ const Søknadsoversikt = () => {
   const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
     useState<IEttersendingUtenSøknad>({
       stønadstype: '',
-      åpenEttersending: {
+      innsending: {
         beskrivelse: '',
         dokumenttype: '',
-        vedlegg: [],
+        vedlegg: null,
       },
     });
   const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
@@ -45,17 +45,18 @@ const Søknadsoversikt = () => {
 
   const sendEttersendingUtenSøknad = async () => {
     if (!senderEttersending) {
-      if (ettersendingUtenSøknad.åpenEttersending.vedlegg.length > 0) {
+      if (ettersendingUtenSøknad.innsending.vedlegg) {
         settSenderEttersending(true);
         const ettersending = {
           fnr: context.søker.fnr,
-          ettersendingerUtenSøknad: ettersendingUtenSøknad,
-          ettersendingerForSøknad: {
+          ettersendingUtenSøknad: ettersendingUtenSøknad,
+          ettersendingForSøknad: {
             søknadsid: '',
             dokumentasjonsbehov: [],
             innsending: [],
-          }, // se på denne
+          },
         };
+        console.log(ettersending);
 
         settVisNoeGikkGalt(false);
         try {
