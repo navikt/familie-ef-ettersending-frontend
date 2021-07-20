@@ -12,6 +12,12 @@ import {
 } from '../typer/søknadsdata';
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import styled from 'styled-components';
+
+const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+  margin-top: 1rem;
+`;
 
 const Søknadsoversikt = () => {
   const [laster, settLasterverdi] = useState(true);
@@ -25,6 +31,8 @@ const Søknadsoversikt = () => {
         vedlegg: [],
       },
     });
+  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
+  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
 
   const context = useApp();
 
@@ -38,13 +46,24 @@ const Søknadsoversikt = () => {
     if (context.søker != null) hentOgSettSøknader();
   }, [context.søker]);
 
-  const sendÅpenEttersendingMedStønadstype = () => {
-    const ettersending = {
-      fnr: context.søker.fnr,
-      åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
-    };
-    if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0)
-      sendEttersending(ettersending);
+  const sendÅpenEttersendingMedStønadstype = async () => {
+    if (!senderEttersending) {
+      if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0) {
+        settSenderEttersending(true);
+        const ettersending = {
+          fnr: context.søker.fnr,
+          åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
+        };
+        settVisNoeGikkGalt(false);
+        try {
+          await sendEttersending(ettersending);
+        } catch {
+          settVisNoeGikkGalt(true);
+        } finally {
+          settSenderEttersending(false);
+        }
+      }
+    }
   };
 
   if (laster) return <NavFrontendSpinner />;
@@ -59,9 +78,17 @@ const Søknadsoversikt = () => {
             settÅpenEttersendingMedStønadstype
           }
         />
-        <Hovedknapp onClick={() => sendÅpenEttersendingMedStønadstype()}>
-          Send inn
+        <Hovedknapp
+          spinner={senderEttersending}
+          onClick={() => sendÅpenEttersendingMedStønadstype()}
+        >
+          {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
+        {visNoeGikkGalt && (
+          <AlertStripeFeilStyled>
+            Noe gikk galt, prøv igjen
+          </AlertStripeFeilStyled>
+        )}
       </div>
       {søknader.map((søknad) => {
         return (
