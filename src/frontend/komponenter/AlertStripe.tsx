@@ -2,7 +2,7 @@ import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import React from 'react';
 
 export enum alertMelding {
-  SENDT_INN = 'Ettersending er sendt inn',
+  SENDT_INN = 'Ettersendingen er sendt inn',
   FEIL = 'Noe gikk galt, prøv igjen',
   TOM = '',
 }
