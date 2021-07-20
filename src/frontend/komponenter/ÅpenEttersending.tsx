@@ -110,7 +110,7 @@ const ÅpenEttersending = ({
           <option value="">Velg stønadstype</option>
           {Object.keys(StønadType).map((stønadType) => (
             <option key={stønadType} value={stønadType}>
-              {stønadType}
+              {StønadType[stønadType]}
             </option>
           ))}
         </StyledSelect>
@@ -122,7 +122,7 @@ const ÅpenEttersending = ({
       >
         <option value="">Velg dokumenttype</option>
         {Object.keys(DokumentType).map((dokumenttype) => (
-          <option key={dokumenttype} value={DokumentType[dokumenttype]}>
+          <option key={dokumenttype} value={dokumenttype}>
             {DokumentType[dokumenttype]}
           </option>
         ))}

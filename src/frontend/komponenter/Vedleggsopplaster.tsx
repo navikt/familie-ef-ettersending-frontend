@@ -12,7 +12,6 @@ import {
   IInnsending,
 } from '../typer/ettersending';
 import '../stil/Vedleggsopplaster.less';
-import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
@@ -33,7 +32,7 @@ interface IVedleggsopplaster {
 
   ettersendingUtenSøknad?: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad?: (
-    dokumentasjonsbehov: IEttersendingUtenSøknad
+    ettersendingUtenSøknad: IEttersendingUtenSøknad
   ) => void;
 }
 
@@ -57,8 +56,8 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåBehov), []);
 
   const leggTilFilTilOpplasting = (vedlegg: IVedlegg) => {
-    const oppdatertDokumentasjonsbehov = dokumentasjonsbehovTilInnsending.map(
-      (behov) => {
+    const oppdatertDokumentasjonsbehov: IDokumentasjonsbehov[] =
+      dokumentasjonsbehovTilInnsending.map((behov) => {
         if (behov.id == dokumentasjonsbehovId) {
           settVedleggTilOpplasting([...behov.opplastedeVedlegg, vedlegg]);
           return {
@@ -68,8 +67,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
         } else {
           return behov;
         }
-      }
-    );
+      });
     settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
   };
 
@@ -82,11 +80,12 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   };
 
   const leggTilVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
+    console.log(ettersendingUtenSøknad);
     settEttersendingUtenSøknad({
       ...ettersendingUtenSøknad,
       innsending: [
-        { ...ettersendingUtenSøknad.innsending[0], vedlegg: vedlegg },
-      ], //obs se på dette. dette fungerer heller ikke hvis vi laster opp flere innsendinger
+        { ...ettersendingUtenSøknad.innsending[0], vedlegg: vedlegg }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
+      ],
     });
     settVedleggTilOpplasting([vedlegg]);
   };

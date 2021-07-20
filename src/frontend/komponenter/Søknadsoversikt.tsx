@@ -48,7 +48,7 @@ const Søknadsoversikt = () => {
   }, [context.søker]);
 
   const sendEttersendingUtenSøknad = async () => {
-    if (!senderEttersending && ettersendingUtenSøknad.innsending.length > 0) {
+    if (!senderEttersending && ettersendingUtenSøknad.innsending[0].vedlegg) {
       settSenderEttersending(true);
       const ettersending: IEttersending = {
         fnr: context.søker.fnr,

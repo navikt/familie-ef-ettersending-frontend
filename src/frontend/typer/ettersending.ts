@@ -39,7 +39,13 @@ export interface IEttersending {
 
 export const tomEttersendingUtenSøknad: IEttersendingUtenSøknad = {
   stønadstype: '',
-  innsending: [],
+  innsending: [
+    {
+      beskrivelse: '',
+      dokumenttype: '',
+      vedlegg: null,
+    },
+  ],
 };
 
 export const tomEttersendingForSøknad: IEttersendingForSøknad = {
