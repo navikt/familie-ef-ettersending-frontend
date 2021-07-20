@@ -12,10 +12,19 @@ import {
 } from '../typer/søknadsdata';
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import styled from 'styled-components';
+import AlertStripe, { alertMelding } from './AlertStripe';
+
+const StyledAlertStripe = styled(AlertStripe)`
+  margin-top: 1rem;
+`;
 
 const Søknadsoversikt = () => {
   const [laster, settLasterverdi] = useState(true);
   const [søknader, settSøknader] = useState<ISøknadsbehov[]>();
+  const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
+    alertMelding.tom
+  );
   const [åpenEttersendingMedStønadstype, settÅpenEttersendingMedStønadstype] =
     useState<IÅpenEttersendingMedStønadstype>({
       stønadstype: '',
@@ -38,13 +47,18 @@ const Søknadsoversikt = () => {
     if (context.søker != null) hentOgSettSøknader();
   }, [context.søker]);
 
-  const sendÅpenEttersendingMedStønadstype = () => {
+  const sendÅpenEttersendingMedStønadstype = async () => {
     const ettersending = {
       fnr: context.søker.fnr,
       åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
     };
     if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0)
-      sendEttersending(ettersending);
+      try {
+        await sendEttersending(ettersending);
+        settAlertStripeMelding(alertMelding.sendtInn);
+      } catch {
+        settAlertStripeMelding(alertMelding.feil);
+      }
   };
 
   if (laster) return <NavFrontendSpinner />;
@@ -62,6 +76,7 @@ const Søknadsoversikt = () => {
         <Hovedknapp onClick={() => sendÅpenEttersendingMedStønadstype()}>
           Send inn
         </Hovedknapp>
+        <StyledAlertStripe melding={alertStripeMelding} />
       </div>
       {søknader.map((søknad) => {
         return (

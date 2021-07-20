@@ -9,8 +9,9 @@ import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import styled from 'styled-components';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import AlertStripe, { alertMelding } from './AlertStripe';
 
-const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
 `;
 
@@ -20,13 +21,16 @@ interface IProps {
 
 export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
   const [laster, settLasterverdi] = useState(true);
-  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
-    useState<IDokumentasjonsbehov[]>();
+  const [dokumentasjonsbehov, settDokumentasjonsbehov] = useState<
+    IDokumentasjonsbehov[]
+  >([]);
   const [
     dokumentasjonsbehovTilInnsending,
     settDokumentasjonsbehovTilInnsending,
-  ] = useState<IDokumentasjonsbehov[]>();
-  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
+  ] = useState<IDokumentasjonsbehov[]>([]);
+  const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
+    alertMelding.tom
+  );
 
   const [åpenEttersendingFelt, settÅpenEttersendingFelt] =
     useState<IÅpenEttersending>({
@@ -54,11 +58,12 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         .map((behov) => behov.opplastedeVedlegg.length)
         .reduce((total, verdi) => total + verdi) > 0
     ) {
-      settVisNoeGikkGalt(false);
+      settAlertStripeMelding(alertMelding.tom);
       try {
         await sendEttersending(ettersendingsdata);
+        settAlertStripeMelding(alertMelding.sendtInn);
       } catch {
-        settVisNoeGikkGalt(true);
+        settAlertStripeMelding(alertMelding.feil);
       }
     }
   };
@@ -109,11 +114,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
         <Hovedknapp onClick={() => lagOgSendEttersending()}>
           Send inn
         </Hovedknapp>
-        {visNoeGikkGalt && (
-          <AlertStripeFeilStyled>
-            Noe gikk galt, prøv igjen
-          </AlertStripeFeilStyled>
-        )}
+        <StyledAlertStripe melding={alertStripeMelding} />
       </div>
     </div>
   );

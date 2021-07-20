@@ -16,10 +16,12 @@ import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
+import AlertStripe, { alertMelding } from './AlertStripe';
 
-const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
 `;
+
 interface IVedleggsopplaster {
   dokumentasjonsbehovId?: string;
   dokumentasjonsbehovTilInnsending?: IDokumentasjonsbehov[];
@@ -45,7 +47,9 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   åpenEttersendingMedStønadstype,
 }: IVedleggsopplaster) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
-  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState<boolean>(false);
+  const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
+    alertMelding.tom
+  );
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [vedleggTilOpplasting, settVedleggTilOpplasting] = useState<IVedlegg[]>(
     []
@@ -184,7 +188,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 
   const lastOppVedlegg = async (fil) => {
     settLaster(true);
-    settVisNoeGikkGalt(false);
+    settAlertStripeMelding(alertMelding.tom);
 
     try {
       const formData = new FormData();
@@ -201,7 +205,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       else if (åpenEttersendingFelt) leggTilVedleggForÅpenEttersending(vedlegg);
       else leggTilVedleggForÅpenEttersendingMedStønadstype(vedlegg);
     } catch {
-      settVisNoeGikkGalt(true);
+      settAlertStripeMelding(alertMelding.feil);
     } finally {
       settLaster(false);
     }
@@ -240,11 +244,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
               kanSlettes={true}
               slettVedlegg={slettVedlegg}
             />
-            {visNoeGikkGalt && (
-              <AlertStripeFeilStyled>
-                Noe gikk galt, prøv igjen
-              </AlertStripeFeilStyled>
-            )}
+            <StyledAlertStripe melding={alertStripeMelding} />
           </>
         )}
       </div>
