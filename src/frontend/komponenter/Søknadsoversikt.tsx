@@ -15,8 +15,14 @@ import {
 } from '../typer/ettersending';
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import styled from 'styled-components/macro';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import styled from 'styled-components';
+
+const SoknadContainer = styled.div`
+  margin-bottom: 5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid lightgray;
+`;
 
 const AlertStripeFeilStyled = styled(AlertStripeFeil)`
   margin-top: 1rem;
@@ -65,7 +71,7 @@ const Søknadsoversikt = () => {
 
   return (
     <>
-      <div>
+      <SoknadContainer>
         <ÅpenEttersending
           visStønadstype={true}
           ettersendingUtenSøknad={ettersendingUtenSøknad}
@@ -77,20 +83,19 @@ const Søknadsoversikt = () => {
         >
           {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
-        {visNoeGikkGalt && (
-          <AlertStripeFeilStyled>
-            Noe gikk galt, prøv igjen
-          </AlertStripeFeilStyled>
-        )}
-      </div>
-      {søknader.map((søknad) => {
+      </SoknadContainer>
+      {visNoeGikkGalt && (
+        <AlertStripeFeilStyled>Noe gikk galt, prøv igjen</AlertStripeFeilStyled>
+      )}
+      {søknader.map((søknad, index) => {
         return (
-          <>
-            <h3>
-              Søknad om {søknad.stønadType} sendt inn {søknad.søknadDato}
-            </h3>
+          <SoknadContainer key={index}>
+            <h2>
+              Søknad om {søknad.stønadType.toLocaleLowerCase()} sendt inn{' '}
+              {new Date(søknad.søknadDato).toLocaleDateString()}
+            </h2>
             <DokumentasjonsbehovOversikt søknad={søknad} />
-          </>
+          </SoknadContainer>
         );
       })}
     </>
