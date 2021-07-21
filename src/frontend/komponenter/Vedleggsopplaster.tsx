@@ -21,15 +21,12 @@ const AlertStripeFeilStyled = styled(AlertStripeFeil)`
 `;
 interface IVedleggsopplaster {
   dokumentasjonsbehovId?: string;
-
   dokumentasjonsbehovTilInnsending?: IDokumentasjonsbehov[];
   settDokumentasjonsbehovTilInnsending?: (
     dokumentasjonsbehov: IDokumentasjonsbehov[]
   ) => void;
-
   innsending?: IInnsending;
   settInnsending?: (dokumentasjonsbehov: IInnsending) => void;
-
   ettersendingUtenSøknad?: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad?: (
     ettersendingUtenSøknad: IEttersendingUtenSøknad
@@ -55,7 +52,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 
   useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåBehov), []);
 
-  const leggTilFilTilOpplasting = (vedlegg: IVedlegg) => {
+  const leggTilVedleggForEttersendingMedSøknad = (vedlegg: IVedlegg) => {
     const oppdatertDokumentasjonsbehov: IDokumentasjonsbehov[] =
       dokumentasjonsbehovTilInnsending.map((behov) => {
         if (behov.id == dokumentasjonsbehovId) {
@@ -80,7 +77,6 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
   };
 
   const leggTilVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
-    console.log(ettersendingUtenSøknad);
     settEttersendingUtenSøknad({
       ...ettersendingUtenSøknad,
       innsending: [
@@ -90,7 +86,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     settVedleggTilOpplasting([vedlegg]);
   };
 
-  const slettFilTilOpplasting = (
+  const slettVedleggForEttersendingMedSøknad = (
     dokumentId: string,
     dokumentasjonsbehovId: string
   ) => {
@@ -165,7 +161,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 
   const slettVedlegg = (vedlegg: IVedlegg) => {
     if (dokumentasjonsbehovId)
-      slettFilTilOpplasting(vedlegg.id, dokumentasjonsbehovId);
+      slettVedleggForEttersendingMedSøknad(vedlegg.id, dokumentasjonsbehovId);
     else if (innsending) slettVedleggForInnsending(vedlegg);
     else slettVedleggForEttersendingUtenSøknad();
   };
@@ -179,11 +175,12 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       formData.append('file', fil);
       const respons = await sendVedleggTilMellomlager(formData);
       const vedlegg: IVedlegg = {
-        // id: respons,
-        id: '122', // Må brukes for at det skal kunne kjøre lokalt
+        id: respons,
+        //id: '122', // Må brukes for at det skal kunne kjøre lokalt
         navn: fil.name,
       };
-      if (dokumentasjonsbehovId) leggTilFilTilOpplasting(vedlegg);
+      if (dokumentasjonsbehovId)
+        leggTilVedleggForEttersendingMedSøknad(vedlegg);
       else if (innsending) leggTilVedleggForInnsending(vedlegg);
       else leggTilVedleggForEttersendingUtenSøknad(vedlegg);
     } catch {

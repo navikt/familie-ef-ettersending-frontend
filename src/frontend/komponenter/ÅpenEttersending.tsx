@@ -23,10 +23,8 @@ const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
 
 interface IProps {
   visStønadstype?: boolean;
-
   innsending?: IInnsending;
   settInnsending?: (dokumentasjonsbehov: IInnsending) => void;
-
   ettersendingUtenSøknad?: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad?: (
     dokumentasjonsbehov: IEttersendingUtenSøknad
