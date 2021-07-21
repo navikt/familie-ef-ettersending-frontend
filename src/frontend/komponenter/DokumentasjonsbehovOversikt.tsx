@@ -4,6 +4,7 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
 import {
+  EttersendingType,
   IEttersending,
   IEttersendingForSøknad,
   IInnsending,
@@ -59,7 +60,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
       };
 
       const ettersendingsdata: IEttersending = {
-        fnr: context.søker.fnr,
+        fnr: context.søker!.fnr,
         ettersendingUtenSøknad: null,
         ettersendingForSøknad: ettersendingForSøknad,
       };
@@ -113,6 +114,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
             );
           })}
         <ÅpenEttersending
+          ettersendingType={EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING}
           settInnsending={settInnsending}
           innsending={innsending}
         />

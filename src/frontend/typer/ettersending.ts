@@ -18,7 +18,7 @@ export interface IVedlegg {
 export interface IInnsending {
   beskrivelse: string;
   dokumenttype: string;
-  vedlegg: IVedlegg;
+  vedlegg: IVedlegg | null;
 }
 
 export interface IEttersendingUtenSøknad {

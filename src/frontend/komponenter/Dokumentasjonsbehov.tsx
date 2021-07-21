@@ -7,6 +7,7 @@ import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
 import { Checkbox } from 'nav-frontend-skjema';
+import { EttersendingType } from '../typer/ettersending';
 
 interface Props {
   dokumentasjonsbehov: IDokumentasjonsbehov;
@@ -66,11 +67,13 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
           <p>Tidligere opplastede filer:</p>
           <OpplastedeVedlegg
             vedleggsliste={dokumentasjonsbehov.opplastedeVedlegg}
-            kanSlettes={false}
           />
         </div>
       )}
       <Vedleggsopplaster
+        ettersendingType={
+          EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
+        }
         dokumentasjonsbehovId={dokumentasjonsbehov.id}
         dokumentasjonsbehovTilInnsending={dokumentasjonsbehovTilInnsending}
         settDokumentasjonsbehovTilInnsending={
