@@ -82,10 +82,13 @@ const Søknadsoversikt = () => {
         >
           {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
+        {visNoeGikkGalt && (
+          <AlertStripeFeilStyled>
+            Noe gikk galt, prøv igjen
+          </AlertStripeFeilStyled>
+        )}
       </SoknadContainer>
-      {visNoeGikkGalt && (
-        <AlertStripeFeilStyled>Noe gikk galt, prøv igjen</AlertStripeFeilStyled>
-      )}
+
       {søknader.map((søknad, index) => {
         return (
           <SoknadContainer key={index}>
