@@ -8,7 +8,6 @@ import {
   IEttersendingForSøknad,
   IInnsending,
   ISøknadsbehov,
-  tomEttersendingUtenSøknad,
   tomInnsending,
 } from '../typer/ettersending';
 import { sendEttersending } from '../api-service';
@@ -58,7 +57,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
 
       const ettersendingsdata: IEttersending = {
         fnr: context.søker.fnr,
-        ettersendingUtenSøknad: tomEttersendingUtenSøknad,
+        ettersendingUtenSøknad: null,
         ettersendingForSøknad: ettersendingForSøknad,
       };
 

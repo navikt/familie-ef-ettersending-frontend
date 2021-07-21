@@ -10,7 +10,6 @@ import {
   ISøknadsbehov,
   IEttersendingUtenSøknad,
   IEttersending,
-  tomEttersendingForSøknad,
   tomEttersendingUtenSøknad,
 } from '../typer/ettersending';
 import ÅpenEttersending from './ÅpenEttersending';
@@ -53,7 +52,7 @@ const Søknadsoversikt = () => {
       const ettersending: IEttersending = {
         fnr: context.søker.fnr,
         ettersendingUtenSøknad: ettersendingUtenSøknad,
-        ettersendingForSøknad: tomEttersendingForSøknad,
+        ettersendingForSøknad: null,
       };
 
       settVisNoeGikkGalt(false);

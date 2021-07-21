@@ -33,8 +33,8 @@ export interface IEttersendingForSøknad {
 
 export interface IEttersending {
   fnr: string;
-  ettersendingForSøknad: IEttersendingForSøknad;
-  ettersendingUtenSøknad: IEttersendingUtenSøknad;
+  ettersendingForSøknad: IEttersendingForSøknad | null;
+  ettersendingUtenSøknad: IEttersendingUtenSøknad | null;
 }
 
 export const tomEttersendingUtenSøknad: IEttersendingUtenSøknad = {
