@@ -6,16 +6,12 @@ import {
 } from '../../shared-utils/autentisering';
 import { hentPersoninfo } from '../api-service';
 import { ISøker } from '../typer/søker';
-import { IVedlegg } from '../typer/ettersending';
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT
   );
-  const [søker, settSøker] = useState<ISøker>(null);
-  const [åpenEttersendingVedlegg, settÅpenEttersendingVedlegg] = useState<
-    IVedlegg[]
-  >([]);
+  const [søker, settSøker] = useState<ISøker | null>(null);
 
   useEffect(() => {
     verifiserAtSøkerErAutentisert(setInnloggetStatus);
@@ -34,7 +30,6 @@ const [AppProvider, useApp] = createUseContext(() => {
   return {
     innloggetStatus,
     søker,
-    åpenEttersendingVedlegg,
   };
 });
 

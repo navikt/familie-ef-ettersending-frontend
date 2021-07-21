@@ -4,6 +4,7 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
 import {
+  EttersendingType,
   IEttersending,
   IEttersendingForSøknad,
   IInnsending,
@@ -24,7 +25,9 @@ interface IProps {
   søknad: ISøknadsbehov;
 }
 
-export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
+export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
+  søknad,
+}: IProps) => {
   const [laster, settLasterverdi] = useState(true);
   const [dokumentasjonsbehov, settDokumentasjonsbehov] = useState<
     IDokumentasjonsbehov[]
@@ -32,7 +35,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
   const [
     dokumentasjonsbehovTilInnsending,
     settDokumentasjonsbehovTilInnsending,
-  ] = useState<IDokumentasjonsbehov[]>();
+  ] = useState<IDokumentasjonsbehov[]>([]);
   const [senderEttersendingSpinner, settSenderEttersendingSpinner] =
     useState<boolean>(false);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
@@ -59,7 +62,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
       };
 
       const ettersendingsdata: IEttersending = {
-        fnr: context.søker.fnr,
+        fnr: context.søker!.fnr,
         ettersendingUtenSøknad: null,
         ettersendingForSøknad: ettersendingForSøknad,
       };
@@ -114,6 +117,7 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
             );
           })}
         <ÅpenEttersending
+          ettersendingType={EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING}
           settInnsending={settInnsending}
           innsending={innsending}
         />
