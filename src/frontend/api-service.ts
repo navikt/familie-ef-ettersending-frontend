@@ -1,14 +1,21 @@
 import axios from 'axios';
 import environment from '../backend/environment';
+import { IEttersending, ISøknadsbehov } from './typer/ettersending';
 import { IPersoninfo } from './typer/søker';
-import { ISøknadsbehov } from './typer/søknadsdata';
 
 interface Ifamilievedlegg {
   dokumentId: string;
   filnavn: string;
 }
 
-export const sendEttersending = (ettersendingsdata): Promise<string> => {
+interface IKvittering {
+  text: string;
+  mottattDato: string;
+}
+
+export const sendEttersending = (
+  ettersendingsdata: IEttersending
+): Promise<IKvittering> => {
   return axios
     .post(`${environment().apiUrl}/api/ettersending`, ettersendingsdata, {
       withCredentials: true,

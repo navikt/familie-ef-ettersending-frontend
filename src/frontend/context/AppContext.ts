@@ -6,7 +6,7 @@ import {
 } from '../../shared-utils/autentisering';
 import { hentPersoninfo } from '../api-service';
 import { ISøker } from '../typer/søker';
-import { IVedlegg } from '../typer/søknadsdata';
+import { IVedlegg } from '../typer/ettersending';
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(

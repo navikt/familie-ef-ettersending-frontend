@@ -7,7 +7,6 @@ import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import '../stil/Vedleggsopplaster.less';
 import '../stil/Dokumentasjonsbehov.less';
 import { Checkbox } from 'nav-frontend-skjema';
-import { useApp } from '../context/AppContext';
 
 interface Props {
   dokumentasjonsbehov: IDokumentasjonsbehov;
@@ -25,7 +24,6 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
   const [checked, settCheckboxverdi] = useState<boolean>(
     dokumentasjonsbehov.harSendtInn
   );
-  const context = useApp();
 
   const erDokumentasjonSendt = (): boolean => {
     return (

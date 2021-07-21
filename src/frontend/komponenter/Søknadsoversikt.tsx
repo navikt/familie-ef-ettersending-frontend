@@ -8,8 +8,10 @@ import { useEffect } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
   ISøknadsbehov,
-  IÅpenEttersendingMedStønadstype,
-} from '../typer/søknadsdata';
+  IEttersendingUtenSøknad,
+  IEttersending,
+  tomEttersendingUtenSøknad,
+} from '../typer/ettersending';
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components/macro';
@@ -28,15 +30,8 @@ const AlertStripeFeilStyled = styled(AlertStripeFeil)`
 const Søknadsoversikt = () => {
   const [laster, settLasterverdi] = useState(true);
   const [søknader, settSøknader] = useState<ISøknadsbehov[]>();
-  const [åpenEttersendingMedStønadstype, settÅpenEttersendingMedStønadstype] =
-    useState<IÅpenEttersendingMedStønadstype>({
-      stønadstype: '',
-      åpenEttersending: {
-        beskrivelse: '',
-        dokumenttype: '',
-        vedlegg: [],
-      },
-    });
+  const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
+    useState<IEttersendingUtenSøknad>(tomEttersendingUtenSøknad);
   const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
   const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
 
@@ -45,29 +40,28 @@ const Søknadsoversikt = () => {
   useEffect(() => {
     const hentOgSettSøknader = async () => {
       const søknadsliste = await hentDokumentasjonsbehov();
-
       settSøknader(søknadsliste);
       settLasterverdi(false);
     };
     if (context.søker != null) hentOgSettSøknader();
   }, [context.søker]);
 
-  const sendÅpenEttersendingMedStønadstype = async () => {
-    if (!senderEttersending) {
-      if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0) {
-        settSenderEttersending(true);
-        const ettersending = {
-          fnr: context.søker.fnr,
-          åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
-        };
-        settVisNoeGikkGalt(false);
-        try {
-          await sendEttersending(ettersending);
-        } catch {
-          settVisNoeGikkGalt(true);
-        } finally {
-          settSenderEttersending(false);
-        }
+  const sendEttersendingUtenSøknad = async () => {
+    if (!senderEttersending && ettersendingUtenSøknad.innsending[0].vedlegg) {
+      settSenderEttersending(true);
+      const ettersending: IEttersending = {
+        fnr: context.søker.fnr,
+        ettersendingUtenSøknad: ettersendingUtenSøknad,
+        ettersendingForSøknad: null,
+      };
+
+      settVisNoeGikkGalt(false);
+      try {
+        await sendEttersending(ettersending);
+      } catch {
+        settVisNoeGikkGalt(true);
+      } finally {
+        settSenderEttersending(false);
       }
     }
   };
@@ -78,15 +72,13 @@ const Søknadsoversikt = () => {
     <>
       <SoknadContainer>
         <ÅpenEttersending
-          visStønadsType={true}
-          åpenEttersendingMedStønadstype={åpenEttersendingMedStønadstype}
-          settÅpenEttersendingMedStønadstype={
-            settÅpenEttersendingMedStønadstype
-          }
+          visStønadstype={true}
+          ettersendingUtenSøknad={ettersendingUtenSøknad}
+          settEttersendingUtenSøknad={settEttersendingUtenSøknad}
         />
         <Hovedknapp
           spinner={senderEttersending}
-          onClick={() => sendÅpenEttersendingMedStønadstype()}
+          onClick={() => sendEttersendingUtenSøknad()}
         >
           {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
