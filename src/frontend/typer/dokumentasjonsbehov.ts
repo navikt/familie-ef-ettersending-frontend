@@ -1,4 +1,4 @@
-import { IVedlegg } from './søknadsdata';
+import { IVedlegg } from './ettersending';
 export interface IDokumentasjonsbehov {
   id: string;
   label: string;

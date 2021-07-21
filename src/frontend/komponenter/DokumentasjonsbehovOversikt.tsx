@@ -3,7 +3,13 @@ import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
-import { ISøknadsbehov, IÅpenEttersending } from '../typer/søknadsdata';
+import {
+  IEttersending,
+  IEttersendingForSøknad,
+  IInnsending,
+  ISøknadsbehov,
+  tomInnsending,
+} from '../typer/ettersending';
 import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
@@ -26,53 +32,46 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
   const [
     dokumentasjonsbehovTilInnsending,
     settDokumentasjonsbehovTilInnsending,
-  ] = useState<IDokumentasjonsbehov[]>([]);
+  ] = useState<IDokumentasjonsbehov[]>();
+  const [senderEttersendingSpinner, settSenderEttersendingSpinner] =
+    useState<boolean>(false);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
     alertMelding.TOM
   );
-  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
-
-  const [åpenEttersendingFelt, settÅpenEttersendingFelt] =
-    useState<IÅpenEttersending>({
-      beskrivelse: '',
-      dokumenttype: '',
-      vedlegg: [],
-    });
+  const [innsending, settInnsending] = useState<IInnsending>(tomInnsending);
 
   const context = useApp();
 
   const lagOgSendEttersending = async () => {
-    if (!senderEttersending) {
-      if (
-        åpenEttersendingFelt.vedlegg.length > 0 ||
+    if (
+      !senderEttersendingSpinner &&
+      (innsending.vedlegg ||
         dokumentasjonsbehovTilInnsending
           .map((behov) => behov.opplastedeVedlegg.length)
-          .reduce((total, verdi) => total + verdi) > 0
-      ) {
-        settSenderEttersending(true);
-        const søknadMedVedlegg = {
-          søknadsId: søknad.søknadId,
-          dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
-          åpenEttersending: åpenEttersendingFelt,
-        };
-        const ettersendingsdata = {
-          fnr: context.søker.fnr,
-          søknadMedVedlegg: søknadMedVedlegg,
-        };
-        settAlertStripeMelding(alertMelding.TOM);
-        try {
-          await sendEttersending(ettersendingsdata);
-          settDokumentasjonsbehov([
-            ...dokumentasjonsbehov,
-            ...dokumentasjonsbehovTilInnsending,
-          ]);
-          settDokumentasjonsbehovTilInnsending([]);
-          settAlertStripeMelding(alertMelding.SENDT_INN);
-        } catch {
-          settAlertStripeMelding(alertMelding.FEIL);
-        } finally {
-          settSenderEttersending(false);
-        }
+          .reduce((total, verdi) => total + verdi) > 0)
+    ) {
+      settSenderEttersendingSpinner(true);
+
+      const ettersendingForSøknad: IEttersendingForSøknad = {
+        søknadId: søknad.søknadId,
+        dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
+        innsending: innsending.vedlegg ? [innsending] : [],
+      };
+
+      const ettersendingsdata: IEttersending = {
+        fnr: context.søker.fnr,
+        ettersendingUtenSøknad: null,
+        ettersendingForSøknad: ettersendingForSøknad,
+      };
+
+      settAlertStripeMelding(alertMelding.TOM);
+      try {
+        await sendEttersending(ettersendingsdata);
+        settAlertStripeMelding(alertMelding.SENDT_INN);
+      } catch {
+        settAlertStripeMelding(alertMelding.FEIL);
+      } finally {
+        settSenderEttersendingSpinner(false);
       }
     }
   };
@@ -115,16 +114,16 @@ export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
             );
           })}
         <ÅpenEttersending
-          settÅpenEttersendingFelt={settÅpenEttersendingFelt}
-          åpenEttersendingFelt={åpenEttersendingFelt}
+          settInnsending={settInnsending}
+          innsending={innsending}
         />
       </div>
       <div>
         <Hovedknapp
-          spinner={senderEttersending}
-          onClick={() => lagOgSendEttersending()}
+          spinner={senderEttersendingSpinner}
+          onClick={lagOgSendEttersending}
         >
-          {senderEttersending ? 'Sender...' : 'Send inn'}
+          {senderEttersendingSpinner ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
         <StyledAlertStripe melding={alertStripeMelding} />
       </div>

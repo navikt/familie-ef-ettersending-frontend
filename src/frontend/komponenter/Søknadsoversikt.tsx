@@ -8,12 +8,20 @@ import { useEffect } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
   ISøknadsbehov,
-  IÅpenEttersendingMedStønadstype,
-} from '../typer/søknadsdata';
+  IEttersendingUtenSøknad,
+  IEttersending,
+  tomEttersendingUtenSøknad,
+} from '../typer/ettersending';
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
+
+const SoknadContainer = styled.div`
+  margin-bottom: 5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid lightgray;
+`;
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
@@ -22,49 +30,41 @@ const StyledAlertStripe = styled(AlertStripe)`
 const Søknadsoversikt = () => {
   const [laster, settLasterverdi] = useState(true);
   const [søknader, settSøknader] = useState<ISøknadsbehov[]>();
+  const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
+    useState<IEttersendingUtenSøknad>(tomEttersendingUtenSøknad);
+  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
     alertMelding.TOM
   );
-  const [åpenEttersendingMedStønadstype, settÅpenEttersendingMedStønadstype] =
-    useState<IÅpenEttersendingMedStønadstype>({
-      stønadstype: '',
-      åpenEttersending: {
-        beskrivelse: '',
-        dokumenttype: '',
-        vedlegg: [],
-      },
-    });
-  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
 
   const context = useApp();
 
   useEffect(() => {
     const hentOgSettSøknader = async () => {
       const søknadsliste = await hentDokumentasjonsbehov();
-
       settSøknader(søknadsliste);
       settLasterverdi(false);
     };
     if (context.søker != null) hentOgSettSøknader();
   }, [context.søker]);
 
-  const sendÅpenEttersendingMedStønadstype = async () => {
-    if (!senderEttersending) {
-      if (åpenEttersendingMedStønadstype.åpenEttersending.vedlegg.length > 0) {
-        settSenderEttersending(true);
-        const ettersending = {
-          fnr: context.søker.fnr,
-          åpenEttersendingMedStønadstype: åpenEttersendingMedStønadstype,
-        };
-        settAlertStripeMelding(alertMelding.TOM);
-        try {
-          await sendEttersending(ettersending);
-          settAlertStripeMelding(alertMelding.SENDT_INN);
-        } catch {
-          settAlertStripeMelding(alertMelding.FEIL);
-        } finally {
-          settSenderEttersending(false);
-        }
+  const sendEttersendingUtenSøknad = async () => {
+    if (!senderEttersending && ettersendingUtenSøknad.innsending[0].vedlegg) {
+      settSenderEttersending(true);
+      const ettersending: IEttersending = {
+        fnr: context.søker.fnr,
+        ettersendingUtenSøknad: ettersendingUtenSøknad,
+        ettersendingForSøknad: null,
+      };
+
+      settAlertStripeMelding(alertMelding.TOM);
+      try {
+        await sendEttersending(ettersending);
+        settAlertStripeMelding(alertMelding.SENDT_INN);
+      } catch {
+        settAlertStripeMelding(alertMelding.FEIL);
+      } finally {
+        settSenderEttersending(false);
       }
     }
   };
@@ -73,30 +73,29 @@ const Søknadsoversikt = () => {
 
   return (
     <>
-      <div>
+      <SoknadContainer>
         <ÅpenEttersending
-          visStønadsType={true}
-          åpenEttersendingMedStønadstype={åpenEttersendingMedStønadstype}
-          settÅpenEttersendingMedStønadstype={
-            settÅpenEttersendingMedStønadstype
-          }
+          visStønadstype={true}
+          ettersendingUtenSøknad={ettersendingUtenSøknad}
+          settEttersendingUtenSøknad={settEttersendingUtenSøknad}
         />
         <Hovedknapp
           spinner={senderEttersending}
-          onClick={() => sendÅpenEttersendingMedStønadstype()}
+          onClick={() => sendEttersendingUtenSøknad()}
         >
           {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
-        <StyledAlertStripe melding={alertStripeMelding} />
-      </div>
-      {søknader.map((søknad) => {
+      </SoknadContainer>
+      <StyledAlertStripe melding={alertStripeMelding} />
+      {søknader.map((søknad, index) => {
         return (
-          <>
-            <h3>
-              Søknad om {søknad.stønadType} sendt inn {søknad.søknadDato}
-            </h3>
+          <SoknadContainer key={index}>
+            <h2>
+              Søknad om {søknad.stønadType.toLocaleLowerCase()} sendt inn{' '}
+              {new Date(søknad.søknadDato).toLocaleDateString()}
+            </h2>
             <DokumentasjonsbehovOversikt søknad={søknad} />
-          </>
+          </SoknadContainer>
         );
       })}
     </>
