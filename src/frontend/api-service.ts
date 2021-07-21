@@ -11,6 +11,7 @@ interface Ifamilievedlegg {
 export const sendEttersending = (
   ettersendingsdata: IEttersending
 ): Promise<string> => {
+  console.log(ettersendingsdata);
   return axios
     .post(`${environment().apiUrl}/api/ettersending`, ettersendingsdata, {
       withCredentials: true,

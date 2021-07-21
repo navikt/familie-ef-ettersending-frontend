@@ -56,16 +56,16 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     const oppdatertDokumentasjonsbehov: IDokumentasjonsbehov[] =
       dokumentasjonsbehovTilInnsending.map((behov) => {
         if (behov.id == dokumentasjonsbehovId) {
-          settVedleggTilOpplasting([...behov.opplastedeVedlegg, vedlegg]);
           return {
             ...behov,
-            opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
+            opplastedeVedlegg: [...vedleggTilOpplasting, vedlegg],
           };
         } else {
           return behov;
         }
       });
     settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
+    settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
   };
 
   const leggTilVedleggForInnsending = (vedlegg: IVedlegg) => {
@@ -176,7 +176,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
       const respons = await sendVedleggTilMellomlager(formData);
       const vedlegg: IVedlegg = {
         id: respons,
-        //id: '122', // Må brukes for at det skal kunne kjøre lokalt
+        // id: '122', // Må brukes for at det skal kunne kjøre lokalt
         navn: fil.name,
       };
       if (dokumentasjonsbehovId)
