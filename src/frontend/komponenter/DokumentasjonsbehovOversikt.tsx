@@ -24,14 +24,17 @@ interface IProps {
   søknad: ISøknadsbehov;
 }
 
-export const DokumentasjonsbehovOversikt = ({ søknad }: IProps) => {
+export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
+  søknad,
+}: IProps) => {
   const [laster, settLasterverdi] = useState(true);
-  const [dokumentasjonsbehov, settDokumentasjonsbehov] =
-    useState<IDokumentasjonsbehov[]>();
+  const [dokumentasjonsbehov, settDokumentasjonsbehov] = useState<
+    IDokumentasjonsbehov[]
+  >([]);
   const [
     dokumentasjonsbehovTilInnsending,
     settDokumentasjonsbehovTilInnsending,
-  ] = useState<IDokumentasjonsbehov[]>();
+  ] = useState<IDokumentasjonsbehov[]>([]);
   const [senderEttersendingSpinner, settSenderEttersendingSpinner] =
     useState<boolean>(false);
   const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);

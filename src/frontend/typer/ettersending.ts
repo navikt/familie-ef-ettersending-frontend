@@ -59,3 +59,9 @@ export const tomInnsending: IInnsending = {
   dokumenttype: '',
   vedlegg: null,
 };
+
+export enum EttersendingType {
+  ETTERSENDING_UTEN_SØKNAD,
+  ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV,
+  ETTERSENDING_MED_SØKNAD_INNSENDING,
+}
