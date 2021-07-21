@@ -8,9 +8,14 @@ interface Ifamilievedlegg {
   filnavn: string;
 }
 
+interface IKvittering {
+  text: string;
+  mottattDato: string;
+}
+
 export const sendEttersending = (
   ettersendingsdata: IEttersending
-): Promise<string> => {
+): Promise<IKvittering> => {
   return axios
     .post(`${environment().apiUrl}/api/ettersending`, ettersendingsdata, {
       withCredentials: true,
