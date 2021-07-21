@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
@@ -29,14 +29,14 @@ type Props = { ettersendingType: EttersendingType } & (
   | {
       ettersendingType: EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING;
       innsending: IInnsending;
-      settInnsending: (dokumentasjonsbehov: IInnsending) => void;
+      settInnsending: Dispatch<SetStateAction<IInnsending>>;
     }
   | {
       ettersendingType: EttersendingType.ETTERSENDING_UTEN_SØKNAD;
       ettersendingUtenSøknad: IEttersendingUtenSøknad;
-      settEttersendingUtenSøknad: (
-        ettersendingUtenSøknad: IEttersendingUtenSøknad
-      ) => void;
+      settEttersendingUtenSøknad: Dispatch<
+        SetStateAction<IEttersendingUtenSøknad>
+      >;
     }
 );
 

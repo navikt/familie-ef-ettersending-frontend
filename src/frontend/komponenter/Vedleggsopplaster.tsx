@@ -1,4 +1,10 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, {
+  useCallback,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
@@ -27,21 +33,21 @@ type VedleggsopplasterProps = { ettersendingType: EttersendingType } & (
       ettersendingType: EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV;
       dokumentasjonsbehovId: string;
       dokumentasjonsbehovTilInnsending: IDokumentasjonsbehov[];
-      settDokumentasjonsbehovTilInnsending: (
-        dokumentasjonsbehov: IDokumentasjonsbehov[]
-      ) => void;
+      settDokumentasjonsbehovTilInnsending: Dispatch<
+        SetStateAction<IDokumentasjonsbehov[]>
+      >;
     }
   | {
       ettersendingType: EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING;
       innsending: IInnsending;
-      settInnsending: (dokumentasjonsbehov: IInnsending) => void;
+      settInnsending: Dispatch<SetStateAction<IInnsending>>;
     }
   | {
       ettersendingType: EttersendingType.ETTERSENDING_UTEN_SØKNAD;
       ettersendingUtenSøknad: IEttersendingUtenSøknad;
-      settEttersendingUtenSøknad: (
-        ettersendingUtenSøknad: IEttersendingUtenSøknad
-      ) => void;
+      settEttersendingUtenSøknad: Dispatch<
+        SetStateAction<IEttersendingUtenSøknad>
+      >;
     }
 );
 
