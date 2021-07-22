@@ -62,6 +62,16 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [laster, settLaster] = useState<boolean>(false);
 
+  if (
+    props.ettersendingType ===
+    EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
+  ) {
+    useEffect(
+      () => console.log('endret', props.dokumentasjonsbehovTilInnsending),
+      [props.dokumentasjonsbehovTilInnsending]
+    );
+  }
+
   const leggTilVedlegg = (vedlegg: IVedlegg[]) => {
     console.log('fraLeggTilVedlegg', vedlegg);
     if (
@@ -85,7 +95,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
             return behov;
           }
         });
-      settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
+      settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov); //må vente på denne? ellers blir det problemer når flere sendes etter hvernd
       console.log('etter:', oppdatertDokumentasjonsbehov);
     } else if (
       props.ettersendingType ===
@@ -119,7 +129,6 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
         settDokumentasjonsbehovTilInnsending,
         dokumentasjonsbehovId,
       } = props;
-      console.log(dokumentasjonsbehovTilInnsending);
       const oppdatertDokumentasjonsbehov = dokumentasjonsbehovTilInnsending.map(
         (behov) => {
           if (behov.id == dokumentasjonsbehovId) {
@@ -135,7 +144,6 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
           }
         }
       );
-      console.log(oppdatertDokumentasjonsbehov);
       settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
     } else if (
       props.ettersendingType ===
@@ -226,7 +234,6 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
         leggTilVedlegg(vedleggListe);
       }
       console.log('vedlegg: ', vedleggListe);
-      console.log('lengde liste', vedleggListe.length);
       settLaster(false);
     });
   };

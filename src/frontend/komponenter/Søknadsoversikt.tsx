@@ -67,6 +67,7 @@ const Søknadsoversikt: React.FC = () => {
         settAlertStripeMelding(alertMelding.FEIL);
       } finally {
         settSenderEttersending(false);
+        console.log('ettersending', ettersending);
       }
     }
   };
