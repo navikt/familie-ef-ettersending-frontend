@@ -23,6 +23,7 @@ import '../stil/Vedleggsopplaster.less';
 import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
+import { kjørerLokalt } from '../../shared-utils/miljø';
 
 const AlertStripeFeilStyled = styled(AlertStripeFeil)`
   margin-bottom: 1rem;
@@ -195,8 +196,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
       formData.append('file', fil);
       const respons = await sendVedleggTilMellomlager(formData);
       const vedlegg: IVedlegg = {
-        id: respons,
-        // id: '122', // Må brukes for at det skal kunne kjøre lokalt
+        id: kjørerLokalt() ? '123' : respons,
         navn: fil.name,
       };
       leggTilVedlegg(vedlegg);
