@@ -64,7 +64,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
       const { dokumentasjonsbehovId, settDokumentasjonsbehovTilInnsending } =
         props;
       const oppdatertDokumentasjonsbehov: IDokumentasjonsbehov[] =
-        props.dokumentasjonsbehovTilInnsending!.map((behov) => {
+        props.dokumentasjonsbehovTilInnsending.map((behov) => {
           if (behov.id == dokumentasjonsbehovId) {
             return {
               ...behov,
@@ -89,9 +89,9 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
     ) {
       const { settEttersendingUtenSøknad, ettersendingUtenSøknad } = props;
       settEttersendingUtenSøknad({
-        ...ettersendingUtenSøknad!,
+        ...ettersendingUtenSøknad,
         innsending: [
-          { ...ettersendingUtenSøknad!.innsending[0], vedlegg: vedlegg }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
+          { ...ettersendingUtenSøknad.innsending[0], vedlegg: vedlegg }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
         ],
       });
     }
