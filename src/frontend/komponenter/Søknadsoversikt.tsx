@@ -61,6 +61,7 @@ const Søknadsoversikt: React.FC = () => {
       settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersending);
+        settEttersendingUtenSøknad(tomEttersendingUtenSøknad);
         settAlertStripeMelding(alertMelding.SENDT_INN);
       } catch {
         settAlertStripeMelding(alertMelding.FEIL);
@@ -86,8 +87,8 @@ const Søknadsoversikt: React.FC = () => {
         >
           {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
+        <StyledAlertStripe melding={alertStripeMelding} />
       </SoknadContainer>
-      <StyledAlertStripe melding={alertStripeMelding} />
       {søknader.map((søknad, index) => {
         return (
           <SoknadContainer key={index}>

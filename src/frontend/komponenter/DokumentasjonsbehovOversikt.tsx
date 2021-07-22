@@ -71,6 +71,8 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
       try {
         await sendEttersending(ettersendingsdata);
         settAlertStripeMelding(alertMelding.SENDT_INN);
+        settDokumentasjonsbehov([...dokumentasjonsbehovTilInnsending]);
+        settDokumentasjonsbehovTilInnsending([]);
       } catch {
         settAlertStripeMelding(alertMelding.FEIL);
       } finally {
