@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
@@ -122,7 +122,6 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
           }
         }
       );
-      console.log(oppdatertDokumentasjonsbehov);
       settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
     } else if (
       props.ettersendingType ===
@@ -171,7 +170,6 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
         ? [ettersendingUtenSøknad.innsending[0].vedlegg]
         : []; //TODO i fremtiden skal vi støtte innsending av flere filer, og må da fjerne [0]
     }
-
     return [];
   };
 
@@ -207,10 +205,10 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
     }
   };
 
-  const onDrop = useCallback((vedlegg) => {
+  const onDrop = (filer: File[]) => {
     const feilmeldingsliste: string[] = [];
 
-    vedlegg.forEach((fil: File) => {
+    filer.forEach((fil: File) => {
       if (!sjekkTillatFiltype(fil.type)) {
         feilmeldingsliste.push(fil.name + ' - Ugyldig filtype');
         settFeilmeldinger(feilmeldingsliste);
@@ -220,7 +218,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
 
       lastOppVedlegg(fil);
     });
-  }, []);
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 

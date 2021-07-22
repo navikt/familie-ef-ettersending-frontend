@@ -11,12 +11,12 @@ import {
   IEttersendingUtenSøknad,
   IEttersending,
   tomEttersendingUtenSøknad,
-  EttersendingType,
+  IVedlegg,
 } from '../typer/ettersending';
-import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
+import ÅpenEttersendingUtenSøknad from './ÅpenEttersendingUtenSøknad';
 
 const SoknadContainer = styled.div`
   margin-bottom: 5rem;
@@ -37,6 +37,10 @@ const Søknadsoversikt: React.FC = () => {
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
     alertMelding.TOM
   );
+  const [
+    innsendingVedleggSendtInnGjeldendeSesjon,
+    settInnsendingVedleggSendtInnGjeldendeSesjon,
+  ] = useState<IVedlegg[]>([]);
 
   const context = useApp();
 
@@ -61,6 +65,10 @@ const Søknadsoversikt: React.FC = () => {
       settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersending);
+        settInnsendingVedleggSendtInnGjeldendeSesjon([
+          ...innsendingVedleggSendtInnGjeldendeSesjon,
+          ettersendingUtenSøknad.innsending[0].vedlegg,
+        ]);
         settEttersendingUtenSøknad(tomEttersendingUtenSøknad);
         settAlertStripeMelding(alertMelding.SENDT_INN);
       } catch {
@@ -76,10 +84,10 @@ const Søknadsoversikt: React.FC = () => {
   return (
     <>
       <SoknadContainer>
-        <ÅpenEttersending
-          ettersendingType={EttersendingType.ETTERSENDING_UTEN_SØKNAD}
+        <ÅpenEttersendingUtenSøknad
           ettersendingUtenSøknad={ettersendingUtenSøknad}
           settEttersendingUtenSøknad={settEttersendingUtenSøknad}
+          tidligereOpplastedeVedlegg={innsendingVedleggSendtInnGjeldendeSesjon}
         />
         <Hovedknapp
           spinner={senderEttersending}

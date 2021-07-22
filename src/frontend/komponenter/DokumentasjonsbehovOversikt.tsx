@@ -4,18 +4,18 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
 import {
-  EttersendingType,
   IEttersending,
   IEttersendingForSøknad,
   IInnsending,
   ISøknadsbehov,
+  IVedlegg,
   tomInnsending,
 } from '../typer/ettersending';
 import { sendEttersending } from '../api-service';
-import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
+import ÅpenEttersendingForSøknad from './ÅpenEttersendingForSøknad';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
@@ -42,8 +42,29 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
     alertMelding.TOM
   );
   const [innsending, settInnsending] = useState<IInnsending>(tomInnsending);
+  const [
+    innsendingVedleggSendtInnGjeldendeSesjon,
+    settInnsendingVedleggSendtInnGjeldendeSesjon,
+  ] = useState<IVedlegg[]>([]);
 
   const context = useApp();
+
+  const slåSammenDokumentasjonsbehovOgDokumentasjonsbehovTilInnsending =
+    (): IDokumentasjonsbehov[] => {
+      console.log('dok', dokumentasjonsbehov);
+      console.log('dok til inn', dokumentasjonsbehovTilInnsending);
+      const list = dokumentasjonsbehov.map((behov, index) => {
+        return {
+          ...behov,
+          opplastedeVedlegg: [
+            ...behov.opplastedeVedlegg,
+            ...dokumentasjonsbehovTilInnsending[index].opplastedeVedlegg,
+          ],
+        };
+      });
+      console.log(list);
+      return list;
+    };
 
   const lagOgSendEttersending = async () => {
     if (
@@ -67,12 +88,25 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
         ettersendingForSøknad: ettersendingForSøknad,
       };
 
+      console.log(ettersendingsdata);
       settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersendingsdata);
         settAlertStripeMelding(alertMelding.SENDT_INN);
-        settDokumentasjonsbehov([...dokumentasjonsbehovTilInnsending]);
-        settDokumentasjonsbehovTilInnsending([]);
+        settDokumentasjonsbehov(
+          slåSammenDokumentasjonsbehovOgDokumentasjonsbehovTilInnsending()
+        );
+        settDokumentasjonsbehovTilInnsending(
+          lagDokumentasjonsbehovTilInnsending(
+            slåSammenDokumentasjonsbehovOgDokumentasjonsbehovTilInnsending()
+          )
+        );
+        innsending.vedlegg &&
+          settInnsendingVedleggSendtInnGjeldendeSesjon([
+            ...innsendingVedleggSendtInnGjeldendeSesjon,
+            innsending.vedlegg,
+          ]);
+        settInnsending(tomInnsending);
       } catch {
         settAlertStripeMelding(alertMelding.FEIL);
       } finally {
@@ -81,18 +115,24 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
     }
   };
 
+  const lagDokumentasjonsbehovTilInnsending = (
+    dokumentasjonsbehov: IDokumentasjonsbehov[]
+  ): IDokumentasjonsbehov[] => {
+    return dokumentasjonsbehov.map((behov) => {
+      return {
+        ...behov,
+        opplastedeVedlegg: [],
+      };
+    });
+  };
+
   useEffect(() => {
     settDokumentasjonsbehov(søknad.dokumentasjonsbehov.dokumentasjonsbehov);
-
-    const oppdatertDokumentasjonsbehov =
-      søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
-        return {
-          ...behov,
-          opplastedeVedlegg: [],
-        };
-      });
-
-    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
+    settDokumentasjonsbehovTilInnsending(
+      lagDokumentasjonsbehovTilInnsending(
+        søknad.dokumentasjonsbehov.dokumentasjonsbehov
+      )
+    );
     settLasterverdi(false);
   }, [context.søker]);
 
@@ -118,10 +158,10 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
               />
             );
           })}
-        <ÅpenEttersending
-          ettersendingType={EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING}
+        <ÅpenEttersendingForSøknad
           settInnsending={settInnsending}
           innsending={innsending}
+          tidligereOpplastedeVedlegg={innsendingVedleggSendtInnGjeldendeSesjon}
         />
       </div>
       <div>
