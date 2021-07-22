@@ -43,7 +43,7 @@ export const tomEttersendingUtenSøknad: IEttersendingUtenSøknad = {
     {
       beskrivelse: '',
       dokumenttype: '',
-      vedlegg: { id: '122', navn: '' },
+      vedlegg: null,
     },
   ],
 };

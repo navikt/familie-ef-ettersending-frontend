@@ -15,9 +15,9 @@ import { sendEttersending } from '../api-service';
 import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import styled from 'styled-components';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import AlertStripe, { alertMelding } from './AlertStripe';
 
-const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
 `;
 
@@ -38,7 +38,9 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
   ] = useState<IDokumentasjonsbehov[]>([]);
   const [senderEttersendingSpinner, settSenderEttersendingSpinner] =
     useState<boolean>(false);
-  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
+  const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
+    alertMelding.TOM
+  );
   const [innsending, settInnsending] = useState<IInnsending>(tomInnsending);
 
   const context = useApp();
@@ -65,11 +67,14 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
         ettersendingForSøknad: ettersendingForSøknad,
       };
 
-      settVisNoeGikkGalt(false);
+      settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersendingsdata);
+        settAlertStripeMelding(alertMelding.SENDT_INN);
+        settDokumentasjonsbehov([...dokumentasjonsbehovTilInnsending]);
+        settDokumentasjonsbehovTilInnsending([]);
       } catch {
-        settVisNoeGikkGalt(true);
+        settAlertStripeMelding(alertMelding.FEIL);
       } finally {
         settSenderEttersendingSpinner(false);
       }
@@ -126,11 +131,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
         >
           {senderEttersendingSpinner ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
-        {visNoeGikkGalt && (
-          <AlertStripeFeilStyled>
-            Noe gikk galt, prøv igjen
-          </AlertStripeFeilStyled>
-        )}
+        <StyledAlertStripe melding={alertStripeMelding} />
       </div>
     </div>
   );
