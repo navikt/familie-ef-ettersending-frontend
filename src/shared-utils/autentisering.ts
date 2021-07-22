@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import { Dispatch, SetStateAction } from 'react';
 import environment from '../backend/environment';
 
 export enum InnloggetStatus {
@@ -33,7 +34,7 @@ export const autentiseringsInterceptor = () => {
 };
 
 export const verifiserAtSøkerErAutentisert = (
-  settAutentisering: (autentisering: InnloggetStatus) => void
+  settAutentisering: Dispatch<SetStateAction<InnloggetStatus>>
 ) => {
   return verifiserInnloggetApi().then((response) => {
     if (response && 200 === response.status) {

@@ -1,6 +1,5 @@
 import React from 'react';
 import './app.less';
-import { DokumentasjonsbehovOversikt } from './komponenter/DokumentasjonsbehovOversikt';
 import { useApp } from './context/AppContext';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
@@ -8,7 +7,6 @@ import {
   InnloggetStatus,
 } from '../shared-utils/autentisering';
 import Veileder from 'nav-frontend-veileder';
-import { FileContent } from '@navikt/ds-icons';
 import Søknadsoversikt from './komponenter/Søknadsoversikt';
 import sjekklisteikon from './icons/sjekklisteikon.svg';
 import styled from 'styled-components';
@@ -17,7 +15,7 @@ const StyledImg = styled.img`
   height: 100% !important;
 `;
 
-const App = () => {
+const App: React.FC = () => {
   const context = useApp();
 
   autentiseringsInterceptor();

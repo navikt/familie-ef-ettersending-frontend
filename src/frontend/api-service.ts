@@ -39,7 +39,9 @@ export const hentDokumentasjonsbehov = (): Promise<ISøknadsbehov[]> => {
     .then((response: { data: ISøknadsbehov[] }) => response.data);
 };
 
-export const sendVedleggTilMellomlager = (formData): Promise<string> => {
+export const sendVedleggTilMellomlager = (
+  formData: FormData
+): Promise<string> => {
   return axios
     .post(`${environment().dokumentUrl}`, formData, {
       headers: { 'content-type': 'multipart/form-data' },
