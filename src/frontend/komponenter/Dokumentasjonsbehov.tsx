@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
@@ -12,9 +12,9 @@ import { EttersendingType } from '../typer/ettersending';
 interface Props {
   dokumentasjonsbehov: IDokumentasjonsbehov;
   dokumentasjonsbehovTilInnsending: IDokumentasjonsbehov[];
-  settDokumentasjonsbehovTilInnsending: (
-    dokumentasjonsbehov: IDokumentasjonsbehov[]
-  ) => void;
+  settDokumentasjonsbehovTilInnsending: Dispatch<
+    SetStateAction<IDokumentasjonsbehov[]>
+  >;
 }
 
 const Dokumentasjonsbehov: React.FC<Props> = ({

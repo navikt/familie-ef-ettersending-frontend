@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
@@ -30,7 +30,7 @@ interface IProps {
   ettersendingUtenSøknad: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad: (
     ettersendingUtenSøknad: IEttersendingUtenSøknad
-  ) => void;
+  ) => Dispatch<SetStateAction<IEttersendingUtenSøknad>>;
   tidligereOpplastedeVedlegg: IVedlegg[];
 }
 
