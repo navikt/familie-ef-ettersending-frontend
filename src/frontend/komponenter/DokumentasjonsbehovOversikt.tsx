@@ -51,28 +51,41 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
 
   const slåSammenDokumentasjonsbehovOgDokumentasjonsbehovTilInnsending =
     (): IDokumentasjonsbehov[] => {
-      console.log('dok', dokumentasjonsbehov);
-      console.log('dok til inn', dokumentasjonsbehovTilInnsending);
-      const list = dokumentasjonsbehov.map((behov, index) => {
+      const list = dokumentasjonsbehovTilInnsending.map((behov, index) => {
         return {
           ...behov,
           opplastedeVedlegg: [
             ...behov.opplastedeVedlegg,
-            ...dokumentasjonsbehovTilInnsending[index].opplastedeVedlegg,
+            ...dokumentasjonsbehov[index].opplastedeVedlegg,
           ],
         };
       });
-      console.log(list);
       return list;
     };
+
+  const erNyeVedlegg = (): boolean => {
+    return (
+      innsending.vedlegg !== null ||
+      dokumentasjonsbehovTilInnsending
+        .map((behov) => behov.opplastedeVedlegg.length)
+        .reduce((total, verdi) => total + verdi) > 0
+    );
+  };
+
+  const erNyHarSendtInnTidligere = (): boolean => {
+    let erNy = false;
+    dokumentasjonsbehovTilInnsending.forEach((behov, index) => {
+      if (behov.harSendtInn !== dokumentasjonsbehov[index].harSendtInn) {
+        erNy = true;
+      }
+    });
+    return erNy;
+  };
 
   const lagOgSendEttersending = async () => {
     if (
       !senderEttersendingSpinner &&
-      (innsending.vedlegg ||
-        dokumentasjonsbehovTilInnsending
-          .map((behov) => behov.opplastedeVedlegg.length)
-          .reduce((total, verdi) => total + verdi) > 0)
+      (erNyeVedlegg() || erNyHarSendtInnTidligere())
     ) {
       settSenderEttersendingSpinner(true);
 
@@ -88,7 +101,6 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
         ettersendingForSøknad: ettersendingForSøknad,
       };
 
-      console.log(ettersendingsdata);
       settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersendingsdata);
