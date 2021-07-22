@@ -5,6 +5,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from 'react';
+
 import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
@@ -192,7 +193,6 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
         ? [ettersendingUtenSøknad.innsending[0].vedlegg]
         : []; //TODO i fremtiden skal vi støtte innsending av flere filer, og må da fjerne [0]
     }
-
     return [];
   };
 
@@ -210,6 +210,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
   const lastOppVedlegg = async (filer: File[]) => {
     settLaster(true);
     settAlertStripeMelding(alertMelding.TOM);
+
     const vedleggListe: IVedlegg[] = [];
     const bar = new Promise<void>((resolve, reject) => {
       filer.forEach(async (fil, index, filer) => {
@@ -234,11 +235,12 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
         leggTilVedlegg(vedleggListe);
       }
       console.log('vedlegg: ', vedleggListe);
+
       settLaster(false);
     });
   };
 
-  const onDrop = useCallback((filer: File[]) => {
+  const onDrop = (filer: File[]) => {
     const feilmeldingsliste: string[] = [];
 
     filer.forEach((fil: File) => {
@@ -252,7 +254,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
     if (feilmeldingsliste.length <= 0) {
       lastOppVedlegg(filer);
     }
-  }, []);
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
