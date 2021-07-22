@@ -62,25 +62,31 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [laster, settLaster] = useState<boolean>(false);
 
-  const leggTilVedlegg = (vedlegg: IVedlegg) => {
+  const leggTilVedlegg = (vedlegg: IVedlegg[]) => {
+    console.log('fraLeggTilVedlegg', vedlegg);
     if (
       props.ettersendingType ===
       EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
     ) {
-      const { dokumentasjonsbehovId, settDokumentasjonsbehovTilInnsending } =
-        props;
+      const {
+        dokumentasjonsbehovId,
+        settDokumentasjonsbehovTilInnsending,
+        dokumentasjonsbehovTilInnsending,
+      } = props;
+      console.log('før:', dokumentasjonsbehovTilInnsending);
       const oppdatertDokumentasjonsbehov: IDokumentasjonsbehov[] =
-        props.dokumentasjonsbehovTilInnsending!.map((behov) => {
+        dokumentasjonsbehovTilInnsending!.map((behov) => {
           if (behov.id == dokumentasjonsbehovId) {
             return {
               ...behov,
-              opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
+              opplastedeVedlegg: [...behov.opplastedeVedlegg, ...vedlegg],
             };
           } else {
             return behov;
           }
         });
       settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
+      console.log('etter:', oppdatertDokumentasjonsbehov);
     } else if (
       props.ettersendingType ===
       EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING
@@ -88,7 +94,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
       const { settInnsending, innsending } = props;
       settInnsending({
         ...innsending,
-        vedlegg: vedlegg,
+        vedlegg: vedlegg[0],
       });
     } else if (
       props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD
@@ -97,7 +103,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad!,
         innsending: [
-          { ...ettersendingUtenSøknad!.innsending[0], vedlegg: vedlegg }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
+          { ...ettersendingUtenSøknad!.innsending[0], vedlegg: vedlegg[0] }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
         ],
       });
     }
@@ -113,6 +119,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
         settDokumentasjonsbehovTilInnsending,
         dokumentasjonsbehovId,
       } = props;
+      console.log(dokumentasjonsbehovTilInnsending);
       const oppdatertDokumentasjonsbehov = dokumentasjonsbehovTilInnsending.map(
         (behov) => {
           if (behov.id == dokumentasjonsbehovId) {
@@ -192,40 +199,52 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
     return godkjentFiltype;
   };
 
-  const lastOppVedlegg = async (fil: File) => {
+  const lastOppVedlegg = async (filer: File[]) => {
     settLaster(true);
     settAlertStripeMelding(alertMelding.TOM);
-
-    try {
-      const formData = new FormData();
-      formData.append('file', fil);
-      const respons = await sendVedleggTilMellomlager(formData);
-      const vedlegg: IVedlegg = {
-        // id: respons,
-        id: '122', // Må brukes for at det skal kunne kjøre lokalt
-        navn: fil.name,
-      };
-      leggTilVedlegg(vedlegg);
-    } catch {
-      settAlertStripeMelding(alertMelding.FEIL);
-    } finally {
+    const vedleggListe: IVedlegg[] = [];
+    const bar = new Promise<void>((resolve, reject) => {
+      filer.forEach(async (fil, index, filer) => {
+        try {
+          const formData = new FormData();
+          formData.append('file', fil);
+          const respons = await sendVedleggTilMellomlager(formData);
+          const vedlegg: IVedlegg = {
+            // id: respons,
+            id: '122', // Må brukes for at det skal kunne kjøre lokalt
+            navn: fil.name,
+          };
+          vedleggListe.push(vedlegg);
+        } catch {
+          settAlertStripeMelding(alertMelding.FEIL);
+        }
+        if (index === filer.length - 1) resolve();
+      });
+    });
+    bar.then(() => {
+      if (alertStripeMelding === alertMelding.TOM) {
+        leggTilVedlegg(vedleggListe);
+      }
+      console.log('vedlegg: ', vedleggListe);
+      console.log('lengde liste', vedleggListe.length);
       settLaster(false);
-    }
+    });
   };
 
-  const onDrop = useCallback((vedlegg) => {
+  const onDrop = useCallback((filer: File[]) => {
     const feilmeldingsliste: string[] = [];
 
-    vedlegg.forEach((fil: File) => {
+    filer.forEach((fil: File) => {
       if (!sjekkTillatFiltype(fil.type)) {
         feilmeldingsliste.push(fil.name + ' - Ugyldig filtype');
         settFeilmeldinger(feilmeldingsliste);
         settÅpenModal(true);
         return;
       }
-
-      lastOppVedlegg(fil);
     });
+    if (feilmeldingsliste.length <= 0) {
+      lastOppVedlegg(filer);
+    }
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
