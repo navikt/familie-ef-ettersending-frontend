@@ -25,6 +25,11 @@ export interface IEttersendingUtenSøknad {
   stønadstype: string;
   innsending: IInnsending[];
 }
+
+export interface IEttersendingUtenSøknadTilInnsending {
+  stønadstype: string | null;
+  innsending: IInnsending[];
+}
 export interface IEttersendingForSøknad {
   søknadId: string;
   dokumentasjonsbehov: IDokumentasjonsbehov[];
@@ -35,6 +40,12 @@ export interface IEttersending {
   fnr: string;
   ettersendingForSøknad: IEttersendingForSøknad | null;
   ettersendingUtenSøknad: IEttersendingUtenSøknad | null;
+}
+
+export interface IEttersendingTilInnsending {
+  fnr: string;
+  ettersendingForSøknad: IEttersendingForSøknad | null;
+  ettersendingUtenSøknad: IEttersendingUtenSøknadTilInnsending | null;
 }
 
 export const tomEttersendingUtenSøknad: IEttersendingUtenSøknad = {

@@ -12,6 +12,7 @@ import {
   IEttersending,
   tomEttersendingUtenSøknad,
   IVedlegg,
+  IEttersendingTilInnsending,
 } from '../typer/ettersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
@@ -56,11 +57,16 @@ const Søknadsoversikt: React.FC = () => {
   const sendEttersendingUtenSøknad = async () => {
     if (!senderEttersending && ettersendingUtenSøknad.innsending[0].vedlegg) {
       settSenderEttersending(true);
-      const ettersending: IEttersending = {
+
+      let ettersending: IEttersendingTilInnsending = {
         fnr: context.søker!.fnr,
         ettersendingUtenSøknad: ettersendingUtenSøknad,
         ettersendingForSøknad: null,
       };
+
+      if (ettersendingUtenSøknad.stønadstype === '') {
+        ettersending = { ...ettersending, ettersendingUtenSøknad: null };
+      }
 
       settAlertStripeMelding(alertMelding.TOM);
       try {

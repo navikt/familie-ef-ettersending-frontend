@@ -1,6 +1,9 @@
 import axios from 'axios';
 import environment from '../backend/environment';
-import { IEttersending, ISøknadsbehov } from './typer/ettersending';
+import {
+  IEttersendingTilInnsending,
+  ISøknadsbehov,
+} from './typer/ettersending';
 import { IPersoninfo } from './typer/søker';
 
 interface Ifamilievedlegg {
@@ -9,7 +12,7 @@ interface Ifamilievedlegg {
 }
 
 export const sendEttersending = (
-  ettersendingsdata: IEttersending
+  ettersendingsdata: IEttersendingTilInnsending
 ): Promise<string> => {
   return axios
     .post(`${environment().apiUrl}/api/ettersending`, ettersendingsdata, {
