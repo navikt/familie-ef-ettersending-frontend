@@ -1,4 +1,10 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, {
+  useCallback,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
@@ -10,6 +16,8 @@ import {
   IVedlegg,
   IEttersendingUtenSøknad,
   IInnsending,
+  tomInnsending,
+  EttersendingType,
 } from '../typer/ettersending';
 import '../stil/Vedleggsopplaster.less';
 import { sendVedleggTilMellomlager } from '../api-service';
@@ -19,29 +27,33 @@ import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 const AlertStripeFeilStyled = styled(AlertStripeFeil)`
   margin-bottom: 1rem;
 `;
-interface IVedleggsopplaster {
-  dokumentasjonsbehovId?: string;
-  dokumentasjonsbehovTilInnsending?: IDokumentasjonsbehov[];
-  settDokumentasjonsbehovTilInnsending?: (
-    dokumentasjonsbehov: IDokumentasjonsbehov[]
-  ) => void;
-  innsending?: IInnsending;
-  settInnsending?: (dokumentasjonsbehov: IInnsending) => void;
-  ettersendingUtenSøknad?: IEttersendingUtenSøknad;
-  settEttersendingUtenSøknad?: (
-    ettersendingUtenSøknad: IEttersendingUtenSøknad
-  ) => void;
-}
 
-const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
-  dokumentasjonsbehovId,
-  settDokumentasjonsbehovTilInnsending,
-  dokumentasjonsbehovTilInnsending,
-  settInnsending,
-  innsending,
-  settEttersendingUtenSøknad,
-  ettersendingUtenSøknad,
-}: IVedleggsopplaster) => {
+type VedleggsopplasterProps = { ettersendingType: EttersendingType } & (
+  | {
+      ettersendingType: EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV;
+      dokumentasjonsbehovId: string;
+      dokumentasjonsbehovTilInnsending: IDokumentasjonsbehov[];
+      settDokumentasjonsbehovTilInnsending: Dispatch<
+        SetStateAction<IDokumentasjonsbehov[]>
+      >;
+    }
+  | {
+      ettersendingType: EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING;
+      innsending: IInnsending;
+      settInnsending: Dispatch<SetStateAction<IInnsending>>;
+    }
+  | {
+      ettersendingType: EttersendingType.ETTERSENDING_UTEN_SØKNAD;
+      ettersendingUtenSøknad: IEttersendingUtenSøknad;
+      settEttersendingUtenSøknad: Dispatch<
+        SetStateAction<IEttersendingUtenSøknad>
+      >;
+    }
+);
+
+const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
+  props: VedleggsopplasterProps
+) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [visNoeGikkGalt, settVisNoeGikkGalt] = useState<boolean>(false);
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
@@ -52,93 +64,108 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
 
   useEffect(() => settVedleggTilOpplasting(filtrerVedleggPåBehov), []);
 
-  const leggTilVedleggForEttersendingMedSøknad = (vedlegg: IVedlegg) => {
-    const oppdatertDokumentasjonsbehov: IDokumentasjonsbehov[] =
-      dokumentasjonsbehovTilInnsending.map((behov) => {
-        if (behov.id == dokumentasjonsbehovId) {
-          return {
-            ...behov,
-            opplastedeVedlegg: [...vedleggTilOpplasting, vedlegg],
-          };
-        } else {
-          return behov;
-        }
+  const leggTilVedlegg = (vedlegg: IVedlegg) => {
+    if (
+      props.ettersendingType ===
+      EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
+    ) {
+      const { dokumentasjonsbehovId, settDokumentasjonsbehovTilInnsending } =
+        props;
+      const oppdatertDokumentasjonsbehov: IDokumentasjonsbehov[] =
+        props.dokumentasjonsbehovTilInnsending!.map((behov) => {
+          if (behov.id == dokumentasjonsbehovId) {
+            return {
+              ...behov,
+              opplastedeVedlegg: [...vedleggTilOpplasting, vedlegg],
+            };
+          } else {
+            return behov;
+          }
+        });
+      settDokumentasjonsbehovTilInnsending!(oppdatertDokumentasjonsbehov);
+      settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
+    } else if (
+      props.ettersendingType ===
+      EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING
+    ) {
+      const { settInnsending, innsending } = props;
+      settInnsending({
+        ...innsending,
+        vedlegg: vedlegg,
       });
-    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
-    settVedleggTilOpplasting([...vedleggTilOpplasting, vedlegg]);
+      settVedleggTilOpplasting([vedlegg]);
+    } else if (
+      props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD
+    ) {
+      const { settEttersendingUtenSøknad, ettersendingUtenSøknad } = props;
+      settEttersendingUtenSøknad!({
+        ...ettersendingUtenSøknad!,
+        innsending: [
+          { ...ettersendingUtenSøknad!.innsending[0], vedlegg: vedlegg }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
+        ],
+      });
+      settVedleggTilOpplasting([vedlegg]);
+    }
   };
 
-  const leggTilVedleggForInnsending = (vedlegg: IVedlegg) => {
-    settInnsending({
-      ...innsending,
-      vedlegg: vedlegg,
-    });
-    settVedleggTilOpplasting([vedlegg]);
-  };
-
-  const leggTilVedleggForEttersendingUtenSøknad = (vedlegg: IVedlegg) => {
-    settEttersendingUtenSøknad({
-      ...ettersendingUtenSøknad,
-      innsending: [
-        { ...ettersendingUtenSøknad.innsending[0], vedlegg: vedlegg }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
-      ],
-    });
-    settVedleggTilOpplasting([vedlegg]);
-  };
-
-  const slettVedleggForEttersendingMedSøknad = (
-    dokumentId: string,
-    dokumentasjonsbehovId: string
-  ) => {
-    const oppdatertDokumentasjonsbehov = dokumentasjonsbehovTilInnsending.map(
-      (behov) => {
-        if (behov.id == dokumentasjonsbehovId) {
-          settVedleggTilOpplasting(
-            behov.opplastedeVedlegg.filter(
-              (vedlegg) => vedlegg.id !== dokumentId
-            )
-          );
-          return {
-            ...behov,
-            opplastedeVedlegg: behov.opplastedeVedlegg.filter(
-              (vedlegg) => vedlegg.id !== dokumentId
-            ),
-          };
-        } else {
-          return behov;
-        }
-      }
-    );
-    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
-  };
-
-  const slettVedleggForInnsending = (vedlegg: IVedlegg) => {
-    settInnsending({
-      ...innsending,
-      vedlegg: null,
-    });
-    settVedleggTilOpplasting(
-      vedleggTilOpplasting.filter(
-        (vedleggTilOpplasting) => vedleggTilOpplasting.id != vedlegg.id
-      )
-    );
-  };
-
-  const slettVedleggForEttersendingUtenSøknad = () => {
-    settEttersendingUtenSøknad({
-      ...ettersendingUtenSøknad,
-      innsending: [
-        {
-          ...ettersendingUtenSøknad.innsending[0], //TODO I fremtiden skal vi støtte flere innsendinger i denne listen
-          vedlegg: null,
-        },
-      ],
-    });
-    settVedleggTilOpplasting([]);
+  const slettVedlegg = (vedlegg: IVedlegg) => {
+    if (
+      props.ettersendingType ===
+      EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
+    ) {
+      const {
+        dokumentasjonsbehovTilInnsending,
+        settDokumentasjonsbehovTilInnsending,
+        dokumentasjonsbehovId,
+      } = props;
+      const oppdatertDokumentasjonsbehov =
+        dokumentasjonsbehovTilInnsending!.map((behov) => {
+          if (behov.id == dokumentasjonsbehovId) {
+            settVedleggTilOpplasting(
+              behov.opplastedeVedlegg.filter(
+                (vedlegg) => vedlegg.id !== dokumentasjonsbehovId
+              )
+            );
+            return {
+              ...behov,
+              opplastedeVedlegg: behov.opplastedeVedlegg.filter(
+                (vedlegg) => vedlegg.id !== dokumentasjonsbehovId
+              ),
+            };
+          } else {
+            return behov;
+          }
+        });
+      settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
+    } else if (
+      props.ettersendingType ===
+      EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING
+    ) {
+      const { settInnsending } = props;
+      settInnsending(tomInnsending);
+      settVedleggTilOpplasting(
+        vedleggTilOpplasting.filter(
+          (vedleggTilOpplasting) => vedleggTilOpplasting.id != vedlegg.id
+        )
+      );
+    } else if (
+      props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD
+    ) {
+      const { settEttersendingUtenSøknad, ettersendingUtenSøknad } = props;
+      settEttersendingUtenSøknad({
+        ...ettersendingUtenSøknad,
+        innsending: [],
+      });
+      settVedleggTilOpplasting([]);
+    }
   };
 
   const filtrerVedleggPåBehov = () => {
-    if (dokumentasjonsbehovId) {
+    if (
+      props.ettersendingType ===
+      EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
+    ) {
+      const { dokumentasjonsbehovTilInnsending, dokumentasjonsbehovId } = props;
       dokumentasjonsbehovTilInnsending.forEach((behov) => {
         if (dokumentasjonsbehovId === behov.id) {
           return behov.opplastedeVedlegg;
@@ -159,14 +186,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     return godkjentFiltype;
   };
 
-  const slettVedlegg = (vedlegg: IVedlegg) => {
-    if (dokumentasjonsbehovId)
-      slettVedleggForEttersendingMedSøknad(vedlegg.id, dokumentasjonsbehovId);
-    else if (innsending) slettVedleggForInnsending(vedlegg);
-    else slettVedleggForEttersendingUtenSøknad();
-  };
-
-  const lastOppVedlegg = async (fil) => {
+  const lastOppVedlegg = async (fil: File) => {
     settLaster(true);
     settVisNoeGikkGalt(false);
 
@@ -179,10 +199,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
         // id: '122', // Må brukes for at det skal kunne kjøre lokalt
         navn: fil.name,
       };
-      if (dokumentasjonsbehovId)
-        leggTilVedleggForEttersendingMedSøknad(vedlegg);
-      else if (innsending) leggTilVedleggForInnsending(vedlegg);
-      else leggTilVedleggForEttersendingUtenSøknad(vedlegg);
+      leggTilVedlegg(vedlegg);
     } catch {
       settVisNoeGikkGalt(true);
     } finally {
@@ -194,7 +211,7 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
     (vedlegg) => {
       const feilmeldingsliste: string[] = [];
 
-      vedlegg.forEach((fil) => {
+      vedlegg.forEach((fil: File) => {
         if (!sjekkTillatFiltype(fil.type)) {
           feilmeldingsliste.push(fil.name + ' - Ugyldig filtype');
           settFeilmeldinger(feilmeldingsliste);
@@ -220,7 +237,6 @@ const Vedleggsopplaster: React.FC<IVedleggsopplaster> = ({
           <>
             <OpplastedeVedlegg
               vedleggsliste={vedleggTilOpplasting}
-              kanSlettes={true}
               slettVedlegg={slettVedlegg}
             />
             {visNoeGikkGalt && (

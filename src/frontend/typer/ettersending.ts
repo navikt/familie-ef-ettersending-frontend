@@ -18,7 +18,7 @@ export interface IVedlegg {
 export interface IInnsending {
   beskrivelse: string;
   dokumenttype: string;
-  vedlegg: IVedlegg;
+  vedlegg: IVedlegg | null;
 }
 
 export interface IEttersendingUtenSøknad {
@@ -59,3 +59,9 @@ export const tomInnsending: IInnsending = {
   dokumenttype: '',
   vedlegg: null,
 };
+
+export enum EttersendingType {
+  ETTERSENDING_UTEN_SØKNAD,
+  ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV,
+  ETTERSENDING_MED_SØKNAD_INNSENDING,
+}

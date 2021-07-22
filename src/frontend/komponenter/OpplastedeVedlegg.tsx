@@ -7,14 +7,12 @@ import '../stil/Vedleggsopplaster.less';
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedlegg[];
-  kanSlettes: boolean;
   slettVedlegg?: (vedlegg: IVedlegg) => void;
 }
 
 const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
   vedleggsliste,
   slettVedlegg,
-  kanSlettes,
 }: IOpplastedeVedlegg) => {
   return (
     <>
@@ -30,7 +28,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                 />
                 <Normaltekst className="filnavn">{fil.navn}</Normaltekst>
               </div>
-              {kanSlettes && (
+              {slettVedlegg && (
                 <div
                   className="slett"
                   onClick={() => {

@@ -11,6 +11,7 @@ import {
   IEttersendingUtenSøknad,
   IEttersending,
   tomEttersendingUtenSøknad,
+  EttersendingType,
 } from '../typer/ettersending';
 import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -27,9 +28,9 @@ const AlertStripeFeilStyled = styled(AlertStripeFeil)`
   margin-top: 1rem;
 `;
 
-const Søknadsoversikt = () => {
+const Søknadsoversikt: React.FC = () => {
   const [laster, settLasterverdi] = useState(true);
-  const [søknader, settSøknader] = useState<ISøknadsbehov[]>();
+  const [søknader, settSøknader] = useState<ISøknadsbehov[]>([]);
   const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
     useState<IEttersendingUtenSøknad>(tomEttersendingUtenSøknad);
   const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
@@ -50,7 +51,7 @@ const Søknadsoversikt = () => {
     if (!senderEttersending && ettersendingUtenSøknad.innsending[0].vedlegg) {
       settSenderEttersending(true);
       const ettersending: IEttersending = {
-        fnr: context.søker.fnr,
+        fnr: context.søker!.fnr,
         ettersendingUtenSøknad: ettersendingUtenSøknad,
         ettersendingForSøknad: null,
       };
@@ -72,7 +73,7 @@ const Søknadsoversikt = () => {
     <>
       <SoknadContainer>
         <ÅpenEttersending
-          visStønadstype={true}
+          ettersendingType={EttersendingType.ETTERSENDING_UTEN_SØKNAD}
           ettersendingUtenSøknad={ettersendingUtenSøknad}
           settEttersendingUtenSøknad={settEttersendingUtenSøknad}
         />

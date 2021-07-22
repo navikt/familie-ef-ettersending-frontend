@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { Select, Textarea } from 'nav-frontend-skjema';
 import styled from 'styled-components/macro';
 import { StønadType, DokumentType } from '../typer/stønad';
-import { IInnsending, IEttersendingUtenSøknad } from '../typer/ettersending';
+import {
+  IInnsending,
+  IEttersendingUtenSøknad,
+  EttersendingType,
+} from '../typer/ettersending';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -21,28 +25,28 @@ const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
   }
 `;
 
-interface IProps {
-  visStønadstype?: boolean;
-  innsending?: IInnsending;
-  settInnsending?: (dokumentasjonsbehov: IInnsending) => void;
-  ettersendingUtenSøknad?: IEttersendingUtenSøknad;
-  settEttersendingUtenSøknad?: (
-    dokumentasjonsbehov: IEttersendingUtenSøknad
-  ) => void;
-}
+type Props = { ettersendingType: EttersendingType } & (
+  | {
+      ettersendingType: EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING;
+      innsending: IInnsending;
+      settInnsending: Dispatch<SetStateAction<IInnsending>>;
+    }
+  | {
+      ettersendingType: EttersendingType.ETTERSENDING_UTEN_SØKNAD;
+      ettersendingUtenSøknad: IEttersendingUtenSøknad;
+      settEttersendingUtenSøknad: Dispatch<
+        SetStateAction<IEttersendingUtenSøknad>
+      >;
+    }
+);
 
-const ÅpenEttersending = ({
-  visStønadstype,
-  innsending,
-  settInnsending,
-  ettersendingUtenSøknad,
-  settEttersendingUtenSøknad,
-}: IProps) => {
+const ÅpenEttersending: React.FC<Props> = (props: Props) => {
   const [beskrivelse, settBeskrivelse] = useState<string>('');
 
   const oppdaterBeskrivelse = (beskrivelse: string) => {
     settBeskrivelse(beskrivelse);
-    if (visStønadstype) {
+    if (props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD) {
+      const { settEttersendingUtenSøknad, ettersendingUtenSøknad } = props;
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
         innsending: [
@@ -52,7 +56,11 @@ const ÅpenEttersending = ({
           },
         ],
       });
-    } else {
+    } else if (
+      props.ettersendingType ===
+      EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING
+    ) {
+      const { settInnsending, innsending } = props;
       settInnsending({
         ...innsending,
         beskrivelse: beskrivelse,
@@ -61,7 +69,8 @@ const ÅpenEttersending = ({
   };
 
   const oppdaterDokumenttype = (dokumenttype: string) => {
-    if (visStønadstype) {
+    if (props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD) {
+      const { settEttersendingUtenSøknad, ettersendingUtenSøknad } = props;
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
         innsending: [
@@ -71,7 +80,11 @@ const ÅpenEttersending = ({
           },
         ],
       });
-    } else {
+    } else if (
+      props.ettersendingType ===
+      EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING
+    ) {
+      const { settInnsending, innsending } = props;
       settInnsending({
         ...innsending,
         dokumenttype: dokumenttype,
@@ -80,10 +93,13 @@ const ÅpenEttersending = ({
   };
 
   const oppdaterStønadstype = (stønadstype: string) => {
-    settEttersendingUtenSøknad({
-      ...ettersendingUtenSøknad,
-      stønadstype: stønadstype,
-    });
+    if (props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD) {
+      const { settEttersendingUtenSøknad, ettersendingUtenSøknad } = props;
+      settEttersendingUtenSøknad({
+        ...ettersendingUtenSøknad,
+        stønadstype: stønadstype,
+      });
+    }
   };
 
   return (
@@ -94,24 +110,36 @@ const ÅpenEttersending = ({
         </Alertstripe>
       }
     >
-      <Vedleggsopplaster
-        settInnsending={settInnsending}
-        innsending={innsending}
-        settEttersendingUtenSøknad={settEttersendingUtenSøknad}
-        ettersendingUtenSøknad={ettersendingUtenSøknad}
-      />
-      {visStønadstype && (
-        <StyledSelect
-          label="Hvilken stønadstype gjelder innsendingen for?"
-          onChange={(event) => oppdaterStønadstype(event.target.value)}
-        >
-          <option value="">Velg stønadstype</option>
-          {Object.keys(StønadType).map((stønadType) => (
-            <option key={stønadType} value={stønadType}>
-              {StønadType[stønadType]}
-            </option>
-          ))}
-        </StyledSelect>
+      {props.ettersendingType ===
+        EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING && (
+        <Vedleggsopplaster
+          ettersendingType={props.ettersendingType}
+          settInnsending={props.settInnsending}
+          innsending={props.innsending}
+        />
+      )}
+
+      {props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD && (
+        <>
+          <Vedleggsopplaster
+            ettersendingType={props.ettersendingType}
+            settEttersendingUtenSøknad={props.settEttersendingUtenSøknad}
+            ettersendingUtenSøknad={props.ettersendingUtenSøknad}
+          />
+          <StyledSelect
+            label="Hvilken stønadstype gjelder innsendingen for?"
+            onChange={(event) => oppdaterStønadstype(event.target.value)}
+          >
+            <option value="">Velg stønadstype</option>
+            {(Object.keys(StønadType) as Array<keyof typeof StønadType>).map(
+              (stønadType) => (
+                <option key={stønadType} value={stønadType}>
+                  {StønadType[stønadType]}
+                </option>
+              )
+            )}
+          </StyledSelect>
+        </>
       )}
 
       <StyledSelect
@@ -119,11 +147,13 @@ const ÅpenEttersending = ({
         onChange={(event) => oppdaterDokumenttype(event.target.value)}
       >
         <option value="">Velg dokumenttype</option>
-        {Object.keys(DokumentType).map((dokumenttype) => (
-          <option key={dokumenttype} value={dokumenttype}>
-            {DokumentType[dokumenttype]}
-          </option>
-        ))}
+        {(Object.keys(DokumentType) as Array<keyof typeof DokumentType>).map(
+          (dokumenttype) => (
+            <option key={dokumenttype} value={dokumenttype}>
+              {DokumentType[dokumenttype]}
+            </option>
+          )
+        )}
         <option value="Annet">Annet</option>
       </StyledSelect>
       <StyledTextarea
