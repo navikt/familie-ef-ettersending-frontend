@@ -9,7 +9,6 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
   ISøknadsbehov,
   IEttersendingUtenSøknad,
-  IEttersending,
   tomEttersendingUtenSøknad,
   IVedlegg,
   IEttersendingTilInnsending,
