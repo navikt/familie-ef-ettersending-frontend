@@ -28,9 +28,7 @@ const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
 
 interface IProps {
   ettersendingUtenSøknad: IEttersendingUtenSøknad;
-  settEttersendingUtenSøknad: (
-    ettersendingUtenSøknad: IEttersendingUtenSøknad
-  ) => Dispatch<SetStateAction<IEttersendingUtenSøknad>>;
+  settEttersendingUtenSøknad: Dispatch<SetStateAction<IEttersendingUtenSøknad>>;
   tidligereOpplastedeVedlegg: IVedlegg[];
 }
 

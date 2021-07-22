@@ -24,9 +24,7 @@ const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
 
 interface IProps {
   innsending: IInnsending;
-  settInnsending: (
-    dokumentasjonsbehov: IInnsending
-  ) => Dispatch<SetStateAction<IInnsending>>;
+  settInnsending: Dispatch<SetStateAction<IInnsending>>;
   tidligereOpplastedeVedlegg: IVedlegg[];
 }
 
