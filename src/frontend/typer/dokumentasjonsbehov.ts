@@ -3,7 +3,7 @@ export interface IDokumentasjonsbehov {
   id: string;
   label: string;
   harSendtInn: boolean;
-  opplastedeVedlegg: Array<IVedlegg>;
+  opplastedeVedlegg: IVedlegg[];
 }
 
 export interface IDokumentasjonsbehovWrapper {

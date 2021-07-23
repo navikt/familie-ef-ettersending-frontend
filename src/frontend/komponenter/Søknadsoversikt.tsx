@@ -9,14 +9,14 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
   ISøknadsbehov,
   IEttersendingUtenSøknad,
-  IEttersending,
   tomEttersendingUtenSøknad,
-  EttersendingType,
+  IVedlegg,
+  IEttersendingTilInnsending,
 } from '../typer/ettersending';
-import ÅpenEttersending from './ÅpenEttersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import styled from 'styled-components/macro';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import styled from 'styled-components';
+import AlertStripe, { alertMelding } from './AlertStripe';
+import ÅpenEttersendingUtenSøknad from './ÅpenEttersendingUtenSøknad';
 
 const SoknadContainer = styled.div`
   margin-bottom: 5rem;
@@ -24,7 +24,7 @@ const SoknadContainer = styled.div`
   border-bottom: 1px solid lightgray;
 `;
 
-const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
 `;
 
@@ -34,7 +34,13 @@ const Søknadsoversikt: React.FC = () => {
   const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
     useState<IEttersendingUtenSøknad>(tomEttersendingUtenSøknad);
   const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
-  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
+  const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
+    alertMelding.TOM
+  );
+  const [
+    innsendingVedleggSendtInnGjeldendeSesjon,
+    settInnsendingVedleggSendtInnGjeldendeSesjon,
+  ] = useState<IVedlegg[]>([]);
 
   const context = useApp();
 
@@ -50,17 +56,28 @@ const Søknadsoversikt: React.FC = () => {
   const sendEttersendingUtenSøknad = async () => {
     if (!senderEttersending && ettersendingUtenSøknad.innsending[0].vedlegg) {
       settSenderEttersending(true);
-      const ettersending: IEttersending = {
+
+      let ettersending: IEttersendingTilInnsending = {
         fnr: context.søker!.fnr,
         ettersendingUtenSøknad: ettersendingUtenSøknad,
         ettersendingForSøknad: null,
       };
 
-      settVisNoeGikkGalt(false);
+      if (ettersendingUtenSøknad.stønadstype === '') {
+        ettersending = { ...ettersending, ettersendingUtenSøknad: null };
+      }
+
+      settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersending);
+        settInnsendingVedleggSendtInnGjeldendeSesjon([
+          ...innsendingVedleggSendtInnGjeldendeSesjon,
+          ettersendingUtenSøknad.innsending[0].vedlegg,
+        ]);
+        settEttersendingUtenSøknad(tomEttersendingUtenSøknad);
+        settAlertStripeMelding(alertMelding.SENDT_INN);
       } catch {
-        settVisNoeGikkGalt(true);
+        settAlertStripeMelding(alertMelding.FEIL);
       } finally {
         settSenderEttersending(false);
       }
@@ -72,10 +89,10 @@ const Søknadsoversikt: React.FC = () => {
   return (
     <>
       <SoknadContainer>
-        <ÅpenEttersending
-          ettersendingType={EttersendingType.ETTERSENDING_UTEN_SØKNAD}
+        <ÅpenEttersendingUtenSøknad
           ettersendingUtenSøknad={ettersendingUtenSøknad}
           settEttersendingUtenSøknad={settEttersendingUtenSøknad}
+          tidligereOpplastedeVedlegg={innsendingVedleggSendtInnGjeldendeSesjon}
         />
         <Hovedknapp
           spinner={senderEttersending}
@@ -83,13 +100,8 @@ const Søknadsoversikt: React.FC = () => {
         >
           {senderEttersending ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
-        {visNoeGikkGalt && (
-          <AlertStripeFeilStyled>
-            Noe gikk galt, prøv igjen
-          </AlertStripeFeilStyled>
-        )}
+        <StyledAlertStripe melding={alertStripeMelding} />
       </SoknadContainer>
-
       {søknader.map((søknad, index) => {
         return (
           <SoknadContainer key={index}>

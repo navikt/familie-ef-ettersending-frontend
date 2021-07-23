@@ -4,20 +4,20 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
 import {
-  EttersendingType,
   IEttersending,
   IEttersendingForSøknad,
   IInnsending,
   ISøknadsbehov,
+  IVedlegg,
   tomInnsending,
 } from '../typer/ettersending';
 import { sendEttersending } from '../api-service';
-import ÅpenEttersending from './ÅpenEttersending';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import styled from 'styled-components';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import AlertStripe, { alertMelding } from './AlertStripe';
+import ÅpenEttersendingForSøknad from './ÅpenEttersendingForSøknad';
 
-const AlertStripeFeilStyled = styled(AlertStripeFeil)`
+const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
 `;
 
@@ -38,18 +38,54 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
   ] = useState<IDokumentasjonsbehov[]>([]);
   const [senderEttersendingSpinner, settSenderEttersendingSpinner] =
     useState<boolean>(false);
-  const [visNoeGikkGalt, settVisNoeGikkGalt] = useState(false);
+  const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
+    alertMelding.TOM
+  );
   const [innsending, settInnsending] = useState<IInnsending>(tomInnsending);
+  const [
+    innsendingVedleggSendtInnGjeldendeSesjon,
+    settInnsendingVedleggSendtInnGjeldendeSesjon,
+  ] = useState<IVedlegg[]>([]);
 
   const context = useApp();
+
+  const slåSammenDokumentasjonsbehovOgDokumentasjonsbehovTilInnsending =
+    (): IDokumentasjonsbehov[] => {
+      const list = dokumentasjonsbehovTilInnsending.map((behov, index) => {
+        return {
+          ...behov,
+          opplastedeVedlegg: [
+            ...behov.opplastedeVedlegg,
+            ...dokumentasjonsbehov[index].opplastedeVedlegg,
+          ],
+        };
+      });
+      return list;
+    };
+
+  const erNyeVedlegg = (): boolean => {
+    return (
+      innsending.vedlegg !== null ||
+      dokumentasjonsbehovTilInnsending
+        .map((behov) => behov.opplastedeVedlegg.length)
+        .reduce((total, verdi) => total + verdi) > 0
+    );
+  };
+
+  const erNyHarSendtInnTidligere = (): boolean => {
+    let erNy = false;
+    dokumentasjonsbehovTilInnsending.forEach((behov, index) => {
+      if (behov.harSendtInn !== dokumentasjonsbehov[index].harSendtInn) {
+        erNy = true;
+      }
+    });
+    return erNy;
+  };
 
   const lagOgSendEttersending = async () => {
     if (
       !senderEttersendingSpinner &&
-      (innsending.vedlegg ||
-        dokumentasjonsbehovTilInnsending
-          .map((behov) => behov.opplastedeVedlegg.length)
-          .reduce((total, verdi) => total + verdi) > 0)
+      (erNyeVedlegg() || erNyHarSendtInnTidligere())
     ) {
       settSenderEttersendingSpinner(true);
 
@@ -65,29 +101,50 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
         ettersendingForSøknad: ettersendingForSøknad,
       };
 
-      settVisNoeGikkGalt(false);
+      settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersendingsdata);
+        settAlertStripeMelding(alertMelding.SENDT_INN);
+        settDokumentasjonsbehov(
+          slåSammenDokumentasjonsbehovOgDokumentasjonsbehovTilInnsending()
+        );
+        settDokumentasjonsbehovTilInnsending(
+          lagDokumentasjonsbehovTilInnsending(
+            slåSammenDokumentasjonsbehovOgDokumentasjonsbehovTilInnsending()
+          )
+        );
+        innsending.vedlegg &&
+          settInnsendingVedleggSendtInnGjeldendeSesjon([
+            ...innsendingVedleggSendtInnGjeldendeSesjon,
+            innsending.vedlegg,
+          ]);
+        settInnsending(tomInnsending);
       } catch {
-        settVisNoeGikkGalt(true);
+        settAlertStripeMelding(alertMelding.FEIL);
       } finally {
         settSenderEttersendingSpinner(false);
       }
     }
   };
 
+  const lagDokumentasjonsbehovTilInnsending = (
+    dokumentasjonsbehov: IDokumentasjonsbehov[]
+  ): IDokumentasjonsbehov[] => {
+    return dokumentasjonsbehov.map((behov) => {
+      return {
+        ...behov,
+        opplastedeVedlegg: [],
+      };
+    });
+  };
+
   useEffect(() => {
     settDokumentasjonsbehov(søknad.dokumentasjonsbehov.dokumentasjonsbehov);
-
-    const oppdatertDokumentasjonsbehov =
-      søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
-        return {
-          ...behov,
-          opplastedeVedlegg: [],
-        };
-      });
-
-    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
+    settDokumentasjonsbehovTilInnsending(
+      lagDokumentasjonsbehovTilInnsending(
+        søknad.dokumentasjonsbehov.dokumentasjonsbehov
+      )
+    );
     settLasterverdi(false);
   }, [context.søker]);
 
@@ -113,10 +170,10 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
               />
             );
           })}
-        <ÅpenEttersending
-          ettersendingType={EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING}
+        <ÅpenEttersendingForSøknad
           settInnsending={settInnsending}
           innsending={innsending}
+          tidligereOpplastedeVedlegg={innsendingVedleggSendtInnGjeldendeSesjon}
         />
       </div>
       <div>
@@ -126,11 +183,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
         >
           {senderEttersendingSpinner ? 'Sender...' : 'Send inn'}
         </Hovedknapp>
-        {visNoeGikkGalt && (
-          <AlertStripeFeilStyled>
-            Noe gikk galt, prøv igjen
-          </AlertStripeFeilStyled>
-        )}
+        <StyledAlertStripe melding={alertStripeMelding} />
       </div>
     </div>
   );
