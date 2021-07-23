@@ -57,18 +57,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [laster, settLaster] = useState<boolean>(false);
 
-  if (
-    props.ettersendingType ===
-    EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
-  ) {
-    useEffect(
-      () => console.log('endret', props.dokumentasjonsbehovTilInnsending),
-      [props.dokumentasjonsbehovTilInnsending]
-    );
-  }
-
   const leggTilVedlegg = (vedlegg: IVedlegg[]) => {
-    console.log('fraLeggTilVedlegg', vedlegg);
     if (
       props.ettersendingType ===
       EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
@@ -78,9 +67,8 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
         settDokumentasjonsbehovTilInnsending,
         dokumentasjonsbehovTilInnsending,
       } = props;
-      console.log('før:', dokumentasjonsbehovTilInnsending);
       const oppdatertDokumentasjonsbehov: IDokumentasjonsbehov[] =
-        dokumentasjonsbehovTilInnsending!.map((behov) => {
+        dokumentasjonsbehovTilInnsending.map((behov) => {
           if (behov.id == dokumentasjonsbehovId) {
             return {
               ...behov,
@@ -90,8 +78,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
             return behov;
           }
         });
-      settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov); //må vente på denne? ellers blir det problemer når flere sendes etter hvernd
-      console.log('etter:', oppdatertDokumentasjonsbehov);
+      settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
     } else if (
       props.ettersendingType ===
       EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING
@@ -206,8 +193,8 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
     settAlertStripeMelding(alertMelding.TOM);
 
     const vedleggListe: IVedlegg[] = [];
-    const bar = new Promise<void>((resolve) => {
-      filer.forEach(async (fil, index, filer) => {
+    await Promise.all(
+      filer.map(async (fil) => {
         try {
           const formData = new FormData();
           formData.append('file', fil);
@@ -220,17 +207,10 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
         } catch {
           settAlertStripeMelding(alertMelding.FEIL);
         }
-        if (index === filer.length - 1) resolve();
-      });
-    });
-    bar.then(() => {
-      if (alertStripeMelding === alertMelding.TOM) {
-        leggTilVedlegg(vedleggListe);
-      }
-      console.log('vedlegg: ', vedleggListe);
-
-      settLaster(false);
-    });
+      })
+    );
+    leggTilVedlegg(vedleggListe);
+    settLaster(false);
   };
 
   const onDrop = (filer: File[]) => {
