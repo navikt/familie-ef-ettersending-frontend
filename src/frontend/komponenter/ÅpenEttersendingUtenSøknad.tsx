@@ -21,6 +21,7 @@ const StyledTextarea = styled(Textarea)`
 `;
 
 const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
+  margin: 1rem auto;
   .textarea__container {
     margin-top: 1rem;
   }
