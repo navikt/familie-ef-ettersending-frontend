@@ -3,7 +3,7 @@ import slett from '../icons/slett.svg';
 import vedlegg from '../icons/vedlegg.svg';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { IVedlegg } from '../typer/ettersending';
-import '../stil/Vedleggsopplaster.less';
+import '../stil/Opplastedevedlegg.less';
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedlegg[];

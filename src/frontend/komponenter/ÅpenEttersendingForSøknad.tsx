@@ -14,6 +14,7 @@ const StyledSelect = styled(Select)`
 
 const StyledTextarea = styled(Textarea)`
   width: 100%;
+  margin-left: 1px;
 `;
 
 const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
