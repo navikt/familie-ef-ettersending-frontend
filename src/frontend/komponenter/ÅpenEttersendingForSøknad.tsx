@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
@@ -24,7 +24,7 @@ const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
 
 interface IProps {
   innsending: IInnsending;
-  settInnsending: (dokumentasjonsbehov: IInnsending) => void;
+  settInnsending: Dispatch<SetStateAction<IInnsending>>;
   tidligereOpplastedeVedlegg: IVedlegg[];
 }
 

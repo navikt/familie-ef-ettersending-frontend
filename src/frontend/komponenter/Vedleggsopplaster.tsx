@@ -1,11 +1,4 @@
-import React, {
-  useCallback,
-  useState,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-} from 'react';
-
+import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
@@ -25,6 +18,7 @@ import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import AlertStripe, { alertMelding } from './AlertStripe';
+import { kjørerLokalt } from '../../shared-utils/miljø';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
@@ -112,9 +106,9 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
     ) {
       const { settEttersendingUtenSøknad, ettersendingUtenSøknad } = props;
       settEttersendingUtenSøknad({
-        ...ettersendingUtenSøknad!,
+        ...ettersendingUtenSøknad,
         innsending: [
-          { ...ettersendingUtenSøknad!.innsending[0], vedlegg: vedlegg[0] }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
+          { ...ettersendingUtenSøknad.innsending[0], vedlegg: vedlegg[0] }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
         ],
       });
     }
@@ -212,15 +206,14 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
     settAlertStripeMelding(alertMelding.TOM);
 
     const vedleggListe: IVedlegg[] = [];
-    const bar = new Promise<void>((resolve, reject) => {
+    const bar = new Promise<void>((resolve) => {
       filer.forEach(async (fil, index, filer) => {
         try {
           const formData = new FormData();
           formData.append('file', fil);
           const respons = await sendVedleggTilMellomlager(formData);
           const vedlegg: IVedlegg = {
-            // id: respons,
-            id: '122', // Må brukes for at det skal kunne kjøre lokalt
+            id: kjørerLokalt() ? '123' : respons,
             navn: fil.name,
           };
           vedleggListe.push(vedlegg);
