@@ -70,12 +70,12 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
       }
     >
       {dokumentasjonsbehov.opplastedeVedlegg.length > 0 && (
-        <div className="opplastede-filer">
+        <>
           <p>Tidligere opplastede filer:</p>
           <OpplastedeVedlegg
             vedleggsliste={dokumentasjonsbehov.opplastedeVedlegg}
           />
-        </div>
+        </>
       )}
       <Vedleggsopplaster
         ettersendingType={

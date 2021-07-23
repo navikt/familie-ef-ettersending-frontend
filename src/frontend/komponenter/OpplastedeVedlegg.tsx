@@ -18,7 +18,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
     <>
       {vedleggsliste.map((fil: IVedlegg, index: number) => {
         return (
-          <div key={index}>
+          <div key={index} className="opplastede-filer">
             <div className="fil">
               <div>
                 <img

@@ -79,10 +79,10 @@ const ÅpenEttersendingUtenSøknad: React.FC<IProps> = ({
       }
     >
       {tidligereOpplastedeVedlegg.length > 0 && (
-        <div className="opplastede-filer">
+        <>
           <p>Tidligere opplastede filer:</p>
           <OpplastedeVedlegg vedleggsliste={tidligereOpplastedeVedlegg} />
-        </div>
+        </>
       )}
       <Vedleggsopplaster
         ettersendingType={EttersendingType.ETTERSENDING_UTEN_SØKNAD}
