@@ -233,20 +233,18 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
 
   return (
     <div className="filopplaster-wrapper">
-      <div className="opplastede-filer">
-        <p>Nye filer:</p>
-        {laster ? (
-          <NavFrontendSpinner />
-        ) : (
-          <>
-            <OpplastedeVedlegg
-              vedleggsliste={visVedleggTilOpplasting()}
-              slettVedlegg={slettVedlegg}
-            />
-            <StyledAlertStripe melding={alertStripeMelding} />
-          </>
-        )}
-      </div>
+      <p>Nye filer:</p>
+      {laster ? (
+        <NavFrontendSpinner />
+      ) : (
+        <>
+          <OpplastedeVedlegg
+            vedleggsliste={visVedleggTilOpplasting()}
+            slettVedlegg={slettVedlegg}
+          />
+          <StyledAlertStripe melding={alertStripeMelding} />
+        </>
+      )}
 
       <div className="filopplaster">
         <Modal

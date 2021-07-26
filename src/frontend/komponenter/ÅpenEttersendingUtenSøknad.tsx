@@ -18,9 +18,11 @@ const StyledSelect = styled(Select)`
 
 const StyledTextarea = styled(Textarea)`
   width: 100%;
+  margin-left: 1px;
 `;
 
 const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
+  margin: 1rem auto;
   .textarea__container {
     margin-top: 1rem;
   }
@@ -77,10 +79,10 @@ const ÅpenEttersendingUtenSøknad: React.FC<IProps> = ({
       }
     >
       {tidligereOpplastedeVedlegg.length > 0 && (
-        <div className="opplastede-filer">
+        <>
           <p>Tidligere opplastede filer:</p>
           <OpplastedeVedlegg vedleggsliste={tidligereOpplastedeVedlegg} />
-        </div>
+        </>
       )}
       <Vedleggsopplaster
         ettersendingType={EttersendingType.ETTERSENDING_UTEN_SØKNAD}

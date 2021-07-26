@@ -3,7 +3,7 @@ import slett from '../icons/slett.svg';
 import vedlegg from '../icons/vedlegg.svg';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { IVedlegg } from '../typer/ettersending';
-import '../stil/Vedleggsopplaster.less';
+import '../stil/Opplastedevedlegg.less';
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedlegg[];
@@ -15,7 +15,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
   slettVedlegg,
 }: IOpplastedeVedlegg) => {
   return (
-    <>
+    <div className="opplastede-filer">
       {vedleggsliste.map((fil: IVedlegg, index: number) => {
         return (
           <div key={index}>
@@ -44,7 +44,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 
