@@ -7,7 +7,7 @@ import {
   IEttersending,
   IEttersendingForSøknad,
   IInnsending,
-  ISøknadsbehov,
+  ISøknadMedEttersendinger,
   IVedlegg,
   tomInnsending,
 } from '../typer/ettersending';
@@ -22,7 +22,7 @@ const StyledAlertStripe = styled(AlertStripe)`
 `;
 
 interface IProps {
-  søknad: ISøknadsbehov;
+  søknad: ISøknadMedEttersendinger;
 }
 
 export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
@@ -42,10 +42,13 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
     alertMelding.TOM
   );
   const [innsending, settInnsending] = useState<IInnsending>(tomInnsending);
-  const [
-    innsendingVedleggSendtInnGjeldendeSesjon,
-    settInnsendingVedleggSendtInnGjeldendeSesjon,
-  ] = useState<IVedlegg[]>([]);
+  const [innsendingVedleggSendtInn, settInnsendingVedleggSendtInn] = useState<
+    IVedlegg[]
+  >(
+    søknad.innsending
+      ? søknad.innsending.flatMap((innsending) => innsending.vedlegg!)
+      : []
+  );
 
   const context = useApp();
 
@@ -114,8 +117,8 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
           )
         );
         innsending.vedlegg &&
-          settInnsendingVedleggSendtInnGjeldendeSesjon([
-            ...innsendingVedleggSendtInnGjeldendeSesjon,
+          settInnsendingVedleggSendtInn([
+            ...innsendingVedleggSendtInn,
             innsending.vedlegg,
           ]);
         settInnsending(tomInnsending);
@@ -139,11 +142,9 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
   };
 
   useEffect(() => {
-    settDokumentasjonsbehov(søknad.dokumentasjonsbehov.dokumentasjonsbehov);
+    settDokumentasjonsbehov(søknad.dokumentasjonsbehov);
     settDokumentasjonsbehovTilInnsending(
-      lagDokumentasjonsbehovTilInnsending(
-        søknad.dokumentasjonsbehov.dokumentasjonsbehov
-      )
+      lagDokumentasjonsbehovTilInnsending(søknad.dokumentasjonsbehov)
     );
     settLasterverdi(false);
   }, [context.søker]);
@@ -173,7 +174,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
         <ÅpenEttersendingForSøknad
           settInnsending={settInnsending}
           innsending={innsending}
-          tidligereOpplastedeVedlegg={innsendingVedleggSendtInnGjeldendeSesjon}
+          tidligereOpplastedeVedlegg={innsendingVedleggSendtInn}
         />
       </div>
       <div>

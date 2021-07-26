@@ -2,16 +2,20 @@ import React from 'react';
 import '../stil/Vedleggsopplaster.less';
 import { DokumentasjonsbehovOversikt } from './DokumentasjonsbehovOversikt';
 import { useApp } from '../context/AppContext';
-import { hentDokumentasjonsbehov, sendEttersending } from '../api-service';
+import {
+  hentDokumentasjonsbehov,
+  hentEttersendinger,
+  sendEttersending,
+} from '../api-service';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
-  ISøknadsbehov,
   IEttersendingUtenSøknad,
   tomEttersendingUtenSøknad,
   IVedlegg,
   IEttersendingTilInnsending,
+  ISøknadMedEttersendinger,
 } from '../typer/ettersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
@@ -30,27 +34,85 @@ const StyledAlertStripe = styled(AlertStripe)`
 
 const Søknadsoversikt: React.FC = () => {
   const [laster, settLasterverdi] = useState(true);
-  const [søknader, settSøknader] = useState<ISøknadsbehov[]>([]);
+  const [søknaderMedEttersendinger, settSøknaderMedEttersendinger] = useState<
+    ISøknadMedEttersendinger[]
+  >([]);
   const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
     useState<IEttersendingUtenSøknad>(tomEttersendingUtenSøknad);
   const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
     alertMelding.TOM
   );
-  const [
-    innsendingVedleggSendtInnGjeldendeSesjon,
-    settInnsendingVedleggSendtInnGjeldendeSesjon,
-  ] = useState<IVedlegg[]>([]);
+  const [innsendingVedleggSendtInn, settInnsendingVedleggSendtInn] = useState<
+    IVedlegg[]
+  >([]);
 
   const context = useApp();
 
   useEffect(() => {
-    const hentOgSettSøknader = async () => {
+    const hentOgSettSøknaderOgEttersendinger = async () => {
       const søknadsliste = await hentDokumentasjonsbehov();
-      settSøknader(søknadsliste);
+      const ettersendinger = await hentEttersendinger();
+
+      const søknaderMedEttersendinger: ISøknadMedEttersendinger[] =
+        søknadsliste.map((søknad) => {
+          const ettersendingForSøknad = ettersendinger.filter(
+            (ettersending) =>
+              ettersending.ettersendingForSøknad &&
+              ettersending.ettersendingForSøknad.søknadId === søknad.søknadId
+          );
+          const ettersendingDokumentasjonsbehov = ettersendingForSøknad.flatMap(
+            (ettersending) =>
+              ettersending.ettersendingForSøknad!.dokumentasjonsbehov
+          );
+          const ettersendingInnsending = ettersendingForSøknad.flatMap(
+            (ettersending) => ettersending.ettersendingForSøknad!.innsending
+          );
+          const dokumentasjonsbehov =
+            søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
+              const ettersendingBehov = ettersendingDokumentasjonsbehov.filter(
+                (ettersendingBehov) => ettersendingBehov.id === behov.id
+              );
+              const ettersendingBehovVedlegg = ettersendingBehov.flatMap(
+                (behov) => behov.opplastedeVedlegg
+              );
+              const ettersenidngHarSendtInnTidligere = ettersendingBehov.some(
+                (behov) => behov.harSendtInn
+              );
+              if (ettersendingBehov.length > 0) {
+                return {
+                  ...behov,
+                  harSendtInn:
+                    behov.harSendtInn || ettersenidngHarSendtInnTidligere,
+                  opplastedeVedlegg: [
+                    ...behov.opplastedeVedlegg,
+                    ...ettersendingBehovVedlegg,
+                  ],
+                  innsending: [],
+                };
+              }
+              return behov;
+            });
+          return {
+            ...søknad,
+            dokumentasjonsbehov: dokumentasjonsbehov,
+            innsending: ettersendingInnsending,
+          };
+        });
+
+      const innsendingVedleggSendtInn: IVedlegg[] = ettersendinger
+        .filter((ettersending) => ettersending.ettersendingUtenSøknad !== null)
+        .flatMap((ettersending) =>
+          ettersending.ettersendingUtenSøknad!.innsending.flatMap(
+            (innsending) => innsending.vedlegg!
+          )
+        );
+
+      settSøknaderMedEttersendinger(søknaderMedEttersendinger);
+      settInnsendingVedleggSendtInn(innsendingVedleggSendtInn);
       settLasterverdi(false);
     };
-    if (context.søker != null) hentOgSettSøknader();
+    if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
   }, [context.søker]);
 
   const sendEttersendingUtenSøknad = async () => {
@@ -70,8 +132,8 @@ const Søknadsoversikt: React.FC = () => {
       settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersending);
-        settInnsendingVedleggSendtInnGjeldendeSesjon([
-          ...innsendingVedleggSendtInnGjeldendeSesjon,
+        settInnsendingVedleggSendtInn([
+          ...innsendingVedleggSendtInn,
           ettersendingUtenSøknad.innsending[0].vedlegg,
         ]);
         settEttersendingUtenSøknad(tomEttersendingUtenSøknad);
@@ -92,7 +154,7 @@ const Søknadsoversikt: React.FC = () => {
         <ÅpenEttersendingUtenSøknad
           ettersendingUtenSøknad={ettersendingUtenSøknad}
           settEttersendingUtenSøknad={settEttersendingUtenSøknad}
-          tidligereOpplastedeVedlegg={innsendingVedleggSendtInnGjeldendeSesjon}
+          tidligereOpplastedeVedlegg={innsendingVedleggSendtInn}
         />
         <Hovedknapp
           spinner={senderEttersending}
@@ -102,7 +164,7 @@ const Søknadsoversikt: React.FC = () => {
         </Hovedknapp>
         <StyledAlertStripe melding={alertStripeMelding} />
       </SoknadContainer>
-      {søknader.map((søknad, index) => {
+      {søknaderMedEttersendinger.map((søknad, index) => {
         return (
           <SoknadContainer key={index}>
             <h2>
