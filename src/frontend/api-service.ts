@@ -1,7 +1,7 @@
 import axios from 'axios';
 import environment from '../backend/environment';
 import {
-  IEttersending,
+  IEttersendingMedDato,
   IEttersendingTilInnsending,
   ISøknadsbehov,
 } from './typer/ettersending';
@@ -27,7 +27,7 @@ export const sendEttersending = (
     .then((response) => response.data);
 };
 
-export const hentEttersendinger = (): Promise<IEttersending[]> => {
+export const hentEttersendinger = (): Promise<IEttersendingMedDato[]> => {
   return axios
     .get(`${environment().apiUrl}/api/ettersending`, { withCredentials: true })
     .then((response) => response.data);

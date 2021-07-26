@@ -57,16 +57,19 @@ const Søknadsoversikt: React.FC = () => {
       const søknaderMedEttersendinger: ISøknadMedEttersendinger[] =
         søknadsliste.map((søknad) => {
           const ettersendingForSøknad = ettersendinger.filter(
-            (ettersending) =>
-              ettersending.ettersendingForSøknad &&
-              ettersending.ettersendingForSøknad.søknadId === søknad.søknadId
+            (ettersendingMedDato) =>
+              ettersendingMedDato.ettersending.ettersendingForSøknad &&
+              ettersendingMedDato.ettersending.ettersendingForSøknad
+                .søknadId === søknad.søknadId
           );
           const ettersendingDokumentasjonsbehov = ettersendingForSøknad.flatMap(
-            (ettersending) =>
-              ettersending.ettersendingForSøknad!.dokumentasjonsbehov
+            (ettersendingMedDato) =>
+              ettersendingMedDato.ettersending.ettersendingForSøknad!
+                .dokumentasjonsbehov
           );
           const ettersendingInnsending = ettersendingForSøknad.flatMap(
-            (ettersending) => ettersending.ettersendingForSøknad!.innsending
+            (ettersendingMedDato) =>
+              ettersendingMedDato.ettersending.ettersendingForSøknad!.innsending
           );
           const dokumentasjonsbehov =
             søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
@@ -101,9 +104,12 @@ const Søknadsoversikt: React.FC = () => {
         });
 
       const innsendingVedleggSendtInn: IVedlegg[] = ettersendinger
-        .filter((ettersending) => ettersending.ettersendingUtenSøknad !== null)
-        .flatMap((ettersending) =>
-          ettersending.ettersendingUtenSøknad!.innsending.flatMap(
+        .filter(
+          (ettersendingMedDato) =>
+            ettersendingMedDato.ettersending.ettersendingUtenSøknad !== null
+        )
+        .flatMap((ettersendingMedDato) =>
+          ettersendingMedDato.ettersending.ettersendingUtenSøknad!.innsending.flatMap(
             (innsending) => innsending.vedlegg!
           )
         );
