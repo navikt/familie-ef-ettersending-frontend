@@ -57,19 +57,22 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [laster, settLaster] = useState<boolean>(false);
 
-  const leggTilVedlegg = (vedlegg: IVedlegg) => {
+  const leggTilVedlegg = (vedlegg: IVedlegg[]) => {
     if (
       props.ettersendingType ===
       EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
     ) {
-      const { dokumentasjonsbehovId, settDokumentasjonsbehovTilInnsending } =
-        props;
+      const {
+        dokumentasjonsbehovId,
+        settDokumentasjonsbehovTilInnsending,
+        dokumentasjonsbehovTilInnsending,
+      } = props;
       const oppdatertDokumentasjonsbehov: IDokumentasjonsbehov[] =
-        props.dokumentasjonsbehovTilInnsending.map((behov) => {
+        dokumentasjonsbehovTilInnsending.map((behov) => {
           if (behov.id == dokumentasjonsbehovId) {
             return {
               ...behov,
-              opplastedeVedlegg: [...behov.opplastedeVedlegg, vedlegg],
+              opplastedeVedlegg: [...behov.opplastedeVedlegg, ...vedlegg],
             };
           } else {
             return behov;
@@ -83,7 +86,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
       const { settInnsending, innsending } = props;
       settInnsending({
         ...innsending,
-        vedlegg: vedlegg,
+        vedlegg: vedlegg[0],
       });
     } else if (
       props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD
@@ -92,7 +95,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
         innsending: [
-          { ...ettersendingUtenSøknad.innsending[0], vedlegg: vedlegg }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
+          { ...ettersendingUtenSøknad.innsending[0], vedlegg: vedlegg[0] }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
         ],
       });
     }
@@ -185,24 +188,29 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
     return godkjentFiltype;
   };
 
-  const lastOppVedlegg = async (fil: File) => {
+  const lastOppVedlegg = async (filer: File[]) => {
     settLaster(true);
     settAlertStripeMelding(alertMelding.TOM);
 
-    try {
-      const formData = new FormData();
-      formData.append('file', fil);
-      const respons = await sendVedleggTilMellomlager(formData);
-      const vedlegg: IVedlegg = {
-        id: kjørerLokalt() ? '123' : respons,
-        navn: fil.name,
-      };
-      leggTilVedlegg(vedlegg);
-    } catch {
-      settAlertStripeMelding(alertMelding.FEIL);
-    } finally {
-      settLaster(false);
-    }
+    const vedleggListe: IVedlegg[] = [];
+    await Promise.all(
+      filer.map(async (fil) => {
+        try {
+          const formData = new FormData();
+          formData.append('file', fil);
+          const respons = await sendVedleggTilMellomlager(formData);
+          const vedlegg: IVedlegg = {
+            id: kjørerLokalt() ? '123' : respons,
+            navn: fil.name,
+          };
+          vedleggListe.push(vedlegg);
+        } catch {
+          settAlertStripeMelding(alertMelding.FEIL);
+        }
+      })
+    );
+    leggTilVedlegg(vedleggListe);
+    settLaster(false);
   };
 
   const onDrop = (filer: File[]) => {
@@ -215,9 +223,10 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
         settÅpenModal(true);
         return;
       }
-
-      lastOppVedlegg(fil);
     });
+    if (feilmeldingsliste.length <= 0) {
+      lastOppVedlegg(filer);
+    }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
