@@ -21,6 +21,10 @@ spec:
     initialDelay: 5
   ingresses:
     - "https://ensligmorellerfar.dev.nav.no/familie/alene-med-barn/ettersending"
+  accessPolicy:
+    outbound:
+      external:
+        - host: dekoratoren.dev.nav.no
   resources:
     limits:
       cpu: 2000m
