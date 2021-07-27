@@ -4,10 +4,17 @@ import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
-import '../stil/Vedleggsopplaster.less';
-import '../stil/Dokumentasjonsbehov.less';
 import { Checkbox } from 'nav-frontend-skjema';
 import { EttersendingType } from '../typer/ettersending';
+import styled from 'styled-components';
+
+const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
+  margin: 1rem auto;
+`;
+
+const StyledCheckbox = styled(Checkbox)`
+  margin: 1rem 0;
+`;
 
 interface Props {
   dokumentasjonsbehov: IDokumentasjonsbehov;
@@ -52,7 +59,7 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
   };
 
   return (
-    <Ekspanderbartpanel
+    <StyledEkspanderbartpanel
       tittel={
         <Alertstripe
           type={erDokumentasjonSendt() ? 'suksess' : 'advarsel'}
@@ -63,12 +70,12 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
       }
     >
       {dokumentasjonsbehov.opplastedeVedlegg.length > 0 && (
-        <div className="opplastede-filer">
+        <>
           <p>Tidligere opplastede filer:</p>
           <OpplastedeVedlegg
             vedleggsliste={dokumentasjonsbehov.opplastedeVedlegg}
           />
-        </div>
+        </>
       )}
       <Vedleggsopplaster
         ettersendingType={
@@ -80,13 +87,12 @@ const Dokumentasjonsbehov: React.FC<Props> = ({
           settDokumentasjonsbehovTilInnsending
         }
       />
-      <Checkbox
-        className="leveranseCheckbox"
+      <StyledCheckbox
         onChange={() => oppdaterHarSendtInn()}
         checked={checked}
         label={'Jeg har levert på annen måte'}
       />
-    </Ekspanderbartpanel>
+    </StyledEkspanderbartpanel>
   );
 };
 

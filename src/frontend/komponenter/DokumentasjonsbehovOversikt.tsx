@@ -158,38 +158,34 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
   }
 
   return (
-    <div>
-      <div>
-        {dokumentasjonsbehov.length > 0 &&
-          dokumentasjonsbehov.map((behov) => {
-            return (
-              <Dokumentasjonsbehov
-                key={behov.id}
-                dokumentasjonsbehov={behov}
-                dokumentasjonsbehovTilInnsending={
-                  dokumentasjonsbehovTilInnsending
-                }
-                settDokumentasjonsbehovTilInnsending={
-                  settDokumentasjonsbehovTilInnsending
-                }
-              />
-            );
-          })}
-        <ÅpenEttersendingForSøknad
-          settInnsending={settInnsending}
-          innsending={innsending}
-          tidligereOpplastedeVedlegg={innsendingVedleggSendtInn}
-        />
-      </div>
-      <div>
-        <Hovedknapp
-          spinner={senderEttersendingSpinner}
-          onClick={lagOgSendEttersending}
-        >
-          {senderEttersendingSpinner ? 'Sender...' : 'Send inn'}
-        </Hovedknapp>
-        <StyledAlertStripe melding={alertStripeMelding} />
-      </div>
-    </div>
+    <>
+      {dokumentasjonsbehov.length > 0 &&
+        dokumentasjonsbehov.map((behov) => {
+          return (
+            <Dokumentasjonsbehov
+              key={behov.id}
+              dokumentasjonsbehov={behov}
+              dokumentasjonsbehovTilInnsending={
+                dokumentasjonsbehovTilInnsending
+              }
+              settDokumentasjonsbehovTilInnsending={
+                settDokumentasjonsbehovTilInnsending
+              }
+            />
+          );
+        })}
+      <ÅpenEttersendingForSøknad
+        settInnsending={settInnsending}
+        innsending={innsending}
+        tidligereOpplastedeVedlegg={innsendingVedleggSendtInn}
+      />
+      <Hovedknapp
+        spinner={senderEttersendingSpinner}
+        onClick={lagOgSendEttersending}
+      >
+        {senderEttersendingSpinner ? 'Sender...' : 'Send inn'}
+      </Hovedknapp>
+      <StyledAlertStripe melding={alertStripeMelding} />
+    </>
   );
 };

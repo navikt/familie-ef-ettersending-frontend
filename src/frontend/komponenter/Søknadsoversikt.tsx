@@ -1,5 +1,4 @@
 import React from 'react';
-import '../stil/Vedleggsopplaster.less';
 import { DokumentasjonsbehovOversikt } from './DokumentasjonsbehovOversikt';
 import { useApp } from '../context/AppContext';
 import {
