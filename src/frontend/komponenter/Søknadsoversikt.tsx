@@ -16,11 +16,14 @@ import {
   IVedlegg,
   IEttersendingTilInnsending,
   ISøknadMedEttersendinger,
+  IEttersendingMedDato,
+  IInnsending,
 } from '../typer/ettersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import ÅpenEttersendingUtenSøknad from './ÅpenEttersendingUtenSøknad';
+import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 
 const SoknadContainer = styled.div`
   margin-bottom: 5rem;
@@ -56,7 +59,73 @@ const Søknadsoversikt: React.FC = () => {
 
       const søknaderMedEttersendinger: ISøknadMedEttersendinger[] =
         søknadsliste.map((søknad) => {
-          const ettersendingForSøknad = ettersendinger.filter(
+          const ettersendingerMedDato = ettersendinger.map((ettersending) => {
+            const dato = ettersending.mottattTidspunkt;
+            if (ettersending.ettersending.ettersendingForSøknad) {
+              const dokumentasjonsbehov: IDokumentasjonsbehov[] =
+                ettersending.ettersending.ettersendingForSøknad.dokumentasjonsbehov.flatMap(
+                  (behov) => {
+                    return {
+                      ...behov,
+                      opplastedeVedlegg: behov.opplastedeVedlegg.map(
+                        (vedlegg) => {
+                          return { ...vedlegg, dato: dato };
+                        }
+                      ),
+                    };
+                  }
+                );
+              const innsending: IInnsending[] =
+                ettersending.ettersending.ettersendingForSøknad.innsending.flatMap(
+                  (innsending) => {
+                    if (innsending.vedlegg) {
+                      return {
+                        ...innsending,
+                        vedlegg: { ...innsending.vedlegg, dato: dato },
+                      };
+                    }
+                    return { ...innsending, vedlegg: null };
+                  }
+                );
+              return {
+                ...ettersending,
+                ettersending: {
+                  ...ettersending.ettersending,
+                  ettersendingForSøknad: {
+                    ...ettersending.ettersending.ettersendingForSøknad,
+                    dokumentasjonsbehov: dokumentasjonsbehov,
+                    innsending: innsending,
+                  },
+                },
+              };
+            } else if (ettersending.ettersending.ettersendingUtenSøknad) {
+              const innsending: IInnsending[] =
+                ettersending.ettersending.ettersendingUtenSøknad.innsending.flatMap(
+                  (innsending) => {
+                    if (innsending.vedlegg) {
+                      return {
+                        ...innsending,
+                        vedlegg: { ...innsending.vedlegg, dato: dato },
+                      };
+                    }
+                    return { ...innsending, vedlegg: null };
+                  }
+                );
+              return {
+                ...ettersending,
+                ettersending: {
+                  ...ettersending.ettersending,
+                  ettersendingUtenSøknad: {
+                    ...ettersending.ettersending.ettersendingUtenSøknad,
+                    innsending: innsending,
+                  },
+                },
+              };
+            }
+            return ettersending;
+          });
+
+          const ettersendingForSøknad = ettersendingerMedDato.filter(
             (ettersendingMedDato) =>
               ettersendingMedDato.ettersending.ettersendingForSøknad &&
               ettersendingMedDato.ettersending.ettersendingForSøknad

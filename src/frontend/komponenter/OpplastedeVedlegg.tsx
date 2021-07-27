@@ -26,7 +26,11 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                   src={vedlegg}
                   alt="Vedleggsikon"
                 />
-                <Normaltekst className="filnavn">{fil.navn}</Normaltekst>
+                <Normaltekst className="filnavn">
+                  {fil.dato
+                    ? `${fil.navn} - ${new Date(fil.dato).toLocaleDateString()}`
+                    : fil.navn}
+                </Normaltekst>
               </div>
               {slettVedlegg && (
                 <div
