@@ -216,18 +216,6 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
 
   const onDrop = (filer: File[]) => {
     const feilmeldingsliste: string[] = [];
-    if (
-      props.ettersendingType !=
-        EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV &&
-      filer.length > 1
-    ) {
-      console.log('for mange filer');
-      feilmeldingsliste.push(
-        'I dette feltet kan du maksimalt laste opp én fil'
-      );
-      settFeilmeldinger(feilmeldingsliste);
-      settÅpenModal(true);
-    }
 
     filer.forEach((fil: File) => {
       if (!sjekkTillatFiltype(fil.type)) {
@@ -242,7 +230,14 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple:
+      props.ettersendingType ===
+      EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
+        ? true
+        : false,
+  });
 
   return (
     <div className="filopplaster-wrapper">
