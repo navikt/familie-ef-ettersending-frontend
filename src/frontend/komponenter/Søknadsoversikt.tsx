@@ -58,8 +58,9 @@ const Søknadsoversikt: React.FC = () => {
 
       const søknaderMedEttersendinger: ISøknadMedEttersendinger[] =
         søknadsliste.map((søknad) => {
+          const søknadDato = søknad.søknadDato;
           const ettersendingerMedDato = ettersendinger.map((ettersending) => {
-            const dato = ettersending.mottattTidspunkt;
+            const ettersendingDato = ettersending.mottattTidspunkt;
             if (ettersending.ettersending.ettersendingForSøknad) {
               const dokumentasjonsbehov: IDokumentasjonsbehov[] =
                 ettersending.ettersending.ettersendingForSøknad.dokumentasjonsbehov.flatMap(
@@ -68,7 +69,7 @@ const Søknadsoversikt: React.FC = () => {
                       ...behov,
                       opplastedeVedlegg: behov.opplastedeVedlegg.map(
                         (vedlegg) => {
-                          return { ...vedlegg, dato: dato };
+                          return { ...vedlegg, dato: ettersendingDato };
                         }
                       ),
                     };
@@ -80,7 +81,10 @@ const Søknadsoversikt: React.FC = () => {
                     if (innsending.vedlegg) {
                       return {
                         ...innsending,
-                        vedlegg: { ...innsending.vedlegg, dato: dato },
+                        vedlegg: {
+                          ...innsending.vedlegg,
+                          dato: ettersendingDato,
+                        },
                       };
                     }
                     return { ...innsending, vedlegg: null };
@@ -104,7 +108,10 @@ const Søknadsoversikt: React.FC = () => {
                     if (innsending.vedlegg) {
                       return {
                         ...innsending,
-                        vedlegg: { ...innsending.vedlegg, dato: dato },
+                        vedlegg: {
+                          ...innsending.vedlegg,
+                          dato: ettersendingDato,
+                        },
                       };
                     }
                     return { ...innsending, vedlegg: null };
@@ -150,20 +157,27 @@ const Søknadsoversikt: React.FC = () => {
               const ettersenidngHarSendtInnTidligere = ettersendingBehov.some(
                 (behov) => behov.harSendtInn
               );
+              const søknadVedleggMedDato = behov.opplastedeVedlegg.map(
+                (vedlegg) => {
+                  return { ...vedlegg, dato: søknadDato };
+                }
+              );
+
               if (ettersendingBehov.length > 0) {
                 return {
                   ...behov,
                   harSendtInn:
                     behov.harSendtInn || ettersenidngHarSendtInnTidligere,
                   opplastedeVedlegg: [
-                    ...behov.opplastedeVedlegg,
+                    ...søknadVedleggMedDato,
                     ...ettersendingBehovVedlegg,
                   ],
                   innsending: [],
                 };
               }
-              return behov;
+              return { ...behov, opplastedeVedlegg: søknadVedleggMedDato };
             });
+
           return {
             ...søknad,
             dokumentasjonsbehov: dokumentasjonsbehov,
