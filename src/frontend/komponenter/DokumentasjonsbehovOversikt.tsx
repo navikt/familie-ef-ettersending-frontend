@@ -54,16 +54,20 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
 
   const slåSammenDokumentasjonsbehovOgDokumentasjonsbehovTilInnsending =
     (): IDokumentasjonsbehov[] => {
-      const list = dokumentasjonsbehovTilInnsending.map((behov, index) => {
+      return dokumentasjonsbehovTilInnsending.map((behov, index) => {
+        const vedleggTilInnsendingMedDato = behov.opplastedeVedlegg.map(
+          (vedlegg) => {
+            return { ...vedlegg, dato: new Date().toString() };
+          }
+        );
         return {
           ...behov,
           opplastedeVedlegg: [
-            ...behov.opplastedeVedlegg,
+            ...vedleggTilInnsendingMedDato,
             ...dokumentasjonsbehov[index].opplastedeVedlegg,
           ],
         };
       });
-      return list;
     };
 
   const erNyeVedlegg = (): boolean => {
