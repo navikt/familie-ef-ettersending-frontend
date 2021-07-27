@@ -16,6 +16,8 @@ import {
   IEttersendingTilInnsending,
   ISøknadMedEttersendinger,
   IInnsending,
+  IEttersendingMedDato,
+  ISøknadsbehov,
 } from '../typer/ettersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
@@ -51,161 +53,178 @@ const Søknadsoversikt: React.FC = () => {
   const context = useApp();
 
   useEffect(() => {
-    const hentOgSettSøknaderOgEttersendinger = async () => {
-      const søknadsliste = await hentDokumentasjonsbehov();
-      const ettersendinger = await hentEttersendinger();
-
-      const søknaderMedEttersendinger: ISøknadMedEttersendinger[] =
-        søknadsliste.map((søknad) => {
-          const søknadDato = søknad.søknadDato;
-          const ettersendingerMedDato = ettersendinger.map((ettersending) => {
-            const ettersendingDato = ettersending.mottattTidspunkt;
-            if (ettersending.ettersending.ettersendingForSøknad) {
-              const dokumentasjonsbehov: IDokumentasjonsbehov[] =
-                ettersending.ettersending.ettersendingForSøknad.dokumentasjonsbehov.flatMap(
-                  (behov) => {
-                    return {
-                      ...behov,
-                      opplastedeVedlegg: behov.opplastedeVedlegg.map(
-                        (vedlegg) => {
-                          return { ...vedlegg, dato: ettersendingDato };
-                        }
-                      ),
-                    };
-                  }
-                );
-              const innsending: IInnsending[] =
-                ettersending.ettersending.ettersendingForSøknad.innsending.flatMap(
-                  (innsending) => {
-                    if (innsending.vedlegg) {
-                      return {
-                        ...innsending,
-                        vedlegg: {
-                          ...innsending.vedlegg,
-                          dato: ettersendingDato,
-                        },
-                      };
-                    }
-                    return { ...innsending, vedlegg: null };
-                  }
-                );
-              return {
-                ...ettersending,
-                ettersending: {
-                  ...ettersending.ettersending,
-                  ettersendingForSøknad: {
-                    ...ettersending.ettersending.ettersendingForSøknad,
-                    dokumentasjonsbehov: dokumentasjonsbehov,
-                    innsending: innsending,
-                  },
-                },
-              };
-            } else if (ettersending.ettersending.ettersendingUtenSøknad) {
-              const innsending: IInnsending[] =
-                ettersending.ettersending.ettersendingUtenSøknad.innsending.flatMap(
-                  (innsending) => {
-                    if (innsending.vedlegg) {
-                      return {
-                        ...innsending,
-                        vedlegg: {
-                          ...innsending.vedlegg,
-                          dato: ettersendingDato,
-                        },
-                      };
-                    }
-                    return { ...innsending, vedlegg: null };
-                  }
-                );
-              return {
-                ...ettersending,
-                ettersending: {
-                  ...ettersending.ettersending,
-                  ettersendingUtenSøknad: {
-                    ...ettersending.ettersending.ettersendingUtenSøknad,
-                    innsending: innsending,
-                  },
-                },
-              };
-            }
-            return ettersending;
-          });
-
-          const ettersendingForSøknad = ettersendingerMedDato.filter(
-            (ettersendingMedDato) =>
-              ettersendingMedDato.ettersending.ettersendingForSøknad &&
-              ettersendingMedDato.ettersending.ettersendingForSøknad
-                .søknadId === søknad.søknadId
-          );
-          const ettersendingDokumentasjonsbehov = ettersendingForSøknad.flatMap(
-            (ettersendingMedDato) =>
-              ettersendingMedDato.ettersending.ettersendingForSøknad!
-                .dokumentasjonsbehov
-          );
-          const ettersendingInnsending = ettersendingForSøknad.flatMap(
-            (ettersendingMedDato) =>
-              ettersendingMedDato.ettersending.ettersendingForSøknad!.innsending
-          );
-          const dokumentasjonsbehov =
-            søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
-              const ettersendingBehov = ettersendingDokumentasjonsbehov.filter(
-                (ettersendingBehov) => ettersendingBehov.id === behov.id
-              );
-              const ettersendingBehovVedlegg = ettersendingBehov.flatMap(
-                (behov) => behov.opplastedeVedlegg
-              );
-              const ettersenidngHarSendtInnTidligere = ettersendingBehov.some(
-                (behov) => behov.harSendtInn
-              );
-              const søknadVedleggMedDato = behov.opplastedeVedlegg.map(
-                (vedlegg) => {
-                  return { ...vedlegg, dato: søknadDato };
-                }
-              );
-
-              if (ettersendingBehov.length > 0) {
-                return {
-                  ...behov,
-                  harSendtInn:
-                    behov.harSendtInn || ettersenidngHarSendtInnTidligere,
-                  opplastedeVedlegg: [
-                    ...søknadVedleggMedDato,
-                    ...ettersendingBehovVedlegg,
-                  ],
-                  innsending: [],
-                };
-              }
-              return { ...behov, opplastedeVedlegg: søknadVedleggMedDato };
-            });
-
-          return {
-            ...søknad,
-            dokumentasjonsbehov: dokumentasjonsbehov,
-            innsending: ettersendingInnsending,
-          };
-        });
-
-      const innsendingVedleggSendtInn: IVedlegg[] = ettersendinger
-        .filter(
-          (ettersendingMedDato) =>
-            ettersendingMedDato.ettersending.ettersendingUtenSøknad !== null
-        )
-        .flatMap((ettersendingMedDato) => {
-          const dato = ettersendingMedDato.mottattTidspunkt;
-          return ettersendingMedDato.ettersending
-            .ettersendingUtenSøknad!.innsending.filter(
-              (innsending) => innsending.vedlegg !== null
-            )
-            .flatMap((innsending) => {
-              return { ...innsending.vedlegg!, dato: dato };
-            });
-        });
-
-      settSøknaderMedEttersendinger(søknaderMedEttersendinger);
-      settInnsendingVedleggSendtInn(innsendingVedleggSendtInn);
-      settLasterverdi(false);
-    };
     if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
   }, [context.søker]);
+
+  const leggTilDatoPåInnsendingVedlegg = (
+    innsendinger: IInnsending[],
+    dato: string
+  ): IInnsending[] => {
+    return innsendinger.flatMap((innsending) => {
+      if (innsending.vedlegg) {
+        return {
+          ...innsending,
+          vedlegg: {
+            ...innsending.vedlegg,
+            dato: dato,
+          },
+        };
+      }
+      return { ...innsending, vedlegg: null };
+    });
+  };
+
+  const leggTilDatoPåEttersendingVedlegg = (
+    ettersendinger: IEttersendingMedDato[]
+  ): IEttersendingMedDato[] => {
+    return ettersendinger.map((ettersending) => {
+      const ettersendingDato = ettersending.mottattTidspunkt;
+      if (ettersending.ettersending.ettersendingForSøknad) {
+        const dokumentasjonsbehov: IDokumentasjonsbehov[] =
+          ettersending.ettersending.ettersendingForSøknad.dokumentasjonsbehov.flatMap(
+            (behov) => {
+              return {
+                ...behov,
+                opplastedeVedlegg: behov.opplastedeVedlegg.map((vedlegg) => {
+                  return { ...vedlegg, dato: ettersendingDato };
+                }),
+              };
+            }
+          );
+        const innsending: IInnsending[] = leggTilDatoPåInnsendingVedlegg(
+          ettersending.ettersending.ettersendingForSøknad.innsending,
+          ettersendingDato
+        );
+        return {
+          ...ettersending,
+          ettersending: {
+            ...ettersending.ettersending,
+            ettersendingForSøknad: {
+              ...ettersending.ettersending.ettersendingForSøknad,
+              dokumentasjonsbehov: dokumentasjonsbehov,
+              innsending: innsending,
+            },
+          },
+        };
+      } else if (ettersending.ettersending.ettersendingUtenSøknad) {
+        const innsending: IInnsending[] = leggTilDatoPåInnsendingVedlegg(
+          ettersending.ettersending.ettersendingUtenSøknad.innsending,
+          ettersendingDato
+        );
+        return {
+          ...ettersending,
+          ettersending: {
+            ...ettersending.ettersending,
+            ettersendingUtenSøknad: {
+              ...ettersending.ettersending.ettersendingUtenSøknad,
+              innsending: innsending,
+            },
+          },
+        };
+      }
+      return ettersending;
+    });
+  };
+
+  const leggTilDatoPåEttersendingUtenSøknadVedlegg = (
+    ettersendinger: IEttersendingMedDato[]
+  ): IVedlegg[] => {
+    return ettersendinger
+      .filter(
+        (ettersendingMedDato) =>
+          ettersendingMedDato.ettersending.ettersendingUtenSøknad !== null
+      )
+      .flatMap((ettersendingMedDato) => {
+        const dato = ettersendingMedDato.mottattTidspunkt;
+        return ettersendingMedDato.ettersending
+          .ettersendingUtenSøknad!.innsending.filter(
+            (innsending) => innsending.vedlegg !== null
+          )
+          .flatMap((innsending) => {
+            return { ...innsending.vedlegg!, dato: dato };
+          });
+      });
+  };
+
+  const slåSammenSøknadOgEttersendinger = (
+    søknad: ISøknadsbehov,
+    ettersendinger: IEttersendingMedDato[],
+    søknadDato: string
+  ): ISøknadMedEttersendinger => {
+    const ettersendingForSøknad = ettersendinger.filter(
+      (ettersendingMedDato) =>
+        ettersendingMedDato.ettersending.ettersendingForSøknad &&
+        ettersendingMedDato.ettersending.ettersendingForSøknad.søknadId ===
+          søknad.søknadId
+    );
+    const ettersendingDokumentasjonsbehov = ettersendingForSøknad.flatMap(
+      (ettersendingMedDato) =>
+        ettersendingMedDato.ettersending.ettersendingForSøknad!
+          .dokumentasjonsbehov
+    );
+    const ettersendingInnsending = ettersendingForSøknad.flatMap(
+      (ettersendingMedDato) =>
+        ettersendingMedDato.ettersending.ettersendingForSøknad!.innsending
+    );
+    const dokumentasjonsbehov =
+      søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
+        const ettersendingBehov = ettersendingDokumentasjonsbehov.filter(
+          (ettersendingBehov) => ettersendingBehov.id === behov.id
+        );
+        const ettersendingBehovVedlegg = ettersendingBehov.flatMap(
+          (behov) => behov.opplastedeVedlegg
+        );
+        const ettersenidngHarSendtInnTidligere = ettersendingBehov.some(
+          (behov) => behov.harSendtInn
+        );
+        const søknadVedleggMedDato = behov.opplastedeVedlegg.map((vedlegg) => {
+          return { ...vedlegg, dato: søknadDato };
+        });
+
+        if (ettersendingBehov.length > 0) {
+          return {
+            ...behov,
+            harSendtInn: behov.harSendtInn || ettersenidngHarSendtInnTidligere,
+            opplastedeVedlegg: [
+              ...søknadVedleggMedDato,
+              ...ettersendingBehovVedlegg,
+            ],
+            innsending: [],
+          };
+        }
+        return { ...behov, opplastedeVedlegg: søknadVedleggMedDato };
+      });
+
+    return {
+      ...søknad,
+      dokumentasjonsbehov: dokumentasjonsbehov,
+      innsending: ettersendingInnsending,
+    };
+  };
+
+  const hentOgSettSøknaderOgEttersendinger = async () => {
+    const søknadsliste = await hentDokumentasjonsbehov();
+    const ettersendinger = await hentEttersendinger();
+
+    const søknaderMedEttersendinger: ISøknadMedEttersendinger[] =
+      søknadsliste.map((søknad) => {
+        const søknadDato = søknad.søknadDato;
+        const ettersendingerMedVedleggDato =
+          leggTilDatoPåEttersendingVedlegg(ettersendinger);
+        return slåSammenSøknadOgEttersendinger(
+          søknad,
+          ettersendingerMedVedleggDato,
+          søknadDato
+        );
+      });
+
+    const innsendingVedleggSendtInn: IVedlegg[] =
+      leggTilDatoPåEttersendingUtenSøknadVedlegg(ettersendinger);
+
+    settSøknaderMedEttersendinger(søknaderMedEttersendinger);
+    settInnsendingVedleggSendtInn(innsendingVedleggSendtInn);
+    settLasterverdi(false);
+  };
 
   const sendEttersendingUtenSøknad = async () => {
     if (!senderEttersending && ettersendingUtenSøknad.innsending[0].vedlegg) {
