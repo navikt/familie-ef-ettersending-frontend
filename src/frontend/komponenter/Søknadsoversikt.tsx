@@ -16,7 +16,6 @@ import {
   IVedlegg,
   IEttersendingTilInnsending,
   ISøknadMedEttersendinger,
-  IEttersendingMedDato,
   IInnsending,
 } from '../typer/ettersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -177,11 +176,16 @@ const Søknadsoversikt: React.FC = () => {
           (ettersendingMedDato) =>
             ettersendingMedDato.ettersending.ettersendingUtenSøknad !== null
         )
-        .flatMap((ettersendingMedDato) =>
-          ettersendingMedDato.ettersending.ettersendingUtenSøknad!.innsending.flatMap(
-            (innsending) => innsending.vedlegg!
-          )
-        );
+        .flatMap((ettersendingMedDato) => {
+          const dato = ettersendingMedDato.mottattTidspunkt;
+          return ettersendingMedDato.ettersending
+            .ettersendingUtenSøknad!.innsending.filter(
+              (innsending) => innsending.vedlegg !== null
+            )
+            .flatMap((innsending) => {
+              return { ...innsending.vedlegg!, dato: dato };
+            });
+        });
 
       settSøknaderMedEttersendinger(søknaderMedEttersendinger);
       settInnsendingVedleggSendtInn(innsendingVedleggSendtInn);
