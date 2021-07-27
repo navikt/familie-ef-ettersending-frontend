@@ -25,6 +25,11 @@ const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
 `;
 
+const StyledHjelpeknapp = styled(Hjelpetekst)`
+  padding-bottom: 6px;
+  padding-left: 6px;
+`;
+
 type VedleggsopplasterProps = { ettersendingType: EttersendingType } & (
   | {
       ettersendingType: EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV;
@@ -239,15 +244,15 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
 
   return (
     <div className="filopplaster-wrapper">
-      <p>
-        Nye filer:{' '}
-        {props.ettersendingType ===
-        EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV ? null : (
-          <Hjelpetekst>
+      <div style={{ display: 'flex' }}>
+        Nye filer:
+        {props.ettersendingType !=
+          EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV && (
+          <StyledHjelpeknapp>
             Her kan du maksimalt laste opp én fil per innsending.
-          </Hjelpetekst>
+          </StyledHjelpeknapp>
         )}
-      </p>
+      </div>
 
       {laster ? (
         <NavFrontendSpinner />
