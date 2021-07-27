@@ -6,6 +6,7 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Modal from 'nav-frontend-modal';
+import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import {
   IVedlegg,
   IEttersendingUtenSøknad,
@@ -222,7 +223,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
     ) {
       console.log('for mange filer');
       feilmeldingsliste.push(
-        'I dette feltet kan du maksimalt laste opp en fil'
+        'I dette feltet kan du maksimalt laste opp én fil'
       );
       settFeilmeldinger(feilmeldingsliste);
       settÅpenModal(true);
@@ -245,6 +246,13 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
 
   return (
     <div className="filopplaster-wrapper">
+      {props.ettersendingType ===
+      EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV ? null : (
+        <Hjelpetekst>
+          {' '}
+          Her kan du maksimalt laste opp én fil per innsending.
+        </Hjelpetekst>
+      )}
       <p>Nye filer:</p>
       {laster ? (
         <NavFrontendSpinner />
