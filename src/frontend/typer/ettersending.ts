@@ -52,7 +52,7 @@ export interface IEttersending {
 }
 
 export interface IEttersendingMedDato {
-  ettersending: IEttersending;
+  ettersendingDto: IEttersending;
   mottattTidspunkt: string;
 }
 

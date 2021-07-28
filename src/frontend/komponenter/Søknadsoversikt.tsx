@@ -79,9 +79,9 @@ const Søknadsoversikt: React.FC = () => {
   ): IEttersendingMedDato[] => {
     return ettersendinger.map((ettersending) => {
       const ettersendingDato = ettersending.mottattTidspunkt;
-      if (ettersending.ettersending.ettersendingForSøknad) {
+      if (ettersending.ettersendingDto.ettersendingForSøknad) {
         const dokumentasjonsbehov: IDokumentasjonsbehov[] =
-          ettersending.ettersending.ettersendingForSøknad.dokumentasjonsbehov.flatMap(
+          ettersending.ettersendingDto.ettersendingForSøknad.dokumentasjonsbehov.flatMap(
             (behov) => {
               return {
                 ...behov,
@@ -92,31 +92,31 @@ const Søknadsoversikt: React.FC = () => {
             }
           );
         const innsending: IInnsending[] = leggTilDatoPåInnsendingVedlegg(
-          ettersending.ettersending.ettersendingForSøknad.innsending,
+          ettersending.ettersendingDto.ettersendingForSøknad.innsending,
           ettersendingDato
         );
         return {
           ...ettersending,
           ettersending: {
-            ...ettersending.ettersending,
+            ...ettersending.ettersendingDto,
             ettersendingForSøknad: {
-              ...ettersending.ettersending.ettersendingForSøknad,
+              ...ettersending.ettersendingDto.ettersendingForSøknad,
               dokumentasjonsbehov: dokumentasjonsbehov,
               innsending: innsending,
             },
           },
         };
-      } else if (ettersending.ettersending.ettersendingUtenSøknad) {
+      } else if (ettersending.ettersendingDto.ettersendingUtenSøknad) {
         const innsending: IInnsending[] = leggTilDatoPåInnsendingVedlegg(
-          ettersending.ettersending.ettersendingUtenSøknad.innsending,
+          ettersending.ettersendingDto.ettersendingUtenSøknad.innsending,
           ettersendingDato
         );
         return {
           ...ettersending,
           ettersending: {
-            ...ettersending.ettersending,
+            ...ettersending.ettersendingDto,
             ettersendingUtenSøknad: {
-              ...ettersending.ettersending.ettersendingUtenSøknad,
+              ...ettersending.ettersendingDto.ettersendingUtenSøknad,
               innsending: innsending,
             },
           },
@@ -132,11 +132,11 @@ const Søknadsoversikt: React.FC = () => {
     return ettersendinger
       .filter(
         (ettersendingMedDato) =>
-          ettersendingMedDato.ettersending.ettersendingUtenSøknad !== null
+          ettersendingMedDato.ettersendingDto.ettersendingUtenSøknad !== null
       )
       .flatMap((ettersendingMedDato) => {
         const dato = ettersendingMedDato.mottattTidspunkt;
-        return ettersendingMedDato.ettersending
+        return ettersendingMedDato.ettersendingDto
           .ettersendingUtenSøknad!.innsending.filter(
             (innsending) => innsending.vedlegg !== null
           )
@@ -153,18 +153,18 @@ const Søknadsoversikt: React.FC = () => {
   ): ISøknadMedEttersendinger => {
     const ettersendingForSøknad = ettersendinger.filter(
       (ettersendingMedDato) =>
-        ettersendingMedDato.ettersending.ettersendingForSøknad &&
-        ettersendingMedDato.ettersending.ettersendingForSøknad.søknadId ===
+        ettersendingMedDato.ettersendingDto.ettersendingForSøknad &&
+        ettersendingMedDato.ettersendingDto.ettersendingForSøknad.søknadId ===
           søknad.søknadId
     );
     const ettersendingDokumentasjonsbehov = ettersendingForSøknad.flatMap(
       (ettersendingMedDato) =>
-        ettersendingMedDato.ettersending.ettersendingForSøknad!
+        ettersendingMedDato.ettersendingDto.ettersendingForSøknad!
           .dokumentasjonsbehov
     );
     const ettersendingInnsending = ettersendingForSøknad.flatMap(
       (ettersendingMedDato) =>
-        ettersendingMedDato.ettersending.ettersendingForSøknad!.innsending
+        ettersendingMedDato.ettersendingDto.ettersendingForSøknad!.innsending
     );
     const dokumentasjonsbehov =
       søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
