@@ -10,9 +10,18 @@ export interface ISøknadsbehov {
   søknadId: string;
 }
 
+export interface ISøknadMedEttersendinger {
+  dokumentasjonsbehov: IDokumentasjonsbehov[];
+  søknadDato: any;
+  stønadType: string;
+  søknadId: string;
+  innsending: IInnsending[];
+}
+
 export interface IVedlegg {
   id: string;
   navn: string;
+  dato?: string;
 }
 
 export interface IInnsending {
@@ -40,6 +49,11 @@ export interface IEttersending {
   fnr: string;
   ettersendingForSøknad: IEttersendingForSøknad | null;
   ettersendingUtenSøknad: IEttersendingUtenSøknad | null;
+}
+
+export interface IEttersendingMedDato {
+  ettersending: IEttersending;
+  mottattTidspunkt: string;
 }
 
 export interface IEttersendingTilInnsending {
