@@ -56,7 +56,7 @@ const Søknadsoversikt: React.FC = () => {
     if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
   }, [context.søker]);
 
-  const leggTilDatoPåInnsendingVedlegg = (
+  const leggTilDataPåInnsendingVedlegg = (
     innsendinger: IInnsending[],
     dato: string
   ): IInnsending[] => {
@@ -67,6 +67,8 @@ const Søknadsoversikt: React.FC = () => {
           vedlegg: {
             ...innsending.vedlegg,
             dato: dato,
+            beskrivelse: innsending.beskrivelse,
+            dokumenttype: innsending.dokumenttype,
           },
         };
       }
@@ -91,7 +93,7 @@ const Søknadsoversikt: React.FC = () => {
               };
             }
           );
-        const innsending: IInnsending[] = leggTilDatoPåInnsendingVedlegg(
+        const innsending: IInnsending[] = leggTilDataPåInnsendingVedlegg(
           ettersending.ettersendingDto.ettersendingForSøknad.innsending,
           ettersendingDato
         );
@@ -107,7 +109,7 @@ const Søknadsoversikt: React.FC = () => {
           },
         };
       } else if (ettersending.ettersendingDto.ettersendingUtenSøknad) {
-        const innsending: IInnsending[] = leggTilDatoPåInnsendingVedlegg(
+        const innsending: IInnsending[] = leggTilDataPåInnsendingVedlegg(
           ettersending.ettersendingDto.ettersendingUtenSøknad.innsending,
           ettersendingDato
         );
@@ -126,7 +128,7 @@ const Søknadsoversikt: React.FC = () => {
     });
   };
 
-  const leggTilDatoPåEttersendingUtenSøknadVedlegg = (
+  const leggTilDataPåEttersendingUtenSøknadVedlegg = (
     ettersendinger: IEttersendingMedDato[]
   ): IVedlegg[] => {
     return ettersendinger
@@ -136,12 +138,21 @@ const Søknadsoversikt: React.FC = () => {
       )
       .flatMap((ettersendingMedDato) => {
         const dato = ettersendingMedDato.mottattTidspunkt;
+        const stønadstype =
+          ettersendingMedDato.ettersendingDto.ettersendingUtenSøknad!
+            .stønadstype;
         return ettersendingMedDato.ettersendingDto
           .ettersendingUtenSøknad!.innsending.filter(
             (innsending) => innsending.vedlegg !== null
           )
           .flatMap((innsending) => {
-            return { ...innsending.vedlegg!, dato: dato };
+            return {
+              ...innsending.vedlegg!,
+              dato: dato,
+              stønadstype: stønadstype,
+              beskrivelse: innsending.beskrivelse,
+              dokumenttype: innsending.dokumenttype,
+            };
           });
       });
   };
@@ -219,7 +230,7 @@ const Søknadsoversikt: React.FC = () => {
       });
 
     const innsendingVedleggSendtInn: IVedlegg[] =
-      leggTilDatoPåEttersendingUtenSøknadVedlegg(ettersendinger);
+      leggTilDataPåEttersendingUtenSøknadVedlegg(ettersendinger);
 
     settSøknaderMedEttersendinger(søknaderMedEttersendinger);
     settInnsendingVedleggSendtInn(innsendingVedleggSendtInn);
@@ -245,7 +256,13 @@ const Søknadsoversikt: React.FC = () => {
         await sendEttersending(ettersending);
         settInnsendingVedleggSendtInn([
           ...innsendingVedleggSendtInn,
-          ettersendingUtenSøknad.innsending[0].vedlegg,
+          {
+            ...ettersendingUtenSøknad.innsending[0].vedlegg,
+            dato: new Date().toString(),
+            stønadstype: ettersendingUtenSøknad.stønadstype,
+            dokumenttype: ettersendingUtenSøknad.innsending[0].dokumenttype,
+            beskrivelse: ettersendingUtenSøknad.innsending[0].beskrivelse,
+          },
         ]);
         settEttersendingUtenSøknad(tomEttersendingUtenSøknad);
         settAlertStripeMelding(alertMelding.SENDT_INN);
