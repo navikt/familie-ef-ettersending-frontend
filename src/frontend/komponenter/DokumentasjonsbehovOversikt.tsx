@@ -123,7 +123,12 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
         innsending.vedlegg &&
           settInnsendingVedleggSendtInn([
             ...innsendingVedleggSendtInn,
-            innsending.vedlegg,
+            {
+              ...innsending.vedlegg,
+              dato: new Date().toString(),
+              beskrivelse: innsending.beskrivelse,
+              dokumenttype: innsending.dokumenttype,
+            },
           ]);
         settInnsending(tomInnsending);
       } catch {

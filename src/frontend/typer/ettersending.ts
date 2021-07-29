@@ -22,6 +22,9 @@ export interface IVedlegg {
   id: string;
   navn: string;
   dato?: string;
+  beskrivelse?: string;
+  dokumenttype?: string;
+  stønadstype?: string;
 }
 
 export interface IInnsending {
