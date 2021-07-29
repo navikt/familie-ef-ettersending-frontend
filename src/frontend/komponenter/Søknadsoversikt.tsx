@@ -97,7 +97,7 @@ const Søknadsoversikt: React.FC = () => {
         );
         return {
           ...ettersending,
-          ettersending: {
+          ettersendingDto: {
             ...ettersending.ettersendingDto,
             ettersendingForSøknad: {
               ...ettersending.ettersendingDto.ettersendingForSøknad,
@@ -113,7 +113,7 @@ const Søknadsoversikt: React.FC = () => {
         );
         return {
           ...ettersending,
-          ettersending: {
+          ettersendingDto: {
             ...ettersending.ettersendingDto,
             ettersendingUtenSøknad: {
               ...ettersending.ettersendingDto.ettersendingUtenSøknad,
