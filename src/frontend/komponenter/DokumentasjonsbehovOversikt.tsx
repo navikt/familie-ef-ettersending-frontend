@@ -104,6 +104,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
 
       const ettersendingsdata: IEttersending = {
         fnr: context.søker!.fnr,
+        stønadType: søknad.stønadType,
         ettersendingUtenSøknad: null,
         ettersendingForSøknad: ettersendingForSøknad,
       };

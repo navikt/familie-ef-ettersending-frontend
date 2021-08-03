@@ -2,18 +2,19 @@ import {
   IDokumentasjonsbehov,
   IDokumentasjonsbehovWrapper,
 } from './dokumentasjonsbehov';
+import { StønadType } from './stønad';
 
 export interface ISøknadsbehov {
   dokumentasjonsbehov: IDokumentasjonsbehovWrapper;
   søknadDato: any;
-  stønadType: string;
+  stønadType: StønadType;
   søknadId: string;
 }
 
 export interface ISøknadMedEttersendinger {
   dokumentasjonsbehov: IDokumentasjonsbehov[];
   søknadDato: any;
-  stønadType: string;
+  stønadType: StønadType;
   søknadId: string;
   innsending: IInnsending[];
 }
@@ -34,12 +35,6 @@ export interface IInnsending {
 }
 
 export interface IEttersendingUtenSøknad {
-  stønadstype: string;
-  innsending: IInnsending[];
-}
-
-export interface IEttersendingUtenSøknadTilInnsending {
-  stønadstype: string | null;
   innsending: IInnsending[];
 }
 export interface IEttersendingForSøknad {
@@ -50,6 +45,7 @@ export interface IEttersendingForSøknad {
 
 export interface IEttersending {
   fnr: string;
+  stønadType: StønadType;
   ettersendingForSøknad: IEttersendingForSøknad | null;
   ettersendingUtenSøknad: IEttersendingUtenSøknad | null;
 }
@@ -59,14 +55,7 @@ export interface IEttersendingMedDato {
   mottattTidspunkt: string;
 }
 
-export interface IEttersendingTilInnsending {
-  fnr: string;
-  ettersendingForSøknad: IEttersendingForSøknad | null;
-  ettersendingUtenSøknad: IEttersendingUtenSøknadTilInnsending | null;
-}
-
 export const tomEttersendingUtenSøknad: IEttersendingUtenSøknad = {
-  stønadstype: '',
   innsending: [
     {
       beskrivelse: '',

@@ -13,17 +13,18 @@ import {
   IEttersendingUtenSøknad,
   tomEttersendingUtenSøknad,
   IVedlegg,
-  IEttersendingTilInnsending,
   ISøknadMedEttersendinger,
   IInnsending,
   IEttersendingMedDato,
   ISøknadsbehov,
+  IEttersending,
 } from '../typer/ettersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import ÅpenEttersendingUtenSøknad from './ÅpenEttersendingUtenSøknad';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
+import { StønadType } from '../typer/stønad';
 
 const SoknadContainer = styled.div`
   margin-bottom: 5rem;
@@ -42,6 +43,8 @@ const Søknadsoversikt: React.FC = () => {
   >([]);
   const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
     useState<IEttersendingUtenSøknad>(tomEttersendingUtenSøknad);
+  const [stønadType, settStønadType] = useState<StønadType | undefined>();
+
   const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
     alertMelding.TOM
@@ -138,9 +141,7 @@ const Søknadsoversikt: React.FC = () => {
       )
       .flatMap((ettersendingMedDato) => {
         const dato = ettersendingMedDato.mottattTidspunkt;
-        const stønadstype =
-          ettersendingMedDato.ettersendingDto.ettersendingUtenSøknad!
-            .stønadstype;
+        const stønadstype = ettersendingMedDato.ettersendingDto.stønadType;
         return ettersendingMedDato.ettersendingDto
           .ettersendingUtenSøknad!.innsending.filter(
             (innsending) => innsending.vedlegg !== null
@@ -238,18 +239,19 @@ const Søknadsoversikt: React.FC = () => {
   };
 
   const sendEttersendingUtenSøknad = async () => {
-    if (!senderEttersending && ettersendingUtenSøknad.innsending[0].vedlegg) {
+    if (
+      !senderEttersending &&
+      ettersendingUtenSøknad.innsending[0].vedlegg &&
+      stønadType
+    ) {
       settSenderEttersending(true);
 
-      let ettersending: IEttersendingTilInnsending = {
+      const ettersending: IEttersending = {
         fnr: context.søker!.fnr,
+        stønadType,
         ettersendingUtenSøknad: ettersendingUtenSøknad,
         ettersendingForSøknad: null,
       };
-
-      if (ettersendingUtenSøknad.stønadstype === '') {
-        ettersending = { ...ettersending, ettersendingUtenSøknad: null };
-      }
 
       settAlertStripeMelding(alertMelding.TOM);
       try {
@@ -259,7 +261,7 @@ const Søknadsoversikt: React.FC = () => {
           {
             ...ettersendingUtenSøknad.innsending[0].vedlegg,
             dato: new Date().toString(),
-            stønadstype: ettersendingUtenSøknad.stønadstype,
+            stønadstype: ettersending.stønadType,
             dokumenttype: ettersendingUtenSøknad.innsending[0].dokumenttype,
             beskrivelse: ettersendingUtenSøknad.innsending[0].beskrivelse,
           },
@@ -283,6 +285,8 @@ const Søknadsoversikt: React.FC = () => {
           ettersendingUtenSøknad={ettersendingUtenSøknad}
           settEttersendingUtenSøknad={settEttersendingUtenSøknad}
           tidligereOpplastedeVedlegg={innsendingVedleggSendtInn}
+          stønadType={stønadType}
+          settStønadType={settStønadType}
         />
         <Hovedknapp
           spinner={senderEttersending}
