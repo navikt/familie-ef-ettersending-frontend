@@ -2,6 +2,7 @@ import {
   IDokumentasjonsbehov,
   IDokumentasjonsbehovWrapper,
 } from './dokumentasjonsbehov';
+import { StønadType } from './stønad';
 
 export interface ISøknadsbehov {
   dokumentasjonsbehov: IDokumentasjonsbehovWrapper;
@@ -50,6 +51,7 @@ export interface IEttersendingForSøknad {
 
 export interface IEttersending {
   fnr: string;
+  stønadType: StønadType;
   ettersendingForSøknad: IEttersendingForSøknad | null;
   ettersendingUtenSøknad: IEttersendingUtenSøknad | null;
 }
@@ -61,6 +63,7 @@ export interface IEttersendingMedDato {
 
 export interface IEttersendingTilInnsending {
   fnr: string;
+  stønadType: StønadType;
   ettersendingForSøknad: IEttersendingForSøknad | null;
   ettersendingUtenSøknad: IEttersendingUtenSøknadTilInnsending | null;
 }

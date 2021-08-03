@@ -4,8 +4,8 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
 import {
-  IEttersending,
   IEttersendingForSøknad,
+  IEttersendingTilInnsending,
   IInnsending,
   ISøknadMedEttersendinger,
   IVedlegg,
@@ -16,6 +16,7 @@ import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import ÅpenEttersendingForSøknad from './ÅpenEttersendingForSøknad';
+import { StønadType } from '../typer/stønad';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
@@ -102,8 +103,9 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
         innsending: innsending.vedlegg ? [innsending] : [],
       };
 
-      const ettersendingsdata: IEttersending = {
+      const ettersendingsdata: IEttersendingTilInnsending = {
         fnr: context.søker!.fnr,
+        stønadType: StønadType.OVERGANGSSTØNAD,
         ettersendingUtenSøknad: null,
         ettersendingForSøknad: ettersendingForSøknad,
       };
