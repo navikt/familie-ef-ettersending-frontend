@@ -32,12 +32,16 @@ interface IProps {
   ettersendingUtenSøknad: IEttersendingUtenSøknad;
   settEttersendingUtenSøknad: Dispatch<SetStateAction<IEttersendingUtenSøknad>>;
   tidligereOpplastedeVedlegg: IVedlegg[];
+  stønadType?: StønadType;
+  settStønadType: Dispatch<SetStateAction<StønadType | undefined>>;
 }
 
 const ÅpenEttersendingUtenSøknad: React.FC<IProps> = ({
   ettersendingUtenSøknad,
   settEttersendingUtenSøknad,
   tidligereOpplastedeVedlegg,
+  stønadType,
+  settStønadType,
 }: IProps) => {
   const oppdaterBeskrivelse = (beskrivelse: string) => {
     settEttersendingUtenSøknad({
@@ -63,11 +67,8 @@ const ÅpenEttersendingUtenSøknad: React.FC<IProps> = ({
     });
   };
 
-  const oppdaterStønadstype = (stønadstype: string) => {
-    settEttersendingUtenSøknad({
-      ...ettersendingUtenSøknad,
-      stønadstype: stønadstype,
-    });
+  const oppdaterStønadstype = (stønadType: string) => {
+    settStønadType(stønadType as StønadType);
   };
 
   return (
@@ -92,7 +93,7 @@ const ÅpenEttersendingUtenSøknad: React.FC<IProps> = ({
       <StyledSelect
         label="Hvilken stønadstype gjelder innsendingen for?"
         onChange={(event) => oppdaterStønadstype(event.target.value)}
-        value={ettersendingUtenSøknad.stønadstype}
+        value={stønadType}
       >
         <option value={undefined}>Velg stønadstype</option>
         {(Object.keys(StønadType) as Array<keyof typeof StønadType>).map(
