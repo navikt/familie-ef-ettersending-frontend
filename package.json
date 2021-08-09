@@ -18,7 +18,7 @@
         "express": "^4.17.1",
         "filopplasting": "^1.1.1",
         "form-data": "^3.0.1",
-        "jsdom": "^16.6.0",
+        "jsdom": "^16.7.0",
         "less": "^4.1.1",
         "lodash.throttle": "^4.1.1",
         "mustache-express": "^1.3.1",
