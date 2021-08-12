@@ -2,7 +2,7 @@ import axios from 'axios';
 import environment from '../backend/environment';
 import {
   IEttersendingMedDato,
-  IEttersendingTilInnsending,
+  IEttersending,
   ISøknadsbehov,
 } from './typer/ettersending';
 import { IPersoninfo } from './typer/søker';
@@ -18,7 +18,7 @@ interface IKvittering {
 }
 
 export const sendEttersending = (
-  ettersendingsdata: IEttersendingTilInnsending
+  ettersendingsdata: IEttersending
 ): Promise<IKvittering> => {
   return axios
     .post(`${environment().apiUrl}/api/ettersending`, ettersendingsdata, {
