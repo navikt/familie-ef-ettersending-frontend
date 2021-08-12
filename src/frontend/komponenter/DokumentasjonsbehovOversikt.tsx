@@ -183,6 +183,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
       <ÅpenEttersendingForSøknad
         settInnsending={settInnsending}
         innsending={innsending}
+        stønadType={søknad.stønadType}
         tidligereOpplastedeVedlegg={innsendingVedleggSendtInn}
       />
       <Hovedknapp

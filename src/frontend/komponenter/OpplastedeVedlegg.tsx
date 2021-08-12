@@ -4,7 +4,7 @@ import vedlegg from '../icons/vedlegg.svg';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { IVedlegg } from '../typer/ettersending';
 import '../stil/Opplastedevedlegg.less';
-import { DokumentType, StønadType } from '../typer/stønad';
+import { dokumentTypeTilTekst, stønadTypeTilTekst } from '../typer/stønad';
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedlegg[];
@@ -15,18 +15,6 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
   vedleggsliste,
   slettVedlegg,
 }: IOpplastedeVedlegg) => {
-  const hentDokumentType = (dokumenttype: string): string => {
-    return Object.keys(DokumentType).includes(dokumenttype)
-      ? DokumentType[dokumenttype as keyof typeof DokumentType]
-      : dokumenttype;
-  };
-
-  const hentStønadsType = (stønadstype: string): string => {
-    return Object.keys(StønadType).includes(stønadstype)
-      ? StønadType[stønadstype as keyof typeof StønadType]
-      : stønadstype;
-  };
-
   return (
     <div className="opplastede-filer">
       {vedleggsliste.map((fil: IVedlegg, index: number) => {
@@ -56,7 +44,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                       <br />
                       <span>
                         <b>Stønadtype: </b>
-                        {hentStønadsType(fil.stønadstype)}
+                        {fil.stønadstype && stønadTypeTilTekst[fil.stønadstype]}
                       </span>
                     </>
                   )}
@@ -65,7 +53,8 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                       <br />
                       <span>
                         <b>Dokumenttype: </b>
-                        {hentDokumentType(fil.dokumenttype)}
+                        {fil.dokumenttype &&
+                          dokumentTypeTilTekst[fil.dokumenttype]}
                       </span>
                     </>
                   )}
