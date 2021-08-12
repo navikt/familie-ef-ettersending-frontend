@@ -267,6 +267,7 @@ const Søknadsoversikt: React.FC = () => {
           },
         ]);
         settEttersendingUtenSøknad(tomEttersendingUtenSøknad);
+        settStønadType(undefined);
         settAlertStripeMelding(alertMelding.SENDT_INN);
       } catch {
         settAlertStripeMelding(alertMelding.FEIL);

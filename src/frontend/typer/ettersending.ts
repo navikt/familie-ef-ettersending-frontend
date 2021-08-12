@@ -2,7 +2,7 @@ import {
   IDokumentasjonsbehov,
   IDokumentasjonsbehovWrapper,
 } from './dokumentasjonsbehov';
-import { StønadType } from './stønad';
+import { DokumentType, StønadType } from './stønad';
 
 export interface ISøknadsbehov {
   dokumentasjonsbehov: IDokumentasjonsbehovWrapper;
@@ -24,13 +24,13 @@ export interface IVedlegg {
   navn: string;
   dato?: string;
   beskrivelse?: string;
-  dokumenttype?: string;
-  stønadstype?: string;
+  dokumenttype?: DokumentType;
+  stønadstype?: StønadType;
 }
 
 export interface IInnsending {
   beskrivelse: string;
-  dokumenttype: string;
+  dokumenttype?: DokumentType;
   vedlegg: IVedlegg | null;
 }
 
@@ -59,7 +59,7 @@ export const tomEttersendingUtenSøknad: IEttersendingUtenSøknad = {
   innsending: [
     {
       beskrivelse: '',
-      dokumenttype: '',
+      dokumenttype: undefined,
       vedlegg: null,
     },
   ],
@@ -73,7 +73,7 @@ export const tomEttersendingForSøknad: IEttersendingForSøknad = {
 
 export const tomInnsending: IInnsending = {
   beskrivelse: '',
-  dokumenttype: '',
+  dokumenttype: undefined,
   vedlegg: null,
 };
 

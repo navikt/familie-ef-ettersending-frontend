@@ -4,7 +4,12 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { Select, Textarea } from 'nav-frontend-skjema';
 import styled from 'styled-components/macro';
-import { DokumentType } from '../typer/stønad';
+import {
+  DokumentType,
+  dokumenttyperForStønad,
+  dokumentTypeTilTekst,
+  StønadType,
+} from '../typer/stønad';
 import { IInnsending, EttersendingType, IVedlegg } from '../typer/ettersending';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 
@@ -28,12 +33,14 @@ interface IProps {
   innsending: IInnsending;
   settInnsending: Dispatch<SetStateAction<IInnsending>>;
   tidligereOpplastedeVedlegg: IVedlegg[];
+  stønadType: StønadType;
 }
 
 const ÅpenEttersendingForSøknad: React.FC<IProps> = ({
   innsending,
   settInnsending,
   tidligereOpplastedeVedlegg,
+  stønadType,
 }: IProps) => {
   const oppdaterBeskrivelse = (beskrivelse: string) => {
     settInnsending({
@@ -42,7 +49,7 @@ const ÅpenEttersendingForSøknad: React.FC<IProps> = ({
     });
   };
 
-  const oppdaterDokumenttype = (dokumenttype: string) => {
+  const oppdaterDokumenttype = (dokumenttype: DokumentType) => {
     settInnsending({
       ...innsending,
       dokumenttype: dokumenttype,
@@ -71,18 +78,17 @@ const ÅpenEttersendingForSøknad: React.FC<IProps> = ({
 
       <StyledSelect
         label="Hvilken dokumenttype gjelder innsendingen for?"
-        onChange={(event) => oppdaterDokumenttype(event.target.value)}
-        value={innsending.dokumenttype}
+        onChange={(event) =>
+          oppdaterDokumenttype(event.target.value as DokumentType)
+        }
+        value={innsending.dokumenttype || ''}
       >
         <option value={undefined}>Velg dokumenttype</option>
-        {(Object.keys(DokumentType) as Array<keyof typeof DokumentType>).map(
-          (dokumenttype) => (
-            <option key={dokumenttype} value={dokumenttype}>
-              {DokumentType[dokumenttype]}
-            </option>
-          )
-        )}
-        <option value="Annet">Annet</option>
+        {dokumenttyperForStønad(stønadType).map((dokumenttype) => (
+          <option key={dokumenttype} value={dokumenttype}>
+            {dokumentTypeTilTekst[dokumenttype]}
+          </option>
+        ))}
       </StyledSelect>
 
       <StyledTextarea
