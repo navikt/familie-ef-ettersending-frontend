@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Alertstripe from 'nav-frontend-alertstriper';
-import { Select, Textarea } from 'nav-frontend-skjema';
+import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components/macro';
 import {
   DokumentType,
@@ -15,11 +15,6 @@ import OpplastedeVedlegg from './OpplastedeVedlegg';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
-`;
-
-const StyledTextarea = styled(Textarea)`
-  width: 100%;
-  margin-left: 1px;
 `;
 
 const StyledEkspanderbartpanel = styled(Ekspanderbartpanel)`
@@ -42,17 +37,11 @@ const ÅpenEttersendingForSøknad: React.FC<IProps> = ({
   tidligereOpplastedeVedlegg,
   stønadType,
 }: IProps) => {
-  const oppdaterBeskrivelse = (beskrivelse: string) => {
-    settInnsending({
-      ...innsending,
-      beskrivelse: beskrivelse,
-    });
-  };
-
   const oppdaterDokumenttype = (dokumenttype: DokumentType) => {
     settInnsending({
       ...innsending,
       dokumenttype: dokumenttype,
+      beskrivelse: dokumentTypeTilTekst[dokumenttype],
     });
   };
 
@@ -90,12 +79,6 @@ const ÅpenEttersendingForSøknad: React.FC<IProps> = ({
           </option>
         ))}
       </StyledSelect>
-
-      <StyledTextarea
-        label="Kommentar til ettersendingen"
-        value={innsending.beskrivelse}
-        onChange={(event) => oppdaterBeskrivelse(event.target.value)}
-      />
     </StyledEkspanderbartpanel>
   );
 };
