@@ -64,18 +64,16 @@ const Søknadsoversikt: React.FC = () => {
     dato: string
   ): IInnsending[] => {
     return innsendinger.flatMap((innsending) => {
-      if (innsending.vedlegg) {
+      // TODO: Dupliseres og er vanskelig å lese - trekk ut som egen funksjon
+      const vedleggListe = innsending.vedlegg.map((vedlegg) => {
         return {
-          ...innsending,
-          vedlegg: {
-            ...innsending.vedlegg,
-            dato: dato,
-            beskrivelse: innsending.beskrivelse,
-            dokumenttype: innsending.dokumenttype,
-          },
+          ...vedlegg,
+          dato: dato,
+          beskrivelse: innsending.beskrivelse,
+          dokumenttype: innsending.dokumenttype,
         };
-      }
-      return { ...innsending, vedlegg: null };
+      });
+      return { ...innsending, vedlegg: vedleggListe };
     });
   };
 
@@ -241,7 +239,7 @@ const Søknadsoversikt: React.FC = () => {
   const sendEttersendingUtenSøknad = async () => {
     if (
       !senderEttersending &&
-      ettersendingUtenSøknad.innsending[0].vedlegg &&
+      ettersendingUtenSøknad.innsending[0].vedlegg.length > 0 &&
       stønadType
     ) {
       settSenderEttersending(true);
@@ -256,16 +254,19 @@ const Søknadsoversikt: React.FC = () => {
       settAlertStripeMelding(alertMelding.TOM);
       try {
         await sendEttersending(ettersending);
-        settInnsendingVedleggSendtInn([
-          ...innsendingVedleggSendtInn,
-          {
-            ...ettersendingUtenSøknad.innsending[0].vedlegg,
-            dato: new Date().toString(),
-            stønadstype: ettersending.stønadType,
-            dokumenttype: ettersendingUtenSøknad.innsending[0].dokumenttype,
-            beskrivelse: ettersendingUtenSøknad.innsending[0].beskrivelse,
-          },
-        ]);
+        settInnsendingVedleggSendtInn(
+          innsendingVedleggSendtInn.concat(
+            ettersendingUtenSøknad.innsending[0].vedlegg.map((vedlegg) => {
+              return {
+                ...vedlegg,
+                dato: new Date().toString(),
+                stønadstype: ettersending.stønadType,
+                dokumenttype: ettersendingUtenSøknad.innsending[0].dokumenttype,
+                beskrivelse: ettersendingUtenSøknad.innsending[0].beskrivelse,
+              };
+            })
+          )
+        );
         settEttersendingUtenSøknad(tomEttersendingUtenSøknad);
         settStønadType(undefined);
         settAlertStripeMelding(alertMelding.SENDT_INN);

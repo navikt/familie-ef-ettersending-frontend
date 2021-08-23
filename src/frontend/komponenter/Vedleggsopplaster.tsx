@@ -19,7 +19,6 @@ import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { kjørerLokalt } from '../../shared-utils/miljø';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
@@ -92,7 +91,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
       const { settInnsending, innsending } = props;
       settInnsending({
         ...innsending,
-        vedlegg: vedlegg[0],
+        vedlegg: [...innsending.vedlegg, ...vedlegg],
       });
     } else if (
       props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD
@@ -101,7 +100,13 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
       settEttersendingUtenSøknad({
         ...ettersendingUtenSøknad,
         innsending: [
-          { ...ettersendingUtenSøknad.innsending[0], vedlegg: vedlegg[0] }, //TODO I fremtiden skal vi søtte flere vedlegg per ettersendingUtenSøknad og må dermed fjerne [0]
+          {
+            ...ettersendingUtenSøknad.innsending[0],
+            vedlegg: [
+              ...ettersendingUtenSøknad.innsending[0].vedlegg,
+              ...vedlegg,
+            ],
+          },
         ],
       });
     }
@@ -149,7 +154,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
           {
             beskrivelse: ettersendingUtenSøknad.innsending[0].beskrivelse, //TODO i fremtiden skal vi støtte innsending av flere filer, og må da fjerne [0]
             dokumenttype: ettersendingUtenSøknad.innsending[0].dokumenttype, //TODO i fremtiden skal vi støtte innsending av flere filer, og må da fjerne [0]
-            vedlegg: null,
+            vedlegg: [],
           },
         ],
       });
@@ -171,14 +176,12 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
       EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING
     ) {
       const { innsending } = props;
-      return innsending.vedlegg ? [innsending.vedlegg] : [];
+      return innsending.vedlegg;
     } else if (
       props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD
     ) {
       const { ettersendingUtenSøknad } = props;
-      return ettersendingUtenSøknad.innsending[0].vedlegg
-        ? [ettersendingUtenSøknad.innsending[0].vedlegg]
-        : []; //TODO i fremtiden skal vi støtte innsending av flere filer, og må da fjerne [0]
+      return ettersendingUtenSøknad.innsending[0].vedlegg;
     }
     return [];
   };
@@ -206,7 +209,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
           formData.append('file', fil);
           const respons = await sendVedleggTilMellomlager(formData);
           const vedlegg: IVedlegg = {
-            id: kjørerLokalt() ? '123' : respons,
+            id: respons,
             navn: fil.name,
           };
           vedleggListe.push(vedlegg);
@@ -237,9 +240,6 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    multiple:
-      props.ettersendingType ===
-      EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV,
   });
 
   return (
