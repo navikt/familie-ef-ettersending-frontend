@@ -46,7 +46,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
     IVedlegg[]
   >(
     søknad.innsending
-      ? søknad.innsending.flatMap((innsending) => innsending.vedlegg!)
+      ? søknad.innsending.flatMap((innsending) => innsending.vedlegg)
       : []
   );
 
@@ -72,7 +72,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
 
   const erNyeVedlegg = (): boolean => {
     return (
-      innsending.vedlegg !== null ||
+      innsending.vedlegg.length > 0 ||
       dokumentasjonsbehovTilInnsending
         .map((behov) => behov.opplastedeVedlegg.length)
         .reduce((total, verdi) => total + verdi) > 0
@@ -99,7 +99,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
       const ettersendingForSøknad: IEttersendingForSøknad = {
         søknadId: søknad.søknadId,
         dokumentasjonsbehov: dokumentasjonsbehovTilInnsending,
-        innsending: innsending.vedlegg ? [innsending] : [],
+        innsending: innsending.vedlegg.length > 0 ? [innsending] : [],
       };
 
       const ettersendingsdata: IEttersending = {
@@ -121,16 +121,19 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
             slåSammenDokumentasjonsbehovOgDokumentasjonsbehovTilInnsending()
           )
         );
-        innsending.vedlegg &&
-          settInnsendingVedleggSendtInn([
-            ...innsendingVedleggSendtInn,
-            {
-              ...innsending.vedlegg,
-              dato: new Date().toString(),
-              beskrivelse: innsending.beskrivelse,
-              dokumenttype: innsending.dokumenttype,
-            },
-          ]);
+        innsending.vedlegg.length > 0 &&
+          settInnsendingVedleggSendtInn(
+            innsendingVedleggSendtInn.concat(
+              innsending.vedlegg.map((vedlegg) => {
+                return {
+                  ...vedlegg,
+                  dato: new Date().toString(),
+                  beskrivelse: innsending.beskrivelse,
+                  dokumenttype: innsending.dokumenttype,
+                };
+              })
+            )
+          );
         settInnsending(tomInnsending);
       } catch {
         settAlertStripeMelding(alertMelding.FEIL);
