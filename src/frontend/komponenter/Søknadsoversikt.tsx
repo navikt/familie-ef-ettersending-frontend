@@ -25,7 +25,10 @@ import AlertStripe, { alertMelding } from './AlertStripe';
 import ÅpenEttersendingUtenSøknad from './ÅpenEttersendingUtenSøknad';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import { StønadType } from '../typer/stønad';
-import { formaterIsoDato } from '../utils/formatter';
+import {
+  formaterIsoDato,
+  dagensDatoMedTidspunktStreng,
+} from '../../shared-utils/dato';
 
 const SoknadContainer = styled.div`
   margin-bottom: 5rem;
@@ -146,13 +149,15 @@ const Søknadsoversikt: React.FC = () => {
             (innsending) => innsending.vedlegg !== null
           )
           .flatMap((innsending) => {
-            return {
-              ...innsending.vedlegg!,
-              dato: dato,
-              stønadstype: stønadstype,
-              beskrivelse: innsending.beskrivelse,
-              dokumenttype: innsending.dokumenttype,
-            };
+            return innsending.vedlegg.map((vedlegg) => {
+              return {
+                ...vedlegg,
+                dato: dato,
+                stønadstype: stønadstype,
+                beskrivelse: innsending.beskrivelse,
+                dokumenttype: innsending.dokumenttype,
+              };
+            });
           });
       });
   };
@@ -260,7 +265,7 @@ const Søknadsoversikt: React.FC = () => {
             ettersendingUtenSøknad.innsending[0].vedlegg.map((vedlegg) => {
               return {
                 ...vedlegg,
-                dato: new Date().toString(),
+                dato: dagensDatoMedTidspunktStreng(),
                 stønadstype: ettersending.stønadType,
                 dokumenttype: ettersendingUtenSøknad.innsending[0].dokumenttype,
                 beskrivelse: ettersendingUtenSøknad.innsending[0].beskrivelse,
