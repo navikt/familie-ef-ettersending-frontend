@@ -25,6 +25,7 @@ import AlertStripe, { alertMelding } from './AlertStripe';
 import ÅpenEttersendingUtenSøknad from './ÅpenEttersendingUtenSøknad';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import { StønadType } from '../typer/stønad';
+import { formaterIsoDato } from '../utils/formatter';
 
 const SoknadContainer = styled.div`
   margin-bottom: 5rem;
@@ -303,7 +304,7 @@ const Søknadsoversikt: React.FC = () => {
           <SoknadContainer key={index}>
             <h2>
               Søknad om {søknad.stønadType.toLocaleLowerCase()} sendt inn{' '}
-              {new Date(søknad.søknadDato).toLocaleDateString()}
+              {formaterIsoDato(søknad.søknadDato)}
             </h2>
             <DokumentasjonsbehovOversikt søknad={søknad} />
           </SoknadContainer>
