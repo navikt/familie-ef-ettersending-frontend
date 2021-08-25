@@ -13,15 +13,20 @@ export const stønadTypeTilTekst: Record<StønadType, string> = {
 export const dokumenttyperForStønad = (
   stønadType?: StønadType
 ): DokumentType[] => {
+  const sorterDokumenttyperPåNavn = (a: DokumentType, b: DokumentType) =>
+    dokumentTypeTilTekst[a] > dokumentTypeTilTekst[b] ? 1 : -1;
+
   switch (stønadType) {
     case StønadType.OVERGANGSSTØNAD:
-      return dokumentTyperOvergangsstønad;
+      return dokumentTyperOvergangsstønad.sort(sorterDokumenttyperPåNavn);
     case StønadType.BARNETILSYN:
-      return dokumentTyperBarnetilsyn;
+      return dokumentTyperBarnetilsyn.sort(sorterDokumenttyperPåNavn);
     case StønadType.SKOLEPENGER:
-      return dokumentTyperSkolepenger;
+      return dokumentTyperSkolepenger.sort(sorterDokumenttyperPåNavn);
     default:
-      return Object.keys(DokumentType) as Array<DokumentType>;
+      return (Object.keys(DokumentType) as Array<DokumentType>).sort(
+        sorterDokumenttyperPåNavn
+      );
   }
 };
 

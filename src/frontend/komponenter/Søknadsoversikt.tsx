@@ -24,7 +24,11 @@ import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import ÅpenEttersendingUtenSøknad from './ÅpenEttersendingUtenSøknad';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
-import { StønadType } from '../typer/stønad';
+import { StønadType, DokumentType } from '../typer/stønad';
+import {
+  formaterIsoDato,
+  dagensDatoMedTidspunktStreng,
+} from '../../shared-utils/dato';
 
 const SoknadContainer = styled.div`
   margin-bottom: 5rem;
@@ -145,13 +149,15 @@ const Søknadsoversikt: React.FC = () => {
             (innsending) => innsending.vedlegg !== null
           )
           .flatMap((innsending) => {
-            return {
-              ...innsending.vedlegg!,
-              dato: dato,
-              stønadstype: stønadstype,
-              beskrivelse: innsending.beskrivelse,
-              dokumenttype: innsending.dokumenttype,
-            };
+            return innsending.vedlegg.map((vedlegg) => {
+              return {
+                ...vedlegg,
+                dato: dato,
+                stønadstype: stønadstype,
+                beskrivelse: innsending.beskrivelse,
+                dokumenttype: innsending.dokumenttype,
+              };
+            });
           });
       });
   };
@@ -237,11 +243,25 @@ const Søknadsoversikt: React.FC = () => {
   };
 
   const sendEttersendingUtenSøknad = async () => {
+    settAlertStripeMelding(alertMelding.TOM);
+    if (!(ettersendingUtenSøknad.innsending[0].vedlegg.length > 0)) {
+      settAlertStripeMelding(alertMelding.MANGLER_VEDLEGG);
+      return;
+    }
+    if (!stønadType || !Object.values(StønadType).includes(stønadType)) {
+      settAlertStripeMelding(alertMelding.MANGLER_STØNDASTYPE);
+      return;
+    }
     if (
-      !senderEttersending &&
-      ettersendingUtenSøknad.innsending[0].vedlegg.length > 0 &&
-      stønadType
+      !ettersendingUtenSøknad.innsending[0].dokumenttype ||
+      !Object.values(DokumentType).includes(
+        ettersendingUtenSøknad.innsending[0].dokumenttype
+      )
     ) {
+      settAlertStripeMelding(alertMelding.MANGLER_DOKUMENTTYPE);
+      return;
+    }
+    if (!senderEttersending) {
       settSenderEttersending(true);
 
       const ettersending: IEttersending = {
@@ -259,7 +279,7 @@ const Søknadsoversikt: React.FC = () => {
             ettersendingUtenSøknad.innsending[0].vedlegg.map((vedlegg) => {
               return {
                 ...vedlegg,
-                dato: new Date().toString(),
+                dato: dagensDatoMedTidspunktStreng(),
                 stønadstype: ettersending.stønadType,
                 dokumenttype: ettersendingUtenSøknad.innsending[0].dokumenttype,
                 beskrivelse: ettersendingUtenSøknad.innsending[0].beskrivelse,
@@ -303,7 +323,7 @@ const Søknadsoversikt: React.FC = () => {
           <SoknadContainer key={index}>
             <h2>
               Søknad om {søknad.stønadType.toLocaleLowerCase()} sendt inn{' '}
-              {new Date(søknad.søknadDato).toLocaleDateString()}
+              {formaterIsoDato(søknad.søknadDato)}
             </h2>
             <DokumentasjonsbehovOversikt søknad={søknad} />
           </SoknadContainer>

@@ -16,6 +16,7 @@ import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import ÅpenEttersendingForSøknad from './ÅpenEttersendingForSøknad';
+import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
@@ -57,7 +58,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
       return dokumentasjonsbehovTilInnsending.map((behov, index) => {
         const vedleggTilInnsendingMedDato = behov.opplastedeVedlegg.map(
           (vedlegg) => {
-            return { ...vedlegg, dato: new Date().toString() };
+            return { ...vedlegg, dato: dagensDatoMedTidspunktStreng() };
           }
         );
         return {
@@ -127,7 +128,7 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
               innsending.vedlegg.map((vedlegg) => {
                 return {
                   ...vedlegg,
-                  dato: new Date().toString(),
+                  dato: dagensDatoMedTidspunktStreng(),
                   beskrivelse: innsending.beskrivelse,
                   dokumenttype: innsending.dokumenttype,
                 };

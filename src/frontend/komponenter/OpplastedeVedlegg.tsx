@@ -5,6 +5,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { IVedlegg } from '../typer/ettersending';
 import '../stil/Opplastedevedlegg.less';
 import { dokumentTypeTilTekst, stønadTypeTilTekst } from '../typer/stønad';
+import { formaterIsoDato } from '../../shared-utils/dato';
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedlegg[];
@@ -35,7 +36,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                       <br />
                       <span>
                         <b>Dato: </b>
-                        {new Date(fil.dato).toLocaleDateString()}
+                        {formaterIsoDato(fil.dato)}
                       </span>
                     </>
                   )}
@@ -61,10 +62,6 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                   {fil.beskrivelse && (
                     <>
                       <br />
-                      <span>
-                        <b>Kommentar: </b>
-                        {fil.beskrivelse}
-                      </span>
                     </>
                   )}
                 </Normaltekst>

@@ -289,7 +289,7 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
             alt="Opplastingsikon"
           />
           <Normaltekst className="tekst">
-            {isDragActive ? 'Last opp dokumentasjon' : 'Slipp filen her..'}
+            {isDragActive ? 'Last opp dokumentasjon' : 'Last opp dokumentasjon'}
           </Normaltekst>
         </div>
       </div>
