@@ -30,14 +30,6 @@ export const dokumenttyperForStønad = (
   }
 };
 
-export const sorterDokumenttyperAlfabetisk = (
-  dokumentTyper: DokumentType[]
-) => {
-  return dokumentTyper
-    .map((dokumenttype) => [dokumentTypeTilTekst[dokumenttype], dokumenttype])
-    .sort();
-};
-
 export const dokumentTypeTilTekst: Record<DokumentType, string> = {
   DOKUMENTASJON_IKKE_VILLIG_TIL_ARBEID:
     'Dokumentasjon som beskriver grunnen til at du ikke kan ta ethvert arbeid',
