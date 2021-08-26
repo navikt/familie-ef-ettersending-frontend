@@ -245,11 +245,10 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
   return (
     <div className="filopplaster-wrapper">
       <div style={{ display: 'flex' }}>
-        Nye filer:
         {props.ettersendingType !=
           EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV && (
           <StyledHjelpeknapp>
-            Her kan du maksimalt laste opp én fil per innsending.
+            Her kan du laste opp flere filer per innsending.
           </StyledHjelpeknapp>
         )}
       </div>

@@ -17,6 +17,7 @@ import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import ÅpenEttersendingForSøknad from './ÅpenEttersendingForSøknad';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
+import { DokumentasjonsbehovBoks } from './DokumentasjonsbehovBoks';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
@@ -172,16 +173,30 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
       {dokumentasjonsbehov.length > 0 &&
         dokumentasjonsbehov.map((behov) => {
           return (
-            <Dokumentasjonsbehov
-              key={behov.id}
-              dokumentasjonsbehov={behov}
-              dokumentasjonsbehovTilInnsending={
-                dokumentasjonsbehovTilInnsending
-              }
-              settDokumentasjonsbehovTilInnsending={
-                settDokumentasjonsbehovTilInnsending
-              }
-            />
+            <>
+              <Dokumentasjonsbehov
+                key={behov.id}
+                dokumentasjonsbehov={behov}
+                dokumentasjonsbehovTilInnsending={
+                  dokumentasjonsbehovTilInnsending
+                }
+                settDokumentasjonsbehovTilInnsending={
+                  settDokumentasjonsbehovTilInnsending
+                }
+              />
+              <DokumentasjonsbehovBoks
+                key={behov.id}
+                dokumentasjonsbehov={behov}
+                dokumentasjonsbehovTilInnsending={
+                  dokumentasjonsbehovTilInnsending
+                }
+                settDokumentasjonsbehovTilInnsending={
+                  settDokumentasjonsbehovTilInnsending
+                }
+                stønadstype={søknad.stønadType}
+                søknadsdato={søknad.søknadDato}
+              ></DokumentasjonsbehovBoks>
+            </>
           );
         })}
       <ÅpenEttersendingForSøknad
