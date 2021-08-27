@@ -98,8 +98,8 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
         )}`}</p>
         <StyledLesMerTekst>
           <Lesmerpanel
-            apneTekst={'Hvorfor etterspør vi dette?'}
-            lukkTekst={'Hvorfor etterspør vi dette?'}
+            apneTekst={'Hvorfor etterspør vi dette? '}
+            lukkTekst={'Hvorfor etterspør vi dette? '}
           >
             <Normaltekst>Lorem ipsum dolor sit amet.</Normaltekst>
           </Lesmerpanel>

@@ -1,7 +1,5 @@
-import Dokumentasjonsbehov from './Dokumentasjonsbehov';
 import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { useApp } from '../context/AppContext';
 import {
   IEttersending,
@@ -15,8 +13,8 @@ import { sendEttersending } from '../api-service';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import ÅpenEttersendingForSøknad from './ÅpenEttersendingForSøknad';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
+import { DokumentasjonsbehovBoks } from './DokumentasjonsbehovBoks';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
@@ -26,7 +24,7 @@ interface IProps {
   søknad: ISøknadMedEttersendinger;
 }
 
-export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
+export const DokumentasjonsbehovListe: React.FC<IProps> = ({
   søknad,
 }: IProps) => {
   const [laster, settLasterverdi] = useState(true);
@@ -170,34 +168,26 @@ export const DokumentasjonsbehovOversikt: React.FC<IProps> = ({
   return (
     <>
       {dokumentasjonsbehov.length > 0 &&
-        dokumentasjonsbehov.map((behov) => {
-          return (
-            <>
-              <Dokumentasjonsbehov
-                key={behov.id}
-                dokumentasjonsbehov={behov}
-                dokumentasjonsbehovTilInnsending={
-                  dokumentasjonsbehovTilInnsending
-                }
-                settDokumentasjonsbehovTilInnsending={
-                  settDokumentasjonsbehovTilInnsending
-                }
-              />
-            </>
-          );
-        })}
-      <ÅpenEttersendingForSøknad
-        settInnsending={settInnsending}
-        innsending={innsending}
-        stønadType={søknad.stønadType}
-        tidligereOpplastedeVedlegg={innsendingVedleggSendtInn}
-      />
-      <Hovedknapp
-        spinner={senderEttersendingSpinner}
-        onClick={lagOgSendEttersending}
-      >
-        {senderEttersendingSpinner ? 'Sender...' : 'Send inn'}
-      </Hovedknapp>
+        dokumentasjonsbehov
+          .filter((behov) => behov.opplastedeVedlegg.length === 0)
+          .map((behov) => {
+            return (
+              <>
+                <DokumentasjonsbehovBoks
+                  key={behov.id}
+                  dokumentasjonsbehov={behov}
+                  dokumentasjonsbehovTilInnsending={
+                    dokumentasjonsbehovTilInnsending
+                  }
+                  settDokumentasjonsbehovTilInnsending={
+                    settDokumentasjonsbehovTilInnsending
+                  }
+                  stønadstype={søknad.stønadType}
+                  søknadsdato={søknad.søknadDato}
+                />
+              </>
+            );
+          })}
       <StyledAlertStripe melding={alertStripeMelding} />
     </>
   );

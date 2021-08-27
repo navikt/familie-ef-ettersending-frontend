@@ -32,7 +32,6 @@ const App: React.FC = () => {
             />
           </Veileder>
           <h1>Ettersending av dokumentasjon</h1>
-          <p>Her kan du sende inn manglende dokumentasjon til din søknad</p>
           <Søknadsoversikt />
         </div>
       </div>

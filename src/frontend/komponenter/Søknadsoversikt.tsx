@@ -29,11 +29,15 @@ import {
   formaterIsoDato,
   dagensDatoMedTidspunktStreng,
 } from '../../shared-utils/dato';
+import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
 
 const SoknadContainer = styled.div`
-  margin-bottom: 5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid lightgray;
+  padding-bottom: 0rem;
+`;
+
+const StyledHovedknapp = styled(Hovedknapp)`
+  margin-top: 2rem;
+  margin: 0 auto;
 `;
 
 const StyledAlertStripe = styled(AlertStripe)`
@@ -302,33 +306,14 @@ const Søknadsoversikt: React.FC = () => {
 
   return (
     <>
-      <SoknadContainer>
-        <ÅpenEttersendingUtenSøknad
-          ettersendingUtenSøknad={ettersendingUtenSøknad}
-          settEttersendingUtenSøknad={settEttersendingUtenSøknad}
-          tidligereOpplastedeVedlegg={innsendingVedleggSendtInn}
-          stønadType={stønadType}
-          settStønadType={settStønadType}
-        />
-        <Hovedknapp
-          spinner={senderEttersending}
-          onClick={() => sendEttersendingUtenSøknad()}
-        >
-          {senderEttersending ? 'Sender...' : 'Send inn'}
-        </Hovedknapp>
-        <StyledAlertStripe melding={alertStripeMelding} />
-      </SoknadContainer>
       {søknaderMedEttersendinger.map((søknad, index) => {
         return (
           <SoknadContainer key={index}>
-            <h2>
-              Søknad om {søknad.stønadType.toLocaleLowerCase()} sendt inn{' '}
-              {formaterIsoDato(søknad.søknadDato)}
-            </h2>
-            <DokumentasjonsbehovOversikt søknad={søknad} />
+            <DokumentasjonsbehovListe søknad={søknad} />
           </SoknadContainer>
         );
       })}
+      <StyledHovedknapp>Neste</StyledHovedknapp>
     </>
   );
 };
