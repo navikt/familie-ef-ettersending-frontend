@@ -1,16 +1,14 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { EttersendingType } from '../typer/ettersending';
+import React, { useState } from 'react';
+import { IInnsendingX } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import styled from 'styled-components';
 import { Checkbox } from 'nav-frontend-skjema';
-import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
-import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { formaterIsoDato } from '../../shared-utils/dato';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import { LesMerTekst } from './LesMerTekst';
 
 const StyledPanel = styled(Panel)`
@@ -23,7 +21,9 @@ const StyledCheckbox = styled(Checkbox)`
 `;
 
 const StyledHjelpetekst = styled(Hjelpetekst)`
+  position: relative;
   margin: 1rem 0.5rem;
+  top: 6px;
 `;
 
 const StyledLesMerTekst = styled(LesMerTekst)`
@@ -31,30 +31,22 @@ const StyledLesMerTekst = styled(LesMerTekst)`
 `;
 
 interface Props {
-  dokumentasjonsbehov: IDokumentasjonsbehov;
-  dokumentasjonsbehovTilInnsending: IDokumentasjonsbehov[];
-  settDokumentasjonsbehovTilInnsending: Dispatch<
-    SetStateAction<IDokumentasjonsbehov[]>
-  >;
-  stønadstype: string;
-  søknadsdato: any;
+  innsendingx: IInnsendingX;
+  oppdaterInnsendingx: (innsending: IInnsendingX) => void;
 }
 
 export const DokumentasjonsbehovBoks: React.FC<Props> = ({
-  dokumentasjonsbehov,
-  settDokumentasjonsbehovTilInnsending,
-  dokumentasjonsbehovTilInnsending,
-  stønadstype,
-  søknadsdato,
+  innsendingx,
+  oppdaterInnsendingx,
 }: Props) => {
   const [checked, settCheckboxverdi] = useState<boolean>(
-    dokumentasjonsbehov.harSendtInn
+    innsendingx.søknadsdata.harSendtInnTidligere
   );
 
   const erDokumentasjonSendt = (): boolean => {
     return (
-      dokumentasjonsbehov.harSendtInn ||
-      dokumentasjonsbehov.opplastedeVedlegg.length > 0
+      innsendingx.søknadsdata.harSendtInnTidligere ||
+      innsendingx.vedlegg.length > 0
     );
   };
 
@@ -65,19 +57,13 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
   const oppdaterHarSendtInn = () => {
     const invertedChecked = !checked;
     settCheckboxverdi(invertedChecked);
-    const oppdatertDokumentasjonsbehov = dokumentasjonsbehovTilInnsending.map(
-      (behov) => {
-        if (behov.id == dokumentasjonsbehov.id) {
-          return {
-            ...behov,
-            harSendtInn: invertedChecked,
-          };
-        } else {
-          return behov;
-        }
-      }
-    );
-    settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
+    oppdaterInnsendingx({
+      ...innsendingx,
+      søknadsdata: {
+        ...innsendingx.søknadsdata,
+        harSendtInnTidligere: invertedChecked,
+      },
+    });
   };
 
   return (
@@ -87,15 +73,19 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
           type={erDokumentasjonSendt() ? 'suksess' : 'advarsel'}
           form="inline"
         >
-          <b>{dokumentasjonsbehov.label}</b>
+          <b>{innsendingx.beskrivelse}</b>
         </Alertstripe>
-        <p>
-          <b>Stønadstype: </b>
-          {`${storForbokstav(stønadstype.toLocaleLowerCase())}`}
-        </p>
-        <p>{`Søknad om ${stønadstype.toLocaleLowerCase()} ${formaterIsoDato(
-          søknadsdato
-        )}`}</p>
+        {innsendingx.stønadType && (
+          <>
+            <p>
+              <b>Stønadstype: </b>
+              {`${storForbokstav(innsendingx.stønadType.toLocaleLowerCase())}`}
+            </p>
+            <p>{`Søknad om ${innsendingx.stønadType.toLocaleLowerCase()} ${formaterIsoDato(
+              innsendingx.søknadsdata.søknadDato
+            )}`}</p>
+          </>
+        )}
         <StyledLesMerTekst>
           <Lesmerpanel
             apneTekst={'Hvorfor etterspør vi dette? '}
@@ -104,28 +94,14 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
             <Normaltekst>Lorem ipsum dolor sit amet.</Normaltekst>
           </Lesmerpanel>
         </StyledLesMerTekst>
-        {dokumentasjonsbehov.opplastedeVedlegg.length > 0 && (
-          <>
-            <p>Tidligere opplastede filer:</p>
-            <OpplastedeVedlegg
-              vedleggsliste={dokumentasjonsbehov.opplastedeVedlegg}
-            />
-          </>
-        )}
         <Vedleggsopplaster
-          ettersendingType={
-            EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
-          }
-          dokumentasjonsbehovId={dokumentasjonsbehov.id}
-          dokumentasjonsbehovTilInnsending={dokumentasjonsbehovTilInnsending}
-          settDokumentasjonsbehovTilInnsending={
-            settDokumentasjonsbehovTilInnsending
-          }
+          innsendingx={innsendingx}
+          oppdaterInnsendingx={oppdaterInnsendingx}
         />
-        <Normaltekst>
+        <Undertekst>
           Dersom dokumentet du skal sende inn består av flere filer kan du legge
           til alle filene her.
-        </Normaltekst>
+        </Undertekst>
         <StyledCheckbox
           onChange={() => oppdaterHarSendtInn()}
           checked={checked}

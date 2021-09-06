@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import add from '../icons/add.svg';
-import { IInnsendingX } from '../typer/ettersending';
 
 const StyledKnapp = styled.button`
   margin: 0;
@@ -39,20 +38,28 @@ const StyledKnapp = styled.button`
     border: none;
   }
 `;
-// TODO: Fiks styling (For stort plusstegn)
+
+const StyledImg = styled.img`
+  position: relative;
+  margin-right: 0.5rem;
+`;
 
 interface IProps {
-  leggTilNyBoks: (innsending: IInnsendingX) => void;
+  leggTilNyDokumentasjonsbehovBoks: () => void;
   children: string;
 }
 
-export const LeggTilVedleggKnapp: React.FC<IProps> = ({
-  leggTilNyBoks,
+export const LeggTilInnsending: React.FC<IProps> = ({
+  leggTilNyDokumentasjonsbehovBoks,
   children,
 }: IProps) => {
   return (
-    <StyledKnapp>
-      <img src={add} />
+    <StyledKnapp onClick={leggTilNyDokumentasjonsbehovBoks}>
+      <StyledImg
+        src={add}
+        alt={'plusstegn'}
+        style={{ height: 20, width: 20 }}
+      />
       <span>{children}</span>
     </StyledKnapp>
   );

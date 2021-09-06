@@ -8,6 +8,7 @@
         "@navikt/fnrvalidator": "^1.1.4",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
         "@types/react-collapse": "^5.0.0",
+        "@types/uuid": "^8.3.0",
         "axios": "^0.21.1",
         "babel-polyfill": "^6.26.0",
         "babel-preset-react-app": "^10.0.0",
@@ -51,6 +52,8 @@
         "nav-frontend-skjema-style": "^3.0.1",
         "nav-frontend-spinner": "^3.0.1",
         "nav-frontend-spinner-style": "^1.0.2",
+        "nav-frontend-stegindikator": "^2.0.1",
+        "nav-frontend-stegindikator-style": "^2.0.1",
         "nav-frontend-typografi": "^4.0.1",
         "nav-frontend-typografi-style": "^2.0.1",
         "nav-frontend-veileder": "^3.0.1",
@@ -67,6 +70,7 @@
         "react-router-dom": "^5.2.0",
         "request": "^2.88.2",
         "styled-components": "^5.3.0",
+        "uuid": "^8.3.2",
         "webpack-hot-middleware": "^2.25.0"
     },
     "scripts": {

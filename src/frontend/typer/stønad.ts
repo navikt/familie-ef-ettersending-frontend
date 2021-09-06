@@ -10,6 +10,12 @@ export const stønadTypeTilTekst: Record<StønadType, string> = {
   SKOLEPENGER: 'Skolepenger',
 };
 
+export const stønadsTyper: StønadType[] = [
+  StønadType.OVERGANGSSTØNAD,
+  StønadType.BARNETILSYN,
+  StønadType.SKOLEPENGER,
+];
+
 export const dokumenttyperForStønad = (
   stønadType?: StønadType
 ): DokumentType[] => {

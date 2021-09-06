@@ -7,9 +7,10 @@ import {
   InnloggetStatus,
 } from '../shared-utils/autentisering';
 import Veileder from 'nav-frontend-veileder';
-import Søknadsoversikt from './komponenter/Søknadsoversikt';
 import sjekklisteikon from './icons/sjekklisteikon.svg';
 import styled from 'styled-components';
+import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
+import { Normaltekst } from 'nav-frontend-typografi';
 
 const StyledImg = styled.img`
   height: 100% !important;
@@ -32,7 +33,10 @@ const App: React.FC = () => {
             />
           </Veileder>
           <h1>Ettersending av dokumentasjon</h1>
-          <Søknadsoversikt />
+          <Normaltekst>
+            Her kan du sende inn manglende dokumentasjon til din søknad
+          </Normaltekst>
+          <Ettersendingsoversikt />
         </div>
       </div>
     );

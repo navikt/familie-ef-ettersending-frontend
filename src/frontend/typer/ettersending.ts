@@ -82,3 +82,30 @@ export enum EttersendingType {
   ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV,
   ETTERSENDING_MED_SØKNAD_INNSENDING,
 }
+
+export interface IEttersendingX {
+  innsendinger: IInnsendingX[];
+  fnr: string;
+}
+
+export interface IInnsendingX {
+  id: string; // genenrer UUID ved mapping fra backend til nytt objekt
+  søknadsdata: ISøknadMetadata;
+  dokumenttype?: DokumentType;
+  stønadType?: StønadType;
+  beskrivelse?: string;
+  innsendingDato: any;
+  vedlegg: IVedleggX[];
+}
+
+export interface ISøknadMetadata {
+  søknadId: string;
+  søknadDato: any;
+  dokumentasjonsbehovId: string;
+  harSendtInnTidligere: boolean;
+}
+
+export interface IVedleggX {
+  id: string;
+  navn: string;
+}

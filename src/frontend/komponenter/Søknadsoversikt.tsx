@@ -18,6 +18,7 @@ import {
   IEttersendingMedDato,
   ISøknadsbehov,
   IEttersending,
+  tomInnsending,
 } from '../typer/ettersending';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
@@ -30,6 +31,7 @@ import {
   dagensDatoMedTidspunktStreng,
 } from '../../shared-utils/dato';
 import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
+import { EkstraDokumentBoks } from './EkstraDokumentasjonsbehovBoks';
 
 const SoknadContainer = styled.div`
   padding-bottom: 0rem;
@@ -60,6 +62,14 @@ const Søknadsoversikt: React.FC = () => {
   const [innsendingVedleggSendtInn, settInnsendingVedleggSendtInn] = useState<
     IVedlegg[]
   >([]);
+  const [innsending, settInnsending] = useState<IInnsending>(tomInnsending);
+  // const [innsendingVedleggSendtInn, settInnsendingVedleggSendtInn] = useState<
+  //   IVedlegg[]
+  // >(
+  //   søknad.innsending
+  //     ? søknad.innsending.flatMap((innsending) => innsending.vedlegg)
+  //     : []
+  // );
 
   const context = useApp();
 
@@ -313,6 +323,19 @@ const Søknadsoversikt: React.FC = () => {
           </SoknadContainer>
         );
       })}
+      <ÅpenEttersendingUtenSøknad
+        ettersendingUtenSøknad={ettersendingUtenSøknad}
+        settEttersendingUtenSøknad={settEttersendingUtenSøknad}
+        tidligereOpplastedeVedlegg={innsendingVedleggSendtInn}
+        stønadType={stønadType}
+        settStønadType={settStønadType}
+      />
+      {/*<EkstraDokumentBoks*/}
+      {/*  settInnsending={settInnsending}*/}
+      {/*  innsending={innsending}*/}
+      {/*  stønadType={søknad.stønadType}*/}
+      {/*  tidligereOpplastedeVedlegg={innsendingVedleggSendtInn}*/}
+      {/*></EkstraDokumentBoks>*/}
       <StyledHovedknapp>Neste</StyledHovedknapp>
     </>
   );

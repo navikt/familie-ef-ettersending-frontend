@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Normaltekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
@@ -6,55 +6,25 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Modal from 'nav-frontend-modal';
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
-import {
-  IVedlegg,
-  IEttersendingUtenSøknad,
-  IInnsending,
-  tomInnsending,
-  EttersendingType,
-} from '../typer/ettersending';
+import { IInnsendingX, IVedleggX } from '../typer/ettersending';
 import '../stil/Vedleggsopplaster.less';
 import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
-import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
 import AlertStripe, { alertMelding } from './AlertStripe';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
 `;
 
-const StyledHjelpeknapp = styled(Hjelpetekst)`
-  padding-bottom: 6px;
-  padding-left: 6px;
-`;
+interface IProps {
+  oppdaterInnsendingx: (innsending: IInnsendingX) => void;
+  innsendingx: IInnsendingX;
+}
 
-type VedleggsopplasterProps = { ettersendingType: EttersendingType } & (
-  | {
-      ettersendingType: EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV;
-      dokumentasjonsbehovId: string;
-      dokumentasjonsbehovTilInnsending: IDokumentasjonsbehov[];
-      settDokumentasjonsbehovTilInnsending: Dispatch<
-        SetStateAction<IDokumentasjonsbehov[]>
-      >;
-    }
-  | {
-      ettersendingType: EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING;
-      innsending: IInnsending;
-      settInnsending: Dispatch<SetStateAction<IInnsending>>;
-    }
-  | {
-      ettersendingType: EttersendingType.ETTERSENDING_UTEN_SØKNAD;
-      ettersendingUtenSøknad: IEttersendingUtenSøknad;
-      settEttersendingUtenSøknad: Dispatch<
-        SetStateAction<IEttersendingUtenSøknad>
-      >;
-    }
-);
-
-const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
-  props: VedleggsopplasterProps
-) => {
+const Vedleggsopplaster: React.FC<IProps> = ({
+  innsendingx,
+  oppdaterInnsendingx,
+}: IProps) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
     alertMelding.TOM
@@ -62,163 +32,56 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [laster, settLaster] = useState<boolean>(false);
 
-  const leggTilVedlegg = (vedlegg: IVedlegg[]) => {
-    if (
-      props.ettersendingType ===
-      EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
-    ) {
-      const {
-        dokumentasjonsbehovId,
-        settDokumentasjonsbehovTilInnsending,
-        dokumentasjonsbehovTilInnsending,
-      } = props;
-      const oppdatertDokumentasjonsbehov: IDokumentasjonsbehov[] =
-        dokumentasjonsbehovTilInnsending.map((behov) => {
-          if (behov.id == dokumentasjonsbehovId) {
-            return {
-              ...behov,
-              opplastedeVedlegg: [...behov.opplastedeVedlegg, ...vedlegg],
-            };
-          } else {
-            return behov;
-          }
-        });
-      settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
-    } else if (
-      props.ettersendingType ===
-      EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING
-    ) {
-      const { settInnsending, innsending } = props;
-      settInnsending({
-        ...innsending,
-        vedlegg: [...innsending.vedlegg, ...vedlegg],
-      });
-    } else if (
-      props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD
-    ) {
-      const { settEttersendingUtenSøknad, ettersendingUtenSøknad } = props;
-      settEttersendingUtenSøknad({
-        ...ettersendingUtenSøknad,
-        innsending: [
-          {
-            ...ettersendingUtenSøknad.innsending[0],
-            vedlegg: [
-              ...ettersendingUtenSøknad.innsending[0].vedlegg,
-              ...vedlegg,
-            ],
-          },
-        ],
-      });
-    }
+  const leggTilVedlegg = (nyeVedlegg: IVedleggX[]): IInnsendingX => {
+    return {
+      ...innsendingx,
+      vedlegg: [...innsendingx.vedlegg, ...nyeVedlegg],
+    };
   };
 
-  const slettVedlegg = (vedlegg: IVedlegg) => {
-    if (
-      props.ettersendingType ===
-      EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
-    ) {
-      const {
-        dokumentasjonsbehovTilInnsending,
-        settDokumentasjonsbehovTilInnsending,
-        dokumentasjonsbehovId,
-      } = props;
-      const oppdatertDokumentasjonsbehov = dokumentasjonsbehovTilInnsending.map(
-        (behov) => {
-          if (behov.id == dokumentasjonsbehovId) {
-            return {
-              ...behov,
-              opplastedeVedlegg: behov.opplastedeVedlegg.filter(
-                (vedleggIOpplastedeVedlegg) =>
-                  vedlegg.id !== vedleggIOpplastedeVedlegg.id
-              ),
-            };
-          } else {
-            return behov;
-          }
-        }
-      );
-      settDokumentasjonsbehovTilInnsending(oppdatertDokumentasjonsbehov);
-    } else if (
-      props.ettersendingType ===
-      EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING
-    ) {
-      const { settInnsending } = props;
-      settInnsending(tomInnsending);
-    } else if (
-      props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD
-    ) {
-      const { settEttersendingUtenSøknad, ettersendingUtenSøknad } = props;
-      settEttersendingUtenSøknad({
-        ...ettersendingUtenSøknad,
-        innsending: [
-          {
-            beskrivelse: ettersendingUtenSøknad.innsending[0].beskrivelse, //TODO i fremtiden skal vi støtte innsending av flere filer, og må da fjerne [0]
-            dokumenttype: ettersendingUtenSøknad.innsending[0].dokumenttype, //TODO i fremtiden skal vi støtte innsending av flere filer, og må da fjerne [0]
-            vedlegg: [],
-          },
-        ],
-      });
-    }
+  const slettVedlegg = (vedlegg: IVedleggX): void => {
+    oppdaterInnsendingx({
+      ...innsendingx,
+      vedlegg: [...innsendingx.vedlegg].filter(
+        (v: IVedleggX) => v.id !== vedlegg.id
+      ),
+    });
   };
 
-  const visVedleggTilOpplasting = (): IVedlegg[] => {
-    if (
-      props.ettersendingType ===
-      EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV
-    ) {
-      const { dokumentasjonsbehovId, dokumentasjonsbehovTilInnsending } = props;
-      const dokumentasjonsbehov = dokumentasjonsbehovTilInnsending.filter(
-        (behov) => behov.id === dokumentasjonsbehovId
-      )[0];
-      return dokumentasjonsbehov ? dokumentasjonsbehov.opplastedeVedlegg : [];
-    } else if (
-      props.ettersendingType ===
-      EttersendingType.ETTERSENDING_MED_SØKNAD_INNSENDING
-    ) {
-      const { innsending } = props;
-      return innsending.vedlegg;
-    } else if (
-      props.ettersendingType === EttersendingType.ETTERSENDING_UTEN_SØKNAD
-    ) {
-      const { ettersendingUtenSøknad } = props;
-      return ettersendingUtenSøknad.innsending[0].vedlegg;
-    }
-    return [];
+  const visVedleggTilOpplasting = (): IVedleggX[] => {
+    return innsendingx.vedlegg;
   };
 
   const sjekkTillatFiltype = (filtype: string) => {
-    const tillateFilTyper = ['pdf', 'jpg', 'svg', 'png', 'jpeg', 'gif', 'ico'];
-    let godkjentFiltype = false;
-    tillateFilTyper.forEach((tillatFilType) => {
-      if (filtype.includes(tillatFilType)) {
-        godkjentFiltype = true;
-      }
+    const tillateFiltyper = ['pdf', 'jpg', 'svg', 'png', 'jpeg', 'gif', 'ico'];
+    return tillateFiltyper.some((type) => {
+      return filtype.includes(type);
     });
-    return godkjentFiltype;
   };
 
   const lastOppVedlegg = async (filer: File[]) => {
     settLaster(true);
     settAlertStripeMelding(alertMelding.TOM);
 
-    const vedleggListe: IVedlegg[] = [];
+    const vedleggxListe: IVedleggX[] = [];
     await Promise.all(
       filer.map(async (fil) => {
         try {
           const formData = new FormData();
           formData.append('file', fil);
           const respons = await sendVedleggTilMellomlager(formData);
-          const vedlegg: IVedlegg = {
+          const vedlegg: IVedleggX = {
             id: respons,
             navn: fil.name,
           };
-          vedleggListe.push(vedlegg);
+          vedleggxListe.push(vedlegg);
         } catch {
           settAlertStripeMelding(alertMelding.FEIL);
         }
       })
     );
-    leggTilVedlegg(vedleggListe);
+    const nyInnsending = leggTilVedlegg(vedleggxListe);
+    oppdaterInnsendingx(nyInnsending);
     settLaster(false);
   };
 
@@ -244,27 +107,6 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
 
   return (
     <div className="filopplaster-wrapper">
-      <div style={{ display: 'flex' }}>
-        {props.ettersendingType !=
-          EttersendingType.ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV && (
-          <StyledHjelpeknapp>
-            Her kan du laste opp flere filer per innsending.
-          </StyledHjelpeknapp>
-        )}
-      </div>
-
-      {laster ? (
-        <NavFrontendSpinner />
-      ) : (
-        <>
-          <OpplastedeVedlegg
-            vedleggsliste={visVedleggTilOpplasting()}
-            slettVedlegg={slettVedlegg}
-          />
-          <StyledAlertStripe melding={alertStripeMelding} />
-        </>
-      )}
-
       <div className="filopplaster">
         <Modal
           isOpen={åpenModal}
@@ -288,10 +130,21 @@ const Vedleggsopplaster: React.FC<VedleggsopplasterProps> = (
             alt="Opplastingsikon"
           />
           <Normaltekst className="tekst">
-            {isDragActive ? 'Last opp dokumentasjon' : 'Last opp dokumentasjon'}
+            {isDragActive ? 'Last opp fil(er)' : 'Last opp fil(er)'}
           </Normaltekst>
         </div>
       </div>
+      {laster ? (
+        <NavFrontendSpinner />
+      ) : (
+        <>
+          <OpplastedeVedlegg
+            vedleggsliste={visVedleggTilOpplasting()}
+            slettVedlegg={slettVedlegg}
+          />
+          <StyledAlertStripe melding={alertStripeMelding} />
+        </>
+      )}
     </div>
   );
 };
