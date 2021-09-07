@@ -8,10 +8,11 @@ import React from 'react';
 export enum alertMelding {
   SENDT_INN = 'Takk. Dokumentasjon er sendt inn.',
   FEIL = 'Noe gikk galt, prøv igjen',
-  MANGLER_VEDLEGG = 'Minst én fil må lastes opp per søknad',
+  MANGLER_VEDLEGG = 'Minst én fil må lastes opp',
   MANGLER_STØNDASTYPE = 'Stønadstype må velges',
   MANGLER_DOKUMENTTYPE = 'Dokumenttype må velges',
   MANGLER_BEGGE_TYPER = 'Både stønadstype og dokumenttype må velges',
+  MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS = 'Den nederste boksen mangler dokumentasjon',
   TOM = '',
 }
 
@@ -65,6 +66,14 @@ const AlertStripe: React.FC<IProps> = ({ className, melding }: IProps) => {
     return (
       <AlertStripeFeil className={className}>
         {alertMelding.MANGLER_BEGGE_TYPER}
+      </AlertStripeFeil>
+    );
+  }
+
+  if (melding === alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS) {
+    return (
+      <AlertStripeFeil className={className}>
+        {alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS}
       </AlertStripeFeil>
     );
   }

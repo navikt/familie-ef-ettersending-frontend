@@ -166,7 +166,9 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
         </>
       )}
       {!harLåstValg && (
-        <StyledKnapp onClick={håndterKnappeKlikk}>Neste</StyledKnapp>
+        <div>
+          <StyledKnapp onClick={håndterKnappeKlikk}>Neste</StyledKnapp>
+        </div>
       )}
       <StyledAlertStripe melding={alertStripeMelding} />
     </StyledPanel>

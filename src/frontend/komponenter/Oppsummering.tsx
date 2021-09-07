@@ -6,8 +6,6 @@ import { stønadTypeTilTekst, StønadType } from '../typer/stønad';
 import OpplastedeVedleggOversikt from './OpplastedeVedleggOversikt';
 import { formaterIsoDato } from '../../shared-utils/dato';
 
-// TODO: Fiks styling (For stort plusstegn)
-
 const StyledDiv = styled.div`
   margin-top: 2rem;
   margin-bottom: 2rem;

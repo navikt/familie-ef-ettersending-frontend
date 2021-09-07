@@ -98,6 +98,9 @@ const Ettersendingsoversikt: React.FC = () => {
         ),
       };
     });
+    settEkstraInnsendingerId(
+      ekstraInnsendingerId.filter((innsendingsId) => innsendingsId != id)
+    );
   };
 
   const leggTilNyInnsendingX = (innsending: IInnsendingX) => {
@@ -126,18 +129,43 @@ const Ettersendingsoversikt: React.FC = () => {
     leggTilNyInnsendingX(nyInnsending);
   };
 
-  const alleVedleggErLastetOpp = (): boolean => {
-    return ettersendingX.innsendinger
-      .filter(
-        (innsending) => innsending.søknadsdata.harSendtInnTidligere === false
-      )
-      .every((innsending) => innsending.vedlegg.length > 0);
+  const minstEttVedleggErLastetOpp = (): boolean => {
+    return ettersendingX.innsendinger.some(
+      (innsending) => innsending.vedlegg.length > 0
+    );
+  };
+
+  const minstEnBoksErAvkrysset = (): boolean => {
+    return ettersendingX.innsendinger.some(
+      (innsending) => innsending.søknadsdata.harSendtInnTidligere
+    );
+  };
+
+  const minstEttVedleggErLastetOppForEkstraDokumentasjonsboks = (): boolean => {
+    return (
+      ekstraInnsendingerId.length === 0 ||
+      ettersendingX.innsendinger
+        .filter((innsendingx) => ekstraInnsendingerId.includes(innsendingx.id))
+        .some((innsending) => innsending.vedlegg.length > 0)
+    );
+  };
+
+  const filtrerUtfylteInnsendinger = (): IInnsendingX[] => {
+    return ettersendingX.innsendinger.filter(
+      (innsending) =>
+        innsending.vedlegg.length > 0 ||
+        innsending.søknadsdata.harSendtInnTidligere
+    );
   };
 
   const visOppsummering = () => {
-    if (alleVedleggErLastetOpp()) {
-      settAlertStripeMelding(alertMelding.TOM);
-      settAktivtSteg(1);
+    settAlertStripeMelding(alertMelding.TOM);
+    if (minstEttVedleggErLastetOpp() || minstEnBoksErAvkrysset()) {
+      if (minstEttVedleggErLastetOppForEkstraDokumentasjonsboks()) {
+        settAktivtSteg(1);
+        return;
+      }
+      settAlertStripeMelding(alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS);
       return;
     }
     settAlertStripeMelding(alertMelding.MANGLER_VEDLEGG);
@@ -170,7 +198,6 @@ const Ettersendingsoversikt: React.FC = () => {
     dato: string
   ): IInnsending[] => {
     return innsendinger.flatMap((innsending) => {
-      // TODO: Dupliseres og er vanskelig å lese - trekk ut som egen funksjon
       const vedleggListe = innsending.vedlegg.map((vedlegg) => {
         return {
           ...vedlegg,
@@ -393,7 +420,7 @@ const Ettersendingsoversikt: React.FC = () => {
         <>
           <Oppsummering
             tittel={'Følgende dokumentasjon er klar til innsending'}
-            innsendinger={ettersendingX.innsendinger}
+            innsendinger={filtrerUtfylteInnsendinger()}
           />
           <StyledDiv>
             <StyledKnapp onClick={gåTilForrigeSteg}>Tilbake</StyledKnapp>
