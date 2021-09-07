@@ -88,10 +88,16 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
         )}
         <StyledLesMerTekst>
           <Lesmerpanel
-            apneTekst={'Hvorfor etterspør vi dette? '}
-            lukkTekst={'Hvorfor etterspør vi dette? '}
+            apneTekst={'Derfor spør vi deg om dette '}
+            lukkTekst={'Derfor spør vi deg om dette '}
           >
-            <Normaltekst>Lorem ipsum dolor sit amet.</Normaltekst>
+            <Normaltekst>
+              Vi spør deg om dette fordi vi mangler {innsendingx.beskrivelse}.
+              Denne dokumentasjonen ble ikke sendt inn ved søknadstidspunktet{' '}
+              {formaterIsoDato(innsendingx.søknadsdata.søknadDato)}. Du kan se
+              bort ifra dette hvis du allerede har sendt oss dokumentasjonen på
+              annen måte. Da kan du krysse av på at du har levert på annen måte.
+            </Normaltekst>
           </Lesmerpanel>
         </StyledLesMerTekst>
         <Vedleggsopplaster
@@ -107,7 +113,10 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
           checked={checked}
           label={'Jeg har levert på annen måte'}
         />
-        <StyledHjelpetekst>Lorem ipsum dolor sit amet.</StyledHjelpetekst>
+        <StyledHjelpetekst>
+          Dersom du har levert dokumentasjonen på en annen måte kan du krysse av
+          denne boksen.
+        </StyledHjelpetekst>
       </StyledPanel>
     </>
   );
