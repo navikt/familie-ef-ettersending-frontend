@@ -4,22 +4,17 @@ import { hentDokumentasjonsbehov, hentEttersendinger } from '../api-service';
 import { v4 as uuidv4 } from 'uuid';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
-  IEttersending,
   IEttersendingMedDato,
-  IEttersendingUtenSøknad,
   IEttersendingX,
   IInnsending,
   IInnsendingX,
   ISøknadMedEttersendinger,
   ISøknadsbehov,
-  IVedlegg,
-  tomEttersendingUtenSøknad,
 } from '../typer/ettersending';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { IDokumentasjonsbehov } from '../typer/dokumentasjonsbehov';
-import { DokumentType, StønadType } from '../typer/stønad';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
 import { LeggTilInnsending } from './LeggTilInnsending';
@@ -56,17 +51,9 @@ const StyledStegindikator = styled(Stegindikator)`
 
 const Ettersendingsoversikt: React.FC = () => {
   const [laster, settLasterverdi] = useState(true);
-  const [ettersendingUtenSøknad, settEttersendingUtenSøknad] =
-    useState<IEttersendingUtenSøknad>(tomEttersendingUtenSøknad);
-  const [stønadType, settStønadType] = useState<StønadType | undefined>();
-
-  const [senderEttersending, settSenderEttersending] = useState<boolean>(false);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
     alertMelding.TOM
   );
-  const [innsendingVedleggSendtInn, settInnsendingVedleggSendtInn] = useState<
-    IVedlegg[]
-  >([]);
   const [ettersendingX, settEttersendingX] = useState<IEttersendingX>({
     innsendinger: [],
     fnr: '',
@@ -346,62 +333,6 @@ const Ettersendingsoversikt: React.FC = () => {
       fnr: context.søker!.fnr,
     });
     settLasterverdi(false);
-  };
-
-  const sendEttersendingUtenSøknad = async () => {
-    settAlertStripeMelding(alertMelding.TOM);
-    if (!(ettersendingUtenSøknad.innsending[0].vedlegg.length > 0)) {
-      settAlertStripeMelding(alertMelding.MANGLER_VEDLEGG);
-      return;
-    }
-    if (!stønadType || !Object.values(StønadType).includes(stønadType)) {
-      settAlertStripeMelding(alertMelding.MANGLER_STØNDASTYPE);
-      return;
-    }
-    if (
-      !ettersendingUtenSøknad.innsending[0].dokumenttype ||
-      !Object.values(DokumentType).includes(
-        ettersendingUtenSøknad.innsending[0].dokumenttype
-      )
-    ) {
-      settAlertStripeMelding(alertMelding.MANGLER_DOKUMENTTYPE);
-      return;
-    }
-    if (!senderEttersending) {
-      settSenderEttersending(true);
-
-      const ettersending: IEttersending = {
-        fnr: context.søker!.fnr,
-        stønadType,
-        ettersendingUtenSøknad: ettersendingUtenSøknad,
-        ettersendingForSøknad: null,
-      };
-
-      settAlertStripeMelding(alertMelding.TOM);
-      try {
-        await sendEttersending(ettersending);
-        settInnsendingVedleggSendtInn(
-          innsendingVedleggSendtInn.concat(
-            ettersendingUtenSøknad.innsending[0].vedlegg.map((vedlegg) => {
-              return {
-                ...vedlegg,
-                dato: dagensDatoMedTidspunktStreng(),
-                stønadstype: ettersending.stønadType,
-                dokumenttype: ettersendingUtenSøknad.innsending[0].dokumenttype,
-                beskrivelse: ettersendingUtenSøknad.innsending[0].beskrivelse,
-              };
-            })
-          )
-        );
-        settEttersendingUtenSøknad(tomEttersendingUtenSøknad);
-        settStønadType(undefined);
-        settAlertStripeMelding(alertMelding.SENDT_INN);
-      } catch {
-        settAlertStripeMelding(alertMelding.FEIL);
-      } finally {
-        settSenderEttersending(false);
-      }
-    }
   };
 
   if (laster) return <NavFrontendSpinner />;
