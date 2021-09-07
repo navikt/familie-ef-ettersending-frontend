@@ -42,6 +42,11 @@ const StyledImg = styled.img`
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
 `;
+
+const StyledUndertekst = styled(Undertekst)`
+  margin-bottom: 1rem;
+`;
+
 interface IProps {
   innsendingx: IInnsendingX;
   oppdaterInnsendingx: (innsending: IInnsendingX) => void;
@@ -150,18 +155,14 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
             <b>Stønadstype: </b>
             {stønadTypeTilTekst[valgtStønadType as StønadType]}
           </p>
-          <p>
-            <b>Dokumenttype: </b>
-            {valgtDokumentType}
-          </p>
           <Vedleggsopplaster
             innsendingx={innsendingx}
             oppdaterInnsendingx={oppdaterInnsendingx}
           />
-          <Undertekst>
+          <StyledUndertekst>
             Dersom dokumentet du skal sende inn består av flere filer kan du
             legge til alle filene her.
-          </Undertekst>
+          </StyledUndertekst>
         </>
       )}
       {!harLåstValg && (
