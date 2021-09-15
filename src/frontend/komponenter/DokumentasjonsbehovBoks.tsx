@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IInnsendingX } from '../typer/ettersending';
+import { IDokumentasjonsbehovTilBackend } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import styled from 'styled-components';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -31,22 +31,22 @@ const StyledLesMerTekst = styled(LesMerTekst)`
 `;
 
 interface Props {
-  innsendingx: IInnsendingX;
-  oppdaterInnsendingx: (innsending: IInnsendingX) => void;
+  innsending: IDokumentasjonsbehovTilBackend;
+  oppdaterInnsending: (innsending: IDokumentasjonsbehovTilBackend) => void;
 }
 
 export const DokumentasjonsbehovBoks: React.FC<Props> = ({
-  innsendingx,
-  oppdaterInnsendingx,
+  innsending,
+  oppdaterInnsending,
 }: Props) => {
   const [checked, settCheckboxverdi] = useState<boolean>(
-    innsendingx.søknadsdata.harSendtInnTidligere
+    innsending.søknadsdata ? innsending.søknadsdata.harSendtInnTidligere : false
   );
 
   const erDokumentasjonSendt = (): boolean => {
     return (
-      innsendingx.søknadsdata.harSendtInnTidligere ||
-      innsendingx.vedlegg.length > 0
+      innsending.søknadsdata?.harSendtInnTidligere ||
+      innsending.vedlegg.length > 0
     );
   };
 
@@ -57,13 +57,15 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
   const oppdaterHarSendtInn = () => {
     const invertedChecked = !checked;
     settCheckboxverdi(invertedChecked);
-    oppdaterInnsendingx({
-      ...innsendingx,
-      søknadsdata: {
-        ...innsendingx.søknadsdata,
-        harSendtInnTidligere: invertedChecked,
-      },
-    });
+    if (innsending.søknadsdata) {
+      oppdaterInnsending({
+        ...innsending,
+        søknadsdata: {
+          ...innsending.søknadsdata,
+          harSendtInnTidligere: invertedChecked,
+        },
+      });
+    }
   };
 
   return (
@@ -73,16 +75,16 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
           type={erDokumentasjonSendt() ? 'suksess' : 'advarsel'}
           form="inline"
         >
-          <b>{innsendingx.beskrivelse}</b>
+          <b>{innsending.beskrivelse}</b>
         </Alertstripe>
-        {innsendingx.stønadType && (
+        {innsending.stønadType && (
           <>
             <p>
               <b>Stønadstype: </b>
-              {`${storForbokstav(innsendingx.stønadType.toLocaleLowerCase())}`}
+              {`${storForbokstav(innsending.stønadType.toLocaleLowerCase())}`}
             </p>
-            <p>{`Søknad om ${innsendingx.stønadType.toLocaleLowerCase()} ${formaterIsoDato(
-              innsendingx.søknadsdata.søknadDato
+            <p>{`Søknad om ${innsending.stønadType.toLocaleLowerCase()} ${formaterIsoDato(
+              innsending.søknadsdata?.søknadsdato
             )}`}</p>
           </>
         )}
@@ -92,17 +94,17 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
             lukkTekst={'Derfor spør vi deg om dette '}
           >
             <Normaltekst>
-              Vi spør deg om dette fordi vi mangler {innsendingx.beskrivelse}.
+              Vi spør deg om dette fordi vi mangler {innsending.beskrivelse}.
               Denne dokumentasjonen ble ikke sendt inn ved søknadstidspunktet{' '}
-              {formaterIsoDato(innsendingx.søknadsdata.søknadDato)}. Du kan se
+              {formaterIsoDato(innsending.søknadsdata?.søknadsdato)}. Du kan se
               bort ifra dette hvis du allerede har sendt oss dokumentasjonen på
               annen måte. Da kan du krysse av på at du har levert på annen måte.
             </Normaltekst>
           </Lesmerpanel>
         </StyledLesMerTekst>
         <Vedleggsopplaster
-          innsendingx={innsendingx}
-          oppdaterInnsendingx={oppdaterInnsendingx}
+          innsending={innsending}
+          oppdaterInnsending={oppdaterInnsending}
         />
         <Undertekst>
           Dersom dokumentet du skal sende inn består av flere filer kan du legge

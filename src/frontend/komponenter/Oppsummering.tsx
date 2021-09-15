@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { IInnsendingX } from '../typer/ettersending';
+import { IDokumentasjonsbehovTilBackend } from '../typer/ettersending';
 import { stønadTypeTilTekst, StønadType } from '../typer/stønad';
 import OpplastedeVedleggOversikt from './OpplastedeVedleggOversikt';
 import { formaterIsoDato } from '../../shared-utils/dato';
@@ -12,7 +12,7 @@ const StyledDiv = styled.div`
 `;
 
 interface IProps {
-  innsendinger: IInnsendingX[];
+  innsendinger: IDokumentasjonsbehovTilBackend[];
   tittel: string;
 }
 
@@ -39,7 +39,7 @@ export const Oppsummering: React.FC<IProps> = ({
             )}
             <Normaltekst>
               <b>Dato for innsending: </b>
-              {formaterIsoDato(innsending.innsendingDato)}
+              {formaterIsoDato(innsending.innsendingstidspunkt)}
             </Normaltekst>
             <Normaltekst>
               <b>Dokumenter: </b>

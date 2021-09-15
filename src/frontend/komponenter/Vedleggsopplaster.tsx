@@ -6,7 +6,10 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Modal from 'nav-frontend-modal';
-import { IInnsendingX, IVedleggX } from '../typer/ettersending';
+import {
+  IDokumentasjonsbehovTilBackend,
+  IVedleggX,
+} from '../typer/ettersending';
 import '../stil/Vedleggsopplaster.less';
 import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
@@ -17,13 +20,13 @@ const StyledAlertStripe = styled(AlertStripe)`
 `;
 
 interface IProps {
-  oppdaterInnsendingx: (innsending: IInnsendingX) => void;
-  innsendingx: IInnsendingX;
+  oppdaterInnsending: (innsending: IDokumentasjonsbehovTilBackend) => void;
+  innsending: IDokumentasjonsbehovTilBackend;
 }
 
 const Vedleggsopplaster: React.FC<IProps> = ({
-  innsendingx,
-  oppdaterInnsendingx,
+  innsending,
+  oppdaterInnsending,
 }: IProps) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
@@ -32,24 +35,26 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [laster, settLaster] = useState<boolean>(false);
 
-  const leggTilVedlegg = (nyeVedlegg: IVedleggX[]): IInnsendingX => {
+  const leggTilVedlegg = (
+    nyeVedlegg: IVedleggX[]
+  ): IDokumentasjonsbehovTilBackend => {
     return {
-      ...innsendingx,
-      vedlegg: [...innsendingx.vedlegg, ...nyeVedlegg],
+      ...innsending,
+      vedlegg: [...innsending.vedlegg, ...nyeVedlegg],
     };
   };
 
   const slettVedlegg = (vedlegg: IVedleggX): void => {
-    oppdaterInnsendingx({
-      ...innsendingx,
-      vedlegg: [...innsendingx.vedlegg].filter(
+    oppdaterInnsending({
+      ...innsending,
+      vedlegg: [...innsending.vedlegg].filter(
         (v: IVedleggX) => v.id !== vedlegg.id
       ),
     });
   };
 
   const visVedleggTilOpplasting = (): IVedleggX[] => {
-    return innsendingx.vedlegg;
+    return innsending.vedlegg;
   };
 
   const sjekkTillatFiltype = (filtype: string) => {
@@ -63,7 +68,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
     settLaster(true);
     settAlertStripeMelding(alertMelding.TOM);
 
-    const vedleggxListe: IVedleggX[] = [];
+    const vedleggListe: IVedleggX[] = [];
     await Promise.all(
       filer.map(async (fil) => {
         try {
@@ -73,15 +78,16 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           const vedlegg: IVedleggX = {
             id: respons,
             navn: fil.name,
+            tittel: innsending.beskrivelse || 'Ukjent tittel',
           };
-          vedleggxListe.push(vedlegg);
+          vedleggListe.push(vedlegg);
         } catch {
           settAlertStripeMelding(alertMelding.FEIL);
         }
       })
     );
-    const nyInnsending = leggTilVedlegg(vedleggxListe);
-    oppdaterInnsendingx(nyInnsending);
+    const nyInnsending = leggTilVedlegg(vedleggListe);
+    oppdaterInnsending(nyInnsending);
     settLaster(false);
   };
 

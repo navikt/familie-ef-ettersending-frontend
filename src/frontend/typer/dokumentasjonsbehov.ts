@@ -1,5 +1,5 @@
 import { IVedlegg } from './ettersending';
-export interface IDokumentasjonsbehov {
+export interface IDokumentasjonsbehovFraBackend {
   id: string;
   label: string;
   harSendtInn: boolean;
@@ -7,5 +7,5 @@ export interface IDokumentasjonsbehov {
 }
 
 export interface IDokumentasjonsbehovWrapper {
-  dokumentasjonsbehov: Array<IDokumentasjonsbehov>;
+  dokumentasjonsbehov: IDokumentasjonsbehovFraBackend[];
 }

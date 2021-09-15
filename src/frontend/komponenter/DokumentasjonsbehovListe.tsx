@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { useApp } from '../context/AppContext';
-import { IInnsendingX } from '../typer/ettersending';
+import { IDokumentasjonsbehovTilBackend } from '../typer/ettersending';
 import { DokumentasjonsbehovBoks } from './DokumentasjonsbehovBoks';
 
 interface IProps {
-  oppdaterInnsendingx: (innsending: IInnsendingX) => void;
-  innsendingx: IInnsendingX;
+  oppdaterInnsending: (innsending: IDokumentasjonsbehovTilBackend) => void;
+  innsending: IDokumentasjonsbehovTilBackend;
 }
 
 export const DokumentasjonsbehovListe: React.FC<IProps> = ({
-  innsendingx,
-  oppdaterInnsendingx,
+  innsending,
+  oppdaterInnsending,
 }: IProps) => {
   const [laster, settLasterverdi] = useState(true);
 
@@ -29,9 +29,9 @@ export const DokumentasjonsbehovListe: React.FC<IProps> = ({
     <>
       <>
         <DokumentasjonsbehovBoks
-          key={innsendingx.id}
-          innsendingx={innsendingx}
-          oppdaterInnsendingx={oppdaterInnsendingx}
+          key={innsending.id}
+          innsending={innsending}
+          oppdaterInnsending={oppdaterInnsending}
         />
       </>
     </>

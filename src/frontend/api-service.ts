@@ -1,10 +1,6 @@
 import axios from 'axios';
 import environment from '../backend/environment';
-import {
-  IEttersendingMedDato,
-  IEttersending,
-  ISøknadsbehov,
-} from './typer/ettersending';
+import { IEttersending, ISøknadsbehov } from './typer/ettersending';
 import { IPersoninfo } from './typer/søker';
 
 interface Ifamilievedlegg {
@@ -27,10 +23,10 @@ export const sendEttersending = (
     .then((response) => response.data);
 };
 
-export const hentEttersendinger = (): Promise<IEttersendingMedDato[]> => {
+export const hentEttersendinger = (): Promise<IEttersending[]> => {
   return axios
     .get(`${environment().apiUrl}/api/ettersending`, { withCredentials: true })
-    .then((response) => response.data);
+    .then((response: { data: IEttersending[] }) => response.data);
 };
 
 export const hentPersoninfo = (): Promise<IPersoninfo> => {
@@ -41,7 +37,7 @@ export const hentPersoninfo = (): Promise<IPersoninfo> => {
     .then((response: { data: IPersoninfo }) => response.data);
 };
 
-export const hentDokumentasjonsbehov = (): Promise<ISøknadsbehov[]> => {
+export const hentSøknader = (): Promise<ISøknadsbehov[]> => {
   return axios
     .get(`${environment().apiUrl}/api/dokumentasjonsbehov/person`, {
       withCredentials: true,

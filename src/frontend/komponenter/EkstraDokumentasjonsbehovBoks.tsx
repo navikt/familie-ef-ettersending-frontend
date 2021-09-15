@@ -13,7 +13,7 @@ import {
   StønadType,
   stønadTypeTilTekst,
 } from '../typer/stønad';
-import { IInnsendingX } from '../typer/ettersending';
+import { IDokumentasjonsbehovTilBackend } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
 
@@ -48,17 +48,17 @@ const StyledUndertekst = styled(Undertekst)`
 `;
 
 interface IProps {
-  innsendingx: IInnsendingX;
-  oppdaterInnsendingx: (innsending: IInnsendingX) => void;
+  innsending: IDokumentasjonsbehovTilBackend;
+  oppdaterInnsending: (innsending: IDokumentasjonsbehovTilBackend) => void;
   slettEkstraInnsending: (id: string) => void;
 }
 
 export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
-  innsendingx,
-  oppdaterInnsendingx,
+  innsending,
+  oppdaterInnsending,
   slettEkstraInnsending,
 }: IProps) => {
-  const [valgtDokumentType, settValgtDokumentType] = useState<DokumentType>();
+  const [valgtDokumentType, settValgtDokumentType] = useState<string>();
   const [valgtStønadType, settValgtStønadType] = useState<StønadType>();
   const [harLåstValg, settHarLåstValg] = useState<boolean>(false);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
@@ -66,9 +66,9 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
   );
 
   useEffect(() => {
-    if (innsendingx.vedlegg.length > 0) settHarLåstValg(true);
-    settValgtDokumentType(innsendingx.dokumenttype);
-    settValgtStønadType(innsendingx.stønadType);
+    if (innsending.vedlegg.length > 0) settHarLåstValg(true);
+    settValgtDokumentType(innsending.dokumenttype);
+    settValgtStønadType(innsending.stønadType);
   }, []);
 
   const dokumentTypeOgStønadTypeErValgt = (): boolean => {
@@ -89,19 +89,19 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       settAlertStripeMelding(alertMelding.TOM);
       låsValg(true);
       const oppdatertInnsending = {
-        ...innsendingx,
+        ...innsending,
         stønadType: valgtStønadType,
         dokumenttype: valgtDokumentType,
         beskrivelse: dokumentTypeTilTekst[valgtDokumentType as DokumentType],
       };
-      oppdaterInnsendingx(oppdatertInnsending);
+      oppdaterInnsending(oppdatertInnsending);
       return;
     }
     settAlertStripeMelding(alertMelding.MANGLER_BEGGE_TYPER);
   };
 
   const slettInnsending = () => {
-    slettEkstraInnsending(innsendingx.id);
+    slettEkstraInnsending(innsending.id);
   };
 
   return (
@@ -156,8 +156,8 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
             {stønadTypeTilTekst[valgtStønadType as StønadType]}
           </p>
           <Vedleggsopplaster
-            innsendingx={innsendingx}
-            oppdaterInnsendingx={oppdaterInnsendingx}
+            innsending={innsending}
+            oppdaterInnsending={oppdaterInnsending}
           />
           <StyledUndertekst>
             Dersom dokumentet du skal sende inn består av flere filer kan du
