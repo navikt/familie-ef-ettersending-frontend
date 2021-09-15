@@ -27,8 +27,7 @@ const getEnv = () => {
   } else if (isDev()) {
     return {
       loginService: 'https://loginservice.dev.nav.no/login?',
-      apiUrl:
-        'https://familie-ef-soknad-api.dev.nav.no/familie/alene-med-barn/soknad-api',
+      apiUrl: 'https://familie.dev.nav.no/familie/alene-med-barn/soknad-api',
       dekoratørUrl: 'https://dekoratoren.dev.nav.no/?simple=true',
       dokumentUrl:
         'https://familie-dokument.dev.nav.no/familie/dokument/api/mapper/familievedlegg',
