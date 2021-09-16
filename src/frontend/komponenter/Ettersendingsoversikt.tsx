@@ -10,6 +10,7 @@ import {
   minstEnBoksErAvkrysset,
   minstEttVedleggErLastetOppForEkstraDokumentasjonsboks,
   ekstraInnsendingerUtenVedlegg,
+  filtrerUtfylteInnsendinger,
 } from '../utils/innsendingsvalidering';
 import { v4 as uuidv4 } from 'uuid';
 import NavFrontendSpinner from 'nav-frontend-spinner';
@@ -135,14 +136,6 @@ const Ettersendingsoversikt: React.FC = () => {
     leggTilNyInnsending(nyInnsending);
   };
 
-  const filtrerUtfylteInnsendinger = (): IDokumentasjonsbehovTilBackend[] => {
-    return ettersending.dokumentasjonsbehov.filter(
-      (innsending) =>
-        innsending.vedlegg.length > 0 ||
-        innsending.søknadsdata?.harSendtInnTidligere
-    );
-  };
-
   const visOppsummering = () => {
     settAlertStripeMelding(alertMelding.TOM);
     settEkstraInnsendingerSomManglerVedlegg([]);
@@ -180,7 +173,7 @@ const Ettersendingsoversikt: React.FC = () => {
     try {
       settAktivtSteg(2);
       const ettersendingTilBackend: IEttersending = {
-        dokumentasjonsbehov: filtrerUtfylteInnsendinger(),
+        dokumentasjonsbehov: filtrerUtfylteInnsendinger(ettersending),
         personIdent: ettersending.personIdent,
       };
       sendEttersending(ettersendingTilBackend);
@@ -305,7 +298,7 @@ const Ettersendingsoversikt: React.FC = () => {
         <>
           <Oppsummering
             tittel={'Følgende dokumentasjon er klar til innsending'}
-            innsendinger={filtrerUtfylteInnsendinger()}
+            innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
           <StyledDiv>
             <StyledKnapp onClick={gåTilForrigeSteg}>Tilbake</StyledKnapp>
@@ -319,7 +312,7 @@ const Ettersendingsoversikt: React.FC = () => {
         <>
           <Oppsummering
             tittel={'Følgende dokumentasjon er sendt inn'}
-            innsendinger={filtrerUtfylteInnsendinger()}
+            innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
         </>
       )}

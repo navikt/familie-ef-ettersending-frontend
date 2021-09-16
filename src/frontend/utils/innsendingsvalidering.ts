@@ -1,4 +1,7 @@
-import { IDokumentasjonsbehovTilBackend } from '../typer/ettersending';
+import {
+  IDokumentasjonsbehovTilBackend,
+  IEttersending,
+} from '../typer/ettersending';
 
 export const minstEttVedleggErLastetOpp = (
   dokumentasjonsbehov: IDokumentasjonsbehovTilBackend[]
@@ -39,4 +42,14 @@ export const ekstraInnsendingerUtenVedlegg = (
       innsendingerUtenVedlegg.push(innsending.id);
   });
   return innsendingerUtenVedlegg;
+};
+
+export const filtrerUtfylteInnsendinger = (
+  ettersending: IEttersending
+): IDokumentasjonsbehovTilBackend[] => {
+  return ettersending.dokumentasjonsbehov.filter(
+    (innsending) =>
+      innsending.vedlegg.length > 0 ||
+      innsending.søknadsdata?.harSendtInnTidligere
+  );
 };
