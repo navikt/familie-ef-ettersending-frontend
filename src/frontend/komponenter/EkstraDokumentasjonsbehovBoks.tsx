@@ -108,6 +108,17 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
     <StyledPanel border>
       {!harLåstValg && (
         <>
+          <StyledDiv>
+            <b> </b>
+            <StyledImg
+              className="slettikon"
+              src={slett}
+              alt="Rødt kryss"
+              onClick={() => {
+                slettInnsending();
+              }}
+            />
+          </StyledDiv>
           <StyledSelect
             label="Hvilken stønadstype gjelder innsendingen for?"
             onChange={(event) => {
