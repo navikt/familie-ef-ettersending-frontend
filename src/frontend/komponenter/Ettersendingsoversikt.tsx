@@ -163,7 +163,11 @@ const Ettersendingsoversikt: React.FC = () => {
   const sendInnEttersending = () => {
     try {
       settAktivtSteg(2);
-      sendEttersending(ettersending);
+      const ettersendingTilBackend: IEttersending = {
+        dokumentasjonsbehov: filtrerUtfylteInnsendinger(),
+        personIdent: ettersending.personIdent,
+      };
+      sendEttersending(ettersendingTilBackend);
       settAlertStripeMelding(alertMelding.SENDT_INN);
     } catch {
       settAlertStripeMelding(alertMelding.FEIL);
@@ -298,7 +302,7 @@ const Ettersendingsoversikt: React.FC = () => {
         <>
           <Oppsummering
             tittel={'Følgende dokumentasjon er sendt inn'}
-            innsendinger={ettersending.dokumentasjonsbehov}
+            innsendinger={filtrerUtfylteInnsendinger()}
           />
         </>
       )}
