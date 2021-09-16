@@ -16,6 +16,7 @@ interface IProps {
   leggTilNyDokumentasjonsbehovBoks: () => void;
   ekstraInnsendingerId: string[];
   visOppsummering: () => void;
+  ekstraInnsendingerUtenVedlegg: string[];
 }
 
 const SoknadContainer = styled.div`
@@ -38,6 +39,7 @@ export const InnsendingSide: React.FC<IProps> = ({
   leggTilNyDokumentasjonsbehovBoks,
   ekstraInnsendingerId,
   visOppsummering,
+  ekstraInnsendingerUtenVedlegg,
 }: IProps) => {
   return (
     <>
@@ -62,6 +64,7 @@ export const InnsendingSide: React.FC<IProps> = ({
               innsending={innsending}
               oppdaterInnsending={oppdaterInnsending}
               slettEkstraInnsending={slettInnsending}
+              innsendingerUtenVedlegg={ekstraInnsendingerUtenVedlegg}
             />
           );
         })}

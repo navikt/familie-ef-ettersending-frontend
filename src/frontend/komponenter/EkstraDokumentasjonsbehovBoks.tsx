@@ -51,12 +51,14 @@ interface IProps {
   innsending: IDokumentasjonsbehovTilBackend;
   oppdaterInnsending: (innsending: IDokumentasjonsbehovTilBackend) => void;
   slettEkstraInnsending: (id: string) => void;
+  innsendingerUtenVedlegg: string[];
 }
 
 export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
   innsending,
   oppdaterInnsending,
   slettEkstraInnsending,
+  innsendingerUtenVedlegg,
 }: IProps) => {
   const [valgtDokumentType, settValgtDokumentType] = useState<string>();
   const [valgtStønadType, settValgtStønadType] = useState<StønadType>();
@@ -182,6 +184,11 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
         </div>
       )}
       <StyledAlertStripe melding={alertStripeMelding} />
+      {innsendingerUtenVedlegg.includes(innsending.id) && (
+        <StyledAlertStripe
+          melding={alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS}
+        />
+      )}
     </StyledPanel>
   );
 };

@@ -9,6 +9,7 @@ import {
   minstEttVedleggErLastetOpp,
   minstEnBoksErAvkrysset,
   minstEttVedleggErLastetOppForEkstraDokumentasjonsboks,
+  ekstraInnsendingerUtenVedlegg,
 } from '../utils/innsendingsvalidering';
 import { v4 as uuidv4 } from 'uuid';
 import NavFrontendSpinner from 'nav-frontend-spinner';
@@ -62,6 +63,10 @@ const Ettersendingsoversikt: React.FC = () => {
   const [ekstraInnsendingerId, settEkstraInnsendingerId] = useState<string[]>(
     []
   );
+  const [
+    ekstraInnsendingerSomManglerVedlegg,
+    settEkstraInnsendingerSomManglerVedlegg,
+  ] = useState<string[]>([]);
   const [aktivtSteg, settAktivtSteg] = useState<number>(0);
 
   const stegForInnsending = [
@@ -102,6 +107,11 @@ const Ettersendingsoversikt: React.FC = () => {
     settEkstraInnsendingerId(
       ekstraInnsendingerId.filter((innsendingsId) => innsendingsId != id)
     );
+    settEkstraInnsendingerSomManglerVedlegg(
+      ekstraInnsendingerSomManglerVedlegg.filter(
+        (innsendingsId) => innsendingsId != id
+      )
+    );
   };
 
   const leggTilNyInnsending = (innsending: IDokumentasjonsbehovTilBackend) => {
@@ -135,6 +145,7 @@ const Ettersendingsoversikt: React.FC = () => {
 
   const visOppsummering = () => {
     settAlertStripeMelding(alertMelding.TOM);
+    settEkstraInnsendingerSomManglerVedlegg([]);
     if (
       minstEttVedleggErLastetOpp(ettersending.dokumentasjonsbehov) ||
       minstEnBoksErAvkrysset(ettersending.dokumentasjonsbehov)
@@ -148,7 +159,12 @@ const Ettersendingsoversikt: React.FC = () => {
         settAktivtSteg(1);
         return;
       }
-      settAlertStripeMelding(alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS);
+      settEkstraInnsendingerSomManglerVedlegg(
+        ekstraInnsendingerUtenVedlegg(
+          ettersending.dokumentasjonsbehov,
+          ekstraInnsendingerId
+        )
+      );
       return;
     }
     settAlertStripeMelding(alertMelding.MANGLER_VEDLEGG);
@@ -282,6 +298,7 @@ const Ettersendingsoversikt: React.FC = () => {
           leggTilNyDokumentasjonsbehovBoks={leggTilNyEkstraInnsending}
           ekstraInnsendingerId={ekstraInnsendingerId}
           visOppsummering={visOppsummering}
+          ekstraInnsendingerUtenVedlegg={ekstraInnsendingerSomManglerVedlegg}
         />
       )}
       {aktivtSteg === 1 && (

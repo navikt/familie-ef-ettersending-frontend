@@ -27,3 +27,16 @@ export const minstEttVedleggErLastetOppForEkstraDokumentasjonsboks = (
       .some((innsending) => innsending.vedlegg.length > 0)
   );
 };
+
+export const ekstraInnsendingerUtenVedlegg = (
+  dokumentasjonsbehov: IDokumentasjonsbehovTilBackend[],
+  ekstraInnsendingerId: string[]
+): string[] => {
+  const innsendingerUtenVedlegg: string[] = [];
+  dokumentasjonsbehov.forEach((innsending) => {
+    ekstraInnsendingerId.includes(innsending.id) &&
+      innsending.vedlegg.length === 0 &&
+      innsendingerUtenVedlegg.push(innsending.id);
+  });
+  return innsendingerUtenVedlegg;
+};
