@@ -2,12 +2,12 @@ import React from 'react';
 import slett from '../icons/slett.svg';
 import vedlegg from '../icons/vedlegg.svg';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { IVedleggX } from '../typer/ettersending';
+import { IVedleggForEttersending } from '../typer/ettersending';
 import '../stil/Opplastedevedlegg.less';
 
 interface IOpplastedeVedlegg {
-  vedleggsliste: IVedleggX[];
-  slettVedlegg?: (vedlegg: IVedleggX) => void;
+  vedleggsliste: IVedleggForEttersending[];
+  slettVedlegg?: (vedlegg: IVedleggForEttersending) => void;
 }
 
 const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
@@ -16,7 +16,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
 }: IOpplastedeVedlegg) => {
   return (
     <div className="opplastede-filer">
-      {vedleggsliste.map((fil: IVedleggX, index: number) => {
+      {vedleggsliste.map((fil: IVedleggForEttersending, index: number) => {
         return (
           <div key={index}>
             <div className="fil">

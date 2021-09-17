@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { IDokumentasjonsbehovTilBackend } from '../typer/ettersending';
+import { IDokumentasjonsbehov } from '../typer/ettersending';
 import { stønadTypeTilTekst, StønadType } from '../typer/stønad';
 import OpplastedeVedleggOversikt from './OpplastedeVedleggOversikt';
 import { formaterIsoDato } from '../../shared-utils/dato';
@@ -12,7 +12,7 @@ const StyledDiv = styled.div`
 `;
 
 interface IProps {
-  innsendinger: IDokumentasjonsbehovTilBackend[];
+  innsendinger: IDokumentasjonsbehov[];
   tittel: string;
 }
 

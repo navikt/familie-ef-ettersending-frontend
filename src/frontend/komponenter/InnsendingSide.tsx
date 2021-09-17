@@ -2,16 +2,13 @@ import React from 'react';
 import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
 import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
 import { LeggTilInnsending } from './LeggTilInnsending';
-import {
-  IDokumentasjonsbehovTilBackend,
-  IEttersending,
-} from '../typer/ettersending';
+import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
 import styled from 'styled-components';
 import { Hovedknapp } from 'nav-frontend-knapper';
 
 interface IProps {
   ettersending: IEttersending;
-  oppdaterInnsending: (innsending: IDokumentasjonsbehovTilBackend) => void;
+  oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
   slettInnsending: (id: string) => void;
   leggTilNyDokumentasjonsbehovBoks: () => void;
   ekstraInnsendingerId: string[];

@@ -8,7 +8,7 @@ export interface ISøknadsbehov {
   søknadId: string;
 }
 
-export interface IVedlegg {
+export interface IVedleggForSøknad {
   id: string;
   navn: string;
   dato?: string;
@@ -18,18 +18,18 @@ export interface IVedlegg {
 }
 
 export interface IEttersending {
-  dokumentasjonsbehov: IDokumentasjonsbehovTilBackend[];
+  dokumentasjonsbehov: IDokumentasjonsbehov[];
   personIdent: string;
 }
 
-export interface IDokumentasjonsbehovTilBackend {
+export interface IDokumentasjonsbehov {
   id: string; // genenrer UUID ved mapping fra backend til nytt objekt
   søknadsdata?: ISøknadMetadata;
   dokumenttype?: string;
   stønadType?: StønadType;
   beskrivelse?: string;
   innsendingstidspunkt: any;
-  vedlegg: IVedleggX[];
+  vedlegg: IVedleggForEttersending[];
 }
 
 export interface ISøknadMetadata {
@@ -39,7 +39,7 @@ export interface ISøknadMetadata {
   harSendtInnTidligere: boolean;
 }
 
-export interface IVedleggX {
+export interface IVedleggForEttersending {
   id: string;
   navn: string;
   tittel: string;

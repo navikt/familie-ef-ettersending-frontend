@@ -13,7 +13,7 @@ import {
   StønadType,
   stønadTypeTilTekst,
 } from '../typer/stønad';
-import { IDokumentasjonsbehovTilBackend } from '../typer/ettersending';
+import { IDokumentasjonsbehov } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
 
@@ -48,8 +48,8 @@ const StyledUndertekst = styled(Undertekst)`
 `;
 
 interface IProps {
-  innsending: IDokumentasjonsbehovTilBackend;
-  oppdaterInnsending: (innsending: IDokumentasjonsbehovTilBackend) => void;
+  innsending: IDokumentasjonsbehov;
+  oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
   slettEkstraInnsending: (id: string) => void;
   innsendingerUtenVedlegg: string[];
 }

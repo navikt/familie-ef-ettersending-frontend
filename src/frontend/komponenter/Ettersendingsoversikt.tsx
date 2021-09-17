@@ -16,18 +16,17 @@ import { v4 as uuidv4 } from 'uuid';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
   IEttersending,
-  IDokumentasjonsbehovTilBackend,
+  IDokumentasjonsbehov,
   ISøknadsbehov,
-  IVedleggX,
 } from '../typer/ettersending';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { IDokumentasjonsbehovFraBackend } from '../typer/dokumentasjonsbehov';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { Oppsummering } from './Oppsummering';
 import { InnsendingSide } from './InnsendingSide';
 import Stegindikator from 'nav-frontend-stegindikator';
+import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 
 const StyledKnapp = styled(Knapp)`
   margin: 1rem auto;
@@ -85,7 +84,7 @@ const Ettersendingsoversikt: React.FC = () => {
     },
   ];
 
-  const oppdaterInnsending = (innsending: IDokumentasjonsbehovTilBackend) => {
+  const oppdaterInnsending = (innsending: IDokumentasjonsbehov) => {
     settEttersending((prevEttersending) => {
       return {
         ...prevEttersending,
@@ -115,7 +114,7 @@ const Ettersendingsoversikt: React.FC = () => {
     );
   };
 
-  const leggTilNyInnsending = (innsending: IDokumentasjonsbehovTilBackend) => {
+  const leggTilNyInnsending = (innsending: IDokumentasjonsbehov) => {
     settEttersending({
       ...ettersending,
       dokumentasjonsbehov: [...ettersending.dokumentasjonsbehov, innsending],
@@ -123,7 +122,7 @@ const Ettersendingsoversikt: React.FC = () => {
   };
 
   const leggTilNyEkstraInnsending = () => {
-    const nyInnsending: IDokumentasjonsbehovTilBackend = {
+    const nyInnsending: IDokumentasjonsbehov = {
       id: uuidv4(),
       søknadsdata: undefined,
       dokumenttype: undefined,
@@ -189,48 +188,6 @@ const Ettersendingsoversikt: React.FC = () => {
     if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
   }, [context.søker]);
 
-  const slåSammenSøknadOgEttersendinger = (
-    søknad: ISøknadsbehov,
-    ettersendinger: IEttersending[]
-  ): ISøknadsbehov => {
-    const dokumentasjonsbehov: IDokumentasjonsbehovFraBackend[] =
-      søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {
-        let ettersendteVedlegg: IVedleggX[] = behov.opplastedeVedlegg.map(
-          (vedlegg) => ({ ...vedlegg, tittel: 'ingen tittel' })
-        );
-        let harSendtInnPåAnnenMåte = behov.harSendtInn;
-        ettersendinger.forEach((ettersending) => {
-          ettersending.dokumentasjonsbehov.forEach((dokumentasjonsbehov) => {
-            if (
-              dokumentasjonsbehov.søknadsdata &&
-              dokumentasjonsbehov.søknadsdata.søknadId === søknad.søknadId &&
-              dokumentasjonsbehov.søknadsdata.dokumentasjonsbehovId === behov.id
-            ) {
-              ettersendteVedlegg = [
-                ...ettersendteVedlegg,
-                ...dokumentasjonsbehov.vedlegg,
-              ];
-              harSendtInnPåAnnenMåte = dokumentasjonsbehov.søknadsdata
-                .harSendtInnTidligere
-                ? true
-                : harSendtInnPåAnnenMåte;
-            }
-          });
-        });
-
-        return {
-          ...behov,
-          opplastedeVedlegg: ettersendteVedlegg,
-          harSendtInn: harSendtInnPåAnnenMåte,
-        };
-      });
-
-    return {
-      ...søknad,
-      dokumentasjonsbehov: { dokumentasjonsbehov: dokumentasjonsbehov },
-    };
-  };
-
   const hentOgSettSøknaderOgEttersendinger = async () => {
     const søknadsliste = await hentSøknader();
     const ettersendinger = await hentEttersendinger();
@@ -241,7 +198,7 @@ const Ettersendingsoversikt: React.FC = () => {
       }
     );
 
-    const initielleInnsendinger: IDokumentasjonsbehovTilBackend[] =
+    const initielleInnsendinger: IDokumentasjonsbehov[] =
       søknaderMedEttersendinger.flatMap((søknad) => {
         return søknad.dokumentasjonsbehov.dokumentasjonsbehov
           .filter(

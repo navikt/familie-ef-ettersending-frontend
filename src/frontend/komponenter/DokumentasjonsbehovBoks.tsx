@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IDokumentasjonsbehovTilBackend } from '../typer/ettersending';
+import { IDokumentasjonsbehov } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import styled from 'styled-components';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -31,8 +31,8 @@ const StyledLesMerTekst = styled(LesMerTekst)`
 `;
 
 interface Props {
-  innsending: IDokumentasjonsbehovTilBackend;
-  oppdaterInnsending: (innsending: IDokumentasjonsbehovTilBackend) => void;
+  innsending: IDokumentasjonsbehov;
+  oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
 }
 
 export const DokumentasjonsbehovBoks: React.FC<Props> = ({

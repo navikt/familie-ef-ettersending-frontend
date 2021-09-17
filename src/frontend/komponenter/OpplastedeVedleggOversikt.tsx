@@ -1,11 +1,11 @@
 import React from 'react';
 import vedlegg from '../icons/vedlegg.svg';
-import { IVedleggX } from '../typer/ettersending';
+import { IVedleggForEttersending } from '../typer/ettersending';
 import '../stil/Opplastedevedlegg.less';
 import styled from 'styled-components/macro';
 
 interface IOpplastedeVedlegg {
-  vedleggsliste: IVedleggX[];
+  vedleggsliste: IVedleggForEttersending[];
 }
 
 const StyledSpan = styled.span`
@@ -23,7 +23,7 @@ const OpplastedeVedleggOversikt: React.FC<IOpplastedeVedlegg> = ({
 }: IOpplastedeVedlegg) => {
   return (
     <>
-      {vedleggsliste.map((fil: IVedleggX, index) => {
+      {vedleggsliste.map((fil: IVedleggForEttersending, index) => {
         return (
           <StyledSpan key={index}>
             <StyledImg

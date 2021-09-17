@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import { useApp } from '../context/AppContext';
-import { IDokumentasjonsbehovTilBackend } from '../typer/ettersending';
+import { IDokumentasjonsbehov } from '../typer/ettersending';
 import { DokumentasjonsbehovBoks } from './DokumentasjonsbehovBoks';
 
 interface IProps {
-  oppdaterInnsending: (innsending: IDokumentasjonsbehovTilBackend) => void;
-  innsending: IDokumentasjonsbehovTilBackend;
+  oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
+  innsending: IDokumentasjonsbehov;
 }
 
 export const DokumentasjonsbehovListe: React.FC<IProps> = ({

@@ -7,8 +7,8 @@ import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import Modal from 'nav-frontend-modal';
 import {
-  IDokumentasjonsbehovTilBackend,
-  IVedleggX,
+  IDokumentasjonsbehov,
+  IVedleggForEttersending,
 } from '../typer/ettersending';
 import '../stil/Vedleggsopplaster.less';
 import { sendVedleggTilMellomlager } from '../api-service';
@@ -20,8 +20,8 @@ const StyledAlertStripe = styled(AlertStripe)`
 `;
 
 interface IProps {
-  oppdaterInnsending: (innsending: IDokumentasjonsbehovTilBackend) => void;
-  innsending: IDokumentasjonsbehovTilBackend;
+  oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
+  innsending: IDokumentasjonsbehov;
 }
 
 const Vedleggsopplaster: React.FC<IProps> = ({
@@ -36,24 +36,24 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   const [laster, settLaster] = useState<boolean>(false);
 
   const leggTilVedlegg = (
-    nyeVedlegg: IVedleggX[]
-  ): IDokumentasjonsbehovTilBackend => {
+    nyeVedlegg: IVedleggForEttersending[]
+  ): IDokumentasjonsbehov => {
     return {
       ...innsending,
       vedlegg: [...innsending.vedlegg, ...nyeVedlegg],
     };
   };
 
-  const slettVedlegg = (vedlegg: IVedleggX): void => {
+  const slettVedlegg = (vedlegg: IVedleggForEttersending): void => {
     oppdaterInnsending({
       ...innsending,
       vedlegg: [...innsending.vedlegg].filter(
-        (v: IVedleggX) => v.id !== vedlegg.id
+        (v: IVedleggForEttersending) => v.id !== vedlegg.id
       ),
     });
   };
 
-  const visVedleggTilOpplasting = (): IVedleggX[] => {
+  const visVedleggTilOpplasting = (): IVedleggForEttersending[] => {
     return innsending.vedlegg;
   };
 
@@ -68,14 +68,14 @@ const Vedleggsopplaster: React.FC<IProps> = ({
     settLaster(true);
     settAlertStripeMelding(alertMelding.TOM);
 
-    const vedleggListe: IVedleggX[] = [];
+    const vedleggListe: IVedleggForEttersending[] = [];
     await Promise.all(
       filer.map(async (fil) => {
         try {
           const formData = new FormData();
           formData.append('file', fil);
           const respons = await sendVedleggTilMellomlager(formData);
-          const vedlegg: IVedleggX = {
+          const vedlegg: IVedleggForEttersending = {
             id: respons,
             navn: fil.name,
             tittel: innsending.beskrivelse || 'Ukjent tittel',
