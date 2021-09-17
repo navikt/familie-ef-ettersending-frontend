@@ -2,14 +2,12 @@ import React from 'react';
 import slett from '../icons/slett.svg';
 import vedlegg from '../icons/vedlegg.svg';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { IVedlegg } from '../typer/ettersending';
+import { IVedleggForEttersending } from '../typer/ettersending';
 import '../stil/Opplastedevedlegg.less';
-import { dokumentTypeTilTekst, stønadTypeTilTekst } from '../typer/stønad';
-import { formaterIsoDato } from '../../shared-utils/dato';
 
 interface IOpplastedeVedlegg {
-  vedleggsliste: IVedlegg[];
-  slettVedlegg?: (vedlegg: IVedlegg) => void;
+  vedleggsliste: IVedleggForEttersending[];
+  slettVedlegg?: (vedlegg: IVedleggForEttersending) => void;
 }
 
 const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
@@ -18,7 +16,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
 }: IOpplastedeVedlegg) => {
   return (
     <div className="opplastede-filer">
-      {vedleggsliste.map((fil: IVedlegg, index: number) => {
+      {vedleggsliste.map((fil: IVedleggForEttersending, index: number) => {
         return (
           <div key={index}>
             <div className="fil">
@@ -31,39 +29,6 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                 <Normaltekst className="filnavn">
                   <b>Navn: </b>
                   {fil.navn}
-                  {fil.dato && (
-                    <>
-                      <br />
-                      <span>
-                        <b>Dato: </b>
-                        {formaterIsoDato(fil.dato)}
-                      </span>
-                    </>
-                  )}
-                  {fil.stønadstype && (
-                    <>
-                      <br />
-                      <span>
-                        <b>Stønadtype: </b>
-                        {fil.stønadstype && stønadTypeTilTekst[fil.stønadstype]}
-                      </span>
-                    </>
-                  )}
-                  {fil.dokumenttype && (
-                    <>
-                      <br />
-                      <span>
-                        <b>Dokumenttype: </b>
-                        {fil.dokumenttype &&
-                          dokumentTypeTilTekst[fil.dokumenttype]}
-                      </span>
-                    </>
-                  )}
-                  {fil.beskrivelse && (
-                    <>
-                      <br />
-                    </>
-                  )}
                 </Normaltekst>
               </div>
               {slettVedlegg && (
@@ -73,7 +38,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                     slettVedlegg(fil);
                   }}
                 >
-                  <Normaltekst>slett</Normaltekst>
+                  <Normaltekst>angre opplasting</Normaltekst>
                   <img className="slettikon" src={slett} alt="Rødt kryss" />
                 </div>
               )}

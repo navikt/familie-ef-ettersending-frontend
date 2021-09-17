@@ -1,7 +1,4 @@
-import {
-  IDokumentasjonsbehov,
-  IDokumentasjonsbehovWrapper,
-} from './dokumentasjonsbehov';
+import { IDokumentasjonsbehovWrapper } from './dokumentasjonsbehov';
 import { DokumentType, StønadType } from './stønad';
 
 export interface ISøknadsbehov {
@@ -11,15 +8,7 @@ export interface ISøknadsbehov {
   søknadId: string;
 }
 
-export interface ISøknadMedEttersendinger {
-  dokumentasjonsbehov: IDokumentasjonsbehov[];
-  søknadDato: any;
-  stønadType: StønadType;
-  søknadId: string;
-  innsending: IInnsending[];
-}
-
-export interface IVedlegg {
+export interface IVedleggForSøknad {
   id: string;
   navn: string;
   dato?: string;
@@ -28,57 +17,30 @@ export interface IVedlegg {
   stønadstype?: StønadType;
 }
 
-export interface IInnsending {
-  beskrivelse: string;
-  dokumenttype?: DokumentType;
-  vedlegg: IVedlegg[];
-}
-
-export interface IEttersendingUtenSøknad {
-  innsending: IInnsending[];
-}
-export interface IEttersendingForSøknad {
-  søknadId: string;
-  dokumentasjonsbehov: IDokumentasjonsbehov[];
-  innsending: IInnsending[];
-}
-
 export interface IEttersending {
-  fnr: string;
-  stønadType: StønadType;
-  ettersendingForSøknad: IEttersendingForSøknad | null;
-  ettersendingUtenSøknad: IEttersendingUtenSøknad | null;
+  dokumentasjonsbehov: IDokumentasjonsbehov[];
+  personIdent: string;
 }
 
-export interface IEttersendingMedDato {
-  ettersendingDto: IEttersending;
-  mottattTidspunkt: string;
+export interface IDokumentasjonsbehov {
+  id: string; // genenrer UUID ved mapping fra backend til nytt objekt
+  søknadsdata?: ISøknadMetadata;
+  dokumenttype?: string;
+  stønadType?: StønadType;
+  beskrivelse?: string;
+  innsendingstidspunkt: any;
+  vedlegg: IVedleggForEttersending[];
 }
 
-export const tomEttersendingUtenSøknad: IEttersendingUtenSøknad = {
-  innsending: [
-    {
-      beskrivelse: '',
-      dokumenttype: undefined,
-      vedlegg: [],
-    },
-  ],
-};
+export interface ISøknadMetadata {
+  søknadId: string;
+  søknadsdato: any;
+  dokumentasjonsbehovId: string;
+  harSendtInnTidligere: boolean;
+}
 
-export const tomEttersendingForSøknad: IEttersendingForSøknad = {
-  søknadId: '',
-  dokumentasjonsbehov: [],
-  innsending: [],
-};
-
-export const tomInnsending: IInnsending = {
-  beskrivelse: '',
-  dokumenttype: undefined,
-  vedlegg: [],
-};
-
-export enum EttersendingType {
-  ETTERSENDING_UTEN_SØKNAD,
-  ETTERSENDING_MED_SØKNAD_DOKUMENTASJONSBEHOV,
-  ETTERSENDING_MED_SØKNAD_INNSENDING,
+export interface IVedleggForEttersending {
+  id: string;
+  navn: string;
+  tittel: string;
 }
