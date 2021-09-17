@@ -112,14 +112,16 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
         <>
           <StyledDiv>
             <b> </b>
-            <StyledImg
-              className="slettikon"
-              src={slett}
-              alt="Rødt kryss"
-              onClick={() => {
-                slettInnsending();
-              }}
-            />
+            <span tabIndex={0}>
+              <StyledImg
+                className="slettikon"
+                src={slett}
+                alt="Rødt kryss"
+                onClick={() => {
+                  slettInnsending();
+                }}
+              />
+            </span>
           </StyledDiv>
           <StyledSelect
             label="Hvilken stønadstype gjelder innsendingen for?"
@@ -155,14 +157,16 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
         <>
           <StyledDiv>
             <b>{dokumentTypeTilTekst[valgtDokumentType as DokumentType]}</b>
-            <StyledImg
-              className="slettikon"
-              src={slett}
-              alt="Rødt kryss"
-              onClick={() => {
-                slettInnsending();
-              }}
-            />
+            <span tabIndex={0}>
+              <StyledImg
+                className="slettikon"
+                src={slett}
+                alt="Rødt kryss"
+                onClick={() => {
+                  slettInnsending();
+                }}
+              />
+            </span>
           </StyledDiv>
           <p>
             <b>Stønadstype: </b>
