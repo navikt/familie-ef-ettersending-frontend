@@ -33,8 +33,7 @@ export const Oppsummering: React.FC<IProps> = ({
           <StyledDiv key={index}>
             <Normaltekst>
               <b>Stønadstype: </b>
-
-              {stønadTypeTilTekst[innsending.stønadType as StønadType]}
+              {innsending.beskrivelse}
             </Normaltekst>
             {innsending.dokumenttype && (
               <Normaltekst>

@@ -47,7 +47,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       vedlegg: [...innsending.vedlegg, ...nyeVedlegg],
     };
   };
-  const tillateFiltyper = ['pdf', 'jpg', 'svg', 'png', 'jpeg', 'gif', 'ico'];
+  const tillateFiltyper = ['pdf', 'jpg', 'png', 'jpeg'];
 
   const slettVedlegg = (vedlegg: IVedleggForEttersending): void => {
     oppdaterInnsending({
