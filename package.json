@@ -9,7 +9,7 @@
         "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
         "@types/react-collapse": "^5.0.0",
         "@types/uuid": "^8.3.0",
-        "axios": "^0.21.1",
+        "axios": "^0.21.2",
         "babel-polyfill": "^6.26.0",
         "babel-preset-react-app": "^10.0.0",
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
