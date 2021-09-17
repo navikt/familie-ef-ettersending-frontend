@@ -19,6 +19,10 @@ const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
 `;
 
+const StyledNormaltekst = styled(Normaltekst)`
+  margin-top: 1rem;
+`;
+
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
   innsending: IDokumentasjonsbehov;
@@ -43,6 +47,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       vedlegg: [...innsending.vedlegg, ...nyeVedlegg],
     };
   };
+  const tillateFiltyper = ['pdf', 'jpg', 'svg', 'png', 'jpeg', 'gif', 'ico'];
 
   const slettVedlegg = (vedlegg: IVedleggForEttersending): void => {
     oppdaterInnsending({
@@ -58,7 +63,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   };
 
   const sjekkTillatFiltype = (filtype: string) => {
-    const tillateFiltyper = ['pdf', 'jpg', 'svg', 'png', 'jpeg', 'gif', 'ico'];
     return tillateFiltyper.some((type) => {
       return filtype.includes(type);
     });
@@ -126,6 +130,9 @@ const Vedleggsopplaster: React.FC<IProps> = ({
                 {feilmelding}
               </AlertStripeFeil>
             ))}
+            <StyledNormaltekst>
+              <b>Tillate filtyper:</b> {tillateFiltyper.join('\t')}
+            </StyledNormaltekst>
           </div>
         </Modal>
         <div {...getRootProps()}>
