@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
-import { stønadTypeTilTekst, StønadType } from '../typer/stønad';
+import { dokumentTypeTilTekst, DokumentType } from '../typer/stønad';
 import OpplastedeVedleggOversikt from './OpplastedeVedleggOversikt';
 import { formaterIsoDato } from '../../shared-utils/dato';
 
@@ -28,13 +28,12 @@ export const Oppsummering: React.FC<IProps> = ({
           <StyledDiv key={index}>
             <Normaltekst>
               <b>Stønadstype: </b>
-
-              {stønadTypeTilTekst[innsending.stønadType as StønadType]}
+              {innsending.beskrivelse}
             </Normaltekst>
             {innsending.dokumenttype && (
               <Normaltekst>
                 <b>Dokumenttype: </b>
-                {innsending.dokumenttype}
+                {dokumentTypeTilTekst[innsending.dokumenttype as DokumentType]}
               </Normaltekst>
             )}
             <Normaltekst>
