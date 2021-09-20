@@ -34,9 +34,7 @@ spec:
   env:
     - name: APP_VERSION
       value: "{{version}}"
-    {{#each env}}
-    - name: {{@key}}
-      value: "{{this}}"
-    {{/each}}
+    - name: ENV
+      value: dev
     - name: BASE_PATH
       value: "{{base_path}}"

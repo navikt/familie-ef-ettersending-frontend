@@ -1,8 +1,0 @@
-{
-    "ingresses": [
-        "https://ensligmorellerfar.dev.nav.no/familie/alene-med-barn/ettersending"
-    ],
-    "env": {
-        "ENV": "dev"
-    }
-}
