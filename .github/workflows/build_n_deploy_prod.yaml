@@ -1,4 +1,4 @@
-name: Build, push, and deploy app to dev
+name: Build, push, and deploy app to prod
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker build -t ${IMAGE} . 
+          docker build -t ${IMAGE} .
           echo ${GITHUB_TOKEN} | docker login ghcr.io --username ${GITHUB_REPOSITORY} --password-stdin
           docker push ${IMAGE}
   deoploy:
@@ -30,6 +30,5 @@ jobs:
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: build_n_deploy/naiserator/nais-dev.yaml
-
+          CLUSTER: prod-gcp
+          RESOURCE: build_n_deploy/naiserator/nais-prod.yaml
