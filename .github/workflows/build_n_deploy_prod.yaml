@@ -1,0 +1,34 @@
+name: Build, push, and deploy app to prod
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
+env:
+  IMAGE: ghcr.io/navikt/familie-ef-ettersending:${{ github.sha }}
+
+jobs:
+  build:
+    name: Build and push Docker container
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and pubilsh Docker image
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docker build -t ${IMAGE} .
+          echo ${GITHUB_TOKEN} | docker login ghcr.io --username ${GITHUB_REPOSITORY} --password-stdin
+          docker push ${IMAGE}
+  deoploy:
+    name: Deploy to NAIS
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: build_n_deploy/naiserator/nais-prod.yaml
