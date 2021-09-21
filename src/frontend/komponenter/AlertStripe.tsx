@@ -7,6 +7,7 @@ export enum alertMelding {
   MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg for dokumentasjonsbehov',
   MANGLER_BEGGE_TYPER = 'Både stønadstype og dokumenttype må velges',
   MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS = 'Ingen vedlegg er lastet opp',
+  FEIL_VED_INNSENDING = 'Noe gikk galt ved innsending av dine dokumenter.',
   TOM = '',
 }
 
@@ -52,6 +53,14 @@ const AlertStripe: React.FC<IProps> = ({ className, melding }: IProps) => {
     return (
       <AlertStripeFeil className={className}>
         {alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS}
+      </AlertStripeFeil>
+    );
+  }
+
+  if (melding === alertMelding.FEIL_VED_INNSENDING) {
+    return (
+      <AlertStripeFeil className={className}>
+        {alertMelding.FEIL_VED_INNSENDING}
       </AlertStripeFeil>
     );
   }
