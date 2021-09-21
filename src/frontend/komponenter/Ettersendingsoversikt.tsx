@@ -168,17 +168,17 @@ const Ettersendingsoversikt: React.FC = () => {
     }
   };
 
-  const sendInnEttersending = () => {
+  const sendInnEttersending = async () => {
     try {
       settAktivtSteg(2);
       const ettersendingTilBackend: IEttersending = {
         dokumentasjonsbehov: filtrerUtfylteInnsendinger(ettersending),
         personIdent: ettersending.personIdent,
       };
-      sendEttersending(ettersendingTilBackend);
+      await sendEttersending(ettersendingTilBackend);
       settAlertStripeMelding(alertMelding.SENDT_INN);
     } catch {
-      settAlertStripeMelding(alertMelding.FEIL);
+      settAlertStripeMelding(alertMelding.FEIL_VED_INNSENDING);
     }
   };
 
