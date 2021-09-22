@@ -94,8 +94,9 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
             lukkTekst={'Derfor spør vi deg om dette '}
           >
             <Normaltekst>
-              Vi spør deg om dette fordi vi mangler {innsending.beskrivelse}.
-              Denne dokumentasjonen ble ikke sendt inn ved søknadstidspunktet{' '}
+              Vi spør deg om dette fordi vi mangler{' '}
+              {innsending.beskrivelse?.toLocaleLowerCase()}. Denne
+              dokumentasjonen ble ikke sendt inn ved søknadstidspunktet{' '}
               {formaterIsoDato(innsending.søknadsdata?.søknadsdato)}. Du kan se
               bort ifra dette hvis du allerede har sendt oss dokumentasjonen på
               annen måte. Da kan du krysse av på at du har levert på annen måte.
