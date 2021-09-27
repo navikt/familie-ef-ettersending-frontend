@@ -38,7 +38,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                     slettVedlegg(fil);
                   }}
                 >
-                  <Normaltekst>angre opplasting</Normaltekst>
+                  <Normaltekst>Angre opplasting</Normaltekst>
                   <img className="slettikon" src={slett} alt="Rødt kryss" />
                 </div>
               )}

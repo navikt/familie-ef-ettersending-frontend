@@ -90,8 +90,8 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
         )}
         <StyledLesMerTekst>
           <Lesmerpanel
-            apneTekst={'Derfor spør vi deg om dette '}
-            lukkTekst={'Derfor spør vi deg om dette '}
+            apneTekst={'Derfor spør vi deg om denne dokumentasjonen'}
+            lukkTekst={'Derfor spør vi deg om denne dokumentasjonen'}
           >
             <Normaltekst>
               Vi spør deg om dette fordi vi mangler{' '}
@@ -108,7 +108,7 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
           oppdaterInnsending={oppdaterInnsending}
         />
         <Undertekst>
-          Dersom dokumentet du skal sende inn består av flere filer kan du legge
+          Hvis dokumentet du skal sende inn består av flere filer, kan du legge
           til alle filene her.
         </Undertekst>
         <StyledCheckbox
@@ -117,7 +117,7 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
           label={'Jeg har levert på annen måte'}
         />
         <StyledHjelpetekst>
-          Dersom du har levert dokumentasjonen på en annen måte kan du krysse av
+          Hvis du har levert dokumentasjonen på en annen måte kan du krysse av
           denne boksen.
         </StyledHjelpetekst>
       </StyledPanel>
