@@ -60,7 +60,7 @@ export const dokumentTypeTilTekst: Record<DokumentType, string> = {
   DOKUMENTASJON_BOR_PÅ_ULIKE_ADDRESSER:
     'Dokumentasjon som viser at du og tidligere samboer bor på ulike adresser',
   DOKUMENTAJSON_BARN_BOR_HOS_DEG: 'Dokumentasjon som viser at barn bor hos deg',
-  AVTALE_OM_DELT_BOSTED: 'Avtale om delt bosted',
+  AVTALE_OM_DELT_BOSTED: 'Avtale om delt fast bosted',
   SAMVÆRSAVTALE_MED_KONKRETE_TIDSPUNKTER:
     'Samværsavtale med konktrete tidspunkter',
   SAMVÆRSAVTALE_UTEN_KONKRETE_TIDSPUNKTER:
