@@ -105,7 +105,7 @@
         "@types/react-router-dom": "^5.1.7",
         "@types/styled-components": "^5.1.14",
         "@types/webpack": "^5.28.0",
-        "@types/webpack-dev-server": "^3.11.4",
+        "@types/webpack-dev-server": "^4.1.0",
         "@typescript-eslint/eslint-plugin": "^4.27.0",
         "@typescript-eslint/parser": "^4.27.0",
         "babel-loader": "^8.2.2",
