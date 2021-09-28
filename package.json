@@ -78,12 +78,8 @@
         "start": "NODE_ENV=production node --es-module-specifier-resolution=node -r esm build/backend/server.js",
         "build": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=production webpack --config src/webpack/webpack.production.config.ts && tsc -p tsconfig.backend.json",
         "build:dev": "webpack --config ./build_n_deploy/webpack/webpack.dev.js",
-        "start:mock": "NODE_ENV=development node -r esm dev-server/mock-server.js"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
+        "start:mock": "NODE_ENV=development node -r esm dev-server/mock-server.js",
+        "prepare": "husky install"
     },
     "lint-staged": {
         "src/**/*.{js,jsx,ts,tsx,json,css}": [
@@ -105,7 +101,7 @@
         "@types/react-router-dom": "^5.3.0",
         "@types/styled-components": "^5.1.14",
         "@types/webpack": "^5.28.0",
-        "@types/webpack-dev-server": "^3.11.4",
+        "@types/webpack-dev-server": "^4.1.0",
         "@typescript-eslint/eslint-plugin": "^4.32.0",
         "@typescript-eslint/parser": "^4.32.0",
         "babel-loader": "^8.2.2",
@@ -119,19 +115,19 @@
         "eslint-config-airbnb": "^18.2.1",
         "eslint-config-prettier": "^8.3.0",
         "eslint-loader": "^4.0.2",
-        "eslint-plugin-prettier": "^3.4.0",
+        "eslint-plugin-prettier": "^4.0.0",
         "eslint-plugin-react": "^7.26.0",
         "eslint-plugin-react-hooks": "^4.2.0",
-        "eslint-webpack-plugin": "^2.5.4",
+        "eslint-webpack-plugin": "^3.0.1",
         "fork-ts-checker-webpack-plugin": "^6.3.3",
         "html-webpack-plugin": "^5.3.1",
-        "husky": "^4.3.8",
+        "husky": "^7.0.0",
         "install": "^0.13.0",
         "less-loader": "^10.0.0",
         "lint-staged": "^11.1.2",
-        "mini-css-extract-plugin": "^1.6.0",
+        "mini-css-extract-plugin": "^2.3.0",
         "prettier": "2.4.1",
-        "style-loader": "^2.0.0",
+        "style-loader": "^3.3.0",
         "ts-loader": "^9.2.3",
         "ts-node": "^10.2.1",
         "tsconfig-paths": "^3.11.0",
