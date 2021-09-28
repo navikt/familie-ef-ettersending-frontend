@@ -39,7 +39,8 @@ export const dokumenttyperForStønad = (
 export const dokumentTypeTilTekst: Record<DokumentType, string> = {
   DOKUMENTASJON_IKKE_VILLIG_TIL_ARBEID:
     'Dokumentasjon som beskriver grunnen til at du ikke kan ta ethvert arbeid',
-  DOKUMENTAJSON_SYK: 'Dokumentasjon på at du er for syk til å være i arbeid',
+  DOKUMENTAJSON_SYK:
+    'Dokumentasjon som viser at du er for syk til å være i arbeid',
   DOKUMENTAJSON_OM_VIRKSOMHETEN_DU_ETABLERER:
     'Næringsfaglig vurdering av virksomheten du etablerer',
   DOKUMENTASJON_UTFGIFTER_UTDANNING: 'Utgifter til skolepenger',
@@ -51,22 +52,23 @@ export const dokumentTypeTilTekst: Record<DokumentType, string> = {
     'Faktura fra barnepassordningen for perioden du søker om nå',
   AVTALE_MED_BARNEPASSER: 'Avtalen du har med barnepasseren',
   DOKUMENTASJON_TRENGER_MER_PASS_ENN_JEVNALDREDE:
-    'Dokumentasjon på at barnet ditt har behov for vesentlig mer pass enn det som er vanlig for jevnaldrende',
+    'Dokumentasjon som viser at barnet ditt har behov for vesentlig mer pass enn det som er vanlig for jevnaldrende',
   DOKUMENTASJON_UTENOM_VANLIG_ARBEIDSTID:
-    'Dokumentasjon på at du jobber turnus eller skift, og jobber på tider utenom vanlig arbeidstid',
+    'Dokumentasjon som viser at du jobber turnus eller skift, og jobber på tider utenom vanlig arbeidstid',
   DOKUMENTASJON_MYE_BORTE_PGA_JOBB:
-    'Dokumentasjon på at du må være borte fra hjemmet i lengre perioder på grunn av jobb',
+    'Dokumentasjon som viser at du må være borte fra hjemmet i lengre perioder på grunn av jobb',
   DOKUMENTASJON_BOR_PÅ_ULIKE_ADDRESSER:
-    'Dokumentasjon på at du og tidligere samboer bor på ulike adresser',
-  DOKUMENTAJSON_BARN_BOR_HOS_DEG: 'Dokumentasjon på at barn bor hos deg',
-  AVTALE_OM_DELT_BOSTED: 'Avtale om delt bosted',
+    'Dokumentasjon som viser at du og tidligere samboer bor på ulike adresser',
+  DOKUMENTAJSON_BARN_BOR_HOS_DEG: 'Dokumentasjon som viser at barn bor hos deg',
+  AVTALE_OM_DELT_BOSTED: 'Avtale om delt fast bosted',
   SAMVÆRSAVTALE_MED_KONKRETE_TIDSPUNKTER:
     'Samværsavtale med konktrete tidspunkter',
   SAMVÆRSAVTALE_UTEN_KONKRETE_TIDSPUNKTER:
     'Samværsavtale uten konkrete tidspunkter',
-  DOKUMENTASJON_SYKDOM: 'Dokumentasjon på at du er syk',
+  DOKUMENTASJON_SYKDOM: 'Dokumentasjon som viser at du er syk',
   DOKUMENTASJON_SYKT_BARN: 'Dokumentasjon på barnets sykdom',
-  DOKUMENTASJON_BARNEPASS_MANGEL: 'Dokumentasjon på at du mangler barnepass ',
+  DOKUMENTASJON_BARNEPASS_MANGEL:
+    'Dokumentasjon som viser at du mangler barnepass ',
   DOKUMENTASJON_BARNETILSYN_BEHOV: 'Dokumentasjon på barnets tilsynsbehov',
   ARBEIDSFORHOLD_OG_OPPSIGELSESÅRSAK:
     'Dokumentasjon på arbeidsforholdet og årsaken til at du sluttet',
