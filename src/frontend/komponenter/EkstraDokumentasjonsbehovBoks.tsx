@@ -177,7 +177,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
             oppdaterInnsending={oppdaterInnsending}
           />
           <StyledUndertekst>
-            Dersom dokumentet du skal sende inn består av flere filer kan du
+            Hvis dokumentet du skal sende inn består av flere filer, kan du
             legge til alle filene her.
           </StyledUndertekst>
         </>
