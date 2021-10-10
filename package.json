@@ -15,7 +15,7 @@
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
         "classnames": "^2.3.1",
         "constate": "^3.3.0",
-        "date-fns": "^2.24.0",
+        "date-fns": "^2.25.0",
         "esm": "^3.2.25",
         "express": "^4.17.1",
         "filopplasting": "^1.1.1",
