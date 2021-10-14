@@ -20,3 +20,15 @@ export const logFeilFilopplasting = (...props: any) => {
     ...props,
   });
 };
+
+export const logDokumentasjonsbehov = (dokBehov: any, ...props: any) => {
+  dokBehov.map((dok: any) => {
+    logEvent('dokumentasjonsbehov_ettersending', {
+      applikasjon: 'familie-ef-ettersending',
+      dokumentBeskrivelse: dok.beskrivelse,
+      dokumenttype: dok.dokumenttype,
+      stønadType: dok.stønadType,
+      ...props,
+    });
+  });
+};
