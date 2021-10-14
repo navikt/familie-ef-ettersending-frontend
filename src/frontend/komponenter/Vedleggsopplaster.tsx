@@ -14,6 +14,7 @@ import '../stil/Vedleggsopplaster.less';
 import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
 import AlertStripe, { alertMelding } from './AlertStripe';
+import { logFeilFilopplasting } from '../utils/amplitude';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
@@ -100,8 +101,16 @@ const Vedleggsopplaster: React.FC<IProps> = ({
 
     filer.forEach((fil: File) => {
       if (!sjekkTillatFiltype(fil.type)) {
-        feilmeldingsliste.push(fil.name + ' - Ugyldig filtype');
+        const feilmelding = fil.name + ' - Ugyldig filtype';
+        feilmeldingsliste.push(feilmelding);
         settFeilmeldinger(feilmeldingsliste);
+
+        logFeilFilopplasting({
+          type_feil: 'Feil filtype',
+          feilmelding: feilmelding,
+          filtype: fil.type,
+        });
+
         settÅpenModal(true);
         return;
       }
