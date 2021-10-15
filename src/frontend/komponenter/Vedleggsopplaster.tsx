@@ -88,6 +88,13 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           vedleggListe.push(vedlegg);
         } catch {
           settAlertStripeMelding(alertMelding.FEIL);
+
+          logFeilFilopplasting({
+            type_feil: 'Generisk feil',
+            feilmelding: alertMelding.FEIL,
+            filtype: fil.type,
+            filstørrelse: fil.size,
+          });
         }
       })
     );
