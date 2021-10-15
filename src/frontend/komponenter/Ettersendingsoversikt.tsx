@@ -27,6 +27,7 @@ import { Oppsummering } from './Oppsummering';
 import { InnsendingSide } from './InnsendingSide';
 import Stegindikator from 'nav-frontend-stegindikator';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
+import { logDokumentasjonsbehov } from '../utils/amplitude';
 
 const StyledKnapp = styled(Knapp)`
   margin: 1rem auto;
@@ -148,6 +149,7 @@ const Ettersendingsoversikt: React.FC = () => {
           ekstraInnsendingerId
         )
       ) {
+        logDokumentasjonsbehov(ettersending.dokumentasjonsbehov);
         settAktivtSteg(1);
         return;
       }
