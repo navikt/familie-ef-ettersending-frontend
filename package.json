@@ -4,7 +4,7 @@
     "main": "main.js",
     "module": "main.js",
     "dependencies": {
-        "@navikt/ds-icons": "^0.5.4",
+        "@navikt/ds-icons": "^0.6.2",
         "@navikt/fnrvalidator": "^1.1.4",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
         "@types/amplitude-js": "^8.0.1",
