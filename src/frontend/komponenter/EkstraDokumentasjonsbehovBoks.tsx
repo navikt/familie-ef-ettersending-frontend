@@ -175,6 +175,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
           <Vedleggsopplaster
             innsending={innsending}
             oppdaterInnsending={oppdaterInnsending}
+            maxFilstørrelse={1024 * 1024 * 10}
           />
           <StyledUndertekst>
             Hvis dokumentet du skal sende inn består av flere filer, kan du
