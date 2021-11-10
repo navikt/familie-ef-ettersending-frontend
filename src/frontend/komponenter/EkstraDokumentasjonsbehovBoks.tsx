@@ -16,6 +16,7 @@ import {
 import { IDokumentasjonsbehov } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
+import { filstørrelse_10MB } from '../utils/filer';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -175,6 +176,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
           <Vedleggsopplaster
             innsending={innsending}
             oppdaterInnsending={oppdaterInnsending}
+            maxFilstørrelse={filstørrelse_10MB}
           />
           <StyledUndertekst>
             Hvis dokumentet du skal sende inn består av flere filer, kan du
