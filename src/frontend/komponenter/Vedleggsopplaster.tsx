@@ -15,7 +15,7 @@ import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { logFeilFilopplasting } from '../utils/amplitude';
-import { formaterFilstørrelse } from '../utils/innsendingsvalidering';
+import { formaterFilstørrelse } from '../utils/filer';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
