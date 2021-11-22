@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Routes from './Routes';
+import AppRoutes from './AppRoutes';
 import './index.less';
 import { AppProvider } from './context/AppContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
-      <Routes />
+      <AppRoutes />
     </AppProvider>
   </React.StrictMode>,
   document.getElementById('root')
