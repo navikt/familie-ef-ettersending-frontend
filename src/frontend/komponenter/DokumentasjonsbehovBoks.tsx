@@ -10,6 +10,7 @@ import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import { LesMerTekst } from './LesMerTekst';
+import { filstørrelse_10MB } from '../utils/filer';
 
 const StyledPanel = styled(Panel)`
   margin: 1rem auto;
@@ -106,6 +107,7 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
         <Vedleggsopplaster
           innsending={innsending}
           oppdaterInnsending={oppdaterInnsending}
+          maxFilstørrelse={filstørrelse_10MB}
         />
         <Undertekst>
           Hvis dokumentet du skal sende inn består av flere filer, kan du legge

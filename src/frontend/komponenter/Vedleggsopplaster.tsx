@@ -15,6 +15,7 @@ import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { logFeilFilopplasting } from '../utils/amplitude';
+import { formaterFilstørrelse } from '../utils/filer';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
@@ -27,11 +28,13 @@ const StyledNormaltekst = styled(Normaltekst)`
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
   innsending: IDokumentasjonsbehov;
+  maxFilstørrelse?: number;
 }
 
 const Vedleggsopplaster: React.FC<IProps> = ({
   innsending,
   oppdaterInnsending,
+  maxFilstørrelse,
 }: IProps) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
@@ -74,6 +77,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
     settAlertStripeMelding(alertMelding.TOM);
 
     const vedleggListe: IVedleggForEttersending[] = [];
+
     await Promise.all(
       filer.map(async (fil) => {
         try {
@@ -107,6 +111,24 @@ const Vedleggsopplaster: React.FC<IProps> = ({
     const feilmeldingsliste: string[] = [];
 
     filer.forEach((fil: File) => {
+      if (maxFilstørrelse && fil.size > maxFilstørrelse) {
+        const maks = formaterFilstørrelse(maxFilstørrelse);
+
+        const feilmelding = `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
+
+        feilmeldingsliste.push(feilmelding);
+        settFeilmeldinger(feilmeldingsliste);
+
+        logFeilFilopplasting({
+          type_feil: 'For stor fil',
+          feilmelding: feilmelding,
+          filstørrelse: fil.size,
+        });
+
+        settÅpenModal(true);
+        return;
+      }
+
       if (!sjekkTillatFiltype(fil.type)) {
         const feilmelding = fil.name + ' - Ugyldig filtype';
         feilmeldingsliste.push(feilmelding);
