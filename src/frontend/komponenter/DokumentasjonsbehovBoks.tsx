@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import styled from 'styled-components';
-import { Checkbox } from 'nav-frontend-skjema';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { formaterIsoDato } from '../../shared-utils/dato';
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import { LesMerTekst } from './LesMerTekst';
@@ -14,17 +12,6 @@ import { filstørrelse_10MB } from '../utils/filer';
 
 const StyledPanel = styled(Panel)`
   margin: 1rem auto;
-`;
-
-const StyledCheckbox = styled(Checkbox)`
-  margin: 1rem auto;
-  display: inline-block;
-`;
-
-const StyledHjelpetekst = styled(Hjelpetekst)`
-  position: relative;
-  margin: 1rem 0.5rem;
-  top: 6px;
 `;
 
 const StyledLesMerTekst = styled(LesMerTekst)`
@@ -40,10 +27,6 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
   innsending,
   oppdaterInnsending,
 }: Props) => {
-  const [checked, settCheckboxverdi] = useState<boolean>(
-    innsending.søknadsdata ? innsending.søknadsdata.harSendtInnTidligere : false
-  );
-
   const erDokumentasjonSendt = (): boolean => {
     return (
       innsending.søknadsdata?.harSendtInnTidligere ||
@@ -53,20 +36,6 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
 
   const storForbokstav = (ord: string): string => {
     return ord.charAt(0).toUpperCase() + ord.slice(1);
-  };
-
-  const oppdaterHarSendtInn = () => {
-    const invertedChecked = !checked;
-    settCheckboxverdi(invertedChecked);
-    if (innsending.søknadsdata) {
-      oppdaterInnsending({
-        ...innsending,
-        søknadsdata: {
-          ...innsending.søknadsdata,
-          harSendtInnTidligere: invertedChecked,
-        },
-      });
-    }
   };
 
   return (
@@ -84,9 +53,6 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
               <b>Stønadstype: </b>
               {`${storForbokstav(innsending.stønadType.toLocaleLowerCase())}`}
             </p>
-            <p>{`Søknad om ${innsending.stønadType.toLocaleLowerCase()} ${formaterIsoDato(
-              innsending.søknadsdata?.søknadsdato
-            )}`}</p>
           </>
         )}
         <StyledLesMerTekst>
@@ -100,7 +66,7 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
               dokumentasjonen ble ikke sendt inn ved søknadstidspunktet{' '}
               {formaterIsoDato(innsending.søknadsdata?.søknadsdato)}. Du kan se
               bort ifra dette hvis du allerede har sendt oss dokumentasjonen på
-              annen måte. Da kan du krysse av på at du har levert på annen måte.
+              annen måte.
             </Normaltekst>
           </Lesmerpanel>
         </StyledLesMerTekst>
@@ -113,15 +79,6 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
           Hvis dokumentet du skal sende inn består av flere filer, kan du legge
           til alle filene her.
         </Undertekst>
-        <StyledCheckbox
-          onChange={() => oppdaterHarSendtInn()}
-          checked={checked}
-          label={'Jeg har levert på annen måte'}
-        />
-        <StyledHjelpetekst>
-          Hvis du har levert dokumentasjonen på en annen måte kan du krysse av
-          denne boksen.
-        </StyledHjelpetekst>
       </StyledPanel>
     </>
   );
