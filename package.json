@@ -107,14 +107,14 @@
         "@typescript-eslint/eslint-plugin": "^4.33.0",
         "@typescript-eslint/parser": "^4.33.0",
         "babel-loader": "^8.2.2",
-        "babel-plugin-styled-components": "^1.13.2",
+        "babel-plugin-styled-components": "^2.0.2",
         "clean-webpack-plugin": "^4.0.0",
         "copy-webpack-plugin": "^9.0.1",
         "cross-env": "^7.0.3",
         "css-loader": "^5.2.7",
-        "css-minimizer-webpack-plugin": "^3.1.1",
+        "css-minimizer-webpack-plugin": "^3.2.0",
         "eslint": "^7.32.0",
-        "eslint-config-airbnb": "^18.2.1",
+        "eslint-config-airbnb": "^19.0.1",
         "eslint-config-prettier": "^8.3.0",
         "eslint-loader": "^4.0.2",
         "eslint-plugin-prettier": "^4.0.0",
@@ -128,7 +128,7 @@
         "less-loader": "^10.2.0",
         "lint-staged": "^12.1.2",
         "mini-css-extract-plugin": "^2.4.2",
-        "prettier": "2.4.1",
+        "prettier": "^2.5.0",
         "style-loader": "^3.3.0",
         "ts-loader": "^9.2.3",
         "ts-node": "^10.4.0",
@@ -136,6 +136,6 @@
         "typescript": "^4.5.2",
         "webpack": "^5.64.2",
         "webpack-cli": "^4.9.0",
-        "webpack-dev-server": "^4.5.0"
+        "webpack-dev-server": "^4.6.0"
     }
 }
