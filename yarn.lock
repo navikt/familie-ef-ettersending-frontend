@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@amplitude/types/-/types-1.8.4.tgz#393e251bd284f501d560fa7de0a97b2c50b647ea"
   integrity sha512-X9oZy+JAUAB9pBSTKZ7hanx1737YRYqQNWUkn4Y4P93APcYbaBciJFpEnHwgBMXBxOmag9NIK4pnaTBO1nuSvg==
 
-"@amplitude/ua-parser-js@0.7.25":
-  version "0.7.25"
-  resolved "https://registry.yarnpkg.com/@amplitude/ua-parser-js/-/ua-parser-js-0.7.25.tgz#ccbeb0bd24fca3759cfc09a3b9ba95a23ea32756"
-  integrity sha512-AUeO9T6vLkUNw0iYxchFBw3FylJAMv5g2sPUsS5XCulAP3TpZg9Y/QESOl+oCLGqTQYumUJZHfoQBemN22eghw==
+"@amplitude/ua-parser-js@0.7.26":
+  version "0.7.26"
+  resolved "https://registry.yarnpkg.com/@amplitude/ua-parser-js/-/ua-parser-js-0.7.26.tgz#18d889d84d2ba90c248ab6fcd7e3dd07f1c9c86e"
+  integrity sha512-62/Rid6YQ7F2KT/5vTre41Y26ivrEoFC8lbrsJZqBKaiXMJWG0YpNv9RgxNSaZS2jPLVQgoB/FFeWxihOLfIcg==
 
 "@amplitude/utils@^1.0.5":
   version "1.8.4"
@@ -1789,7 +1789,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.7.6":
+"@babel/runtime@^7.3.4", "@babel/runtime@^7.7.6":
   version "7.16.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.3.tgz#b86f0db02a04187a3c17caa77de69840165d42d5"
   integrity sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==
@@ -2795,13 +2795,14 @@ alphanum-sort@^1.0.2:
   resolved "https://registry.npmjs.org/alphanum-sort/-/alphanum-sort-1.0.2.tgz"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
 
-amplitude-js@^8.12.0:
-  version "8.12.0"
-  resolved "https://registry.yarnpkg.com/amplitude-js/-/amplitude-js-8.12.0.tgz#03828dbc6ec13d6a5cc46ffbc2438a3306dfc442"
-  integrity sha512-I7IS9FmRsDJJbMwdnpKMmC7DWHk/5B5fBGa5CIW2pjwEQBovrxat6ApRlomo71JCeVv4EU0nvbhisInPwfbunA==
+amplitude-js@^8.13.1:
+  version "8.13.1"
+  resolved "https://registry.yarnpkg.com/amplitude-js/-/amplitude-js-8.13.1.tgz#0ae654a5bdfb434e17e55aa40a34775a902e97dd"
+  integrity sha512-cjKtq+t51jyN5XrnXtZW05jSGRDZKtHVqx/BIuP+b1baBgWqFZ2P5GKEH2DqCWhZqwwkaBkAw+E7tanohYqLMw==
   dependencies:
-    "@amplitude/ua-parser-js" "0.7.25"
+    "@amplitude/ua-parser-js" "0.7.26"
     "@amplitude/utils" "^1.0.5"
+    "@babel/runtime" "^7.3.4"
     blueimp-md5 "^2.10.0"
     query-string "5"
 
@@ -4084,10 +4085,10 @@ data-urls@^3.0.1:
     whatwg-mimetype "^3.0.0"
     whatwg-url "^10.0.0"
 
-date-fns@^2.26.0:
-  version "2.26.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.26.0.tgz#fa45305543c392c4f914e50775fd2a4461e60fbd"
-  integrity sha512-VQI812dRi3cusdY/fhoBKvc6l2W8BPWU1FNVnFH9Nttjx4AFBRzfSVb/Eyc7jBT6e9sg1XtAGsYpBQ6c/jygbg==
+date-fns@^2.27.0:
+  version "2.27.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.27.0.tgz#e1ff3c3ddbbab8a2eaadbb6106be2929a5a2d92b"
+  integrity sha512-sj+J0Mo2p2X1e306MHq282WS4/A8Pz/95GIFcsPNMPMZVI3EUrAdSv90al1k+p74WGLCruMXk23bfEDZa71X9Q==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0:
   version "2.6.9"
@@ -5203,10 +5204,10 @@ fork-ts-checker-webpack-plugin@4.1.6:
     tapable "^1.0.0"
     worker-rpc "^0.1.0"
 
-fork-ts-checker-webpack-plugin@^6.4.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-6.4.0.tgz#057e477cf1d8b013b2ed2669437f818680289c4c"
-  integrity sha512-3I3wFkc4DbzaUDPWEi96wdYGu4EKtxBafhZYm0o4mX51d9bphAY4P3mBl8K5mFXFJqVzHfmdbm9kLGnm7vwwBg==
+fork-ts-checker-webpack-plugin@^6.5.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/fork-ts-checker-webpack-plugin/-/fork-ts-checker-webpack-plugin-6.5.0.tgz#0282b335fa495a97e167f69018f566ea7d2a2b5e"
+  integrity sha512-cS178Y+xxtIjEUorcHddKS7yCMlrDPV31mt47blKKRfMd70Kxu5xruAFE2o9sDY6wVC5deuob/u/alD04YYHnw==
   dependencies:
     "@babel/code-frame" "^7.8.3"
     "@types/json-schema" "^7.0.5"
@@ -6332,10 +6333,10 @@ jsbn@~0.1.0:
   resolved "https://registry.npmjs.org/jsbn/-/jsbn-0.1.1.tgz"
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
 
-jsdom@^18.1.1:
-  version "18.1.1"
-  resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-18.1.1.tgz#15ec896f5ab7df9669a62375606f47c8c09551aa"
-  integrity sha512-NmJQbjQ/gpS/1at/ce3nCx89HbXL/f5OcenBe8wU1Eik0ROhyUc3LtmG3567dEHAGXkN8rmILW/qtCOPxPHQJw==
+jsdom@^19.0.0:
+  version "19.0.0"
+  resolved "https://registry.yarnpkg.com/jsdom/-/jsdom-19.0.0.tgz#93e67c149fe26816d38a849ea30ac93677e16b6a"
+  integrity sha512-RYAyjCbxy/vri/CfnjUWJQQtZ3LKlLnDqj+9XLNnJPgEGeirZs3hllKR20re8LUZ6o1b1X4Jat+Qd26zmP41+A==
   dependencies:
     abab "^2.0.5"
     acorn "^8.5.0"
