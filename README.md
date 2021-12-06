@@ -1,6 +1,6 @@
 # familie-ef-ettersending
 
-Frontend - ettersending
+Frontend app for ettersending av dokumentasjons vedrørende søknader tilknyttet stønader for enslige forsørgere.
 
 ## Kjør lokalt
 
@@ -10,3 +10,8 @@ Frontend - ettersending
 
 For å få en gyldig cookie med `familie-ef-soknad-api` må du besøke:
 http://localhost:8091/local/cookie?subject=[gyldigFødselsnummer] eller  http://localhost:8091/local/cookie?subject=01010172272
+
+## Henvendelser
+Spørsmål knyttet til koden eller prosjektet kan rettes mot:
+
+* Viktor Grøndalen Solberg, `viktor.grondalen.solberg@nav.no`
