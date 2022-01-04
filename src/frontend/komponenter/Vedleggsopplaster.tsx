@@ -16,6 +16,7 @@ import styled from 'styled-components/macro';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { logFeilFilopplasting } from '../utils/amplitude';
 import { formaterFilstørrelse } from '../utils/filer';
+import heic2any from 'heic2any';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
@@ -110,7 +111,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   const onDrop = (filer: File[]) => {
     const feilmeldingsliste: string[] = [];
 
-    filer.forEach((fil: File) => {
+    filer.forEach(async (fil: File, i: number, listen: File[]) => {
       if (maxFilstørrelse && fil.size > maxFilstørrelse) {
         const maks = formaterFilstørrelse(maxFilstørrelse);
 
@@ -130,6 +131,20 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       }
 
       if (!sjekkTillatFiltype(fil.type)) {
+        if (fil.type === 'image/heic') {
+          const nyBlob = await heic2any({
+            blob: fil,
+            toType: 'image/jpg',
+            quality: 1,
+          });
+
+          const nyFil = await new File([nyBlob as Blob], fil.name + '.jpg');
+
+          listen[i] = nyFil;
+
+          return;
+        }
+
         const feilmelding = fil.name + ' - Ugyldig filtype';
         feilmeldingsliste.push(feilmelding);
         settFeilmeldinger(feilmeldingsliste);
