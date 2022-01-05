@@ -76,12 +76,16 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   };
 
   const lastOppVedlegg = async (filer: File[]) => {
-    console.log('filerILastOppVedlegg', filer);
-
     settLaster(true);
     settAlertStripeMelding(alertMelding.TOM);
 
     const vedleggListe: IVedleggForEttersending[] = [];
+
+    console.log('filerILastOppVedlegg', filer);
+
+    filer.map((fil) => {
+      console.log('FILMAP', fil);
+    });
 
     await Promise.all(
       filer.map(async (fil) => {
@@ -113,69 +117,73 @@ const Vedleggsopplaster: React.FC<IProps> = ({
     settLaster(false);
   };
 
-  const onDrop = (filer: File[]) => {
+  const onDrop = async (filerForOpplasting: File[]) => {
     const feilmeldingsliste: string[] = [];
 
-    filer.forEach(async (fil: File, i: number, listen: File[]) => {
-      if (maxFilstørrelse && fil.size > maxFilstørrelse) {
-        const maks = formaterFilstørrelse(maxFilstørrelse);
+    const filer = await Promise.all(
+      filerForOpplasting.map(async (fil: File) => {
+        if (maxFilstørrelse && fil.size > maxFilstørrelse) {
+          const maks = formaterFilstørrelse(maxFilstørrelse);
 
-        const feilmelding = `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
+          const feilmelding = `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
 
-        feilmeldingsliste.push(feilmelding);
-        settFeilmeldinger(feilmeldingsliste);
+          feilmeldingsliste.push(feilmelding);
+          settFeilmeldinger(feilmeldingsliste);
 
-        logFeilFilopplasting({
-          type_feil: 'For stor fil',
-          feilmelding: feilmelding,
-          filstørrelse: fil.size,
-        });
-
-        settÅpenModal(true);
-        return;
-      }
-
-      if (!sjekkTillatFiltype(fil.type)) {
-        console.log('FEIL FIL', fil);
-
-        if (
-          fil.type.toLowerCase() === 'image/heic' ||
-          fil.type.toLowerCase() === 'image/heif' ||
-          fil.name.toLowerCase().endsWith('.heic')
-        ) {
-          console.log('HEIC. KONVERTERER');
-
-          const nyBlob = await heic2any({
-            blob: fil,
-            toType: 'image/jpg',
-            quality: 1,
+          logFeilFilopplasting({
+            type_feil: 'For stor fil',
+            feilmelding: feilmelding,
+            filstørrelse: fil.size,
           });
 
-          const nyFil = await new File([nyBlob as Blob], fil.name + '.jpg');
+          settÅpenModal(true);
 
-          setImageUrl(URL.createObjectURL(nyFil));
-
-          console.log('NYFIL', nyFil);
-
-          listen[i] = nyFil;
-
-          return;
+          return fil;
         }
 
-        const feilmelding = fil.name + ' - Ugyldig filtype';
-        feilmeldingsliste.push(feilmelding);
-        settFeilmeldinger(feilmeldingsliste);
+        if (!sjekkTillatFiltype(fil.type)) {
+          console.log('FEIL FIL', fil);
 
-        logFeilFilopplasting({
-          type_feil: 'Feil filtype',
-          feilmelding: feilmelding,
-          filtype: fil.type,
-        });
+          if (
+            fil.type.toLowerCase() === 'image/heic' ||
+            fil.type.toLowerCase() === 'image/heif' ||
+            fil.name.toLowerCase().endsWith('.heic')
+          ) {
+            console.log('HEIC. KONVERTERER');
 
-        settÅpenModal(true);
-        return;
-      }
-    });
+            const nyBlob = await heic2any({
+              blob: fil,
+              toType: 'image/jpg',
+              quality: 1,
+            });
+
+            const nyFil = await new File([nyBlob as Blob], fil.name + '.jpg');
+
+            setImageUrl(URL.createObjectURL(nyFil));
+
+            console.log('NYFIL', nyFil);
+
+            return nyFil;
+          }
+
+          const feilmelding = fil.name + ' - Ugyldig filtype';
+          feilmeldingsliste.push(feilmelding);
+          settFeilmeldinger(feilmeldingsliste);
+
+          logFeilFilopplasting({
+            type_feil: 'Feil filtype',
+            feilmelding: feilmelding,
+            filtype: fil.type,
+          });
+
+          settÅpenModal(true);
+
+          return fil;
+        }
+
+        return fil;
+      })
+    );
     if (feilmeldingsliste.length <= 0) {
       console.log('FILER SOM LASTES OPP', filer);
       lastOppVedlegg(filer);
