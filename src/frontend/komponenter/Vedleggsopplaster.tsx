@@ -44,6 +44,8 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [laster, settLaster] = useState<boolean>(false);
 
+  const [imageUrl, setImageUrl] = useState('');
+
   const leggTilVedlegg = (
     nyeVedlegg: IVedleggForEttersending[]
   ): IDokumentasjonsbehov => {
@@ -131,11 +133,15 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       }
 
       if (!sjekkTillatFiltype(fil.type)) {
+        console.log('FEIL FIL', fil);
+
         if (
           fil.type.toLowerCase() === 'image/heic' ||
           fil.type.toLowerCase() === 'image/heif' ||
           fil.name.toLowerCase().endsWith('.heic')
         ) {
+          console.log('HEIC. KONVERTERER');
+
           const nyBlob = await heic2any({
             blob: fil,
             toType: 'image/jpg',
@@ -143,6 +149,10 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           });
 
           const nyFil = await new File([nyBlob as Blob], fil.name + '.jpg');
+
+          setImageUrl(URL.createObjectURL(nyFil));
+
+          console.log('NYFIL', nyFil);
 
           listen[i] = nyFil;
 
@@ -164,6 +174,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       }
     });
     if (feilmeldingsliste.length <= 0) {
+      console.log('FILER SOM LASTES OPP', filer);
       lastOppVedlegg(filer);
     }
   };
@@ -202,6 +213,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           <Normaltekst className="tekst">
             {isDragActive ? 'Last opp fil(er)' : 'Last opp fil(er)'}
           </Normaltekst>
+          <img src={imageUrl} />
         </div>
       </div>
       {laster ? (
