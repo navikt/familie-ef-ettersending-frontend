@@ -131,7 +131,11 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       }
 
       if (!sjekkTillatFiltype(fil.type)) {
-        if (fil.type === 'image/heic') {
+        if (
+          fil.type.toLowerCase() === 'image/heic' ||
+          fil.type.toLowerCase() === 'image/heif' ||
+          fil.name.toLowerCase().endsWith('.heic')
+        ) {
           const nyBlob = await heic2any({
             blob: fil,
             toType: 'image/jpg',
