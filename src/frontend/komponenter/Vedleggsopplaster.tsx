@@ -76,6 +76,8 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   };
 
   const lastOppVedlegg = async (filer: File[]) => {
+    console.log('filerILastOppVedlegg', filer);
+
     settLaster(true);
     settAlertStripeMelding(alertMelding.TOM);
 
@@ -83,6 +85,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
 
     await Promise.all(
       filer.map(async (fil) => {
+        console.log('filIMapILastOppVedlegg', fil);
         try {
           const formData = new FormData();
           formData.append('file', fil);

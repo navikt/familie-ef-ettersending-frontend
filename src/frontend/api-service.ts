@@ -65,6 +65,8 @@ export const hentSøknader = (): Promise<ISøknadsbehov[]> => {
 export const sendVedleggTilMellomlager = (
   formData: FormData
 ): Promise<string> => {
+  console.log('FORMDATA', formData);
+
   return axios
     .post(`${environment().dokumentUrl}`, formData, {
       headers: {
