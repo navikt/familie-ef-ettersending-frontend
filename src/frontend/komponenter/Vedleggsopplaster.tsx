@@ -15,7 +15,12 @@ import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { logFeilFilopplasting } from '../utils/amplitude';
-import { formaterFilstørrelse } from '../utils/filer';
+import {
+  erFiltypeHeic,
+  formaterFilstørrelse,
+  sjekkTillatFiltype,
+  tillateFiltyper,
+} from '../utils/filer';
 import heic2any from 'heic2any';
 
 const StyledAlertStripe = styled(AlertStripe)`
@@ -54,7 +59,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       vedlegg: [...innsending.vedlegg, ...nyeVedlegg],
     };
   };
-  const tillateFiltyper = ['pdf', 'jpg', 'png', 'jpeg'];
 
   const slettVedlegg = (vedlegg: IVedleggForEttersending): void => {
     oppdaterInnsending({
@@ -69,27 +73,14 @@ const Vedleggsopplaster: React.FC<IProps> = ({
     return innsending.vedlegg;
   };
 
-  const sjekkTillatFiltype = (filtype: string) => {
-    return tillateFiltyper.some((type) => {
-      return filtype.includes(type);
-    });
-  };
-
   const lastOppVedlegg = async (filer: File[]) => {
     settLaster(true);
     settAlertStripeMelding(alertMelding.TOM);
 
     const vedleggListe: IVedleggForEttersending[] = [];
 
-    console.log('filerILastOppVedlegg', filer);
-
-    filer.map((fil) => {
-      console.log('FILMAP', fil);
-    });
-
     await Promise.all(
       filer.map(async (fil) => {
-        console.log('filIMapILastOppVedlegg', fil);
         try {
           const formData = new FormData();
           formData.append('file', fil);
@@ -142,15 +133,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
         }
 
         if (!sjekkTillatFiltype(fil.type)) {
-          console.log('FEIL FIL', fil);
-
-          if (
-            fil.type.toLowerCase() === 'image/heic' ||
-            fil.type.toLowerCase() === 'image/heif' ||
-            fil.name.toLowerCase().endsWith('.heic')
-          ) {
-            console.log('HEIC. KONVERTERER');
-
+          if (erFiltypeHeic(fil)) {
             const nyBlob = await heic2any({
               blob: fil,
               toType: 'image/jpg',
@@ -160,8 +143,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
             const nyFil = await new File([nyBlob as Blob], fil.name + '.jpg');
 
             setImageUrl(URL.createObjectURL(nyFil));
-
-            console.log('NYFIL', nyFil);
 
             return nyFil;
           }
@@ -185,7 +166,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       })
     );
     if (feilmeldingsliste.length <= 0) {
-      console.log('FILER SOM LASTES OPP', filer);
       lastOppVedlegg(filer);
     }
   };
