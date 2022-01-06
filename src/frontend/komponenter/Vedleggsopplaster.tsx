@@ -49,8 +49,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
   const [laster, settLaster] = useState<boolean>(false);
 
-  const [imageUrl, setImageUrl] = useState('');
-
   const leggTilVedlegg = (
     nyeVedlegg: IVedleggForEttersending[]
   ): IDokumentasjonsbehov => {
@@ -142,8 +140,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
 
             const nyFil = await new File([nyBlob as Blob], fil.name + '.jpg');
 
-            setImageUrl(URL.createObjectURL(nyFil));
-
             return nyFil;
           }
 
@@ -204,7 +200,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           <Normaltekst className="tekst">
             {isDragActive ? 'Last opp fil(er)' : 'Last opp fil(er)'}
           </Normaltekst>
-          <img src={imageUrl} />
         </div>
       </div>
       {laster ? (
