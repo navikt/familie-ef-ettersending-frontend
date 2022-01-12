@@ -19,6 +19,7 @@ import {
   erFiltypeHeic,
   formaterFilstørrelse,
   sjekkTillatFiltype,
+  støtterFiltypeHeic,
   tillateFiltyper,
 } from '../utils/filer';
 import heic2any from 'heic2any';
@@ -131,7 +132,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
         }
 
         if (!sjekkTillatFiltype(fil.type)) {
-          if (erFiltypeHeic(fil)) {
+          if (erFiltypeHeic(fil) && støtterFiltypeHeic()) {
             const nyBlob = await heic2any({
               blob: fil,
               toType: 'image/jpg',

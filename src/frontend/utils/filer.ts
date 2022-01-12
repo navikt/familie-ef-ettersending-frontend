@@ -20,6 +20,7 @@ export const erFiltypeHeic = (fil: File) => {
   );
 };
 
+export const støtterFiltypeHeic = (): boolean => false;
 export const tillateFiltyper = ['pdf', 'jpg', 'png', 'jpeg'];
 
 export const sjekkTillatFiltype = (filtype: string) => {
