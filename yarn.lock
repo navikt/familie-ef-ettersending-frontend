@@ -1302,17 +1302,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.16.0", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.16.0", "@babel/runtime@^7.3.4", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4":
   version "7.16.7"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.16.7.tgz"
   integrity sha512-9E9FJowqAsytyOY6LG+1KuueckRL+aQW+mKvXRXnuFGyRAyepJPmEo9vgMfXUA6O9u3IeEdv9MAkppFcaQwogQ==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
-"@babel/runtime@^7.3.4":
-  version "7.16.3"
-  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.16.3.tgz"
-  integrity sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -2307,10 +2300,10 @@ alphanum-sort@^1.0.2:
   resolved "https://registry.npmjs.org/alphanum-sort/-/alphanum-sort-1.0.2.tgz"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
 
-amplitude-js@^8.14.1:
-  version "8.14.1"
-  resolved "https://registry.npmjs.org/amplitude-js/-/amplitude-js-8.14.1.tgz"
-  integrity sha512-OvGQQ8+xBQmR9OcDvo8ATeCwepx0GGKfB2MB9Wm2D+q0kuHR1a+1maIpewbOlGwdhySojltE6HwWlbPeovvHjg==
+amplitude-js@^8.15.0:
+  version "8.15.0"
+  resolved "https://registry.yarnpkg.com/amplitude-js/-/amplitude-js-8.15.0.tgz#1f7f8b8985cac187d67a614c369bfa50bc90e3cc"
+  integrity sha512-8pHN4dfKB0XwzgtgdEZgPVgkPr/fRsv11BECATYdUAIpLkj+sVEob7DphBa7fpBWPmRm+NXe1LRryThPZp7UuQ==
   dependencies:
     "@amplitude/ua-parser-js" "0.7.26"
     "@amplitude/utils" "^1.0.5"
