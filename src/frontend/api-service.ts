@@ -75,3 +75,14 @@ export const sendVedleggTilMellomlager = (
     })
     .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
 };
+
+export const slåSammenVedlegg = (dokumentIder: string[]): Promise<string> => {
+  return axios
+    .post(`${environment().mergeDokumentUrl}`, dokumentIder, {
+      headers: {
+        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
+      },
+      withCredentials: true,
+    })
+    .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
+};
