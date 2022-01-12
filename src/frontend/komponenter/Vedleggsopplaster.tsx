@@ -15,7 +15,14 @@ import { sendVedleggTilMellomlager } from '../api-service';
 import styled from 'styled-components/macro';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { logFeilFilopplasting } from '../utils/amplitude';
-import { formaterFilstørrelse } from '../utils/filer';
+import {
+  erFiltypeHeic,
+  formaterFilstørrelse,
+  sjekkTillatFiltype,
+  støtterFiltypeHeic,
+  tillateFiltyper,
+} from '../utils/filer';
+import heic2any from 'heic2any';
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
@@ -51,7 +58,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       vedlegg: [...innsending.vedlegg, ...nyeVedlegg],
     };
   };
-  const tillateFiltyper = ['pdf', 'jpg', 'png', 'jpeg'];
 
   const slettVedlegg = (vedlegg: IVedleggForEttersending): void => {
     oppdaterInnsending({
@@ -64,12 +70,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
 
   const visVedleggTilOpplasting = (): IVedleggForEttersending[] => {
     return innsending.vedlegg;
-  };
-
-  const sjekkTillatFiltype = (filtype: string) => {
-    return tillateFiltyper.some((type) => {
-      return filtype.includes(type);
-    });
   };
 
   const lastOppVedlegg = async (filer: File[]) => {
@@ -107,43 +107,61 @@ const Vedleggsopplaster: React.FC<IProps> = ({
     settLaster(false);
   };
 
-  const onDrop = (filer: File[]) => {
+  const onDrop = async (filerForOpplasting: File[]) => {
     const feilmeldingsliste: string[] = [];
 
-    filer.forEach((fil: File) => {
-      if (maxFilstørrelse && fil.size > maxFilstørrelse) {
-        const maks = formaterFilstørrelse(maxFilstørrelse);
+    const filer = await Promise.all(
+      filerForOpplasting.map(async (fil: File) => {
+        if (maxFilstørrelse && fil.size > maxFilstørrelse) {
+          const maks = formaterFilstørrelse(maxFilstørrelse);
 
-        const feilmelding = `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
+          const feilmelding = `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
 
-        feilmeldingsliste.push(feilmelding);
-        settFeilmeldinger(feilmeldingsliste);
+          feilmeldingsliste.push(feilmelding);
+          settFeilmeldinger(feilmeldingsliste);
 
-        logFeilFilopplasting({
-          type_feil: 'For stor fil',
-          feilmelding: feilmelding,
-          filstørrelse: fil.size,
-        });
+          logFeilFilopplasting({
+            type_feil: 'For stor fil',
+            feilmelding: feilmelding,
+            filstørrelse: fil.size,
+          });
 
-        settÅpenModal(true);
-        return;
-      }
+          settÅpenModal(true);
 
-      if (!sjekkTillatFiltype(fil.type)) {
-        const feilmelding = fil.name + ' - Ugyldig filtype';
-        feilmeldingsliste.push(feilmelding);
-        settFeilmeldinger(feilmeldingsliste);
+          return fil;
+        }
 
-        logFeilFilopplasting({
-          type_feil: 'Feil filtype',
-          feilmelding: feilmelding,
-          filtype: fil.type,
-        });
+        if (!sjekkTillatFiltype(fil.type)) {
+          if (erFiltypeHeic(fil) && støtterFiltypeHeic()) {
+            const nyBlob = await heic2any({
+              blob: fil,
+              toType: 'image/jpg',
+              quality: 1,
+            });
 
-        settÅpenModal(true);
-        return;
-      }
-    });
+            const nyFil = await new File([nyBlob as Blob], fil.name + '.jpg');
+
+            return nyFil;
+          }
+
+          const feilmelding = fil.name + ' - Ugyldig filtype';
+          feilmeldingsliste.push(feilmelding);
+          settFeilmeldinger(feilmeldingsliste);
+
+          logFeilFilopplasting({
+            type_feil: 'Feil filtype',
+            feilmelding: feilmelding,
+            filtype: fil.type,
+          });
+
+          settÅpenModal(true);
+
+          return fil;
+        }
+
+        return fil;
+      })
+    );
     if (feilmeldingsliste.length <= 0) {
       lastOppVedlegg(filer);
     }

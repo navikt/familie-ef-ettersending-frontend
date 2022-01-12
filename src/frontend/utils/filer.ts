@@ -11,3 +11,20 @@ export const formaterFilstørrelse = (bytes: number, decimals = 2) => {
 };
 
 export const filstørrelse_10MB = 1024 * 1024 * 10;
+
+export const erFiltypeHeic = (fil: File) => {
+  return (
+    fil.type.toLowerCase() === 'image/heic' ||
+    fil.type.toLowerCase() === 'image/heif' ||
+    fil.name.toLowerCase().endsWith('.heic')
+  );
+};
+
+export const støtterFiltypeHeic = (): boolean => false;
+export const tillateFiltyper = ['pdf', 'jpg', 'png', 'jpeg'];
+
+export const sjekkTillatFiltype = (filtype: string) => {
+  return tillateFiltyper.some((type) => {
+    return filtype.includes(type);
+  });
+};
