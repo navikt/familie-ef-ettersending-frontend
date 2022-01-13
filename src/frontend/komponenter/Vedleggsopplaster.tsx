@@ -8,6 +8,29 @@ import {
 import '../stil/Vedleggsopplaster.less';
 import VedleggsopplasterModal from './VedleggsopplasterModal';
 import { Knapp } from 'nav-frontend-knapper';
+import styled from 'styled-components';
+
+const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
+    text-align: center;
+    font-weight: bold;
+    border-bottom: ${(props) =>
+      props.visSkillelinje ? '2px dashed #59514b' : ''};
+    height: 64px;
+    width: 1;
+    color: blue;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+`;
+
+const FilopplasterWrapper = styled.div`
+  max-width: 775px;
+  min-height: 68px;
+  border-radius: 4px;
+  .opplastingsikon {
+    display: inline-block;
+  }
+`;
 
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
@@ -35,26 +58,28 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   };
 
   return (
-    <div className="filopplaster-wrapper">
-      <div className="filopplaster">
-        <Modal
-          isOpen={åpenModal}
-          onRequestClose={() => settÅpenModal(false)}
-          closeButton={true}
-          contentLabel="Modal"
-        >
-          <VedleggsopplasterModal
-            oppdaterInnsending={oppdaterInnsending}
-            innsending={innsending}
-          />
-        </Modal>
-        <Knapp>Last opp fil(er)</Knapp>
-      </div>
-      <OpplastedeVedlegg
-        vedleggsliste={visVedleggTilOpplasting()}
-        slettVedlegg={slettVedlegg}
-      />
-    </div>
+    <>
+      <Modal
+        isOpen={åpenModal}
+        onRequestClose={() => settÅpenModal(false)}
+        closeButton={true}
+        contentLabel="Modal"
+      >
+        <VedleggsopplasterModal
+          oppdaterInnsending={oppdaterInnsending}
+          innsending={innsending}
+        />
+      </Modal>
+      <FilopplasterWrapper>
+        <Filopplaster visSkillelinje={innsending.vedlegg.length > 0}>
+          <Knapp onClick={() => settÅpenModal(true)}>Last opp fil(er)</Knapp>
+        </Filopplaster>
+        <OpplastedeVedlegg
+          vedleggsliste={visVedleggTilOpplasting()}
+          slettVedlegg={slettVedlegg}
+        />
+      </FilopplasterWrapper>
+    </>
   );
 };
 

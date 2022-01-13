@@ -6,7 +6,7 @@ import Vedleggsopplaster from './Vedleggsopplaster';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { formaterIsoDato } from '../../shared-utils/dato';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
-import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { LesMerTekst } from './LesMerTekst';
 import { filstørrelse_10MB } from '../utils/filer';
 
@@ -75,10 +75,6 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
           oppdaterInnsending={oppdaterInnsending}
           maxFilstørrelse={filstørrelse_10MB}
         />
-        <Undertekst>
-          Hvis dokumentet du skal sende inn består av flere filer, kan du legge
-          til alle filene her.
-        </Undertekst>
       </StyledPanel>
     </>
   );

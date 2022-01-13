@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import { Knapp } from 'nav-frontend-knapper';
-import { Undertekst } from 'nav-frontend-typografi';
 import { Select } from 'nav-frontend-skjema';
 import slett from '../icons/slett.svg';
 import styled from 'styled-components/macro';
@@ -42,10 +41,6 @@ const StyledImg = styled.img`
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
-`;
-
-const StyledUndertekst = styled(Undertekst)`
-  margin-bottom: 1rem;
 `;
 
 interface IProps {
@@ -178,10 +173,6 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
             oppdaterInnsending={oppdaterInnsending}
             maxFilstørrelse={filstørrelse_10MB}
           />
-          <StyledUndertekst>
-            Hvis dokumentet du skal sende inn består av flere filer, kan du
-            legge til alle filene her.
-          </StyledUndertekst>
         </>
       )}
       {!harLåstValg && (

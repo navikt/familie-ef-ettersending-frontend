@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
@@ -89,9 +89,9 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
     });
   };
 
-  const visVedleggTilOpplasting = (): IVedleggForEttersending[] => {
-    return innsending.vedlegg;
-  };
+  // const visVedleggTilOpplasting = (): IVedleggForEttersending[] => {
+  //   return innsending.vedlegg;
+  // };
 
   const lastOppVedlegg = async (filer: File[]) => {
     settLaster(true);
@@ -123,7 +123,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
         }
       })
     );
-    settVedleggForSammenslåing(vedleggListe);
+    settVedleggForSammenslåing((prevState) => [...prevState, ...vedleggListe]);
     // const nyInnsending = leggTilVedlegg(vedleggListe);
     // oppdaterInnsending(nyInnsending);
     settLaster(false);
@@ -221,9 +221,13 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
       ) : (
         <>
           <OpplastedeVedlegg
-            vedleggsliste={visVedleggTilOpplasting()}
+            vedleggsliste={vedleggForSammenslåing}
             slettVedlegg={slettVedlegg}
           />
+          <Undertekst>
+            Hvis dokumentet du skal sende inn består av flere filer, kan du
+            legge til alle filene her.
+          </Undertekst>
           <StyledAlertStripe melding={alertStripeMelding} />
           <Knapp onClick={slåSammenVedleggOgOppdaterInnsending}>
             Trykk her når du er ferdig med å laste opp alle filene
