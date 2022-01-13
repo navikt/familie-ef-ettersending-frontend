@@ -4,7 +4,7 @@ import React from 'react';
 export enum alertMelding {
   SENDT_INN = 'Takk. Dokumentasjon er sendt inn.',
   FEIL = 'Noe gikk galt, prøv igjen',
-  MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å dra fila inn i det markerte feltet eller trykke på "Last opp fil(er)',
+  MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å dra fila inn i det markerte feltet eller trykke på "Last opp fil(er)"',
   MANGLER_BEGGE_TYPER = 'Du må velge både stønadstype og dokumenttype må velges',
   MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS = 'Ingen vedlegg er lastet opp',
   FEIL_VED_INNSENDING = 'Noe gikk galt ved innsending av dine dokumenter.',

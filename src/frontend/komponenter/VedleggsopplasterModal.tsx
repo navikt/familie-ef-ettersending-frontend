@@ -9,7 +9,6 @@ import {
   IDokumentasjonsbehov,
   IVedleggForEttersending,
 } from '../typer/ettersending';
-import '../stil/Vedleggsopplaster.less';
 import { sendVedleggTilMellomlager, slåSammenVedlegg } from '../api-service';
 import styled from 'styled-components/macro';
 import AlertStripe, { alertMelding } from './AlertStripe';
@@ -35,19 +34,17 @@ const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
     border-bottom: ${(props) =>
       props.visSkillelinje ? '2px dashed #59514b' : ''};
     height: 64px;
-    width: 1;
     color: blue;
     margin: 0 auto;
     cursor: pointer;
-  }
-`;
-
-const FilopplasterWrapper = styled.div`
-  max-width: 775px;
-  min-height: 68px;
-  border-radius: 4px;
-  .opplastingsikon {
-    display: inline-block;
+    .opplastingsikon {
+      display: inline-block;
+    };
+    .tekst {
+      line-height: 64px;
+      display: inline-block;
+      margin-left: 10px;
+    }
   }
 `;
 
@@ -73,6 +70,28 @@ const UndertekstWrapper = styled(Undertekst)`
   padding-top: 1rem;
   padding-bottom: 1rem;
   text-align: center;
+`;
+
+const KnappContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+`;
+
+const FeilmeldingContainer = styled.div`
+  margin: 1rem 0 0 0;
+  text-align: left;
+`;
+
+const AlertStripeContainer = styled(AlertStripeFeil)`
+  background: none !important;
+  border: none !important;
+  padding: 0;
+  font-weight: bold;
+
+  div {
+    font-weight: bold;
+  }
 `;
 
 interface IProps {
@@ -229,64 +248,57 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
   });
 
   return (
     <ModalWrapper>
-      <FilopplasterWrapper>
-        <Filopplaster visSkillelinje={false}>
-          {feilmeldinger.length > 0 && (
-            <div className="feilmelding">
-              {feilmeldinger.map((feilmelding) => (
-                <AlertStripeFeil
-                  key={feilmelding}
-                  className="feilmelding-alert"
-                >
-                  {feilmelding}
-                </AlertStripeFeil>
-              ))}
-              <StyledNormaltekst>
-                <b>Tillate filtyper:</b> {tillateFiltyper.join('\t')}
-              </StyledNormaltekst>
-            </div>
-          )}
-          <div {...getRootProps()}>
-            <input {...getInputProps()} />
-            <img
-              src={opplasting}
-              className="opplastingsikon"
-              alt="Opplastingsikon"
-            />
-            <Normaltekst className="tekst">
-              {isDragActive ? 'Last opp fil(er)' : 'Last opp fil(er)'}
-            </Normaltekst>
-          </div>
-        </Filopplaster>
-        <>
-          <OpplastedeVedlegg
-            vedleggsliste={vedleggForSammenslåing}
-            slettVedlegg={slettVedlegg}
+      <Filopplaster visSkillelinje={false}>
+        {feilmeldinger.length > 0 && (
+          <FeilmeldingContainer>
+            {feilmeldinger.map((feilmelding) => (
+              <AlertStripeContainer key={feilmelding}>
+                {feilmelding}
+              </AlertStripeContainer>
+            ))}
+            <StyledNormaltekst>
+              <b>Tillate filtyper:</b> {tillateFiltyper.join('\t')}
+            </StyledNormaltekst>
+          </FeilmeldingContainer>
+        )}
+        <div {...getRootProps()}>
+          <input {...getInputProps()} />
+          <img
+            src={opplasting}
+            className="opplastingsikon"
+            alt="Opplastingsikon"
           />
-          {laster && (
-            <SpinnerWrapper>
-              <NavFrontendSpinner />
-            </SpinnerWrapper>
-          )}
-          <UndertekstWrapper>
-            Hvis dokumentet du skal sende inn består av flere filer, kan du
-            legge til alle filene her.
-          </UndertekstWrapper>
-          <StyledAlertStripe melding={alertStripeMelding} />
-          <Knapp
-            onClick={slåSammenVedleggOgOppdaterInnsending}
-            disabled={vedleggForSammenslåing.length < 1}
-          >
-            Trykk her når du er ferdig med å laste opp alle filene
-          </Knapp>
-        </>
-      </FilopplasterWrapper>
+          <Normaltekst className="tekst">Last opp fil(er)</Normaltekst>
+        </div>
+      </Filopplaster>
+      <OpplastedeVedlegg
+        vedleggsliste={vedleggForSammenslåing}
+        slettVedlegg={slettVedlegg}
+      />
+      {laster && (
+        <SpinnerWrapper>
+          <NavFrontendSpinner />
+        </SpinnerWrapper>
+      )}
+      <UndertekstWrapper>
+        Hvis dokumentet du skal sende inn består av flere filer, kan du legge
+        til alle filene her. <br /> Filene blir slått sammen til ett dokument.
+      </UndertekstWrapper>
+      <StyledAlertStripe melding={alertStripeMelding} />
+      <KnappContainer>
+        <Knapp
+          onClick={slåSammenVedleggOgOppdaterInnsending}
+          disabled={vedleggForSammenslåing.length < 1 || laster}
+        >
+          Last opp
+        </Knapp>
+      </KnappContainer>
     </ModalWrapper>
   );
 };

@@ -5,7 +5,6 @@ import {
   IDokumentasjonsbehov,
   IVedleggForEttersending,
 } from '../typer/ettersending';
-import '../stil/Vedleggsopplaster.less';
 import VedleggsopplasterModal from './VedleggsopplasterModal';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
