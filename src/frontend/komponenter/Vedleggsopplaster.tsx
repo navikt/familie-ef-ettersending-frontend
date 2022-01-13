@@ -68,6 +68,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
         <VedleggsopplasterModal
           oppdaterInnsending={oppdaterInnsending}
           innsending={innsending}
+          lukkModal={() => settÅpenModal(false)}
         />
       </Modal>
       <FilopplasterWrapper>
