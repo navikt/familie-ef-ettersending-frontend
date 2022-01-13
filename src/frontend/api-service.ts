@@ -2,6 +2,7 @@ import axios from 'axios';
 import environment from '../backend/environment';
 import { IEttersending, ISøknadsbehov } from './typer/ettersending';
 import { IPersoninfo } from './typer/søker';
+import { Ressurs } from './typer/ressurs';
 
 interface Ifamilievedlegg {
   dokumentId: string;
@@ -38,6 +39,19 @@ export const hentEttersendinger = (): Promise<IEttersending[]> => {
       },
     })
     .then((response: { data: IEttersending[] }) => response.data);
+};
+
+export const hentOpplastetVedlegg = (
+  dokumentId: string
+): Promise<Ressurs<string>> => {
+  return axios
+    .get(`${environment().dokumentUrl}/${dokumentId}`, {
+      withCredentials: true,
+      headers: {
+        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
+      },
+    })
+    .then((response: { data: Ressurs<string> }) => response.data);
 };
 
 export const hentPersoninfo = (): Promise<IPersoninfo> => {

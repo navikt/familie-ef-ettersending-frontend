@@ -12,24 +12,15 @@ import styled from 'styled-components';
 
 const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
     text-align: center;
-    font-weight: bold;
     border-bottom: ${(props) =>
       props.visSkillelinje ? '2px dashed #59514b' : ''};
     height: 64px;
-    width: 1;
-    color: blue;
-    margin: 0 auto;
-    cursor: pointer;
   }
 `;
 
 const FilopplasterWrapper = styled.div`
   max-width: 775px;
   min-height: 68px;
-  border-radius: 4px;
-  .opplastingsikon {
-    display: inline-block;
-  }
 `;
 
 interface IProps {

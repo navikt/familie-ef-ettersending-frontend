@@ -107,7 +107,10 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
   };
 
   const slåSammenVedleggOgOppdaterInnsending = async () => {
-    if (innsending.dokumenttype === DokumentType.ANNET) {
+    if (
+      innsending.dokumenttype === DokumentType.ANNET ||
+      vedleggForSammenslåing.length === 1
+    ) {
       const nyInnsending = leggTilVedleggPåInnsending(vedleggForSammenslåing);
       oppdaterInnsending(nyInnsending);
     } else {
@@ -122,8 +125,8 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
         },
       ]);
       oppdaterInnsending(nyInnsending);
-      lukkModal();
     }
+    lukkModal();
   };
 
   const slettVedlegg = (vedlegg: IVedleggForEttersending): void => {
@@ -133,10 +136,6 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
       );
     });
   };
-
-  // const visVedleggTilOpplasting = (): IVedleggForEttersending[] => {
-  //   return innsending.vedlegg;
-  // };
 
   const lastOppVedlegg = async (filer: File[]) => {
     settLaster(true);

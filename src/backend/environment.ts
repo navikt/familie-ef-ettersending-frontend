@@ -43,7 +43,7 @@ const getEnv = () => {
       apiUrl: 'http://localhost:8091',
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
       dokumentUrl:
-        'http://localhost:8082/familie/dokument/api/mapper/familievedlegg/',
+        'http://localhost:8082/familie/dokument/api/mapper/familievedlegg',
       mergeDokumentUrl:
         'http://localhost:8082/familie/dokument/api/mapper/merge/familievedlegg',
       port: 3000,
