@@ -52,7 +52,7 @@ export const dokumentTypeTilTekst: Record<DokumentType, string> = {
     'Faktura fra barnepassordningen for perioden du søker om nå',
   AVTALE_MED_BARNEPASSER: 'Avtalen du har med barnepasseren',
   DOKUMENTASJON_TRENGER_MER_PASS_ENN_JEVNALDREDE:
-    'Dokumentasjon som viser at barnet ditt har behov for vesentlig mer pass enn det som er vanlig for jevnaldrende',
+    'Dokumentasjon som viser at barnet ditt har behov for vesentlig mer plass enn det som er vanlig for jevnaldrende',
   DOKUMENTASJON_UTENOM_VANLIG_ARBEIDSTID:
     'Dokumentasjon som viser at du jobber turnus eller skift, og jobber på tider utenom vanlig arbeidstid',
   DOKUMENTASJON_MYE_BORTE_PGA_JOBB:

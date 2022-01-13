@@ -22,7 +22,12 @@ import {
 } from '../utils/filer';
 import heic2any from 'heic2any';
 import { Knapp } from 'nav-frontend-knapper';
-import { DokumentType } from '../typer/stønad';
+import {
+  DokumentType,
+  dokumentTypeTilTekst,
+  StønadType,
+  stønadTypeTilTekst,
+} from '../typer/stønad';
 import Panel from 'nav-frontend-paneler';
 
 const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
@@ -64,6 +69,7 @@ const StyledNormaltekst = styled(Normaltekst)`
 const ModalWrapper = styled(Panel)`
   margin: 1.25rem;
   margin-top: 2rem;
+  max-width: 600px;
 `;
 
 const UndertekstWrapper = styled(Undertekst)`
@@ -99,6 +105,8 @@ interface IProps {
   innsending: IDokumentasjonsbehov;
   maxFilstørrelse?: number;
   lukkModal: () => void;
+  stønadType?: StønadType;
+  dokumentType?: string;
 }
 
 const VedleggsopplasterModal: React.FC<IProps> = ({
@@ -106,6 +114,8 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
   oppdaterInnsending,
   maxFilstørrelse,
   lukkModal,
+  stønadType,
+  dokumentType,
 }: IProps) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
@@ -187,8 +197,6 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
       })
     );
     settVedleggForSammenslåing((prevState) => [...prevState, ...vedleggListe]);
-    // const nyInnsending = leggTilVedlegg(vedleggListe);
-    // oppdaterInnsending(nyInnsending);
     settLaster(false);
   };
 
@@ -254,6 +262,11 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
 
   return (
     <ModalWrapper>
+      <b>{dokumentTypeTilTekst[dokumentType as DokumentType]}</b>
+      <p>
+        <b>Stønadstype: </b>
+        {stønadTypeTilTekst[stønadType as StønadType]}
+      </p>
       <Filopplaster visSkillelinje={false}>
         {feilmeldinger.length > 0 && (
           <FeilmeldingContainer>
