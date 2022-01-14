@@ -9,7 +9,6 @@ import {
   IDokumentasjonsbehov,
   IVedleggForEttersending,
 } from '../typer/ettersending';
-import '../stil/Vedleggsopplaster.less';
 import { sendVedleggTilMellomlager, slåSammenVedlegg } from '../api-service';
 import styled from 'styled-components/macro';
 import AlertStripe, { alertMelding } from './AlertStripe';
@@ -23,7 +22,12 @@ import {
 } from '../utils/filer';
 import heic2any from 'heic2any';
 import { Knapp } from 'nav-frontend-knapper';
-import { DokumentType } from '../typer/stønad';
+import {
+  DokumentType,
+  dokumentTypeTilTekst,
+  StønadType,
+  stønadTypeTilTekst,
+} from '../typer/stønad';
 import Panel from 'nav-frontend-paneler';
 import axios from 'axios';
 
@@ -36,19 +40,17 @@ const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
     border-bottom: ${(props) =>
       props.visSkillelinje ? '2px dashed #59514b' : ''};
     height: 64px;
-    width: 1;
     color: blue;
     margin: 0 auto;
     cursor: pointer;
-  }
-`;
-
-const FilopplasterWrapper = styled.div`
-  max-width: 775px;
-  min-height: 68px;
-  border-radius: 4px;
-  .opplastingsikon {
-    display: inline-block;
+    .opplastingsikon {
+      display: inline-block;
+    };
+    .tekst {
+      line-height: 64px;
+      display: inline-block;
+      margin-left: 10px;
+    }
   }
 `;
 
@@ -68,6 +70,7 @@ const StyledNormaltekst = styled(Normaltekst)`
 const ModalWrapper = styled(Panel)`
   margin: 1.25rem;
   margin-top: 2rem;
+  max-width: 600px;
 `;
 
 const UndertekstWrapper = styled(Undertekst)`
@@ -76,11 +79,35 @@ const UndertekstWrapper = styled(Undertekst)`
   text-align: center;
 `;
 
+const KnappContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+`;
+
+const FeilmeldingContainer = styled.div`
+  margin: 1rem 0 0 0;
+  text-align: left;
+`;
+
+const AlertStripeContainer = styled(AlertStripeFeil)`
+  background: none !important;
+  border: none !important;
+  padding: 0;
+  font-weight: bold;
+
+  div {
+    font-weight: bold;
+  }
+`;
+
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
   innsending: IDokumentasjonsbehov;
   maxFilstørrelse?: number;
   lukkModal: () => void;
+  stønadType?: StønadType;
+  dokumentType?: string;
 }
 
 const VedleggsopplasterModal: React.FC<IProps> = ({
@@ -88,6 +115,8 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
   oppdaterInnsending,
   maxFilstørrelse,
   lukkModal,
+  stønadType,
+  dokumentType,
 }: IProps) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
@@ -174,8 +203,6 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
       })
     );
     settVedleggForSammenslåing((prevState) => [...prevState, ...vedleggListe]);
-    // const nyInnsending = leggTilVedlegg(vedleggListe);
-    // oppdaterInnsending(nyInnsending);
     settLaster(false);
   };
 
@@ -236,65 +263,62 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
     }
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
   });
 
   return (
     <ModalWrapper>
-      <FilopplasterWrapper>
-        <Filopplaster visSkillelinje={false}>
-          <div {...getRootProps()}>
-            <input {...getInputProps()} />
-            <img
-              src={opplasting}
-              className="opplastingsikon"
-              alt="Opplastingsikon"
-            />
-            <Normaltekst className="tekst">
-              {isDragActive ? 'Last opp fil(er)' : 'Last opp fil(er)'}
-            </Normaltekst>
-          </div>
-        </Filopplaster>
-        <>
-          <OpplastedeVedlegg
-            vedleggsliste={vedleggForSammenslåing}
-            slettVedlegg={slettVedlegg}
+      <b>{dokumentTypeTilTekst[dokumentType as DokumentType]}</b>
+      <p>
+        <b>Stønadstype: </b>
+        {stønadTypeTilTekst[stønadType as StønadType]}
+      </p>
+      <Filopplaster visSkillelinje={false}>
+        <div {...getRootProps()}>
+          <input {...getInputProps()} />
+          <img
+            src={opplasting}
+            className="opplastingsikon"
+            alt="Opplastingsikon"
           />
-          {laster && (
-            <SpinnerWrapper>
-              <NavFrontendSpinner />
-            </SpinnerWrapper>
-          )}
-          <UndertekstWrapper>
-            Hvis dokumentet du skal sende inn består av flere filer, kan du
-            legge til alle filene her.
-          </UndertekstWrapper>
-          <StyledAlertStripe melding={alertStripeMelding} />
-          {feilmeldinger.length > 0 && (
-            <div className="feilmelding">
-              {feilmeldinger.map((feilmelding) => (
-                <AlertStripeFeil
-                  key={feilmelding}
-                  className="feilmelding-alert"
-                >
-                  {feilmelding}
-                </AlertStripeFeil>
-              ))}
-              <StyledNormaltekst>
-                <b>Tillate filtyper:</b> {tillateFiltyper.join('\t')}
-              </StyledNormaltekst>
-            </div>
-          )}
-
-          <Knapp
-            onClick={slåSammenVedleggOgOppdaterInnsending}
-            disabled={vedleggForSammenslåing.length < 1}
-          >
-            Trykk her når du er ferdig med å laste opp alle filene
-          </Knapp>
-        </>
-      </FilopplasterWrapper>
+          <Normaltekst className="tekst">Last opp fil(er)</Normaltekst>
+        </div>
+      </Filopplaster>
+      <OpplastedeVedlegg
+        vedleggsliste={vedleggForSammenslåing}
+        slettVedlegg={slettVedlegg}
+      />
+      {laster && (
+        <SpinnerWrapper>
+          <NavFrontendSpinner />
+        </SpinnerWrapper>
+      )}
+      <UndertekstWrapper>
+        Hvis dokumentet du skal sende inn består av flere filer, kan du legge
+        til alle filene her. <br /> Filene blir slått sammen til ett dokument.
+      </UndertekstWrapper>
+      <StyledAlertStripe melding={alertStripeMelding} />
+      {feilmeldinger.length > 0 && (
+        <FeilmeldingContainer>
+          {feilmeldinger.map((feilmelding) => (
+            <AlertStripeContainer key={feilmelding}>
+              {feilmelding}
+            </AlertStripeContainer>
+          ))}
+          <StyledNormaltekst>
+            <b>Tillate filtyper:</b> {tillateFiltyper.join('\t')}
+          </StyledNormaltekst>
+        </FeilmeldingContainer>
+      )}
+      <KnappContainer>
+        <Knapp
+          onClick={slåSammenVedleggOgOppdaterInnsending}
+          disabled={vedleggForSammenslåing.length < 1 || laster}
+        >
+          Last opp
+        </Knapp>
+      </KnappContainer>
     </ModalWrapper>
   );
 };

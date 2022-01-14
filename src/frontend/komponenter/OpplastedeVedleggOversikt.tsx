@@ -1,7 +1,6 @@
 import React from 'react';
 import vedlegg from '../icons/vedlegg.svg';
 import { IVedleggForEttersending } from '../typer/ettersending';
-import '../stil/Opplastedevedlegg.less';
 import styled from 'styled-components/macro';
 
 interface IOpplastedeVedlegg {
@@ -26,11 +25,7 @@ const OpplastedeVedleggOversikt: React.FC<IOpplastedeVedlegg> = ({
       {vedleggsliste.map((fil: IVedleggForEttersending, index) => {
         return (
           <StyledSpan key={index}>
-            <StyledImg
-              className="vedleggsikon"
-              src={vedlegg}
-              alt="Vedleggsikon"
-            />
+            <StyledImg src={vedlegg} alt="Vedleggsikon" />
             {' ' + fil.navn + ' '}
           </StyledSpan>
         );

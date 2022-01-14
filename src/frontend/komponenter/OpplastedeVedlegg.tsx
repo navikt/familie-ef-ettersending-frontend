@@ -3,11 +3,57 @@ import slett from '../icons/slett.svg';
 import vedlegg from '../icons/vedlegg.svg';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { IVedleggForEttersending } from '../typer/ettersending';
-import '../stil/Opplastedevedlegg.less';
 import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
 import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
 import Lenke from 'nav-frontend-lenker';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  .fil {
+    position: relative;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+
+    .typo-normal {
+      display: inline-block;
+    }
+
+    .filstørrelse {
+      margin-left: 10px;
+    }
+
+    .filnavn {
+      margin-left: 1rem;
+    }
+
+    .vedleggsikon {
+      position: relative;
+      top: 0px;
+    }
+
+    .slett {
+      position: relative;
+      top: 5px;
+      color: blue;
+      cursor: pointer;
+
+      p {
+        text-decoration: underline;
+      }
+
+      .slettikon {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  hr {
+    border: 1px solid #b7b1a9;
+  }
+`;
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedleggForEttersending[];
@@ -19,7 +65,6 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
   slettVedlegg,
 }: IOpplastedeVedlegg) => {
   const visDokumentNyFane = async (vedlegg: IVedleggForEttersending) => {
-    console.log(vedlegg);
     const opplastetVedlegg = await hentOpplastetVedlegg(vedlegg.id);
     if (opplastetVedlegg.status === RessursStatus.SUKSESS) {
       åpnePdfIEgenTab(
@@ -30,7 +75,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
   };
 
   return (
-    <div className="opplastede-filer">
+    <Container>
       {vedleggsliste.map((fil: IVedleggForEttersending, index: number) => {
         return (
           <div key={index}>
@@ -64,7 +109,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
           </div>
         );
       })}
-    </div>
+    </Container>
   );
 };
 

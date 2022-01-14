@@ -5,10 +5,10 @@ import {
   IDokumentasjonsbehov,
   IVedleggForEttersending,
 } from '../typer/ettersending';
-import '../stil/Vedleggsopplaster.less';
 import VedleggsopplasterModal from './VedleggsopplasterModal';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
+import { StønadType } from '../typer/stønad';
 
 const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
     text-align: center;
@@ -27,12 +27,16 @@ interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
   innsending: IDokumentasjonsbehov;
   maxFilstørrelse?: number;
+  stønadType?: StønadType;
+  dokumentType?: string;
 }
 
 const Vedleggsopplaster: React.FC<IProps> = ({
   innsending,
   oppdaterInnsending,
   maxFilstørrelse,
+  stønadType,
+  dokumentType,
 }: IProps) => {
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
 
@@ -62,6 +66,8 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           innsending={innsending}
           lukkModal={() => settÅpenModal(false)}
           maxFilstørrelse={maxFilstørrelse}
+          stønadType={stønadType}
+          dokumentType={dokumentType}
         />
       </Modal>
       <FilopplasterWrapper>
