@@ -52,7 +52,7 @@ export const dokumentTypeTilTekst: Record<DokumentType, string> = {
     'Faktura fra barnepassordningen for perioden du søker om nå',
   AVTALE_MED_BARNEPASSER: 'Avtalen du har med barnepasseren',
   DOKUMENTASJON_TRENGER_MER_PASS_ENN_JEVNALDREDE:
-    'Dokumentasjon som viser at barnet ditt har behov for vesentlig mer plass enn det som er vanlig for jevnaldrende',
+    'Dokumentasjon som viser at barnet ditt har behov for vesentlig mer pass enn det som er vanlig for jevnaldrende',
   DOKUMENTASJON_UTENOM_VANLIG_ARBEIDSTID:
     'Dokumentasjon som viser at du jobber turnus eller skift, og jobber på tider utenom vanlig arbeidstid',
   DOKUMENTASJON_MYE_BORTE_PGA_JOBB:
@@ -74,7 +74,7 @@ export const dokumentTypeTilTekst: Record<DokumentType, string> = {
     'Dokumentasjon på arbeidsforholdet og årsaken til at du sluttet',
   ARBEIDSFORHOLD_OG_REDUSERT_ARBEIDSTID:
     'Dokumentasjon på arbeidsforholdet og årsaken til at du reduserte arbeidstiden',
-  ERKÆRING_SAMMLIVSBRUDD:
+  ERKLÆRING_SAMLIVSBRUDD:
     'Bekreftelse på samlivsbrudd med den andre forelderen',
   DOKUMENTASJON_INNGÅTT_EKTESKAP: 'Dokumentasjon på inngått ekteskap',
   DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT:
@@ -107,7 +107,7 @@ export enum DokumentType {
   DOKUMENTASJON_BARNETILSYN_BEHOV = 'DOKUMENTASJON_BARNETILSYN_BEHOV',
   ARBEIDSFORHOLD_OG_OPPSIGELSESÅRSAK = 'ARBEIDSFORHOLD_OG_OPPSIGELSESÅRSAK',
   ARBEIDSFORHOLD_OG_REDUSERT_ARBEIDSTID = 'ARBEIDSFORHOLD_OG_REDUSERT_ARBEIDSTID',
-  ERKÆRING_SAMMLIVSBRUDD = 'ERKÆRING_SAMMLIVSBRUDD',
+  ERKLÆRING_SAMLIVSBRUDD = 'ERKLÆRING_SAMLIVSBRUDD',
   DOKUMENTASJON_INNGÅTT_EKTESKAP = 'DOKUMENTASJON_INNGÅTT_EKTESKAP',
   DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT = 'DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT',
   BEKREFTELSE_SEPRASJON_SØKNAD = 'BEKREFTELSE_SEPRASJON_SØKNAD',
@@ -131,7 +131,7 @@ export const dokumentTyperOvergangsstønad: DokumentType[] = [
   DokumentType.DOKUMENTASJON_BARNEPASS_MANGEL,
   DokumentType.ARBEIDSFORHOLD_OG_OPPSIGELSESÅRSAK,
   DokumentType.ARBEIDSFORHOLD_OG_REDUSERT_ARBEIDSTID,
-  DokumentType.ERKÆRING_SAMMLIVSBRUDD,
+  DokumentType.ERKLÆRING_SAMLIVSBRUDD,
   DokumentType.DOKUMENTASJON_INNGÅTT_EKTESKAP,
   DokumentType.DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT,
   DokumentType.BEKREFTELSE_SEPRASJON_SØKNAD,
@@ -149,7 +149,7 @@ export const dokumentTyperSkolepenger: DokumentType[] = [
   DokumentType.SAMVÆRSAVTALE_UTEN_KONKRETE_TIDSPUNKTER,
   DokumentType.DOKUMENTASJON_SYKDOM,
   DokumentType.DOKUMENTASJON_SYKT_BARN,
-  DokumentType.ERKÆRING_SAMMLIVSBRUDD,
+  DokumentType.ERKLÆRING_SAMLIVSBRUDD,
   DokumentType.DOKUMENTASJON_INNGÅTT_EKTESKAP,
   DokumentType.DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT,
   DokumentType.BEKREFTELSE_SEPRASJON_SØKNAD,
@@ -179,7 +179,7 @@ export const dokumentTyperBarnetilsyn: DokumentType[] = [
   DokumentType.DOKUMENTASJON_BARNETILSYN_BEHOV,
   DokumentType.ARBEIDSFORHOLD_OG_OPPSIGELSESÅRSAK,
   DokumentType.ARBEIDSFORHOLD_OG_REDUSERT_ARBEIDSTID,
-  DokumentType.ERKÆRING_SAMMLIVSBRUDD,
+  DokumentType.ERKLÆRING_SAMLIVSBRUDD,
   DokumentType.DOKUMENTASJON_INNGÅTT_EKTESKAP,
   DokumentType.DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT,
   DokumentType.BEKREFTELSE_SEPRASJON_SØKNAD,

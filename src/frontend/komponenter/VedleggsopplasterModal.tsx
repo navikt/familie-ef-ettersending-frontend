@@ -142,14 +142,16 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
       vedleggForSammenslåing.length === 1
     ) {
       const nyInnsending = leggTilVedleggPåInnsending(vedleggForSammenslåing);
-      oppdaterInnsending(nyInnsending);
+      oppdaterInnsending({ ...nyInnsending, erSammenslått: false });
     } else {
       const dokumentId = await slåSammenVedlegg(
         vedleggForSammenslåing.map((v) => v.id)
       );
       const nyInnsending = leggTilVedleggPåInnsending([
         {
-          navn: vedleggForSammenslåing[0].navn,
+          navn: innsending.dokumenttype
+            ? innsending.dokumenttype.toLowerCase() + '.pdf'
+            : vedleggForSammenslåing[0].navn,
           tittel: vedleggForSammenslåing[0].tittel,
           id: dokumentId,
         },
