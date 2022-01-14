@@ -4,6 +4,7 @@ import React from 'react';
 export enum alertMelding {
   SENDT_INN = 'Takk. Dokumentasjon er sendt inn.',
   FEIL = 'Noe gikk galt, prøv igjen',
+  FEIL_FOR_LITEN_FIL = 'Dokumentet du prøver å laste opp er for lite og ikke lesbart',
   MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å dra fila inn i det markerte feltet eller trykke på "Last opp fil(er)',
   MANGLER_BEGGE_TYPER = 'Du må velge både stønadstype og dokumenttype må velges',
   MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS = 'Ingen vedlegg er lastet opp',
@@ -17,52 +18,18 @@ interface IProps {
 }
 
 const AlertStripe: React.FC<IProps> = ({ className, melding }: IProps) => {
-  if (melding === alertMelding.FEIL) {
-    return (
-      <AlertStripeFeil className={className}>
-        {alertMelding.FEIL}
-      </AlertStripeFeil>
-    );
-  }
-
-  if (melding === alertMelding.SENDT_INN) {
-    return (
-      <AlertStripeSuksess className={className}>
-        {alertMelding.SENDT_INN}
-      </AlertStripeSuksess>
-    );
-  }
-
-  if (melding === alertMelding.MANGLER_VEDLEGG) {
-    return (
-      <AlertStripeFeil className={className}>
-        {alertMelding.MANGLER_VEDLEGG}
-      </AlertStripeFeil>
-    );
-  }
-
-  if (melding === alertMelding.MANGLER_BEGGE_TYPER) {
-    return (
-      <AlertStripeFeil className={className}>
-        {alertMelding.MANGLER_BEGGE_TYPER}
-      </AlertStripeFeil>
-    );
-  }
-
-  if (melding === alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS) {
-    return (
-      <AlertStripeFeil className={className}>
-        {alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS}
-      </AlertStripeFeil>
-    );
-  }
-
-  if (melding === alertMelding.FEIL_VED_INNSENDING) {
-    return (
-      <AlertStripeFeil className={className}>
-        {alertMelding.FEIL_VED_INNSENDING}
-      </AlertStripeFeil>
-    );
+  switch (melding) {
+    case alertMelding.SENDT_INN:
+      return (
+        <AlertStripeSuksess className={className}>{melding}</AlertStripeSuksess>
+      );
+    case alertMelding.FEIL:
+    case alertMelding.MANGLER_VEDLEGG:
+    case alertMelding.MANGLER_BEGGE_TYPER:
+    case alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS:
+    case alertMelding.FEIL_VED_INNSENDING:
+    case alertMelding.FEIL_FOR_LITEN_FIL:
+      return <AlertStripeFeil className={className}>{melding}</AlertStripeFeil>;
   }
 
   return <></>;

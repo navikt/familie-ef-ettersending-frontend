@@ -25,6 +25,7 @@ import heic2any from 'heic2any';
 import { Knapp } from 'nav-frontend-knapper';
 import { DokumentType } from '../typer/stønad';
 import Panel from 'nav-frontend-paneler';
+import axios from 'axios';
 
 const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
     text-align: center;
@@ -155,12 +156,17 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
             tittel: innsending.beskrivelse || 'Ukjent tittel',
           };
           vedleggListe.push(vedlegg);
-        } catch {
-          settAlertStripeMelding(alertMelding.FEIL);
+        } catch (error: any) {
+          const feilmelding =
+            axios.isAxiosError(error) &&
+            error?.response?.data?.melding === 'CODE=IMAGE_DIMENSIONS_TOO_SMALL'
+              ? alertMelding.FEIL_FOR_LITEN_FIL
+              : alertMelding.FEIL;
+          settAlertStripeMelding(feilmelding);
 
           logFeilFilopplasting({
             type_feil: 'Generisk feil',
-            feilmelding: alertMelding.FEIL,
+            feilmelding: feilmelding,
             filtype: fil.type,
             filstørrelse: fil.size,
           });
@@ -176,8 +182,8 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
   const onDrop = async (filerForOpplasting: File[]) => {
     const feilmeldingsliste: string[] = [];
 
-    const filer = await Promise.all(
-      filerForOpplasting.map(async (fil: File) => {
+    const filer: File[] = await Promise.all(
+      filerForOpplasting.map(async (fil: File): Promise<File> => {
         if (maxFilstørrelse && fil.size > maxFilstørrelse) {
           const maks = formaterFilstørrelse(maxFilstørrelse);
 
@@ -226,6 +232,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
     );
     if (feilmeldingsliste.length <= 0) {
       lastOppVedlegg(filer);
+      settFeilmeldinger([]);
     }
   };
 
@@ -237,21 +244,6 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
     <ModalWrapper>
       <FilopplasterWrapper>
         <Filopplaster visSkillelinje={false}>
-          {feilmeldinger.length > 0 && (
-            <div className="feilmelding">
-              {feilmeldinger.map((feilmelding) => (
-                <AlertStripeFeil
-                  key={feilmelding}
-                  className="feilmelding-alert"
-                >
-                  {feilmelding}
-                </AlertStripeFeil>
-              ))}
-              <StyledNormaltekst>
-                <b>Tillate filtyper:</b> {tillateFiltyper.join('\t')}
-              </StyledNormaltekst>
-            </div>
-          )}
           <div {...getRootProps()}>
             <input {...getInputProps()} />
             <img
@@ -279,6 +271,22 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
             legge til alle filene her.
           </UndertekstWrapper>
           <StyledAlertStripe melding={alertStripeMelding} />
+          {feilmeldinger.length > 0 && (
+            <div className="feilmelding">
+              {feilmeldinger.map((feilmelding) => (
+                <AlertStripeFeil
+                  key={feilmelding}
+                  className="feilmelding-alert"
+                >
+                  {feilmelding}
+                </AlertStripeFeil>
+              ))}
+              <StyledNormaltekst>
+                <b>Tillate filtyper:</b> {tillateFiltyper.join('\t')}
+              </StyledNormaltekst>
+            </div>
+          )}
+
           <Knapp
             onClick={slåSammenVedleggOgOppdaterInnsending}
             disabled={vedleggForSammenslåing.length < 1}

@@ -32,6 +32,7 @@ interface IProps {
 const Vedleggsopplaster: React.FC<IProps> = ({
   innsending,
   oppdaterInnsending,
+  maxFilstørrelse,
 }: IProps) => {
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
 
@@ -60,6 +61,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           oppdaterInnsending={oppdaterInnsending}
           innsending={innsending}
           lukkModal={() => settÅpenModal(false)}
+          maxFilstørrelse={maxFilstørrelse}
         />
       </Modal>
       <FilopplasterWrapper>
