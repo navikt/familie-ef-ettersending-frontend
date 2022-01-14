@@ -3,9 +3,11 @@ import React from 'react';
 
 export enum alertMelding {
   SENDT_INN = 'Takk. Dokumentasjon er sendt inn.',
+  LASTET_OPP = 'Filen(e) er nå klare til å sendes inn.',
+  FILER_SAMMENSLÅTT = 'Filene er sammenslått til et dokument.',
   FEIL = 'Noe gikk galt, prøv igjen',
   FEIL_FOR_LITEN_FIL = 'Dokumentet du prøver å laste opp er for lite og ikke lesbart',
-  MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å dra fila inn i det markerte feltet eller trykke på "Last opp fil(er)"',
+  MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å trykke på knappen "Last opp fil(er)"',
   MANGLER_BEGGE_TYPER = 'Du må velge både stønadstype og dokumenttype må velges',
   MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS = 'Ingen vedlegg er lastet opp',
   FEIL_VED_INNSENDING = 'Noe gikk galt ved innsending av dine dokumenter.',
@@ -20,6 +22,8 @@ interface IProps {
 const AlertStripe: React.FC<IProps> = ({ className, melding }: IProps) => {
   switch (melding) {
     case alertMelding.SENDT_INN:
+    case alertMelding.LASTET_OPP:
+    case alertMelding.FILER_SAMMENSLÅTT:
       return (
         <AlertStripeSuksess className={className}>{melding}</AlertStripeSuksess>
       );

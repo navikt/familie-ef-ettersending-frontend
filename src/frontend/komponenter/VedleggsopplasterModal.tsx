@@ -154,7 +154,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
           id: dokumentId,
         },
       ]);
-      oppdaterInnsending(nyInnsending);
+      oppdaterInnsending({ ...nyInnsending, erSammenslått: true });
     }
     lukkModal();
   };
@@ -282,7 +282,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
             className="opplastingsikon"
             alt="Opplastingsikon"
           />
-          <Normaltekst className="tekst">Last opp fil(er)</Normaltekst>
+          <Normaltekst className="tekst">Velg filer</Normaltekst>
         </div>
       </Filopplaster>
       <OpplastedeVedlegg

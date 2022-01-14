@@ -9,6 +9,7 @@ import VedleggsopplasterModal from './VedleggsopplasterModal';
 import { Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import { StønadType } from '../typer/stønad';
+import AlertStripe, { alertMelding } from './AlertStripe';
 
 const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
     text-align: center;
@@ -21,6 +22,11 @@ const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
 const FilopplasterWrapper = styled.div`
   max-width: 775px;
   min-height: 68px;
+`;
+
+const AlertStripeMedPadding = styled(AlertStripe)`
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 `;
 
 interface IProps {
@@ -71,9 +77,17 @@ const Vedleggsopplaster: React.FC<IProps> = ({
         />
       </Modal>
       <FilopplasterWrapper>
-        <Filopplaster visSkillelinje={innsending.vedlegg.length > 0}>
-          <Knapp onClick={() => settÅpenModal(true)}>Last opp fil(er)</Knapp>
-        </Filopplaster>
+        {innsending.vedlegg.length === 0 && (
+          <Filopplaster visSkillelinje={innsending.vedlegg.length > 0}>
+            <Knapp onClick={() => settÅpenModal(true)}>Last opp fil(er)</Knapp>
+          </Filopplaster>
+        )}
+        {innsending.vedlegg.length >= 1 && !innsending.erSammenslått && (
+          <AlertStripeMedPadding melding={alertMelding.LASTET_OPP} />
+        )}
+        {innsending.vedlegg.length >= 1 && innsending.erSammenslått && (
+          <AlertStripeMedPadding melding={alertMelding.FILER_SAMMENSLÅTT} />
+        )}
         <OpplastedeVedlegg
           vedleggsliste={visVedleggTilOpplasting()}
           slettVedlegg={slettVedlegg}
