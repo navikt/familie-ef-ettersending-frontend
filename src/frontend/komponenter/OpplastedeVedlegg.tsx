@@ -80,7 +80,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
         );
       }
     } catch (error: any) {
-      settFeilmelding(alertMelding.FEIL);
+      settFeilmelding(alertMelding.FEIL_NEDLASTING_DOKUMENT);
     }
   };
 

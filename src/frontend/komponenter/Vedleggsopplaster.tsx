@@ -83,7 +83,13 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           </Filopplaster>
         )}
         {innsending.vedlegg.length >= 1 && !innsending.erSammenslått && (
-          <AlertStripeMedPadding melding={alertMelding.LASTET_OPP} />
+          <AlertStripeMedPadding
+            melding={
+              innsending.vedlegg.length === 1
+                ? alertMelding.LASTET_OPP_EN
+                : alertMelding.LASTET_OPP_FLERE
+            }
+          />
         )}
         {innsending.vedlegg.length >= 1 && innsending.erSammenslått && (
           <AlertStripeMedPadding melding={alertMelding.FILER_SAMMENSLÅTT} />

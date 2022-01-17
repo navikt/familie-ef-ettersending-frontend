@@ -136,16 +136,21 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
     };
   };
 
+  const dokumenterSkalSammenslås = (
+    dokumentType: string | undefined,
+    antallVedlegg: number
+  ) => {
+    return !(dokumentType === DokumentType.ANNET || antallVedlegg === 1);
+  };
+
   const slåSammenVedleggOgOppdaterInnsending = async () => {
     settAlertStripeMelding(alertMelding.TOM);
     if (
-      innsending.dokumenttype === DokumentType.ANNET ||
-      vedleggForSammenslåing.length === 1
+      dokumenterSkalSammenslås(
+        innsending.dokumenttype,
+        vedleggForSammenslåing.length
+      )
     ) {
-      const nyInnsending = leggTilVedleggPåInnsending(vedleggForSammenslåing);
-      oppdaterInnsending({ ...nyInnsending, erSammenslått: false });
-      lukkModal();
-    } else {
       try {
         const dokumentId = await slåSammenVedlegg(
           vedleggForSammenslåing.map((v) => v.id)
@@ -164,6 +169,10 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
       } catch (error: any) {
         settAlertStripeMelding(alertMelding.FEIL_SAMMENSLÅING_DOKUMENT);
       }
+    } else {
+      const nyInnsending = leggTilVedleggPåInnsending(vedleggForSammenslåing);
+      oppdaterInnsending({ ...nyInnsending, erSammenslått: false });
+      lukkModal();
     }
   };
 

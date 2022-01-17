@@ -7,7 +7,8 @@ import React from 'react';
 
 export enum alertMelding {
   SENDT_INN = 'Takk. Dokumentasjon er sendt inn.',
-  LASTET_OPP = 'Filen(e) er nå klare til å sendes inn.',
+  LASTET_OPP_EN = 'Filen er nå klar til å sendes inn.',
+  LASTET_OPP_FLERE = 'Filene er nå klare til å sendes inn.',
   FILER_SAMMENSLÅTT = 'Filene er sammenslått til et dokument.',
   FEIL = 'Noe gikk galt, prøv igjen',
   FEIL_NEDLASTING_DOKUMENT = 'Noe gikk galt ved uthenting av opplastet dokument',
@@ -28,7 +29,8 @@ interface IProps {
 const AlertStripe: React.FC<IProps> = ({ className, melding }: IProps) => {
   switch (melding) {
     case alertMelding.SENDT_INN:
-    case alertMelding.LASTET_OPP:
+    case alertMelding.LASTET_OPP_EN:
+    case alertMelding.LASTET_OPP_FLERE:
     case alertMelding.FILER_SAMMENSLÅTT:
       return (
         <AlertStripeSuksess className={className}>{melding}</AlertStripeSuksess>
