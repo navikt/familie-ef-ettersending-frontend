@@ -137,28 +137,34 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
   };
 
   const slåSammenVedleggOgOppdaterInnsending = async () => {
+    settAlertStripeMelding(alertMelding.TOM);
     if (
       innsending.dokumenttype === DokumentType.ANNET ||
       vedleggForSammenslåing.length === 1
     ) {
       const nyInnsending = leggTilVedleggPåInnsending(vedleggForSammenslåing);
       oppdaterInnsending({ ...nyInnsending, erSammenslått: false });
+      lukkModal();
     } else {
-      const dokumentId = await slåSammenVedlegg(
-        vedleggForSammenslåing.map((v) => v.id)
-      );
-      const nyInnsending = leggTilVedleggPåInnsending([
-        {
-          navn: innsending.dokumenttype
-            ? innsending.dokumenttype.toLowerCase() + '.pdf'
-            : vedleggForSammenslåing[0].navn,
-          tittel: vedleggForSammenslåing[0].tittel,
-          id: dokumentId,
-        },
-      ]);
-      oppdaterInnsending({ ...nyInnsending, erSammenslått: true });
+      try {
+        const dokumentId = await slåSammenVedlegg(
+          vedleggForSammenslåing.map((v) => v.id)
+        );
+        const nyInnsending = leggTilVedleggPåInnsending([
+          {
+            navn: innsending.dokumenttype
+              ? innsending.dokumenttype.toLowerCase() + '.pdf'
+              : vedleggForSammenslåing[0].navn,
+            tittel: vedleggForSammenslåing[0].tittel,
+            id: dokumentId,
+          },
+        ]);
+        oppdaterInnsending({ ...nyInnsending, erSammenslått: true });
+        lukkModal();
+      } catch (error: any) {
+        settAlertStripeMelding(alertMelding.FEIL_SAMMENSLÅING_DOKUMENT);
+      }
     }
-    lukkModal();
   };
 
   const slettVedlegg = (vedlegg: IVedleggForEttersending): void => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import slett from '../icons/slett.svg';
 import vedlegg from '../icons/vedlegg.svg';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -8,6 +8,7 @@ import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
 import Lenke from 'nav-frontend-lenker';
 import styled from 'styled-components';
+import AlertStripe, { alertMelding } from './AlertStripe';
 
 const Container = styled.div`
   .fil {
@@ -64,13 +65,22 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
   vedleggsliste,
   slettVedlegg,
 }: IOpplastedeVedlegg) => {
+  const [feilmelding, settFeilmelding] = useState<alertMelding>(
+    alertMelding.TOM
+  );
+
   const visDokumentNyFane = async (vedlegg: IVedleggForEttersending) => {
-    const opplastetVedlegg = await hentOpplastetVedlegg(vedlegg.id);
-    if (opplastetVedlegg.status === RessursStatus.SUKSESS) {
-      åpnePdfIEgenTab(
-        base64toBlob(opplastetVedlegg.data, 'application/pdf'),
-        vedlegg.navn
-      );
+    settFeilmelding(alertMelding.TOM);
+    try {
+      const opplastetVedlegg = await hentOpplastetVedlegg(vedlegg.id);
+      if (opplastetVedlegg.status === RessursStatus.SUKSESS) {
+        åpnePdfIEgenTab(
+          base64toBlob(opplastetVedlegg.data, 'application/pdf'),
+          vedlegg.navn
+        );
+      }
+    } catch (error: any) {
+      settFeilmelding(alertMelding.FEIL);
     }
   };
 
@@ -109,6 +119,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
           </div>
         );
       })}
+      {feilmelding && <AlertStripe melding={feilmelding} />}
     </Container>
   );
 };
