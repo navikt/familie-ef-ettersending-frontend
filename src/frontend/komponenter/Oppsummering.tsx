@@ -35,12 +35,10 @@ export const Oppsummering: React.FC<IProps> = ({
               {innsending.stønadType &&
                 stønadTypeTilTekst[innsending.stønadType]}
             </Normaltekst>
-            {innsending.dokumenttype && (
-              <Normaltekst>
-                <b>Dokumenttype: </b>
-                {dokumentTypeTilTekst[innsending.dokumenttype as DokumentType]}
-              </Normaltekst>
-            )}
+            <Normaltekst>
+              <b>Dokumenttype: </b>
+              {innsending.beskrivelse}
+            </Normaltekst>
             <Normaltekst>
               <b>Dato for innsending: </b>
               {formaterIsoDato(innsending.innsendingstidspunkt)}
