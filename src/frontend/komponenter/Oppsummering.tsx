@@ -5,6 +5,8 @@ import { IDokumentasjonsbehov } from '../typer/ettersending';
 import { dokumentTypeTilTekst, DokumentType } from '../typer/stønad';
 import OpplastedeVedleggOversikt from './OpplastedeVedleggOversikt';
 import { formaterIsoDato } from '../../shared-utils/dato';
+import { logSidevisning } from '../utils/amplitude';
+import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
 
 const StyledDiv = styled.div`
   margin-top: 2rem;
@@ -20,6 +22,12 @@ export const Oppsummering: React.FC<IProps> = ({
   innsendinger,
   tittel,
 }: IProps) => {
+  if (tittel === EOppsummeringstitler.Innsending) {
+    logSidevisning('Oppsummering');
+  } else if (tittel === EOppsummeringstitler.Kvittering) {
+    logSidevisning('Kvittering');
+  }
+
   return (
     <div>
       <Undertittel>{tittel}</Undertittel>

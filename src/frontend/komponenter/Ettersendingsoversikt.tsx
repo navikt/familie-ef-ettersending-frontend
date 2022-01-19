@@ -28,6 +28,7 @@ import { InnsendingSide } from './InnsendingSide';
 import Stegindikator from 'nav-frontend-stegindikator';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov } from '../utils/amplitude';
+import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
 
 const StyledKnapp = styled(Knapp)`
   margin: 1rem auto;
@@ -256,7 +257,7 @@ const Ettersendingsoversikt: React.FC = () => {
       {aktivtSteg === 1 && (
         <>
           <Oppsummering
-            tittel={'Følgende dokumentasjon er klar til innsending'}
+            tittel={EOppsummeringstitler.Innsending}
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
           <StyledDiv>
@@ -270,7 +271,7 @@ const Ettersendingsoversikt: React.FC = () => {
       {aktivtSteg === 2 && (
         <>
           <Oppsummering
-            tittel={'Følgende dokumentasjon er sendt inn'}
+            tittel={EOppsummeringstitler.Kvittering}
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
         </>
