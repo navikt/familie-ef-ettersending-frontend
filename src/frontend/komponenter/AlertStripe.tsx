@@ -9,7 +9,7 @@ export enum alertMelding {
   SENDT_INN = 'Takk. Dokumentasjon er sendt inn.',
   LASTET_OPP_EN = 'Filen er nå klar til å sendes inn.',
   LASTET_OPP_FLERE = 'Filene er nå klare til å sendes inn.',
-  FILER_SAMMENSLÅTT = 'Filene er sammenslått til et dokument.',
+  FILER_SAMMENSLÅTT = 'Filene er sammenslått til et dokument som er klart til å sendes inn.',
   FEIL = 'Noe gikk galt, prøv igjen',
   FEIL_NEDLASTING_DOKUMENT = 'Noe gikk galt ved uthenting av opplastet dokument',
   FEIL_SAMMENSLÅING_DOKUMENT = 'Noe gikk galt ved sammenslåing av opplastede dokumenter',
