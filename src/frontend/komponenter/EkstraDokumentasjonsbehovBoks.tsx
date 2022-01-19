@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import { Knapp } from 'nav-frontend-knapper';
-import { Undertekst } from 'nav-frontend-typografi';
 import { Select } from 'nav-frontend-skjema';
 import slett from '../icons/slett.svg';
 import styled from 'styled-components/macro';
@@ -17,6 +16,7 @@ import { IDokumentasjonsbehov } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
+import Alertstripe from 'nav-frontend-alertstriper';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -42,10 +42,6 @@ const StyledImg = styled.img`
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
-`;
-
-const StyledUndertekst = styled(Undertekst)`
-  margin-bottom: 1rem;
 `;
 
 interface IProps {
@@ -80,6 +76,13 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       valgtStønadType &&
       valgtDokumentType !== ('Velg dokumenttype' as DokumentType) &&
       valgtStønadType !== ('Velg stønadstype' as StønadType)
+    );
+  };
+
+  const erDokumentasjonSendt = (): boolean => {
+    return (
+      innsending.søknadsdata?.harSendtInnTidligere ||
+      innsending.vedlegg.length > 0
     );
   };
 
@@ -157,7 +160,12 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       {harLåstValg && (
         <>
           <StyledDiv>
-            <b>{dokumentTypeTilTekst[valgtDokumentType as DokumentType]}</b>
+            <Alertstripe
+              type={erDokumentasjonSendt() ? 'suksess' : 'advarsel'}
+              form="inline"
+            >
+              <b>{innsending.beskrivelse}</b>
+            </Alertstripe>
             <span tabIndex={0}>
               <StyledImg
                 className="slettikon"
@@ -177,11 +185,11 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
             innsending={innsending}
             oppdaterInnsending={oppdaterInnsending}
             maxFilstørrelse={filstørrelse_10MB}
+            stønadType={valgtStønadType}
+            beskrivelse={
+              dokumentTypeTilTekst[valgtDokumentType as DokumentType]
+            }
           />
-          <StyledUndertekst>
-            Hvis dokumentet du skal sende inn består av flere filer, kan du
-            legge til alle filene her.
-          </StyledUndertekst>
         </>
       )}
       {!harLåstValg && (

@@ -22,6 +22,8 @@ const getEnv = () => {
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
       dokumentUrl:
         'https://www.nav.no/familie/dokument/api/mapper/familievedlegg',
+      mergeDokumentUrl:
+        'https://www.nav.no/familie/dokument/api/mapper/merge/familievedlegg',
       port: 9000,
     };
   } else if (isDev()) {
@@ -31,6 +33,8 @@ const getEnv = () => {
       dekoratørUrl: 'https://dekoratoren.dev.nav.no/?simple=true',
       dokumentUrl:
         'https://familie-dokument.dev.nav.no/familie/dokument/api/mapper/familievedlegg',
+      mergeDokumentUrl:
+        'https://familie-dokument.dev.nav.no/familie/dokument/api/mapper/merge/familievedlegg',
       port: 9000,
     };
   } else {
@@ -39,7 +43,9 @@ const getEnv = () => {
       apiUrl: 'http://localhost:8091',
       dekoratørUrl: 'https://www.nav.no/dekoratoren/?simple=true',
       dokumentUrl:
-        'http://localhost:8082/familie/dokument/api/mapper/familievedlegg/',
+        'http://localhost:8082/familie/dokument/api/mapper/familievedlegg',
+      mergeDokumentUrl:
+        'http://localhost:8082/familie/dokument/api/mapper/merge/familievedlegg',
       port: 3000,
     };
   }

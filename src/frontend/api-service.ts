@@ -2,6 +2,7 @@ import axios from 'axios';
 import environment from '../backend/environment';
 import { IEttersending, ISøknadsbehov } from './typer/ettersending';
 import { IPersoninfo } from './typer/søker';
+import { Ressurs } from './typer/ressurs';
 
 interface Ifamilievedlegg {
   dokumentId: string;
@@ -40,6 +41,19 @@ export const hentEttersendinger = (): Promise<IEttersending[]> => {
     .then((response: { data: IEttersending[] }) => response.data);
 };
 
+export const hentOpplastetVedlegg = (
+  dokumentId: string
+): Promise<Ressurs<string>> => {
+  return axios
+    .get(`${environment().dokumentUrl}/${dokumentId}`, {
+      withCredentials: true,
+      headers: {
+        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
+      },
+    })
+    .then((response: { data: Ressurs<string> }) => response.data);
+};
+
 export const hentPersoninfo = (): Promise<IPersoninfo> => {
   return axios
     .get(`${environment().apiUrl}/api/oppslag/sokerinfo`, {
@@ -69,6 +83,17 @@ export const sendVedleggTilMellomlager = (
     .post(`${environment().dokumentUrl}`, formData, {
       headers: {
         'content-type': 'multipart/form-data',
+        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
+      },
+      withCredentials: true,
+    })
+    .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
+};
+
+export const slåSammenVedlegg = (dokumentIder: string[]): Promise<string> => {
+  return axios
+    .post(`${environment().mergeDokumentUrl}`, dokumentIder, {
+      headers: {
         [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
       },
       withCredentials: true,
