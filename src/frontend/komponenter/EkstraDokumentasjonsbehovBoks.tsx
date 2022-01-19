@@ -173,7 +173,9 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
             oppdaterInnsending={oppdaterInnsending}
             maxFilstørrelse={filstørrelse_10MB}
             stønadType={valgtStønadType}
-            dokumentType={valgtDokumentType}
+            beskrivelse={
+              dokumentTypeTilTekst[valgtDokumentType as DokumentType]
+            }
           />
         </>
       )}

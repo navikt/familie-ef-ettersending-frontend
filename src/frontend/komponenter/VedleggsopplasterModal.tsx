@@ -22,12 +22,7 @@ import {
 } from '../utils/filer';
 import heic2any from 'heic2any';
 import { Knapp } from 'nav-frontend-knapper';
-import {
-  DokumentType,
-  dokumentTypeTilTekst,
-  StønadType,
-  stønadTypeTilTekst,
-} from '../typer/stønad';
+import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
 import Panel from 'nav-frontend-paneler';
 import axios from 'axios';
 
@@ -107,7 +102,7 @@ interface IProps {
   maxFilstørrelse?: number;
   lukkModal: () => void;
   stønadType?: StønadType;
-  dokumentType?: string;
+  beskrivelse: string;
 }
 
 const VedleggsopplasterModal: React.FC<IProps> = ({
@@ -116,7 +111,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
   maxFilstørrelse,
   lukkModal,
   stønadType,
-  dokumentType,
+  beskrivelse,
 }: IProps) => {
   const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
@@ -286,7 +281,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
 
   return (
     <ModalWrapper>
-      <b>{dokumentTypeTilTekst[dokumentType as DokumentType]}</b>
+      <b>{beskrivelse}</b>
       <p>
         <b>Stønadstype: </b>
         {stønadTypeTilTekst[stønadType as StønadType]}

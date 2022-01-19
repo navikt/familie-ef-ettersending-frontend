@@ -75,7 +75,7 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
           oppdaterInnsending={oppdaterInnsending}
           maxFilstørrelse={filstørrelse_10MB}
           stønadType={innsending.stønadType}
-          dokumentType={innsending.dokumenttype}
+          beskrivelse={innsending.beskrivelse || ''}
         />
       </StyledPanel>
     </>

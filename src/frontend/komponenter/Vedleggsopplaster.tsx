@@ -34,7 +34,7 @@ interface IProps {
   innsending: IDokumentasjonsbehov;
   maxFilstørrelse?: number;
   stønadType?: StønadType;
-  dokumentType?: string;
+  beskrivelse: string;
 }
 
 const Vedleggsopplaster: React.FC<IProps> = ({
@@ -42,7 +42,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   oppdaterInnsending,
   maxFilstørrelse,
   stønadType,
-  dokumentType,
+  beskrivelse,
 }: IProps) => {
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
 
@@ -73,7 +73,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           lukkModal={() => settÅpenModal(false)}
           maxFilstørrelse={maxFilstørrelse}
           stønadType={stønadType}
-          dokumentType={dokumentType}
+          beskrivelse={beskrivelse}
         />
       </Modal>
       <FilopplasterWrapper>
