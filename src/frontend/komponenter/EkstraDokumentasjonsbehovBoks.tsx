@@ -16,6 +16,7 @@ import { IDokumentasjonsbehov } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
+import Alertstripe from 'nav-frontend-alertstriper';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -75,6 +76,13 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       valgtStønadType &&
       valgtDokumentType !== ('Velg dokumenttype' as DokumentType) &&
       valgtStønadType !== ('Velg stønadstype' as StønadType)
+    );
+  };
+
+  const erDokumentasjonSendt = (): boolean => {
+    return (
+      innsending.søknadsdata?.harSendtInnTidligere ||
+      innsending.vedlegg.length > 0
     );
   };
 
@@ -152,7 +160,12 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       {harLåstValg && (
         <>
           <StyledDiv>
-            <b>{dokumentTypeTilTekst[valgtDokumentType as DokumentType]}</b>
+            <Alertstripe
+              type={erDokumentasjonSendt() ? 'suksess' : 'advarsel'}
+              form="inline"
+            >
+              <b>{innsending.beskrivelse}</b>
+            </Alertstripe>
             <span tabIndex={0}>
               <StyledImg
                 className="slettikon"
