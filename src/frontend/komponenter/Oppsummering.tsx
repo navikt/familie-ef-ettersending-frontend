@@ -2,11 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
-import {
-  dokumentTypeTilTekst,
-  DokumentType,
-  stønadTypeTilTekst,
-} from '../typer/stønad';
+import { stønadTypeTilTekst } from '../typer/stønad';
 import OpplastedeVedleggOversikt from './OpplastedeVedleggOversikt';
 import { formaterIsoDato } from '../../shared-utils/dato';
 
