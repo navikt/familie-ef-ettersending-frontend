@@ -21,10 +21,10 @@ import {
   tillateFiltyper,
 } from '../utils/filer';
 import heic2any from 'heic2any';
-import { Knapp } from 'nav-frontend-knapper';
 import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
 import Panel from 'nav-frontend-paneler';
 import axios from 'axios';
+import { Button } from '@navikt/ds-react';
 
 const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
     text-align: center;
@@ -324,12 +324,12 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
         </FeilmeldingContainer>
       )}
       <KnappContainer>
-        <Knapp
+        <Button
           onClick={slåSammenVedleggOgOppdaterInnsending}
           disabled={vedleggForSammenslåing.length < 1 || laster}
         >
           Last opp
-        </Knapp>
+        </Button>
       </KnappContainer>
     </ModalWrapper>
   );

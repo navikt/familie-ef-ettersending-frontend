@@ -4,7 +4,7 @@ import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
 import { LeggTilInnsending } from './LeggTilInnsending';
 import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
 import styled from 'styled-components';
-import { Hovedknapp } from 'nav-frontend-knapper';
+import { Button } from '@navikt/ds-react';
 
 interface IProps {
   ettersending: IEttersending;
@@ -24,7 +24,7 @@ const StyledDiv = styled.div`
   display: flex;
 `;
 
-const StyledHovedknapp = styled(Hovedknapp)`
+const StyledHovedknapp = styled(Button)`
   margin: 1rem auto;
   display: flex;
 `;

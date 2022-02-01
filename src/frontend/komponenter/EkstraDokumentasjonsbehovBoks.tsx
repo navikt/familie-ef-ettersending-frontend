@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
-import { Knapp } from 'nav-frontend-knapper';
+import { Button } from '@navikt/ds-react';
 import { Select } from 'nav-frontend-skjema';
 import slett from '../icons/slett.svg';
 import styled from 'styled-components/macro';
@@ -26,7 +26,7 @@ const StyledPanel = styled(Panel)`
   margin: 1rem auto;
 `;
 
-const StyledKnapp = styled(Knapp)`
+const StyledKnapp = styled(Button)`
   margin: 1rem auto;
   display: flex;
 `;
@@ -194,7 +194,9 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       )}
       {!harLåstValg && (
         <div>
-          <StyledKnapp onClick={håndterKnappeKlikk}>Neste</StyledKnapp>
+          <StyledKnapp variant={'secondary'} onClick={håndterKnappeKlikk}>
+            Neste
+          </StyledKnapp>
         </div>
       )}
       <StyledAlertStripe melding={alertStripeMelding} />
