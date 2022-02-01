@@ -22,11 +22,12 @@ const SoknadContainer = styled.div`
 
 const StyledDiv = styled.div`
   display: flex;
+  justify-content: center;
 `;
 
 const StyledHovedknapp = styled(Button)`
-  margin: 1rem auto;
-  display: flex;
+  margin: 1rem;
+  margin-bottom: 0rem;
 `;
 
 export const InnsendingSide: React.FC<IProps> = ({

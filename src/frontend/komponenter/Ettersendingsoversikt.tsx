@@ -31,15 +31,15 @@ import { logDokumentasjonsbehov } from '../utils/amplitude';
 
 const KnappMedMargin = styled(Button)`
   margin: 1rem auto;
-  display: flex;
 `;
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
 `;
 
-const StyledDiv = styled.div`
+const DivMidtstillInnhold = styled.div`
   display: flex;
+  justify-content: center;
 `;
 
 const StyledStegindikator = styled(Stegindikator)`
@@ -254,14 +254,14 @@ const Ettersendingsoversikt: React.FC = () => {
             tittel={'Følgende dokumentasjon er klar til innsending'}
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
-          <StyledDiv>
+          <DivMidtstillInnhold>
             <KnappMedMargin variant={'secondary'} onClick={gåTilForrigeSteg}>
               Tilbake
             </KnappMedMargin>
             <KnappMedMargin onClick={sendInnEttersending}>
               Send inn
             </KnappMedMargin>
-          </StyledDiv>
+          </DivMidtstillInnhold>
         </>
       )}
       {aktivtSteg === 2 && (

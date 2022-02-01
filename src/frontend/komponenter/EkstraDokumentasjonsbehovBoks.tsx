@@ -26,9 +26,14 @@ const StyledPanel = styled(Panel)`
   margin: 1rem auto;
 `;
 
-const StyledKnapp = styled(Button)`
-  margin: 1rem auto;
+const KnappMedMargin = styled(Button)`
+  margin: 1rem;
+  margin-bottom: 0rem;
+`;
+
+const DivMidtstillInnhold = styled.div`
   display: flex;
+  justify-content: center;
 `;
 
 const StyledDiv = styled.div`
@@ -193,11 +198,11 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
         </>
       )}
       {!harLåstValg && (
-        <div>
-          <StyledKnapp variant={'secondary'} onClick={håndterKnappeKlikk}>
+        <DivMidtstillInnhold>
+          <KnappMedMargin variant={'secondary'} onClick={håndterKnappeKlikk}>
             Neste
-          </StyledKnapp>
-        </div>
+          </KnappMedMargin>
+        </DivMidtstillInnhold>
       )}
       <StyledAlertStripe melding={alertStripeMelding} />
       {innsendingerUtenVedlegg.includes(innsending.id) && (
