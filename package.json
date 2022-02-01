@@ -4,7 +4,9 @@
     "main": "main.js",
     "module": "main.js",
     "dependencies": {
+        "@navikt/ds-css": "^0.14.1-rc.search.0",
         "@navikt/ds-icons": "^0.6.3",
+        "@navikt/ds-react": "^0.15.2",
         "@navikt/fnrvalidator": "^1.1.4",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
         "@types/amplitude-js": "^8.9.4",
@@ -38,8 +40,6 @@
         "nav-frontend-hjelpetekst-style": "^3.0.1",
         "nav-frontend-ikoner-assets": "^3.0.1",
         "nav-frontend-js-utils": "^1.0.19",
-        "nav-frontend-knapper": "^3.1.2",
-        "nav-frontend-knapper-style": "^2.1.1",
         "nav-frontend-lenker": "^2.0.1",
         "nav-frontend-lenker-style": "^2.0.1",
         "nav-frontend-lesmerpanel": "^2.0.1",

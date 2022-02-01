@@ -19,7 +19,7 @@ import {
   IDokumentasjonsbehov,
   ISøknadsbehov,
 } from '../typer/ettersending';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Button } from '@navikt/ds-react';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
@@ -29,12 +29,7 @@ import Stegindikator from 'nav-frontend-stegindikator';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov } from '../utils/amplitude';
 
-const StyledKnapp = styled(Knapp)`
-  margin: 1rem auto;
-  display: flex;
-`;
-
-const StyledHovedknapp = styled(Hovedknapp)`
+const KnappMedMargin = styled(Button)`
   margin: 1rem auto;
   display: flex;
 `;
@@ -260,10 +255,12 @@ const Ettersendingsoversikt: React.FC = () => {
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
           <StyledDiv>
-            <StyledKnapp onClick={gåTilForrigeSteg}>Tilbake</StyledKnapp>
-            <StyledHovedknapp onClick={sendInnEttersending}>
+            <KnappMedMargin variant={'secondary'} onClick={gåTilForrigeSteg}>
+              Tilbake
+            </KnappMedMargin>
+            <KnappMedMargin onClick={sendInnEttersending}>
               Send inn
-            </StyledHovedknapp>
+            </KnappMedMargin>
           </StyledDiv>
         </>
       )}
