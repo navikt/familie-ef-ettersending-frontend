@@ -11,7 +11,8 @@ import { LesMerTekst } from './LesMerTekst';
 import { filstørrelse_10MB } from '../utils/filer';
 
 const StyledPanel = styled(Panel)`
-  margin: 1rem auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 `;
 
 const StyledLesMerTekst = styled(LesMerTekst)`

@@ -30,7 +30,7 @@ import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering'
 import { logDokumentasjonsbehov } from '../utils/amplitude';
 
 const KnappMedMargin = styled(Button)`
-  margin: 1rem auto;
+  margin: 1rem;
 `;
 
 const StyledAlertStripe = styled(AlertStripe)`
@@ -39,7 +39,7 @@ const StyledAlertStripe = styled(AlertStripe)`
 
 const DivMidtstillInnhold = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 `;
 
 const StyledStegindikator = styled(Stegindikator)`

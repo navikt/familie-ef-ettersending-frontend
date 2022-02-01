@@ -23,11 +23,12 @@ const StyledSelect = styled(Select)`
 `;
 
 const StyledPanel = styled(Panel)`
-  margin: 1rem auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 `;
 
 const KnappMedMargin = styled(Button)`
-  margin: 1rem;
+  margin-top: 1rem;
   margin-bottom: 0rem;
 `;
 
