@@ -3,12 +3,12 @@ import { IDokumentasjonsbehov } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import styled from 'styled-components';
 import Vedleggsopplaster from './Vedleggsopplaster';
-import Alertstripe from 'nav-frontend-alertstriper';
 import { formaterIsoDato } from '../../shared-utils/dato';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { LesMerTekst } from './LesMerTekst';
 import { filstørrelse_10MB } from '../utils/filer';
+import { Alert } from '@navikt/ds-react';
 
 const StyledPanel = styled(Panel)`
   margin-top: 1rem;
@@ -42,12 +42,9 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
   return (
     <>
       <StyledPanel border>
-        <Alertstripe
-          type={erDokumentasjonSendt() ? 'suksess' : 'advarsel'}
-          form="inline"
-        >
+        <Alert variant={erDokumentasjonSendt() ? 'success' : 'warning'} inline>
           <b>{innsending.beskrivelse}</b>
-        </Alertstripe>
+        </Alert>
         {innsending.stønadType && (
           <>
             <p>

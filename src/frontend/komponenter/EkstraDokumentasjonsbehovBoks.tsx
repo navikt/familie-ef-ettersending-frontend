@@ -15,8 +15,8 @@ import { IDokumentasjonsbehov } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
-import Alertstripe from 'nav-frontend-alertstriper';
 import KnappMedPadding from '../nav-komponenter/Knapp';
+import { Alert } from '@navikt/ds-react';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -166,12 +166,12 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       {harLåstValg && (
         <>
           <StyledDiv>
-            <Alertstripe
-              type={erDokumentasjonSendt() ? 'suksess' : 'advarsel'}
-              form="inline"
+            <Alert
+              variant={erDokumentasjonSendt() ? 'success' : 'warning'}
+              inline
             >
               <b>{innsending.beskrivelse}</b>
-            </Alertstripe>
+            </Alert>
             <span tabIndex={0}>
               <StyledImg
                 className="slettikon"
