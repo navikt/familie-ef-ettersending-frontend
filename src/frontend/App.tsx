@@ -1,5 +1,4 @@
 import React from 'react';
-import './app.less';
 import { useApp } from './context/AppContext';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
@@ -16,6 +15,47 @@ const StyledImg = styled.img`
   height: 100% !important;
 `;
 
+const Bakgrunn = styled.div`
+  background-color: #e9e7e7;
+  padding-top: 5rem;
+  padding-bottom: 8rem;
+
+  @media (max-width: 480px) {
+    padding: 0;
+  }
+`;
+
+const AppContainer = styled.div`
+  width: 792px;
+  margin: auto;
+  background-color: #ffffff;
+  padding: 56px 80px 2rem 80px;
+  border-radius: 4px;
+
+  > h1 {
+    width: fit-content;
+    margin: auto;
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+    margin-top: 32px;
+    border-bottom: 4px solid black;
+    text-align: center;
+  }
+
+  > p {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 56px 15px 2rem 15px;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
 const App: React.FC = () => {
   const context = useApp();
 
@@ -23,8 +63,8 @@ const App: React.FC = () => {
 
   if (context.innloggetStatus === InnloggetStatus.AUTENTISERT) {
     return (
-      <div className="bakgrunn">
-        <div className="app-container">
+      <Bakgrunn>
+        <AppContainer>
           <Veileder>
             <StyledImg
               src={sjekklisteikon}
@@ -37,8 +77,8 @@ const App: React.FC = () => {
             Her kan du sende inn manglende dokumentasjon til saken din
           </Normaltekst>
           <Ettersendingsoversikt />
-        </div>
-      </div>
+        </AppContainer>
+      </Bakgrunn>
     );
   } else {
     return <NavFrontendSpinner className="spinner" />;

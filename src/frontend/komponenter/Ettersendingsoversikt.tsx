@@ -19,7 +19,6 @@ import {
   IDokumentasjonsbehov,
   ISøknadsbehov,
 } from '../typer/ettersending';
-import { Button } from '@navikt/ds-react';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
@@ -28,18 +27,19 @@ import { InnsendingSide } from './InnsendingSide';
 import Stegindikator from 'nav-frontend-stegindikator';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov } from '../utils/amplitude';
+import KnappMedPadding from '../nav-komponenter/Knapp';
 
-const KnappMedMargin = styled(Button)`
-  margin: 1rem auto;
-  display: flex;
+const SekundærKnapp = styled(KnappMedPadding)`
+  margin: 1rem;
 `;
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
 `;
 
-const StyledDiv = styled.div`
+const DivMidtstillInnhold = styled.div`
   display: flex;
+  justify-content: space-evenly;
 `;
 
 const StyledStegindikator = styled(Stegindikator)`
@@ -254,14 +254,14 @@ const Ettersendingsoversikt: React.FC = () => {
             tittel={'Følgende dokumentasjon er klar til innsending'}
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
-          <StyledDiv>
-            <KnappMedMargin variant={'secondary'} onClick={gåTilForrigeSteg}>
+          <DivMidtstillInnhold>
+            <SekundærKnapp variant={'secondary'} onClick={gåTilForrigeSteg}>
               Tilbake
-            </KnappMedMargin>
-            <KnappMedMargin onClick={sendInnEttersending}>
+            </SekundærKnapp>
+            <SekundærKnapp onClick={sendInnEttersending}>
               Send inn
-            </KnappMedMargin>
-          </StyledDiv>
+            </SekundærKnapp>
+          </DivMidtstillInnhold>
         </>
       )}
       {aktivtSteg === 2 && (

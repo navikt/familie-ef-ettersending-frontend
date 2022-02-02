@@ -4,7 +4,7 @@ import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
 import { LeggTilInnsending } from './LeggTilInnsending';
 import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
 import styled from 'styled-components';
-import { Button } from '@navikt/ds-react';
+import KnappMedPadding from '../nav-komponenter/Knapp';
 
 interface IProps {
   ettersending: IEttersending;
@@ -22,11 +22,12 @@ const SoknadContainer = styled.div`
 
 const StyledDiv = styled.div`
   display: flex;
+  justify-content: center;
 `;
 
-const StyledHovedknapp = styled(Button)`
-  margin: 1rem auto;
-  display: flex;
+const HovedKnapp = styled(KnappMedPadding)`
+  margin: 1rem;
+  margin-bottom: 0rem;
 `;
 
 export const InnsendingSide: React.FC<IProps> = ({
@@ -74,7 +75,7 @@ export const InnsendingSide: React.FC<IProps> = ({
           </LeggTilInnsending>
         </div>
         <StyledDiv>
-          <StyledHovedknapp onClick={visOppsummering}>Neste</StyledHovedknapp>
+          <HovedKnapp onClick={visOppsummering}>Neste</HovedKnapp>
         </StyledDiv>
       </>
     </>
