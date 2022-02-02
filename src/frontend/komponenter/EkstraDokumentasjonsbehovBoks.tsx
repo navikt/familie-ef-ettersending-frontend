@@ -28,11 +28,11 @@ const StyledPanel = styled(Panel)`
 `;
 
 const KnappMedMargin = styled(Button)`
-  margin-top: 1rem;
   margin-bottom: 0rem;
 `;
 
 const DivMidtstillInnhold = styled.div`
+  margin-top: 1rem;
   display: flex;
   justify-content: center;
 `;
