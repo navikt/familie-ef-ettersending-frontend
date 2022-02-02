@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
-import { Button } from '@navikt/ds-react';
 import { Select } from 'nav-frontend-skjema';
 import slett from '../icons/slett.svg';
 import styled from 'styled-components/macro';
@@ -17,6 +16,7 @@ import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
 import Alertstripe from 'nav-frontend-alertstriper';
+import KnappMedPadding from '../nav-komponenter/Knapp';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -27,7 +27,7 @@ const StyledPanel = styled(Panel)`
   margin-bottom: 1rem;
 `;
 
-const KnappMedMargin = styled(Button)`
+const SekundærKnapp = styled(KnappMedPadding)`
   margin-bottom: 0rem;
 `;
 
@@ -200,9 +200,9 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       )}
       {!harLåstValg && (
         <DivMidtstillInnhold>
-          <KnappMedMargin variant={'secondary'} onClick={håndterKnappeKlikk}>
+          <SekundærKnapp variant={'secondary'} onClick={håndterKnappeKlikk}>
             Neste
-          </KnappMedMargin>
+          </SekundærKnapp>
         </DivMidtstillInnhold>
       )}
       <StyledAlertStripe melding={alertStripeMelding} />

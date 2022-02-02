@@ -9,7 +9,7 @@ import VedleggsopplasterModal from './VedleggsopplasterModal';
 import styled from 'styled-components';
 import { StønadType } from '../typer/stønad';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { Button } from '@navikt/ds-react';
+import KnappMedPadding from '../nav-komponenter/Knapp';
 
 const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
     text-align: center;
@@ -79,9 +79,12 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       <FilopplasterWrapper>
         {innsending.vedlegg.length === 0 && (
           <Filopplaster visSkillelinje={innsending.vedlegg.length > 0}>
-            <Button variant={'secondary'} onClick={() => settÅpenModal(true)}>
+            <KnappMedPadding
+              variant={'secondary'}
+              onClick={() => settÅpenModal(true)}
+            >
               Last opp fil(er)
-            </Button>
+            </KnappMedPadding>
           </Filopplaster>
         )}
         {innsending.vedlegg.length >= 1 && !innsending.erSammenslått && (

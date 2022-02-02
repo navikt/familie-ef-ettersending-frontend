@@ -24,7 +24,7 @@ import heic2any from 'heic2any';
 import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
 import Panel from 'nav-frontend-paneler';
 import axios from 'axios';
-import { Button } from '@navikt/ds-react';
+import KnappMedPadding from '../nav-komponenter/Knapp';
 
 const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
     text-align: center;
@@ -324,12 +324,12 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
         </FeilmeldingContainer>
       )}
       <KnappContainer>
-        <Button
+        <KnappMedPadding
           onClick={slåSammenVedleggOgOppdaterInnsending}
           disabled={vedleggForSammenslåing.length < 1 || laster}
         >
           Last opp
-        </Button>
+        </KnappMedPadding>
       </KnappContainer>
     </ModalWrapper>
   );
