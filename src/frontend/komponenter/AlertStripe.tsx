@@ -1,9 +1,5 @@
-import {
-  AlertStripeAdvarsel,
-  AlertStripeFeil,
-  AlertStripeSuksess,
-} from 'nav-frontend-alertstriper';
 import React from 'react';
+import { Alert } from '@navikt/ds-react';
 
 export enum alertMelding {
   SENDT_INN = 'Takk. Dokumentasjon er sendt inn.',
@@ -15,9 +11,11 @@ export enum alertMelding {
   FEIL_SAMMENSLÅING_DOKUMENT = 'Noe gikk galt ved sammenslåing av opplastede dokumenter',
   FEIL_FOR_LITEN_FIL = 'Dokumentet du prøver å laste opp er for lite og ikke lesbart',
   MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å trykke på knappen "Last opp fil(er)"',
-  MANGLER_BEGGE_TYPER = 'Du må velge både stønadstype og dokumenttype må velges',
+  MANGLER_BEGGE_TYPER = 'Både stønadstype og dokumenttype må være valgt',
   MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS = 'Ingen vedlegg er lastet opp',
   FEIL_VED_INNSENDING = 'Noe gikk galt ved innsending av dine dokumenter.',
+  FEIL_FILTYPE_INNSENDING = 'En eller flere filer er av feil filtype. Tillate filtyper: pdf jpg png jpeg',
+  FEIL_STØRRELSE_INNSENDING = 'En eller flere filer er for store (maksimal filstørrelse er 10MB)',
   TOM = '',
 }
 
@@ -33,7 +31,9 @@ const AlertStripe: React.FC<IProps> = ({ className, melding }: IProps) => {
     case alertMelding.LASTET_OPP_FLERE:
     case alertMelding.FILER_SAMMENSLÅTT:
       return (
-        <AlertStripeSuksess className={className}>{melding}</AlertStripeSuksess>
+        <Alert variant={'success'} className={className}>
+          {melding}
+        </Alert>
       );
     case alertMelding.FEIL:
     case alertMelding.MANGLER_VEDLEGG:
@@ -42,12 +42,18 @@ const AlertStripe: React.FC<IProps> = ({ className, melding }: IProps) => {
     case alertMelding.FEIL_VED_INNSENDING:
     case alertMelding.FEIL_FOR_LITEN_FIL:
     case alertMelding.FEIL_SAMMENSLÅING_DOKUMENT:
-      return <AlertStripeFeil className={className}>{melding}</AlertStripeFeil>;
+    case alertMelding.FEIL_STØRRELSE_INNSENDING:
+    case alertMelding.FEIL_FILTYPE_INNSENDING:
+      return (
+        <Alert variant={'error'} className={className}>
+          {melding}
+        </Alert>
+      );
     case alertMelding.FEIL_NEDLASTING_DOKUMENT:
       return (
-        <AlertStripeAdvarsel className={className}>
+        <Alert variant={'warning'} className={className}>
           {melding}
-        </AlertStripeAdvarsel>
+        </Alert>
       );
   }
 

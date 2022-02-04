@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import opplasting from '../icons/opplasting.svg';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import {
@@ -18,7 +17,6 @@ import {
   formaterFilstørrelse,
   sjekkTillatFiltype,
   støtterFiltypeHeic,
-  tillateFiltyper,
 } from '../utils/filer';
 import heic2any from 'heic2any';
 import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
@@ -58,10 +56,6 @@ const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
 `;
 
-const StyledNormaltekst = styled(Normaltekst)`
-  margin-top: 1rem;
-`;
-
 const ModalWrapper = styled(Panel)`
   margin: 1.25rem;
   margin-top: 2rem;
@@ -78,22 +72,6 @@ const KnappContainer = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 1rem;
-`;
-
-const FeilmeldingContainer = styled.div`
-  margin: 1rem 0 0 0;
-  text-align: left;
-`;
-
-const AlertStripeContainer = styled(AlertStripeFeil)`
-  background: none !important;
-  border: none !important;
-  padding: 0;
-  font-weight: bold;
-
-  div {
-    font-weight: bold;
-  }
 `;
 
 interface IProps {
@@ -113,7 +91,6 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
   stønadType,
   beskrivelse,
 }: IProps) => {
-  const [feilmeldinger, settFeilmeldinger] = useState<string[]>([]);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
     alertMelding.TOM
   );
@@ -220,6 +197,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
 
   const onDrop = async (filerForOpplasting: File[]) => {
     const feilmeldingsliste: string[] = [];
+    settAlertStripeMelding(alertMelding.TOM);
 
     const filer: File[] = await Promise.all(
       filerForOpplasting.map(async (fil: File): Promise<File> => {
@@ -229,7 +207,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
           const feilmelding = `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
 
           feilmeldingsliste.push(feilmelding);
-          settFeilmeldinger(feilmeldingsliste);
+          settAlertStripeMelding(alertMelding.FEIL_STØRRELSE_INNSENDING);
 
           logFeilFilopplasting({
             type_feil: 'For stor fil',
@@ -255,7 +233,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
 
           const feilmelding = fil.name + ' - Ugyldig filtype';
           feilmeldingsliste.push(feilmelding);
-          settFeilmeldinger(feilmeldingsliste);
+          settAlertStripeMelding(alertMelding.FEIL_FILTYPE_INNSENDING);
 
           logFeilFilopplasting({
             type_feil: 'Feil filtype',
@@ -271,7 +249,6 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
     );
     if (feilmeldingsliste.length <= 0) {
       lastOppVedlegg(filer);
-      settFeilmeldinger([]);
     }
   };
 
@@ -311,18 +288,6 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
         til alle filene her. <br /> Filene blir slått sammen til ett dokument.
       </UndertekstWrapper>
       <StyledAlertStripe melding={alertStripeMelding} />
-      {feilmeldinger.length > 0 && (
-        <FeilmeldingContainer>
-          {feilmeldinger.map((feilmelding) => (
-            <AlertStripeContainer key={feilmelding}>
-              {feilmelding}
-            </AlertStripeContainer>
-          ))}
-          <StyledNormaltekst>
-            <b>Tillate filtyper:</b> {tillateFiltyper.join('\t')}
-          </StyledNormaltekst>
-        </FeilmeldingContainer>
-      )}
       <KnappContainer>
         <KnappMedPadding
           onClick={slåSammenVedleggOgOppdaterInnsending}
