@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import {
   hentSøknader,
@@ -80,6 +80,16 @@ const Ettersendingsoversikt: React.FC = () => {
       index: 2,
     },
   ];
+
+  const kvitteringsside = useMemo(
+    () => (
+      <Oppsummering
+        tittel={EOppsummeringstitler.Kvittering}
+        innsendinger={filtrerUtfylteInnsendinger(ettersending)}
+      />
+    ),
+    []
+  );
 
   const oppdaterInnsending = (innsending: IDokumentasjonsbehov) => {
     settEttersending((prevEttersending) => {
@@ -265,14 +275,7 @@ const Ettersendingsoversikt: React.FC = () => {
           </DivMidtstillInnhold>
         </>
       )}
-      {aktivtSteg === 2 && (
-        <>
-          <Oppsummering
-            tittel={EOppsummeringstitler.Kvittering}
-            innsendinger={filtrerUtfylteInnsendinger(ettersending)}
-          />
-        </>
-      )}
+      {aktivtSteg === 2 && kvitteringsside}
       <StyledAlertStripe melding={alertStripeMelding} />
     </>
   );
