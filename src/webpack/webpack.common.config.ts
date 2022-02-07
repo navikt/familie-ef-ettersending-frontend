@@ -75,21 +75,6 @@ const commonConfig: webpack.Configuration = {
           presets: ['react-app'],
         },
       },
-      {
-        test: /\.(less|css)$/,
-        use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                compileType: 'icss',
-              },
-            },
-          },
-          { loader: 'less-loader' },
-        ],
-      },
     ],
   },
 };

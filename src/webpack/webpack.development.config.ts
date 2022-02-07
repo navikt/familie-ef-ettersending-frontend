@@ -31,6 +31,21 @@ const devConfig: webpack.Configuration = mergeWithRules({
           plugins: ['react-refresh/babel'],
         },
       },
+      {
+        test: /\.(less|css)$/,
+        use: [
+          { loader: 'style-loader' },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                compileType: 'icss',
+              },
+            },
+          },
+          { loader: 'less-loader' },
+        ],
+      },
     ],
   },
 });
