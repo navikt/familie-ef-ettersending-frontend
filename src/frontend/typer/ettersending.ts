@@ -30,6 +30,7 @@ export interface IDokumentasjonsbehov {
   beskrivelse?: string;
   innsendingstidspunkt: any;
   vedlegg: IVedleggForEttersending[];
+  erSammenslått?: boolean; // Settes kun internt for å vise info i frontend
 }
 
 export interface ISøknadMetadata {

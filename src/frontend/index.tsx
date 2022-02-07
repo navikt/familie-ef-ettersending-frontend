@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AppRoutes from './AppRoutes';
-import './index.less';
+import '@navikt/ds-css';
+import 'nav-frontend-core';
 import { AppProvider } from './context/AppContext';
 
 ReactDOM.render(

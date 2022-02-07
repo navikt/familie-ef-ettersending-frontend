@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
-import { Knapp } from 'nav-frontend-knapper';
-import { Undertekst } from 'nav-frontend-typografi';
 import { Select } from 'nav-frontend-skjema';
 import slett from '../icons/slett.svg';
 import styled from 'styled-components/macro';
@@ -17,18 +15,26 @@ import { IDokumentasjonsbehov } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
+import KnappMedPadding from '../nav-komponenter/Knapp';
+import { Alert } from '@navikt/ds-react';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
 `;
 
 const StyledPanel = styled(Panel)`
-  margin: 1rem auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 `;
 
-const StyledKnapp = styled(Knapp)`
-  margin: 1rem auto;
+const SekundærKnapp = styled(KnappMedPadding)`
+  margin-bottom: 0rem;
+`;
+
+const DivMidtstillInnhold = styled.div`
+  margin-top: 1rem;
   display: flex;
+  justify-content: center;
 `;
 
 const StyledDiv = styled.div`
@@ -42,10 +48,6 @@ const StyledImg = styled.img`
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
-`;
-
-const StyledUndertekst = styled(Undertekst)`
-  margin-bottom: 1rem;
 `;
 
 interface IProps {
@@ -80,6 +82,13 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       valgtStønadType &&
       valgtDokumentType !== ('Velg dokumenttype' as DokumentType) &&
       valgtStønadType !== ('Velg stønadstype' as StønadType)
+    );
+  };
+
+  const erDokumentasjonSendt = (): boolean => {
+    return (
+      innsending.søknadsdata?.harSendtInnTidligere ||
+      innsending.vedlegg.length > 0
     );
   };
 
@@ -157,7 +166,12 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       {harLåstValg && (
         <>
           <StyledDiv>
-            <b>{dokumentTypeTilTekst[valgtDokumentType as DokumentType]}</b>
+            <Alert
+              variant={erDokumentasjonSendt() ? 'success' : 'warning'}
+              inline
+            >
+              <b>{innsending.beskrivelse}</b>
+            </Alert>
             <span tabIndex={0}>
               <StyledImg
                 className="slettikon"
@@ -177,17 +191,19 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
             innsending={innsending}
             oppdaterInnsending={oppdaterInnsending}
             maxFilstørrelse={filstørrelse_10MB}
+            stønadType={valgtStønadType}
+            beskrivelse={
+              dokumentTypeTilTekst[valgtDokumentType as DokumentType]
+            }
           />
-          <StyledUndertekst>
-            Hvis dokumentet du skal sende inn består av flere filer, kan du
-            legge til alle filene her.
-          </StyledUndertekst>
         </>
       )}
       {!harLåstValg && (
-        <div>
-          <StyledKnapp onClick={håndterKnappeKlikk}>Neste</StyledKnapp>
-        </div>
+        <DivMidtstillInnhold>
+          <SekundærKnapp variant={'secondary'} onClick={håndterKnappeKlikk}>
+            Neste
+          </SekundærKnapp>
+        </DivMidtstillInnhold>
       )}
       <StyledAlertStripe melding={alertStripeMelding} />
       {innsendingerUtenVedlegg.includes(innsending.id) && (

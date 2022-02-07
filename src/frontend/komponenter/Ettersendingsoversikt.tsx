@@ -19,7 +19,6 @@ import {
   IDokumentasjonsbehov,
   ISøknadsbehov,
 } from '../typer/ettersending';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
@@ -29,23 +28,19 @@ import Stegindikator from 'nav-frontend-stegindikator';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov } from '../utils/amplitude';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
+import KnappMedPadding from '../nav-komponenter/Knapp';
 
-const StyledKnapp = styled(Knapp)`
-  margin: 1rem auto;
-  display: flex;
-`;
-
-const StyledHovedknapp = styled(Hovedknapp)`
-  margin: 1rem auto;
-  display: flex;
+const SekundærKnapp = styled(KnappMedPadding)`
+  margin: 1rem;
 `;
 
 const StyledAlertStripe = styled(AlertStripe)`
   margin-top: 1rem;
 `;
 
-const StyledDiv = styled.div`
+const DivMidtstillInnhold = styled.div`
   display: flex;
+  justify-content: space-evenly;
 `;
 
 const StyledStegindikator = styled(Stegindikator)`
@@ -260,12 +255,14 @@ const Ettersendingsoversikt: React.FC = () => {
             tittel={EOppsummeringstitler.Innsending}
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
-          <StyledDiv>
-            <StyledKnapp onClick={gåTilForrigeSteg}>Tilbake</StyledKnapp>
-            <StyledHovedknapp onClick={sendInnEttersending}>
+          <DivMidtstillInnhold>
+            <SekundærKnapp variant={'secondary'} onClick={gåTilForrigeSteg}>
+              Tilbake
+            </SekundærKnapp>
+            <SekundærKnapp onClick={sendInnEttersending}>
               Send inn
-            </StyledHovedknapp>
-          </StyledDiv>
+            </SekundærKnapp>
+          </DivMidtstillInnhold>
         </>
       )}
       {aktivtSteg === 2 && (

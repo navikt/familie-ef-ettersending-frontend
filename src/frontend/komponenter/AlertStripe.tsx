@@ -1,13 +1,21 @@
-import { AlertStripeFeil, AlertStripeSuksess } from 'nav-frontend-alertstriper';
 import React from 'react';
+import { Alert } from '@navikt/ds-react';
 
 export enum alertMelding {
   SENDT_INN = 'Takk. Dokumentasjon er sendt inn.',
+  LASTET_OPP_EN = 'Filen er nå klar til å sendes inn.',
+  LASTET_OPP_FLERE = 'Filene er nå klare til å sendes inn.',
+  FILER_SAMMENSLÅTT = 'Filene er sammenslått til et dokument som er klart til å sendes inn.',
   FEIL = 'Noe gikk galt, prøv igjen',
-  MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å dra fila inn i det markerte feltet eller trykke på "Last opp fil(er)',
-  MANGLER_BEGGE_TYPER = 'Du må velge både stønadstype og dokumenttype må velges',
+  FEIL_NEDLASTING_DOKUMENT = 'Noe gikk galt ved uthenting av opplastet dokument',
+  FEIL_SAMMENSLÅING_DOKUMENT = 'Noe gikk galt ved sammenslåing av opplastede dokumenter',
+  FEIL_FOR_LITEN_FIL = 'Dokumentet du prøver å laste opp er for lite og ikke lesbart',
+  MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å trykke på knappen "Last opp fil(er)"',
+  MANGLER_BEGGE_TYPER = 'Både stønadstype og dokumenttype må være valgt',
   MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS = 'Ingen vedlegg er lastet opp',
   FEIL_VED_INNSENDING = 'Noe gikk galt ved innsending av dine dokumenter.',
+  FEIL_FILTYPE_INNSENDING = 'En eller flere filer er av feil filtype. Tillate filtyper: pdf jpg png jpeg',
+  FEIL_STØRRELSE_INNSENDING = 'En eller flere filer er for store (maksimal filstørrelse er 10MB)',
   TOM = '',
 }
 
@@ -17,52 +25,36 @@ interface IProps {
 }
 
 const AlertStripe: React.FC<IProps> = ({ className, melding }: IProps) => {
-  if (melding === alertMelding.FEIL) {
-    return (
-      <AlertStripeFeil className={className}>
-        {alertMelding.FEIL}
-      </AlertStripeFeil>
-    );
-  }
-
-  if (melding === alertMelding.SENDT_INN) {
-    return (
-      <AlertStripeSuksess className={className}>
-        {alertMelding.SENDT_INN}
-      </AlertStripeSuksess>
-    );
-  }
-
-  if (melding === alertMelding.MANGLER_VEDLEGG) {
-    return (
-      <AlertStripeFeil className={className}>
-        {alertMelding.MANGLER_VEDLEGG}
-      </AlertStripeFeil>
-    );
-  }
-
-  if (melding === alertMelding.MANGLER_BEGGE_TYPER) {
-    return (
-      <AlertStripeFeil className={className}>
-        {alertMelding.MANGLER_BEGGE_TYPER}
-      </AlertStripeFeil>
-    );
-  }
-
-  if (melding === alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS) {
-    return (
-      <AlertStripeFeil className={className}>
-        {alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS}
-      </AlertStripeFeil>
-    );
-  }
-
-  if (melding === alertMelding.FEIL_VED_INNSENDING) {
-    return (
-      <AlertStripeFeil className={className}>
-        {alertMelding.FEIL_VED_INNSENDING}
-      </AlertStripeFeil>
-    );
+  switch (melding) {
+    case alertMelding.SENDT_INN:
+    case alertMelding.LASTET_OPP_EN:
+    case alertMelding.LASTET_OPP_FLERE:
+    case alertMelding.FILER_SAMMENSLÅTT:
+      return (
+        <Alert variant={'success'} className={className}>
+          {melding}
+        </Alert>
+      );
+    case alertMelding.FEIL:
+    case alertMelding.MANGLER_VEDLEGG:
+    case alertMelding.MANGLER_BEGGE_TYPER:
+    case alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS:
+    case alertMelding.FEIL_VED_INNSENDING:
+    case alertMelding.FEIL_FOR_LITEN_FIL:
+    case alertMelding.FEIL_SAMMENSLÅING_DOKUMENT:
+    case alertMelding.FEIL_STØRRELSE_INNSENDING:
+    case alertMelding.FEIL_FILTYPE_INNSENDING:
+      return (
+        <Alert variant={'error'} className={className}>
+          {melding}
+        </Alert>
+      );
+    case alertMelding.FEIL_NEDLASTING_DOKUMENT:
+      return (
+        <Alert variant={'warning'} className={className}>
+          {melding}
+        </Alert>
+      );
   }
 
   return <></>;

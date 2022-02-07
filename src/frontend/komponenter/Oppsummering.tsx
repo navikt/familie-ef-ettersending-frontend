@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
-import { dokumentTypeTilTekst, DokumentType } from '../typer/stønad';
+import { stønadTypeTilTekst } from '../typer/stønad';
 import OpplastedeVedleggOversikt from './OpplastedeVedleggOversikt';
 import { formaterIsoDato } from '../../shared-utils/dato';
 import { logSidevisning } from '../utils/amplitude';
@@ -36,14 +36,13 @@ export const Oppsummering: React.FC<IProps> = ({
           <StyledDiv key={index}>
             <Normaltekst>
               <b>Stønadstype: </b>
+              {innsending.stønadType &&
+                stønadTypeTilTekst[innsending.stønadType]}
+            </Normaltekst>
+            <Normaltekst>
+              <b>Dokumenttype: </b>
               {innsending.beskrivelse}
             </Normaltekst>
-            {innsending.dokumenttype && (
-              <Normaltekst>
-                <b>Dokumenttype: </b>
-                {dokumentTypeTilTekst[innsending.dokumenttype as DokumentType]}
-              </Normaltekst>
-            )}
             <Normaltekst>
               <b>Dato for innsending: </b>
               {formaterIsoDato(innsending.innsendingstidspunkt)}
