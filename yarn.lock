@@ -7282,16 +7282,6 @@ nav-frontend-ekspanderbartpanel@^4.0.1:
   resolved "https://registry.npmjs.org/nav-frontend-ekspanderbartpanel/-/nav-frontend-ekspanderbartpanel-4.0.1.tgz"
   integrity sha512-MZQOKZc97Z0+kmU0nqC6y8GQyNFLUJhrYEoTwFWrVP+Uf2x0olqsKqaB5dHNjaxUdWBsZmw53749VweBUjzyhg==
 
-nav-frontend-hjelpetekst-style@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/nav-frontend-hjelpetekst-style/-/nav-frontend-hjelpetekst-style-3.0.1.tgz"
-  integrity sha512-O6zIv/6HZUH0/yfuqlRo+jLcuvxtg/1xDQAij/awThvh2tbS7hq0rxwoHmbIW9UDRXEWFf2AZv7cqS3vnziT5Q==
-
-nav-frontend-hjelpetekst@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.npmjs.org/nav-frontend-hjelpetekst/-/nav-frontend-hjelpetekst-3.1.1.tgz"
-  integrity sha512-TSBsTeKO0pPBwpJiUEV3njL+Rx+hkHQr+Fe3tCtd3Bx2I/BPN+vLWhcfxRXxdtHg2CMdk8WXOwRyi9AR+tHuJg==
-
 nav-frontend-ikoner-assets@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/nav-frontend-ikoner-assets/-/nav-frontend-ikoner-assets-3.0.1.tgz"
