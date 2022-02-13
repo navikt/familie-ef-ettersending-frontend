@@ -2014,17 +2014,10 @@
   resolved "https://registry.yarnpkg.com/@navikt/ds-css/-/ds-css-0.14.1-rc.search.0.tgz#62b59aaae2ee0d9b19b212ac308bc63ed63035f5"
   integrity sha512-94QOhpT0HdqQWDXo43LzDTB5RLoZICYsJZbm6NQnXgoPYo2APL1GUSd5rAN/f3aylcC811KB8sgHgSpCNMcf3w==
 
-"@navikt/ds-icons@^0.6.3":
-  version "0.6.3"
-  resolved "https://registry.npmjs.org/@navikt/ds-icons/-/ds-icons-0.6.3.tgz"
-  integrity sha512-sNmgP8a/V8PLccewcEc7+fy+HfA6vDf1zDbgbQ0ypW/OMf6rGsg43EoCnU/txuuh5cRWbmzbbTQnoNHHmUT58w==
-  dependencies:
-    uuid "^8.3.2"
-
-"@navikt/ds-icons@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@navikt/ds-icons/-/ds-icons-0.8.1.tgz#9ec3e06957661db303518a9b71808e9690ba26a6"
-  integrity sha512-Te7r2wE2xZiEBusf0QToyhB2MCigH0y3xqDWnPXpuF4V6AoUSjlsPDpIm9Gu6MK82eJDy0UnJEMXe9ldRPRoxg==
+"@navikt/ds-icons@^0.8.1", "@navikt/ds-icons@^0.8.4":
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/@navikt/ds-icons/-/ds-icons-0.8.4.tgz#82ba73cbc5704132ec2dd6e6faace3a2b9d6abff"
+  integrity sha512-yIBYeJrkO3pEL2qcR5DGtQQ6mfs9Bb8iueMdmj1sa0JBPuDmPLLW5SJ/2HH4tcQciDZ3erp7k4CemJkbtob5AQ==
   dependencies:
     uuid "^8.3.2"
 

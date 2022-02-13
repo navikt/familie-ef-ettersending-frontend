@@ -5,7 +5,7 @@
     "module": "main.js",
     "dependencies": {
         "@navikt/ds-css": "^0.14.1-rc.search.0",
-        "@navikt/ds-icons": "^0.6.3",
+        "@navikt/ds-icons": "^0.8.4",
         "@navikt/ds-react": "^0.15.2",
         "@navikt/fnrvalidator": "^1.1.4",
         "@navikt/nav-dekoratoren-moduler": "^1.6.9",
