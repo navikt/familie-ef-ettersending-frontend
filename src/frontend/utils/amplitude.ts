@@ -25,10 +25,19 @@ export const logDokumentasjonsbehov = (dokBehov: any, ...props: any) => {
   dokBehov.map((dok: any) => {
     logEvent('dokumentasjonsbehov_ettersending', {
       applikasjon: 'familie-ef-ettersending',
+      team_id: 'familie',
       dokumentBeskrivelse: dok.beskrivelse,
       dokumenttype: dok.dokumenttype,
       stønadType: dok.stønadType,
       ...props,
     });
+  });
+};
+
+export const logSidevisning = (side: string) => {
+  logEvent('side', {
+    side,
+    team_id: 'familie',
+    applikasjon: 'familie-ef-ettersending',
   });
 };

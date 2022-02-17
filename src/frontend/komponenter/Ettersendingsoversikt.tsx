@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import {
   hentSøknader,
@@ -27,6 +27,7 @@ import { InnsendingSide } from './InnsendingSide';
 import Stegindikator from 'nav-frontend-stegindikator';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov } from '../utils/amplitude';
+import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
 import KnappMedPadding from '../nav-komponenter/Knapp';
 
 const SekundærKnapp = styled(KnappMedPadding)`
@@ -79,6 +80,16 @@ const Ettersendingsoversikt: React.FC = () => {
       index: 2,
     },
   ];
+
+  const kvitteringsside = useMemo(
+    () => (
+      <Oppsummering
+        tittel={EOppsummeringstitler.Kvittering}
+        innsendinger={filtrerUtfylteInnsendinger(ettersending)}
+      />
+    ),
+    []
+  );
 
   const oppdaterInnsending = (innsending: IDokumentasjonsbehov) => {
     settEttersending((prevEttersending) => {
@@ -251,7 +262,7 @@ const Ettersendingsoversikt: React.FC = () => {
       {aktivtSteg === 1 && (
         <>
           <Oppsummering
-            tittel={'Følgende dokumentasjon er klar til innsending'}
+            tittel={EOppsummeringstitler.Innsending}
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
           <DivMidtstillInnhold>
@@ -264,14 +275,7 @@ const Ettersendingsoversikt: React.FC = () => {
           </DivMidtstillInnhold>
         </>
       )}
-      {aktivtSteg === 2 && (
-        <>
-          <Oppsummering
-            tittel={'Følgende dokumentasjon er sendt inn'}
-            innsendinger={filtrerUtfylteInnsendinger(ettersending)}
-          />
-        </>
-      )}
+      {aktivtSteg === 2 && kvitteringsside}
       <StyledAlertStripe melding={alertStripeMelding} />
     </>
   );

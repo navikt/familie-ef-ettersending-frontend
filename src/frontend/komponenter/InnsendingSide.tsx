@@ -4,6 +4,7 @@ import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
 import { LeggTilInnsending } from './LeggTilInnsending';
 import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
 import styled from 'styled-components';
+import { logSidevisning } from '../utils/amplitude';
 import KnappMedPadding from '../nav-komponenter/Knapp';
 
 interface IProps {
@@ -39,6 +40,8 @@ export const InnsendingSide: React.FC<IProps> = ({
   visOppsummering,
   ekstraInnsendingerUtenVedlegg,
 }: IProps) => {
+  logSidevisning('Forside');
+
   return (
     <>
       {ettersending.dokumentasjonsbehov
