@@ -10,7 +10,7 @@
         "@navikt/fnrvalidator": "^1.2.0",
         "@navikt/nav-dekoratoren-moduler": "^1.6.9",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.1",
-        "@types/amplitude-js": "^8.9.6",
+        "@types/amplitude-js": "^8.16.0",
         "@types/react-collapse": "^5.0.0",
         "@types/uuid": "^8.3.0",
         "amplitude-js": "^8.17.0",
