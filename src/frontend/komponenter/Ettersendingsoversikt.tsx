@@ -26,7 +26,7 @@ import { Oppsummering } from './Oppsummering';
 import { InnsendingSide } from './InnsendingSide';
 import Stegindikator from 'nav-frontend-stegindikator';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
-import { logDokumentasjonsbehov } from '../utils/amplitude';
+import { logDokumentasjonsbehov, logSidevisning } from '../utils/amplitude';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
 import KnappMedPadding from '../nav-komponenter/Knapp';
 
@@ -80,6 +80,16 @@ const Ettersendingsoversikt: React.FC = () => {
       index: 2,
     },
   ];
+
+  useEffect(() => {
+    if (aktivtSteg === 0) {
+      logSidevisning('Forside');
+    } else if (aktivtSteg === 1) {
+      logSidevisning('Oppsummering');
+    } else if (aktivtSteg === 2) {
+      logSidevisning('Kvittering');
+    }
+  }, [aktivtSteg]);
 
   const oppdaterInnsending = (innsending: IDokumentasjonsbehov) => {
     settEttersending((prevEttersending) => {
