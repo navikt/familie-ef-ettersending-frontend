@@ -257,6 +257,7 @@ const Ettersendingsoversikt: React.FC = () => {
           ekstraInnsendingerId={ekstraInnsendingerId}
           visOppsummering={visOppsummering}
           ekstraInnsendingerUtenVedlegg={ekstraInnsendingerSomManglerVedlegg}
+          settAlertStripeMelding={settAlertStripeMelding}
         />
       )}
       {aktivtSteg === 1 && (

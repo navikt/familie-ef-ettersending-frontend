@@ -9,6 +9,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { LesMerTekst } from './LesMerTekst';
 import { filstørrelse_10MB } from '../utils/filer';
 import { Alert } from '@navikt/ds-react';
+import { alertMelding } from './AlertStripe';
 
 const StyledPanel = styled(Panel)`
   margin-top: 1rem;
@@ -22,11 +23,13 @@ const StyledLesMerTekst = styled(LesMerTekst)`
 interface Props {
   innsending: IDokumentasjonsbehov;
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
+  settAlertStripeMelding: (melding: alertMelding) => void;
 }
 
 export const DokumentasjonsbehovBoks: React.FC<Props> = ({
   innsending,
   oppdaterInnsending,
+  settAlertStripeMelding,
 }: Props) => {
   const erDokumentasjonSendt = (): boolean => {
     return (
@@ -74,6 +77,7 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
           maxFilstørrelse={filstørrelse_10MB}
           stønadType={innsending.stønadType}
           beskrivelse={innsending.beskrivelse || ''}
+          settAlertStripeMelding={settAlertStripeMelding}
         />
       </StyledPanel>
     </>

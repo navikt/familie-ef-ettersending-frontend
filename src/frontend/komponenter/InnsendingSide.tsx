@@ -5,6 +5,7 @@ import { LeggTilInnsending } from './LeggTilInnsending';
 import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
 import styled from 'styled-components';
 import KnappMedPadding from '../nav-komponenter/Knapp';
+import { alertMelding } from './AlertStripe';
 
 interface IProps {
   ettersending: IEttersending;
@@ -14,6 +15,7 @@ interface IProps {
   ekstraInnsendingerId: string[];
   visOppsummering: () => void;
   ekstraInnsendingerUtenVedlegg: string[];
+  settAlertStripeMelding: (melding: alertMelding) => void;
 }
 
 const SoknadContainer = styled.div`
@@ -38,6 +40,7 @@ export const InnsendingSide: React.FC<IProps> = ({
   ekstraInnsendingerId,
   visOppsummering,
   ekstraInnsendingerUtenVedlegg,
+  settAlertStripeMelding,
 }: IProps) => {
   return (
     <>
@@ -49,6 +52,7 @@ export const InnsendingSide: React.FC<IProps> = ({
               <DokumentasjonsbehovListe
                 innsending={innsending}
                 oppdaterInnsending={oppdaterInnsending}
+                settAlertStripeMelding={settAlertStripeMelding}
               />
             </SoknadContainer>
           );
@@ -63,6 +67,7 @@ export const InnsendingSide: React.FC<IProps> = ({
               oppdaterInnsending={oppdaterInnsending}
               slettEkstraInnsending={slettInnsending}
               innsendingerUtenVedlegg={ekstraInnsendingerUtenVedlegg}
+              settOverordnetAlertStripeMelding={settAlertStripeMelding}
             />
           );
         })}
