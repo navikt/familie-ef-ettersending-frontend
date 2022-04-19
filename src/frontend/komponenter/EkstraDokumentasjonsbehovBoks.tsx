@@ -55,6 +55,7 @@ interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
   slettEkstraInnsending: (id: string) => void;
   innsendingerUtenVedlegg: string[];
+  settOverordnetAlertStripeMelding: (melding: alertMelding) => void;
 }
 
 export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
@@ -62,6 +63,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
   oppdaterInnsending,
   slettEkstraInnsending,
   innsendingerUtenVedlegg,
+  settOverordnetAlertStripeMelding,
 }: IProps) => {
   const [valgtDokumentType, settValgtDokumentType] = useState<string>();
   const [valgtStønadType, settValgtStønadType] = useState<StønadType>();
@@ -195,6 +197,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
             beskrivelse={
               dokumentTypeTilTekst[valgtDokumentType as DokumentType]
             }
+            settAlertStripeMelding={settOverordnetAlertStripeMelding}
           />
         </>
       )}

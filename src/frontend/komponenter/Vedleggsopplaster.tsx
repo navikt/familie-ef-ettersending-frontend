@@ -35,6 +35,7 @@ interface IProps {
   maxFilstørrelse?: number;
   stønadType?: StønadType;
   beskrivelse: string;
+  settAlertStripeMelding: (melding: alertMelding) => void;
 }
 
 const Vedleggsopplaster: React.FC<IProps> = ({
@@ -43,6 +44,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   maxFilstørrelse,
   stønadType,
   beskrivelse,
+  settAlertStripeMelding,
 }: IProps) => {
   const [åpenModal, settÅpenModal] = useState<boolean>(false);
 
@@ -81,7 +83,10 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           <Filopplaster visSkillelinje={innsending.vedlegg.length > 0}>
             <KnappMedPadding
               variant={'secondary'}
-              onClick={() => settÅpenModal(true)}
+              onClick={() => {
+                settÅpenModal(true);
+                settAlertStripeMelding(alertMelding.TOM);
+              }}
             >
               Last opp fil(er)
             </KnappMedPadding>
