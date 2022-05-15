@@ -2028,10 +2028,10 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@navikt/ds-css@^0.16.4":
-  version "0.16.4"
-  resolved "https://registry.yarnpkg.com/@navikt/ds-css/-/ds-css-0.16.4.tgz#2905461c4551a9a5d64c02c2752a32534d02a893"
-  integrity sha512-z34y77lwL1FjYmjexCkkfYH6rIjEHMG8jK36xprIbbAmyES7kv2v5OH4Dxjb0Iv6ZZbOKDKKX+kDz2ocp4P2Ag==
+"@navikt/ds-css@^0.17.2":
+  version "0.17.2"
+  resolved "https://registry.yarnpkg.com/@navikt/ds-css/-/ds-css-0.17.2.tgz#04874e600a350ed101969af217f01e2516acda01"
+  integrity sha512-+qZIm6rUeogt6OD2m8GPzgLiKV8lM3SYSYv7jUlVHoyJj1RB9iGK3hEceEhJh4aaVKiKZsYHiKc8MiRuMD64HA==
 
 "@navikt/ds-icons@^0.8.4":
   version "0.8.4"
