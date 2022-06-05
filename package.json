@@ -4,7 +4,7 @@
     "main": "main.js",
     "module": "main.js",
     "dependencies": {
-        "@navikt/ds-css": "^0.16.4",
+        "@navikt/ds-css": "^0.17.3",
         "@navikt/ds-icons": "^0.8.4",
         "@navikt/ds-react": "^0.17.4",
         "@navikt/fnrvalidator": "^1.2.0",
