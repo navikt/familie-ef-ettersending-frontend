@@ -20,6 +20,7 @@ spec:
     path: /internal/isReady
     initialDelay: 5
   ingresses:
+    - "https://familie.dev.nav.no/familie/alene-med-barn/ettersending"
     - "https://ensligmorellerfar.dev.nav.no/familie/alene-med-barn/ettersending"
   accessPolicy:
     outbound:
