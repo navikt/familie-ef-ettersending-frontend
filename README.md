@@ -11,7 +11,7 @@ Frontend app for ettersending av dokumentasjons vedrørende søknader tilknyttet
 For å få en gyldig cookie med `familie-ef-soknad-api` må du besøke en av følgende adresser:
 
 - http://localhost:8091/local/cookie?subject=[gyldigFødselsnummer]
-- http://localhost:8091/local/cookie?subject=01010172272
+- http://localhost:8091/local/cookie?issuerId=selvbetjening&audience=aud-localhost
 
 ## Henvendelser
 Spørsmål knyttet til koden eller prosjektet kan rettes mot:
