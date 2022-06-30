@@ -1,4 +1,4 @@
-FROM navikt/node-express:14-alpine
+FROM navikt/node-express:16
 USER root
 RUN apk --no-cach add curl
 RUN apk add --update nodejs
@@ -10,9 +10,13 @@ COPY --chown=apprunner:apprunner ./ /var/server/
 ARG base_path
 ENV BASE_PATH=$base_path
 
-RUN npm install
-RUN npm install less less-loader
-RUN npm run build
+ARG NPM_TOKEN
+RUN npm config set "//npm.pkg.github.com/:_authToken" $NPM_TOKEN
+
+RUN yarn --prefer-offline --frozen-lockfile
+RUN yarn add less less-loader
+RUN yarn build
+RUN rm -f .npmrc
 
 EXPOSE 9000
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
