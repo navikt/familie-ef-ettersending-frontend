@@ -1502,26 +1502,26 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@navikt/ds-css@^0.18.23":
-  version "0.18.23"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/0.18.23/facd78e1667bbd1ba047783c6f0476cb406e0621ce4cb64c3316f710b1f294be#9b68db6dbc6747b7cc6bd95ed61509e148b24fe7"
-  integrity sha512-mQycXmB8ZXNVZBzHFjltL3cB/iP+aozOQz9n9oTWSXuPmkjWoIuMc8wyEUiuQ48U0g+TXeYLIjYkacoj3bG2Ng==
+"@navikt/ds-css@^0.18.24":
+  version "0.18.24"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/0.18.24/4395bb3effcbbb84656a3b39381e079afda70301e362028ef18bae2cc3aa75d1#27cdcdb1d03eb127982dbf2228c192f1243c23bb"
+  integrity sha512-AOfH1cVNH3EnUSZCvgRlfkmfO0ys7x+yg1cDnLwsCAcRd9xJQghB+joWGQvj0FFpPOyPt9XLaBzwEFRSoVB/PA==
 
-"@navikt/ds-icons@^0.8.17":
-  version "0.8.17"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-icons/0.8.17/359dd97bac9bd3c41fcb5fd2d3bb3f853e356894eef75ee09c7369225802eea4#ddf124687e158a988d6be70f653ae3239aba90ad"
-  integrity sha512-CR1h9t0MZprEvTqlrlLd3cHhoYmriFWkETikPprUNl3AMJMSCDovVYzXtOgIyVeFbtwTPzGtShw5mgxlVWAEDg==
+"@navikt/ds-icons@^0.8.18":
+  version "0.8.18"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-icons/0.8.18/f7bec9bc829cf3f0e5399150d357e411f0e0b3f3ca29706f1967fc6258969999#94db590d5a169cd3ffeb7489ace0568ce92d60bc"
+  integrity sha512-pruwrqnjX9TOnGliVg9HM5g0vvAaBvwPHDlNdJB3xQRoSd+lh2X6f1QuPjsJj7bISFaxCcXJlq4QON3+d3VJlA==
   dependencies:
     uuid "^8.3.2"
 
-"@navikt/ds-react@^0.19.17":
-  version "0.19.17"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/0.19.17/0ed7a6afe1f7429a17b9cbcab052cc1a9c4859576f23454fb2ac388617da53c0#ad5f293acd5f17c5a45d01709857481510df3bef"
-  integrity sha512-F94DhLYrcP7tyb7N/eCSludCH2zh7KcqxhO5LqOEmIqDfU+gQJizXzczkXPZrMBLyz8Y1lY4Cu2v5bmVVQKWgA==
+"@navikt/ds-react@^0.19.18":
+  version "0.19.18"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/0.19.18/ebaccefdd6440d9ee3becf7a78f64470cc1a525445d8770444674be29032b44b#9a0e5226f9d1a5766abffa81e56075ebc3119058"
+  integrity sha512-KgYOJkq5cNa4qefMiePs+ABmBr1RC8zW16UDM57PUo0+g/X+ga3ZmwG6HU9Nmfmz0Zpx21FxdB1khUoBTxnIJA==
   dependencies:
     "@floating-ui/react-dom" "0.6.0"
     "@material-ui/core" "^4.12.3"
-    "@navikt/ds-icons" "^0.8.17"
+    "@navikt/ds-icons" "^0.8.18"
     "@popperjs/core" "^2.10.1"
     "@radix-ui/react-tabs" "0.1.5"
     "@radix-ui/react-toggle-group" "0.1.5"
@@ -2805,9 +2805,9 @@ atob@^2.1.2:
   resolved "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-attr-accept@^2.2.1:
+attr-accept@^2.2.2:
   version "2.2.2"
-  resolved "https://registry.npmjs.org/attr-accept/-/attr-accept-2.2.2.tgz"
+  resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-2.2.2.tgz#646613809660110749e92f2c10833b70968d929b"
   integrity sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==
 
 aws-sign2@~0.7.0:
@@ -5047,10 +5047,10 @@ file-loader@^6.0.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-file-selector@^0.2.2:
-  version "0.2.4"
-  resolved "https://registry.npmjs.org/file-selector/-/file-selector-0.2.4.tgz"
-  integrity sha512-ZDsQNbrv6qRi1YTDOEWzf5J2KjZ9KMI1Q2SGeTkCJmNNW25Jg4TW4UMcmoqcg4WrAyKRcpBXdbWRxkfrOzVRbA==
+file-selector@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-0.4.0.tgz#59ec4f27aa5baf0841e9c6385c8386bef4d18b17"
+  integrity sha512-iACCiXeMYOvZqlF1kTiYINzgepRBymz1wwjiuup9u9nayhb6g4fSwiyJ/6adli+EPwrWtpgQAh2PoS7HukEGEg==
   dependencies:
     tslib "^2.0.3"
 
@@ -5087,17 +5087,17 @@ fill-range@^7.0.1:
     to-regex-range "^5.0.1"
 
 filopplasting@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/filopplasting/-/filopplasting-1.1.1.tgz"
-  integrity sha512-Ljdts3RGEWYz2T7Lq0b1TzIKfLqTCosR74ZnqMTROFLGMRcB7tCltgbAL2fXafmGo9VIl9D7LYnRvYfovgv0CA==
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/filopplasting/-/filopplasting-1.1.2.tgz#2e63e0610a7967bfc17d8b52214d32f884aeaa37"
+  integrity sha512-audNCwbaa5H0JdwMcCubn7OSwu1BkgF1F5LCvNACajzR3Ag69Qpfwi6lN6mDYtpPYbWJJjPteMqhordNnJG7TA==
   dependencies:
     classnames "^2.3.1"
-    forhandsvisningsfil "^1.1.5"
+    forhandsvisningsfil "^1.2.9"
     nav-frontend-lukknapp "^2.0.1"
     nav-frontend-modal "^2.0.1"
-    nav-hoykontrast "^1.3.4"
-    react-dropzone "^11.3.2"
-    react-modal "^3.13.1"
+    nav-hoykontrast "^1.3.7"
+    react-dropzone "^11.4.2"
+    react-modal "^3.14.3"
 
 finalhandler@1.2.0:
   version "1.2.0"
@@ -5197,14 +5197,15 @@ forever-agent@~0.6.1:
   resolved "https://registry.npmjs.org/forever-agent/-/forever-agent-0.6.1.tgz"
   integrity sha1-+8cfDEGt6zf5bFd60e1C2P2sypE=
 
-forhandsvisningsfil@^1.1.5:
-  version "1.1.8"
-  resolved "https://registry.npmjs.org/forhandsvisningsfil/-/forhandsvisningsfil-1.1.8.tgz"
-  integrity sha512-rRtuUC2YxvfEZIQG8FWQl7sbR8EgQxItmuNn2h0RVbc82nFH6eRPz0QTaIsJA5XZfEmX+J8tHpIFwKd0vwrhVw==
+forhandsvisningsfil@^1.2.9:
+  version "1.2.9"
+  resolved "https://registry.yarnpkg.com/forhandsvisningsfil/-/forhandsvisningsfil-1.2.9.tgz#0be6056182352e5548916a32dc13190fd33f2e3e"
+  integrity sha512-OAZua4/rP8mQgKdr0D3SpWuNghQaeUq3UW7Mz3Z3HKtMK/HyWpbGJroi+efgjFXWFmbv2iwYHLtgfiCwz0Y/9w==
   dependencies:
     bytes latest
     classnames "^2.3.1"
-    react-pdf "^5.3.0"
+    react-intersection-observer "^8.32.1"
+    react-pdf "^5.4.0"
 
 fork-ts-checker-webpack-plugin@*:
   version "6.2.12"
@@ -7406,7 +7407,7 @@ nav-frontend-lukknapp-style@^2.0.1:
 
 nav-frontend-lukknapp@^2.0.1:
   version "2.0.1"
-  resolved "https://registry.npmjs.org/nav-frontend-lukknapp/-/nav-frontend-lukknapp-2.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp/-/nav-frontend-lukknapp-2.0.1.tgz#d8e297413d3283ac3d86d5d431d0e7a9231a73c1"
   integrity sha512-i6Nh0D0wwTJdS9/Ygge3czCiOczZQBSyi2M9wO4GH8Dbbl99SoqRNSbV9SSMHWPuAW2A57vmsFoUILEia/toGA==
 
 nav-frontend-modal-style@^2.0.1:
@@ -7416,7 +7417,7 @@ nav-frontend-modal-style@^2.0.1:
 
 nav-frontend-modal@^2.0.1:
   version "2.0.1"
-  resolved "https://registry.npmjs.org/nav-frontend-modal/-/nav-frontend-modal-2.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/nav-frontend-modal/-/nav-frontend-modal-2.0.1.tgz#a89dd7bab3cea45df32c7ad9eb9ad6e9fa722729"
   integrity sha512-crR92AoCVmz+jHAkLLXTzwDQRzPeRC354iywFXIfgC9LxqaaN7YiEC4PH0fvvVc9+esNo7ysM7V8+7cAiCqRCg==
 
 nav-frontend-paneler-style@^2.0.1:
@@ -7481,10 +7482,10 @@ nav-frontend-veileder@^3.0.2:
   resolved "https://registry.yarnpkg.com/nav-frontend-veileder/-/nav-frontend-veileder-3.0.2.tgz#ebd7adb673ecc3536e3d86adb6e7d80024b4477a"
   integrity sha512-trBnXeY30UdxqQsPvArnqjlO33d+1paoDuz8KqWt8+Ujnp9QVAHdeWNVKDs89RyrHxTTWEKtI76wAUJj3fKzvw==
 
-nav-hoykontrast@^1.3.4:
-  version "1.3.5"
-  resolved "https://registry.npmjs.org/nav-hoykontrast/-/nav-hoykontrast-1.3.5.tgz"
-  integrity sha512-QgJ6muvx7gZ+YCCsFtH2cYOEibRs1K3ZTZlsjYZp612xOoYKj4QYBC2nq+6JFAXc5rDb5qOU33/8x8DbbbmDTg==
+nav-hoykontrast@^1.3.7:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/nav-hoykontrast/-/nav-hoykontrast-1.4.1.tgz#182b2995afa10a425502edb8c003f1632ececccd"
+  integrity sha512-RSMfCDYvu5hmy4fsn1t2GIv44FrQOi4zK8Y8tR+S1dSo4Yb09c3oVegHuqreZ7jHaHQ5UHBg4OHW9Z+dmhI2UQ==
 
 needle@^3.1.0:
   version "3.1.0"
@@ -8023,10 +8024,10 @@ path-type@^4.0.0:
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pdfjs-dist@2.10.377:
-  version "2.10.377"
-  resolved "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-2.10.377.tgz"
-  integrity sha512-i0jRShtvgfsVQUNCoFYH4SVhPO3U0yhtiFLfZ0RR0B+68N+Vnwq+8B3cjWjLEwWGh8wg1XQ/sYMYKUlHn/Qpsw==
+pdfjs-dist@2.12.313:
+  version "2.12.313"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.12.313.tgz#62f2273737bb956267ae2e02cdfaddcb1099819c"
+  integrity sha512-1x6iXO4Qnv6Eb+YFdN5JdUzt4pAkxSp3aLAYPX93eQCyg/m7QFzXVWJHJVtoW48CI8HCXju4dSkhQZwoheL5mA==
 
 performance-now@^2.1.0:
   version "2.1.0"
@@ -8651,14 +8652,14 @@ react-dom@^17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-dropzone@^11.3.2:
-  version "11.3.2"
-  resolved "https://registry.npmjs.org/react-dropzone/-/react-dropzone-11.3.2.tgz"
-  integrity sha512-Z0l/YHcrNK1r85o6RT77Z5XgTARmlZZGfEKBl3tqTXL9fZNQDuIdRx/J0QjvR60X+yYu26dnHeaG2pWU+1HHvw==
+react-dropzone@^11.4.2:
+  version "11.7.1"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-11.7.1.tgz#3851bb75b26af0bf1b17ce1449fd980e643b9356"
+  integrity sha512-zxCMwhfPy1olUEbw3FLNPLhAm/HnaYH5aELIEglRbqabizKAdHs0h+WuyOpmA+v1JXn0++fpQDdNfUagWt5hJQ==
   dependencies:
-    attr-accept "^2.2.1"
-    file-selector "^0.2.2"
-    prop-types "^15.7.2"
+    attr-accept "^2.2.2"
+    file-selector "^0.4.0"
+    prop-types "^15.8.1"
 
 react-error-overlay@^6.0.11:
   version "6.0.11"
@@ -8689,6 +8690,11 @@ react-hot-loader@^4.13.0:
     shallowequal "^1.1.0"
     source-map "^0.7.3"
 
+react-intersection-observer@^8.32.1:
+  version "8.34.0"
+  resolved "https://registry.yarnpkg.com/react-intersection-observer/-/react-intersection-observer-8.34.0.tgz#6f6e67831c52e6233f6b6cc7eb55814820137c42"
+  integrity sha512-TYKh52Zc0Uptp5/b4N91XydfSGKubEhgZRtcg1rhTKABXijc4Sdr1uTp5lJ8TN27jwUsdXxjHXtHa0kPj704sw==
+
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
@@ -8709,7 +8715,7 @@ react-merge-refs@^1.1.0:
   resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz#73d88b892c6c68cbb7a66e0800faa374f4c38b06"
   integrity sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==
 
-react-modal@3.14.3, react-modal@^3.13.1:
+react-modal@3.14.3:
   version "3.14.3"
   resolved "https://registry.npmjs.org/react-modal/-/react-modal-3.14.3.tgz"
   integrity sha512-+C2KODVKyu20zHXPJxfOOcf571L1u/EpFlH+oS/3YDn8rgVE51QZuxuuIwabJ8ZFnOEHaD+r6XNjqwtxZnXO0g==
@@ -8719,10 +8725,20 @@ react-modal@3.14.3, react-modal@^3.13.1:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
-react-pdf@^5.3.0:
-  version "5.6.0"
-  resolved "https://registry.npmjs.org/react-pdf/-/react-pdf-5.6.0.tgz"
-  integrity sha512-s2T2ykxI0beC2z+dtfu6EyyrjmeYc8JhtYoD13aXkccBb7Pymd62opw7R4Zb8xMh7VvplBdC4J4V87cizbt+Dw==
+react-modal@^3.14.3:
+  version "3.15.1"
+  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.15.1.tgz#950ce67bfef80971182dd0ed38f2d9b1a681288b"
+  integrity sha512-duB9bxOaYg7Zt6TMFldIFxQRtSP+Dg3F1ZX3FXxSUn+3tZZ/9JCgeAQKDg7rhZSAqopq8TFRw3yIbnx77gyFTw==
+  dependencies:
+    exenv "^1.2.0"
+    prop-types "^15.7.2"
+    react-lifecycles-compat "^3.0.0"
+    warning "^4.0.3"
+
+react-pdf@^5.4.0:
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-5.7.2.tgz#c458dedf7983822668b40dcac1eae052c1f6e056"
+  integrity sha512-hdDwvf007V0i2rPCqQVS1fa70CXut17SN3laJYlRHzuqcu8sLLjEoeXihty6c0Ev5g1mw31b8OT8EwRw1s8C4g==
   dependencies:
     "@babel/runtime" "^7.0.0"
     file-loader "^6.0.0"
@@ -8730,8 +8746,10 @@ react-pdf@^5.3.0:
     make-event-props "^1.1.0"
     merge-class-names "^1.1.1"
     merge-refs "^1.0.0"
-    pdfjs-dist "2.10.377"
+    pdfjs-dist "2.12.313"
     prop-types "^15.6.2"
+    tiny-invariant "^1.0.0"
+    tiny-warning "^1.0.0"
 
 react-popper@^2.2.5:
   version "2.2.5"
@@ -8758,10 +8776,10 @@ react-refresh-webpack-plugin@^0.1.0:
     react-dev-utils "^9.1.0"
     sockjs-client "^1.4.0"
 
-react-refresh@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.10.0.tgz"
-  integrity sha512-PgidR3wST3dDYKr6b4pJoqQFpPGNKDSCDx4cZoshjXipw3LzO7mG1My2pwEzz2JVkF+inx3xRpDeQLFQGH/hsQ==
+react-refresh@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.0.tgz#4e02825378a5f227079554d4284889354e5f553e"
+  integrity sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==
 
 react-router-dom@^6.3.0:
   version "6.3.0"
@@ -9988,7 +10006,12 @@ thunky@^1.0.2:
   resolved "https://registry.npmjs.org/thunky/-/thunky-1.1.0.tgz"
   integrity sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==
 
-tiny-warning@^1.0.2:
+tiny-invariant@^1.0.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.2.0.tgz#a1141f86b672a9148c72e978a19a73b9b94a15a9"
+  integrity sha512-1Uhn/aqw5C6RI4KejVeTg6mIS7IqxnLJ8Mv2tV5rTc0qWobay7pDUz6Wi392Cnc8ak1H0F2cjoRzb2/AW4+Fvg==
+
+tiny-warning@^1.0.0, tiny-warning@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
