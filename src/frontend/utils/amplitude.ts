@@ -35,7 +35,7 @@ export const logDokumentasjonsbehov = (dokBehov: any, ...props: any) => {
 };
 
 export const logSidevisning = (side: string) => {
-  logEvent('side', {
+  logEvent('besøk', {
     side,
     team_id: 'familie',
     applikasjon: 'familie-ef-ettersending',
