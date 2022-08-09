@@ -43,6 +43,8 @@ const DivMidtstillInnhold = styled.div`
   justify-content: space-evenly;
 `;
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 const StyledStegindikator = styled(Stegindikator)`
   margin-top: 2rem;
   margin-bottom: 2rem;

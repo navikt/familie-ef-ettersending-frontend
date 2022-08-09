@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import { Select } from 'nav-frontend-skjema';
 import slett from '../icons/slett.svg';
@@ -18,10 +18,14 @@ import { filstørrelse_10MB } from '../utils/filer';
 import KnappMedPadding from '../nav-komponenter/Knapp';
 import { Alert } from '@navikt/ds-react';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
 `;
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 const StyledPanel = styled(Panel)`
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -137,7 +141,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
           </StyledDiv>
           <StyledSelect
             label="Hvilken stønadstype gjelder innsendingen for?"
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLSelectElement>) => {
               settValgtStønadType(event.target.value as StønadType);
             }}
             value={valgtStønadType || ''}
@@ -151,7 +155,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
           </StyledSelect>
           <StyledSelect
             label="Hvilken dokumenttype gjelder innsendingen for?"
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLSelectElement>) => {
               settValgtDokumentType(event.target.value as DokumentType);
             }}
             value={valgtDokumentType || ''}
