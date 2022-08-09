@@ -11,8 +11,6 @@ import { filstørrelse_10MB } from '../utils/filer';
 import { Alert } from '@navikt/ds-react';
 import { alertMelding } from './AlertStripe';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 const StyledPanel = styled(Panel)`
   margin-top: 1rem;
   margin-bottom: 1rem;

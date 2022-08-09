@@ -18,14 +18,10 @@ import { filstørrelse_10MB } from '../utils/filer';
 import KnappMedPadding from '../nav-komponenter/Knapp';
 import { Alert } from '@navikt/ds-react';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
 `;
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 const StyledPanel = styled(Panel)`
   margin-top: 1rem;
   margin-bottom: 1rem;
