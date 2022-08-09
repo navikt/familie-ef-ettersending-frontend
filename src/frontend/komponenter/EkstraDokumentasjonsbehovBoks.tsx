@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import { Select } from 'nav-frontend-skjema';
 import slett from '../icons/slett.svg';
@@ -137,7 +137,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
           </StyledDiv>
           <StyledSelect
             label="Hvilken stønadstype gjelder innsendingen for?"
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLSelectElement>) => {
               settValgtStønadType(event.target.value as StønadType);
             }}
             value={valgtStønadType || ''}
@@ -151,7 +151,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
           </StyledSelect>
           <StyledSelect
             label="Hvilken dokumenttype gjelder innsendingen for?"
-            onChange={(event) => {
+            onChange={(event: ChangeEvent<HTMLSelectElement>) => {
               settValgtDokumentType(event.target.value as DokumentType);
             }}
             value={valgtDokumentType || ''}
