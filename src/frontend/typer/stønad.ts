@@ -43,6 +43,7 @@ export const dokumentTypeTilTekst: Record<DokumentType, string> = {
     'Dokumentasjon som viser at du er for syk til å være i arbeid',
   DOKUMENTAJSON_OM_VIRKSOMHETEN_DU_ETABLERER:
     'Næringsfaglig vurdering av virksomheten du etablerer',
+  DOKUMNENTASJON_UTDANNING: 'Dokumentasjon på utdanningen du tar eller skal ta',
   DOKUMENTASJON_UTFGIFTER_UTDANNING: 'Utgifter til skolepenger',
   DOKUMENTASJON_ARBEIDSKONTRAKT:
     'Arbeidskontrakt som viser at du har fått tilbud om arbeid.',
@@ -87,6 +88,7 @@ export enum DokumentType {
   DOKUMENTASJON_IKKE_VILLIG_TIL_ARBEID = 'DOKUMENTASJON_IKKE_VILLIG_TIL_ARBEID',
   DOKUMENTAJSON_SYK = 'DOKUMENTAJSON_SYK',
   DOKUMENTAJSON_OM_VIRKSOMHETEN_DU_ETABLERER = 'DOKUMENTAJSON_OM_VIRKSOMHETEN_DU_ETABLERER',
+  DOKUMNENTASJON_UTDANNING = 'DOKUMNENTASJON_UTDANNING',
   DOKUMENTASJON_UTFGIFTER_UTDANNING = 'DOKUMENTASJON_UTFGIFTER_UTDANNING',
   DOKUMENTASJON_ARBEIDSKONTRAKT = 'DOKUMENTASJON_ARBEIDSKONTRAKT',
   DOKUMENTASJON_LÆRLING = 'DOKUMENTASJON_LÆRLING',
@@ -135,6 +137,7 @@ export const dokumentTyperOvergangsstønad: DokumentType[] = [
   DokumentType.DOKUMENTASJON_INNGÅTT_EKTESKAP,
   DokumentType.DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT,
   DokumentType.BEKREFTELSE_SEPRASJON_SØKNAD,
+  DokumentType.DOKUMNENTASJON_UTDANNING,
   DokumentType.ANNET,
 ];
 
@@ -183,5 +186,6 @@ export const dokumentTyperBarnetilsyn: DokumentType[] = [
   DokumentType.DOKUMENTASJON_INNGÅTT_EKTESKAP,
   DokumentType.DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT,
   DokumentType.BEKREFTELSE_SEPRASJON_SØKNAD,
+  DokumentType.DOKUMNENTASJON_UTDANNING,
   DokumentType.ANNET,
 ];
