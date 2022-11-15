@@ -1,6 +1,7 @@
-<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img">
+    <title>sjekkliste</title>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M49.4375 100C77.9147 100 101 77.6142 101 50C101 22.3858 77.9147 0 49.4375 0C20.9603 0 -2.125 22.3858 -2.125 50C-2.125 77.6142 20.9603 100 49.4375 100Z" fill="#99C2E8" />
-              <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="-2" y="0" width="104" height="100">
+              <mask id="mask0" x="-2" y="0" width="104" height="100">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M49.5625 100C78.0397 100 101.125 77.6142 101.125 50C101.125 22.3858 78.0397 0 49.5625 0C21.0853 0 -2 22.3858 -2 50C-2 77.6142 21.0853 100 49.5625 100Z" fill="#99C2E8" />
               </mask>
               <g mask="url(#mask0)" />

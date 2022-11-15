@@ -27,20 +27,20 @@ export const Oppsummering: React.FC<IProps> = ({
         return (
           <StyledDiv key={index}>
             <Normaltekst>
-              <b>Stønadstype: </b>
+              <strong>Stønadstype: </strong>
               {innsending.stønadType &&
                 stønadTypeTilTekst[innsending.stønadType]}
             </Normaltekst>
             <Normaltekst>
-              <b>Dokumenttype: </b>
+              <strong>Dokumenttype: </strong>
               {innsending.beskrivelse}
             </Normaltekst>
             <Normaltekst>
-              <b>Dato for innsending: </b>
+              <strong>Dato for innsending: </strong>
               {formaterIsoDato(innsending.innsendingstidspunkt)}
             </Normaltekst>
             <Normaltekst>
-              <b>Dokumenter: </b>
+              <strong>Dokumenter: </strong>
               {innsending.vedlegg.length > 0 ? (
                 <OpplastedeVedleggOversikt vedleggsliste={innsending.vedlegg} />
               ) : (

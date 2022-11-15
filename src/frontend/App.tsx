@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
 import { Normaltekst } from 'nav-frontend-typografi';
 
-const StyledImg = styled.img`
+const SjekklisteIkon = styled.img`
   height: 100% !important;
 `;
 
@@ -66,7 +66,7 @@ const App: React.FC = () => {
       <Bakgrunn>
         <AppContainer>
           <Veileder>
-            <StyledImg
+            <SjekklisteIkon
               src={sjekklisteikon}
               className="sjekklisteikon"
               alt="sjekklisteikon"

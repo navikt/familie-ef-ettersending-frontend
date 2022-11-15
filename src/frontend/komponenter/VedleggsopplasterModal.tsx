@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
-import opplasting from '../icons/opplasting.svg';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import {
@@ -23,6 +22,7 @@ import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad
 import Panel from 'nav-frontend-paneler';
 import axios from 'axios';
 import KnappMedPadding from '../nav-komponenter/Knapp';
+import { Upload } from '@navikt/ds-icons';
 
 const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
     text-align: center;
@@ -138,7 +138,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
         ]);
         oppdaterInnsending({ ...nyInnsending, erSammenslått: true });
         lukkModal();
-      } catch (error: any) {
+      } catch (error: unknown) {
         settAlertStripeMelding(alertMelding.FEIL_SAMMENSLÅING_DOKUMENT);
       }
     } else {
@@ -174,7 +174,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
             tittel: innsending.beskrivelse || 'Ukjent tittel',
           };
           vedleggListe.push(vedlegg);
-        } catch (error: any) {
+        } catch (error: unknown) {
           const feilmelding =
             axios.isAxiosError(error) &&
             error?.response?.data?.melding === 'CODE=IMAGE_DIMENSIONS_TOO_SMALL'
@@ -226,9 +226,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
               quality: 1,
             });
 
-            const nyFil = await new File([nyBlob as Blob], fil.name + '.jpg');
-
-            return nyFil;
+            return await new File([nyBlob as Blob], fil.name + '.jpg');
           }
 
           const feilmelding = fil.name + ' - Ugyldig filtype';
@@ -258,19 +256,15 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
 
   return (
     <ModalWrapper>
-      <b>{beskrivelse}</b>
+      <strong>{beskrivelse}</strong>
       <p>
-        <b>Stønadstype: </b>
+        <strong>Stønadstype: </strong>
         {stønadTypeTilTekst[stønadType as StønadType]}
       </p>
       <Filopplaster visSkillelinje={false}>
         <div {...getRootProps()}>
           <input {...getInputProps()} />
-          <img
-            src={opplasting}
-            className="opplastingsikon"
-            alt="Opplastingsikon"
-          />
+          <Upload />
           <Normaltekst className="tekst">Velg filer</Normaltekst>
         </div>
       </Filopplaster>

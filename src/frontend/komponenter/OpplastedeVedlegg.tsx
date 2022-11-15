@@ -32,7 +32,7 @@ const Container = styled.div`
 
     .vedleggsikon {
       position: relative;
-      top: 0px;
+      top: 0;
     }
 
     .slett {
@@ -79,7 +79,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
           vedlegg.navn
         );
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       settFeilmelding(alertMelding.FEIL_NEDLASTING_DOKUMENT);
     }
   };
@@ -97,12 +97,13 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                   alt="Vedleggsikon"
                 />
                 <Normaltekst className="filnavn">
-                  <b>Navn: </b>
+                  <strong>Navn: </strong>
                   <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
                     {fil.navn}
                   </Lenke>
                 </Normaltekst>
               </div>
+              mentasjon på at du mangler
               {slettVedlegg && (
                 <div
                   className="slett"
@@ -111,7 +112,11 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                   }}
                 >
                   <Normaltekst>Angre opplasting</Normaltekst>
-                  <img className="slettikon" src={slett} alt="Rødt kryss" />
+                  <img
+                    className="slettikon"
+                    src={slett}
+                    alt="Slett opplastede vedlegg"
+                  />
                 </div>
               )}
             </div>

@@ -16,7 +16,7 @@ const StyledSpan = styled.span`
   text-decoration: underline;
 `;
 
-const StyledImg = styled.img`
+const VedleggIkon = styled.img`
   position: relative;
   top: -2px;
   margin-left: 0.3rem;
@@ -39,7 +39,7 @@ const OpplastedeVedleggOversikt: React.FC<IOpplastedeVedlegg> = ({
           vedlegg.navn
         );
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       settFeilmelding(alertMelding.FEIL_NEDLASTING_DOKUMENT);
     }
   };
@@ -49,7 +49,7 @@ const OpplastedeVedleggOversikt: React.FC<IOpplastedeVedlegg> = ({
       {vedleggsliste.map((fil: IVedleggForEttersending, index) => {
         return (
           <StyledSpan key={index}>
-            <StyledImg src={vedlegg} alt="Vedleggsikon" />{' '}
+            <VedleggIkon src={vedlegg} alt="Vedleggsikon" />{' '}
             <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
               {fil.navn}
             </Lenke>

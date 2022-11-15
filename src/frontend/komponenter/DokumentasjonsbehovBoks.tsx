@@ -46,12 +46,12 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
     <>
       <StyledPanel border>
         <Alert variant={erDokumentasjonSendt() ? 'success' : 'warning'} inline>
-          <b>{innsending.beskrivelse}</b>
+          <strong>{innsending.beskrivelse}</strong>
         </Alert>
         {innsending.stønadType && (
           <>
             <p>
-              <b>Stønadstype: </b>
+              <strong>Stønadstype: </strong>
               {`${storForbokstav(innsending.stønadType.toLocaleLowerCase())}`}
             </p>
           </>
