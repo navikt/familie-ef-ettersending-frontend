@@ -67,7 +67,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
         isOpen={åpenModal}
         onRequestClose={() => settÅpenModal(false)}
         closeButton={true}
-        contentLabel="Modal"
+        contentLabel={'Modal for opplasting av dokumentasjon'}
       >
         <VedleggsopplasterModal
           oppdaterInnsending={oppdaterInnsending}

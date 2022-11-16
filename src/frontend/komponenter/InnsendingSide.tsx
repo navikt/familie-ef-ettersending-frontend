@@ -60,10 +60,10 @@ export const InnsendingSide: React.FC<IProps> = ({
         })}
       {ettersending.dokumentasjonsbehov
         .filter((innsending) => ekstraInnsendingerId.includes(innsending.id))
-        .map((innsending) => {
+        .map((innsending, index) => {
           return (
             <EkstraDokumentasjonsbehovBoks
-              key={innsending.id}
+              key={'Ekstra dokumentasjon' + index}
               innsending={innsending}
               oppdaterInnsending={oppdaterInnsending}
               slettEkstraInnsending={slettInnsending}
@@ -77,7 +77,7 @@ export const InnsendingSide: React.FC<IProps> = ({
           <Button
             variant={'tertiary'}
             type={'button'}
-            icon={<AddCircle />}
+            icon={<AddCircle title={'Legg til dokumenter'} />}
             onClick={leggTilNyDokumentasjonsbehovBoks}
           >
             Legg til flere dokumenter

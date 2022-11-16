@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import { Select } from 'nav-frontend-skjema';
-import slett from '../icons/slett.svg';
 import styled from 'styled-components/macro';
 import {
   DokumentType,
@@ -16,7 +15,8 @@ import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
 import KnappMedPadding from '../nav-komponenter/Knapp';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Button } from '@navikt/ds-react';
+import { Delete } from '@navikt/ds-icons';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -36,14 +36,20 @@ const DivMidtstillInnhold = styled.div`
   display: flex;
   justify-content: center;
 `;
-
-const StyledDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 34.5rem 3rem;
+  align-items: baseline;
 `;
 
-const StyledImg = styled.img`
-  cursor: pointer;
+const FlexRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -2.5rem;
+`;
+
+const DeleteButton = styled(Button)`
+  z-index: 999;
 `;
 
 const StyledAlertStripe = styled(AlertStripe)`
@@ -87,12 +93,9 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
     );
   };
 
-  const erDokumentasjonSendt = (): boolean => {
-    return (
-      innsending.søknadsdata?.harSendtInnTidligere ||
-      innsending.vedlegg.length > 0
-    );
-  };
+  const erDokumentasjonSendt =
+    innsending.søknadsdata?.harSendtInnTidligere ||
+    innsending.vedlegg.length > 0;
 
   const låsValg = (bool: boolean) => {
     settHarLåstValg(bool);
@@ -122,25 +125,22 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
     <StyledPanel border>
       {!harLåstValg && (
         <>
-          <StyledDiv>
-            <b> </b>
-            <span tabIndex={0}>
-              <StyledImg
-                className="slettikon"
-                src={slett}
-                alt="Rødt kryss"
-                onClick={() => {
-                  slettInnsending();
-                }}
-              />
-            </span>
-          </StyledDiv>
+          <FlexRow>
+            <DeleteButton
+              type={'button'}
+              variant={'tertiary'}
+              icon={<Delete title={'Søppeldunk'} />}
+              onClick={slettInnsending}
+              title={'Slett opplastede vedlegg'}
+            />
+          </FlexRow>
           <StyledSelect
             label="Hvilken stønadstype gjelder innsendingen for?"
             onChange={(event: ChangeEvent<HTMLSelectElement>) => {
               settValgtStønadType(event.target.value as StønadType);
             }}
             value={valgtStønadType || ''}
+            autoComplete={'off'}
           >
             <option value={undefined}>Velg stønadstype</option>
             {stønadsTyper.map((stønadstype) => (
@@ -155,6 +155,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
               settValgtDokumentType(event.target.value as DokumentType);
             }}
             value={valgtDokumentType || ''}
+            autoComplete={'off'}
           >
             <option value={undefined}>Velg dokumenttype</option>
             {dokumenttyperForStønad(valgtStønadType).map((dokumenttype) => (
@@ -167,26 +168,23 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       )}
       {harLåstValg && (
         <>
-          <StyledDiv>
+          <Grid>
             <Alert
-              variant={erDokumentasjonSendt() ? 'success' : 'warning'}
+              variant={erDokumentasjonSendt ? 'success' : 'warning'}
               inline
             >
-              <b>{innsending.beskrivelse}</b>
+              <strong>{innsending.beskrivelse}</strong>
             </Alert>
-            <span tabIndex={0}>
-              <StyledImg
-                className="slettikon"
-                src={slett}
-                alt="Rødt kryss"
-                onClick={() => {
-                  slettInnsending();
-                }}
-              />
-            </span>
-          </StyledDiv>
+            <DeleteButton
+              type={'button'}
+              variant={'tertiary'}
+              icon={<Delete title={'Søppeldunk'} />}
+              onClick={slettInnsending}
+              title={'Slett opplastede vedlegg'}
+            />
+          </Grid>
           <p>
-            <b>Stønadstype: </b>
+            <strong>Stønadstype: </strong>
             {stønadTypeTilTekst[valgtStønadType as StønadType]}
           </p>
           <Vedleggsopplaster
