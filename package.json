@@ -62,7 +62,7 @@
         "react-hot-loader": "^4.13.0",
         "react-refresh": "^0.14.0",
         "react-refresh-webpack-plugin": "^0.1.0",
-        "react-router-dom": "^6.3.0",
+        "react-router-dom": "^6.4.3",
         "request": "^2.88.2",
         "styled-components": "^5.3.5",
         "uuid": "^8.3.2",
