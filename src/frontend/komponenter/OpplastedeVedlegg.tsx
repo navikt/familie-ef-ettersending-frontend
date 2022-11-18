@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import slett from '../icons/slett.svg';
-import vedlegg from '../icons/vedlegg.svg';
-import { Normaltekst } from 'nav-frontend-typografi';
 import { IVedleggForEttersending } from '../typer/ettersending';
 import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
 import { hentOpplastetVedlegg } from '../api-service';
@@ -9,56 +6,44 @@ import { RessursStatus } from '../typer/ressurs';
 import Lenke from 'nav-frontend-lenker';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
+import { BodyShort, Button } from '@navikt/ds-react';
+import { Attachment, Delete } from '@navikt/ds-icons';
 
-const Container = styled.div`
-  .fil {
-    position: relative;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
+const FlexBox = styled.div`
+  position: relative;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+`;
 
-    .typo-normal {
-      display: inline-block;
-    }
+const TestBox = styled.div`
+  position: relative;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+`;
 
-    .filstørrelse {
-      margin-left: 10px;
-    }
+const SlettKnapp = styled(Button)`
+  min-width: 10.5rem;
+`;
 
-    .filnavn {
-      margin-left: 1rem;
-    }
+const FilNavnWrapper = styled.div`
+  margin-left: 1rem;
+`;
 
-    .vedleggsikon {
-      position: relative;
-      top: 0px;
-    }
+const Divider = styled.hr`
+  border: 1px solid var(--navds-semantic-color-divider);
+`;
 
-    .slett {
-      position: relative;
-      top: 5px;
-      color: blue;
-      cursor: pointer;
-
-      p {
-        text-decoration: underline;
-      }
-
-      .slettikon {
-        margin-left: 10px;
-      }
-    }
-  }
-
-  hr {
-    border: 1px solid #b7b1a9;
-  }
+const IkonWrapper = styled.div`
+  width: 1.5rem;
+  height: 2rem;
 `;
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedleggForEttersending[];
-  slettVedlegg?: (vedlegg: IVedleggForEttersending) => void;
+  slettVedlegg: (vedlegg: IVedleggForEttersending) => void;
 }
 
 const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
@@ -79,48 +64,48 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
           vedlegg.navn
         );
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       settFeilmelding(alertMelding.FEIL_NEDLASTING_DOKUMENT);
     }
   };
 
   return (
-    <Container>
+    <>
       {vedleggsliste.map((fil: IVedleggForEttersending, index: number) => {
         return (
           <div key={index}>
-            <div className="fil">
-              <div className="fil">
-                <img
-                  className="vedleggsikon"
-                  src={vedlegg}
-                  alt="Vedleggsikon"
-                />
-                <Normaltekst className="filnavn">
-                  <b>Navn: </b>
-                  <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
-                    {fil.navn}
-                  </Lenke>
-                </Normaltekst>
-              </div>
-              {slettVedlegg && (
-                <div
-                  className="slett"
-                  onClick={() => {
-                    slettVedlegg(fil);
-                  }}
-                >
-                  <Normaltekst>Angre opplasting</Normaltekst>
-                  <img className="slettikon" src={slett} alt="Rødt kryss" />
-                </div>
-              )}
-            </div>
-            {index === vedleggsliste.length - 1 ? '' : <hr />}
+            <FlexBox>
+              <TestBox>
+                <IkonWrapper>
+                  <Attachment title={'Binders'} width={24} height={29} />
+                </IkonWrapper>
+                <FilNavnWrapper>
+                  <BodyShort>
+                    <strong>Navn: </strong>
+                    <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
+                      {fil.navn}
+                    </Lenke>
+                  </BodyShort>
+                </FilNavnWrapper>
+              </TestBox>
+              <SlettKnapp
+                type={'button'}
+                variant={'tertiary'}
+                icon={<Delete title={'Søppeldunk'} />}
+                onClick={() => {
+                  slettVedlegg(fil);
+                }}
+                size={'small'}
+              >
+                Angre opplasting
+              </SlettKnapp>
+            </FlexBox>
+            {index === vedleggsliste.length - 1 ? null : <Divider />}
           </div>
         );
       })}
       {feilmelding && <AlertStripe melding={feilmelding} />}
-    </Container>
+    </>
   );
 };
 

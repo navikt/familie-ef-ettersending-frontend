@@ -31,12 +31,9 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
   oppdaterInnsending,
   settAlertStripeMelding,
 }: Props) => {
-  const erDokumentasjonSendt = (): boolean => {
-    return (
-      innsending.søknadsdata?.harSendtInnTidligere ||
-      innsending.vedlegg.length > 0
-    );
-  };
+  const erDokumentasjonSendt =
+    innsending.søknadsdata?.harSendtInnTidligere ||
+    innsending.vedlegg.length > 0;
 
   const storForbokstav = (ord: string): string => {
     return ord.charAt(0).toUpperCase() + ord.slice(1);
@@ -45,13 +42,13 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
   return (
     <>
       <StyledPanel border>
-        <Alert variant={erDokumentasjonSendt() ? 'success' : 'warning'} inline>
-          <b>{innsending.beskrivelse}</b>
+        <Alert variant={erDokumentasjonSendt ? 'success' : 'warning'} inline>
+          <strong>{innsending.beskrivelse}</strong>
         </Alert>
         {innsending.stønadType && (
           <>
             <p>
-              <b>Stønadstype: </b>
+              <strong>Stønadstype: </strong>
               {`${storForbokstav(innsending.stønadType.toLocaleLowerCase())}`}
             </p>
           </>

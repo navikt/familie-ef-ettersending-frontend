@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import vedlegg from '../icons/vedlegg.svg';
 import { IVedleggForEttersending } from '../typer/ettersending';
 import styled from 'styled-components/macro';
 import AlertStripe, { alertMelding } from './AlertStripe';
@@ -7,22 +6,19 @@ import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
 import Lenke from 'nav-frontend-lenker';
+import { Attachment } from '@navikt/ds-icons';
+import { BodyShort } from '@navikt/ds-react';
+
+const Grid = styled.span`
+  display: grid;
+  grid-template-columns: 6.5rem 1.75rem 20rem;
+`;
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedleggForEttersending[];
 }
 
-const StyledSpan = styled.span`
-  text-decoration: underline;
-`;
-
-const StyledImg = styled.img`
-  position: relative;
-  top: -2px;
-  margin-left: 0.3rem;
-`;
-
-const OpplastedeVedleggOversikt: React.FC<IOpplastedeVedlegg> = ({
+const VedleggListe: React.FC<IOpplastedeVedlegg> = ({
   vedleggsliste,
 }: IOpplastedeVedlegg) => {
   const [feilmelding, settFeilmelding] = useState<alertMelding>(
@@ -39,7 +35,7 @@ const OpplastedeVedleggOversikt: React.FC<IOpplastedeVedlegg> = ({
           vedlegg.navn
         );
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       settFeilmelding(alertMelding.FEIL_NEDLASTING_DOKUMENT);
     }
   };
@@ -48,12 +44,15 @@ const OpplastedeVedleggOversikt: React.FC<IOpplastedeVedlegg> = ({
     <>
       {vedleggsliste.map((fil: IVedleggForEttersending, index) => {
         return (
-          <StyledSpan key={index}>
-            <StyledImg src={vedlegg} alt="Vedleggsikon" />{' '}
+          <Grid key={index}>
+            <BodyShort>
+              <strong>Dokumenter: </strong>
+            </BodyShort>
+            <Attachment title={'Binders'} width={24} height={29} />
             <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
               {fil.navn}
             </Lenke>
-          </StyledSpan>
+          </Grid>
         );
       })}
       {feilmelding && <AlertStripe melding={feilmelding} />}
@@ -61,4 +60,4 @@ const OpplastedeVedleggOversikt: React.FC<IOpplastedeVedlegg> = ({
   );
 };
 
-export default OpplastedeVedleggOversikt;
+export default VedleggListe;

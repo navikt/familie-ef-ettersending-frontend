@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
-import opplasting from '../icons/opplasting.svg';
+import { Undertekst } from 'nav-frontend-typografi';
 import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import {
@@ -23,28 +22,28 @@ import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad
 import Panel from 'nav-frontend-paneler';
 import axios from 'axios';
 import KnappMedPadding from '../nav-komponenter/Knapp';
+import { Upload } from '@navikt/ds-icons';
+import { BodyShort } from '@navikt/ds-react';
 
-const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
-    text-align: center;
-    font-weight: bold;
-    border: 2px dashed #59514b;
-    border-radius: 4px;
-    background-color: rgba(204, 222, 230, 0.5);
-    border-bottom: ${(props) =>
-      props.visSkillelinje ? '2px dashed #59514b' : ''};
-    height: 64px;
-    color: blue;
-    margin: 0 auto;
-    cursor: pointer;
-    .opplastingsikon {
-      display: inline-block;
-    };
-    .tekst {
-      line-height: 64px;
-      display: inline-block;
-      margin-left: 10px;
-    }
-  }
+const Filopplaster = styled.div`
+  text-align: center;
+  font-weight: bold;
+  border: 2px dashed var(--navds-semantic-color-border);
+  border-radius: 4px;
+  background-color: var(--navds-semantic-color-canvas-background);
+  height: 4rem;
+  line-height: 4rem;
+  color: blue;
+  cursor: pointer;
+`;
+
+const OpplastingIkon = styled(Upload)`
+  display: inline-block;
+  margin-right: 0.5rem;
+`;
+
+const OpplastingTekst = styled(BodyShort)`
+  display: inline-block;
 `;
 
 const SpinnerWrapper = styled.div`
@@ -138,7 +137,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
         ]);
         oppdaterInnsending({ ...nyInnsending, erSammenslått: true });
         lukkModal();
-      } catch (error: any) {
+      } catch (error: unknown) {
         settAlertStripeMelding(alertMelding.FEIL_SAMMENSLÅING_DOKUMENT);
       }
     } else {
@@ -174,7 +173,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
             tittel: innsending.beskrivelse || 'Ukjent tittel',
           };
           vedleggListe.push(vedlegg);
-        } catch (error: any) {
+        } catch (error: unknown) {
           const feilmelding =
             axios.isAxiosError(error) &&
             error?.response?.data?.melding === 'CODE=IMAGE_DIMENSIONS_TOO_SMALL'
@@ -226,9 +225,7 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
               quality: 1,
             });
 
-            const nyFil = await new File([nyBlob as Blob], fil.name + '.jpg');
-
-            return nyFil;
+            return await new File([nyBlob as Blob], fil.name + '.jpg');
           }
 
           const feilmelding = fil.name + ' - Ugyldig filtype';
@@ -258,20 +255,16 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
 
   return (
     <ModalWrapper>
-      <b>{beskrivelse}</b>
+      <strong>{beskrivelse}</strong>
       <p>
-        <b>Stønadstype: </b>
+        <strong>Stønadstype: </strong>
         {stønadTypeTilTekst[stønadType as StønadType]}
       </p>
-      <Filopplaster visSkillelinje={false}>
+      <Filopplaster>
         <div {...getRootProps()}>
           <input {...getInputProps()} />
-          <img
-            src={opplasting}
-            className="opplastingsikon"
-            alt="Opplastingsikon"
-          />
-          <Normaltekst className="tekst">Velg filer</Normaltekst>
+          <OpplastingIkon title={'Last opp'} />
+          <OpplastingTekst>Velg filer</OpplastingTekst>
         </div>
       </Filopplaster>
       <OpplastedeVedlegg

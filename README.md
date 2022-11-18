@@ -5,8 +5,9 @@ Frontend app for ettersending av dokumentasjons vedrørende søknader tilknyttet
 ## Kjør lokalt
 
 1. `yarn install`
-2. Kjør `familie-ef-soknad-api` og `familie-dokument` lokalt
-3. `yarn start:dev`
+2. Kjør opp `familie-ef-soknad-api` med launcheren `ApplicationLocalLauncher`
+3. Kjør opp `familie-dokument` med launcheren `DevLauncherForSøknad`
+4. `yarn start:dev`
 
 For å få en gyldig cookie med `familie-ef-soknad-api` må du besøke en av følgende adresser:
 

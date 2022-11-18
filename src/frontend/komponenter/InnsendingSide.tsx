@@ -1,11 +1,12 @@
 import React from 'react';
 import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
 import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
-import { LeggTilInnsending } from './LeggTilInnsending';
 import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
 import styled from 'styled-components';
 import KnappMedPadding from '../nav-komponenter/Knapp';
 import { alertMelding } from './AlertStripe';
+import { AddCircle } from '@navikt/ds-icons';
+import { Button } from '@navikt/ds-react';
 
 interface IProps {
   ettersending: IEttersending;
@@ -19,7 +20,7 @@ interface IProps {
 }
 
 const SoknadContainer = styled.div`
-  padding-bottom: 0rem;
+  padding-bottom: 0;
 `;
 
 const StyledDiv = styled.div`
@@ -29,7 +30,7 @@ const StyledDiv = styled.div`
 
 const HovedKnapp = styled(KnappMedPadding)`
   margin: 1rem;
-  margin-bottom: 0rem;
+  margin-bottom: 0;
 `;
 
 export const InnsendingSide: React.FC<IProps> = ({
@@ -48,7 +49,7 @@ export const InnsendingSide: React.FC<IProps> = ({
         .filter((innsending) => !ekstraInnsendingerId.includes(innsending.id))
         .map((innsending) => {
           return (
-            <SoknadContainer key={innsending.id}>
+            <SoknadContainer key={'Dokumentasjonsbehov' + innsending.id}>
               <DokumentasjonsbehovListe
                 innsending={innsending}
                 oppdaterInnsending={oppdaterInnsending}
@@ -62,7 +63,7 @@ export const InnsendingSide: React.FC<IProps> = ({
         .map((innsending) => {
           return (
             <EkstraDokumentasjonsbehovBoks
-              key={innsending.id}
+              key={'Ekstra dokumentasjonsbehov' + innsending.id}
               innsending={innsending}
               oppdaterInnsending={oppdaterInnsending}
               slettEkstraInnsending={slettInnsending}
@@ -73,11 +74,14 @@ export const InnsendingSide: React.FC<IProps> = ({
         })}
       <>
         <div>
-          <LeggTilInnsending
-            leggTilNyDokumentasjonsbehovBoks={leggTilNyDokumentasjonsbehovBoks}
+          <Button
+            variant={'tertiary'}
+            type={'button'}
+            icon={<AddCircle title={'Legg til dokumenter'} />}
+            onClick={leggTilNyDokumentasjonsbehovBoks}
           >
             Legg til flere dokumenter
-          </LeggTilInnsending>
+          </Button>
         </div>
         <StyledDiv>
           <HovedKnapp onClick={visOppsummering}>Neste</HovedKnapp>
