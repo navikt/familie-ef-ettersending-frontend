@@ -5,7 +5,7 @@ import { IDokumentasjonsbehov } from '../typer/ettersending';
 import { stønadTypeTilTekst } from '../typer/stønad';
 import VedleggListe from './VedleggListe';
 import { formaterIsoDato } from '../../shared-utils/dato';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, Label } from '@navikt/ds-react';
 
 const Container = styled.div`
   margin-top: 2rem;
@@ -28,16 +28,16 @@ export const Oppsummering: React.FC<IProps> = ({
         return (
           <Container key={index}>
             <BodyShort>
-              <strong>Stønadstype: </strong>
+              <Label as={'p'}>Stønadstype: </Label>
               {innsending.stønadType &&
                 stønadTypeTilTekst[innsending.stønadType]}
             </BodyShort>
             <BodyShort>
-              <strong>Dokumenttype: </strong>
+              <Label as={'p'}>Dokumenttype: </Label>
               {innsending.beskrivelse}
             </BodyShort>
             <BodyShort>
-              <strong>Dato for innsending: </strong>
+              <Label as={'p'}>Dato for innsending: </Label>
               {formaterIsoDato(innsending.innsendingstidspunkt)}
             </BodyShort>
             {innsending.vedlegg.length > 0 ? (

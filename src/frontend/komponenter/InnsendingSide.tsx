@@ -49,7 +49,7 @@ export const InnsendingSide: React.FC<IProps> = ({
         .filter((innsending) => !ekstraInnsendingerId.includes(innsending.id))
         .map((innsending) => {
           return (
-            <SoknadContainer key={innsending.id}>
+            <SoknadContainer key={'Dokumentasjonsbehov' + innsending.id}>
               <DokumentasjonsbehovListe
                 innsending={innsending}
                 oppdaterInnsending={oppdaterInnsending}
@@ -60,10 +60,10 @@ export const InnsendingSide: React.FC<IProps> = ({
         })}
       {ettersending.dokumentasjonsbehov
         .filter((innsending) => ekstraInnsendingerId.includes(innsending.id))
-        .map((innsending, index) => {
+        .map((innsending) => {
           return (
             <EkstraDokumentasjonsbehovBoks
-              key={'Ekstra dokumentasjon' + index}
+              key={'Ekstra dokumentasjonsbehov' + innsending.id}
               innsending={innsending}
               oppdaterInnsending={oppdaterInnsending}
               slettEkstraInnsending={slettInnsending}
