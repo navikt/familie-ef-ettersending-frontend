@@ -28,7 +28,7 @@ import Stegindikator from 'nav-frontend-stegindikator';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov, logSidevisning } from '../utils/amplitude';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
-import KnappMedPadding from '../nav-komponenter/Knapp';
+import KnappMedPadding from '../felles/Knapp';
 
 const SekundærKnapp = styled(KnappMedPadding)`
   margin: 1rem;

@@ -14,9 +14,8 @@ import { IDokumentasjonsbehov } from '../typer/ettersending';
 import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
-import KnappMedPadding from '../nav-komponenter/Knapp';
-import { Alert, Button } from '@navikt/ds-react';
-import { Delete } from '@navikt/ds-icons';
+import KnappMedPadding from '../felles/Knapp';
+import { Alert } from '@navikt/ds-react';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -27,29 +26,14 @@ const StyledPanel = styled(Panel)`
   margin-bottom: 1rem;
 `;
 
-const SekundærKnapp = styled(KnappMedPadding)`
-  margin-bottom: 0rem;
-`;
-
-const DivMidtstillInnhold = styled.div`
-  margin-top: 1rem;
+const FlexBox = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 `;
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 34.5rem 3rem;
-  align-items: baseline;
-`;
 
-const FlexRow = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: -2.5rem;
-`;
-
-const DeleteButton = styled(Button)`
-  z-index: 999;
+const KnappMedMargin = styled(KnappMedPadding)`
+  margin: 1rem 0.5rem 0rem 0.5rem;
 `;
 
 const StyledAlertStripe = styled(AlertStripe)`
@@ -117,23 +101,10 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
     settAlertStripeMelding(alertMelding.MANGLER_BEGGE_TYPER);
   };
 
-  const slettInnsending = () => {
-    slettEkstraInnsending(innsending.id);
-  };
-
   return (
     <StyledPanel border>
       {!harLåstValg && (
         <>
-          <FlexRow>
-            <DeleteButton
-              type={'button'}
-              variant={'tertiary'}
-              icon={<Delete title={'Søppeldunk'} />}
-              onClick={slettInnsending}
-              title={'Slett opplastede vedlegg'}
-            />
-          </FlexRow>
           <StyledSelect
             label="Hvilken stønadstype gjelder innsendingen for?"
             onChange={(event: ChangeEvent<HTMLSelectElement>) => {
@@ -168,27 +139,16 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       )}
       {harLåstValg && (
         <>
-          <Grid>
-            <Alert
-              variant={erDokumentasjonSendt ? 'success' : 'warning'}
-              inline
-            >
-              <strong>{innsending.beskrivelse}</strong>
-            </Alert>
-            <DeleteButton
-              type={'button'}
-              variant={'tertiary'}
-              icon={<Delete title={'Søppeldunk'} />}
-              onClick={slettInnsending}
-              title={'Slett opplastede vedlegg'}
-            />
-          </Grid>
+          <Alert variant={erDokumentasjonSendt ? 'success' : 'warning'} inline>
+            <strong>{innsending.beskrivelse}</strong>
+          </Alert>
           <p>
             <strong>Stønadstype: </strong>
             {stønadTypeTilTekst[valgtStønadType as StønadType]}
           </p>
           <Vedleggsopplaster
             innsending={innsending}
+            slettInnsedning={slettEkstraInnsending}
             oppdaterInnsending={oppdaterInnsending}
             maxFilstørrelse={filstørrelse_10MB}
             stønadType={valgtStønadType}
@@ -200,11 +160,19 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
         </>
       )}
       {!harLåstValg && (
-        <DivMidtstillInnhold>
-          <SekundærKnapp variant={'secondary'} onClick={håndterKnappeKlikk}>
+        <FlexBox>
+          <KnappMedMargin
+            type={'button'}
+            variant={'tertiary'}
+            onClick={() => slettEkstraInnsending(innsending.id)}
+            title={'Slett opplastede vedlegg'}
+          >
+            Avbryt
+          </KnappMedMargin>
+          <KnappMedMargin variant={'secondary'} onClick={håndterKnappeKlikk}>
             Neste
-          </SekundærKnapp>
-        </DivMidtstillInnhold>
+          </KnappMedMargin>
+        </FlexBox>
       )}
       <StyledAlertStripe melding={alertStripeMelding} />
       {innsendingerUtenVedlegg.includes(innsending.id) && (

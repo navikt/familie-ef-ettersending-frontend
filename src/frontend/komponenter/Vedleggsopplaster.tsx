@@ -9,19 +9,16 @@ import VedleggsopplasterModal from './VedleggsopplasterModal';
 import styled from 'styled-components';
 import { StønadType } from '../typer/stønad';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import KnappMedPadding from '../nav-komponenter/Knapp';
+import KnappMedPadding from '../felles/Knapp';
 
-const Filopplaster = styled.div<{ visSkillelinje: boolean }>`
-    text-align: center;
-    border-bottom: ${(props) =>
-      props.visSkillelinje ? '2px dashed #59514b' : ''};
-    height: 64px;
-  }
+const FlexBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const FilopplasterWrapper = styled.div`
-  max-width: 775px;
-  min-height: 68px;
+  max-width: 48rem;
 `;
 
 const AlertStripeMedPadding = styled(AlertStripe)`
@@ -29,9 +26,14 @@ const AlertStripeMedPadding = styled(AlertStripe)`
   margin-bottom: 2rem;
 `;
 
+const KnappMedMargin = styled(KnappMedPadding)`
+  margin: 0.25rem 0.5rem;
+`;
+
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
   innsending: IDokumentasjonsbehov;
+  slettInnsedning?: (id: string) => void;
   maxFilstørrelse?: number;
   stønadType?: StønadType;
   beskrivelse: string;
@@ -40,6 +42,7 @@ interface IProps {
 
 const Vedleggsopplaster: React.FC<IProps> = ({
   innsending,
+  slettInnsedning,
   oppdaterInnsending,
   maxFilstørrelse,
   stønadType,
@@ -80,8 +83,18 @@ const Vedleggsopplaster: React.FC<IProps> = ({
       </Modal>
       <FilopplasterWrapper>
         {innsending.vedlegg.length === 0 && (
-          <Filopplaster visSkillelinje={innsending.vedlegg.length > 0}>
-            <KnappMedPadding
+          <FlexBox>
+            {slettInnsedning && (
+              <KnappMedMargin
+                type={'button'}
+                variant={'tertiary'}
+                onClick={() => slettInnsedning(innsending.id)}
+                title={'Slett opplastede vedlegg'}
+              >
+                Avbryt
+              </KnappMedMargin>
+            )}
+            <KnappMedMargin
               variant={'secondary'}
               onClick={() => {
                 settÅpenModal(true);
@@ -89,8 +102,8 @@ const Vedleggsopplaster: React.FC<IProps> = ({
               }}
             >
               Last opp fil(er)
-            </KnappMedPadding>
-          </Filopplaster>
+            </KnappMedMargin>
+          </FlexBox>
         )}
         {innsending.vedlegg.length >= 1 && !innsending.erSammenslått && (
           <AlertStripeMedPadding
