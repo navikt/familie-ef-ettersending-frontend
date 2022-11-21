@@ -6,9 +6,8 @@ import { RessursStatus } from '../typer/ressurs';
 import Lenke from 'nav-frontend-lenker';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, Button } from '@navikt/ds-react';
 import { Attachment, Delete } from '@navikt/ds-icons';
-import KnappMedPadding from '../felles/Knapp';
 
 const FlexBox = styled.div`
   position: relative;
@@ -18,12 +17,11 @@ const FlexBox = styled.div`
   justify-content: space-between;
   @media (max-width: 576px) {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
 `;
 
 const IkonOgTekstDiv = styled.div`
-  position: relative;
   margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
@@ -32,16 +30,18 @@ const IkonOgTekstDiv = styled.div`
   }
 `;
 
-const SlettKnapp = styled(KnappMedPadding)`
-  min-width: 10.5rem;
-  max-width: 14rem;
+const SlettKnapp = styled(Button)`
+  height: 3rem;
+  min-width: 11rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   @media (max-width: 576px) {
     margin-top: 0.5rem;
   }
 `;
 
 const FilNavnWrapper = styled.div`
-  margin-left: 1rem;
+  margin-left: 0.5rem;
 `;
 
 const Divider = styled.hr`
@@ -95,7 +95,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                   <BodyShort>
                     <strong>Navn: </strong>
                     <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
-                      {fil.navn}
+                      {fil.navn.replace(/_/g, '-')}
                     </Lenke>
                   </BodyShort>
                 </FilNavnWrapper>
