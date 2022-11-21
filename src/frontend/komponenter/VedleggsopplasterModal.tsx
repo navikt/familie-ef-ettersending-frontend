@@ -58,7 +58,7 @@ const StyledAlertStripe = styled(AlertStripe)`
 const ModalWrapper = styled(Panel)`
   margin: 1.25rem;
   margin-top: 2rem;
-  max-width: 600px;
+  max-width: 38rem;
 `;
 
 const UndertekstWrapper = styled(Undertekst)`

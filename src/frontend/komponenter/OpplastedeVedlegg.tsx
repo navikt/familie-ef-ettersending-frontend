@@ -6,8 +6,9 @@ import { RessursStatus } from '../typer/ressurs';
 import Lenke from 'nav-frontend-lenker';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { BodyShort, Button } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 import { Attachment, Delete } from '@navikt/ds-icons';
+import KnappMedPadding from '../felles/Knapp';
 
 const FlexBox = styled.div`
   position: relative;
@@ -15,17 +16,28 @@ const FlexBox = styled.div`
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
-const TestBox = styled.div`
+const IkonOgTekstDiv = styled.div`
   position: relative;
   margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
+  @media (max-width: 576px) {
+    justify-content: center;
+  }
 `;
 
-const SlettKnapp = styled(Button)`
+const SlettKnapp = styled(KnappMedPadding)`
   min-width: 10.5rem;
+  max-width: 14rem;
+  @media (max-width: 576px) {
+    margin-top: 0.5rem;
+  }
 `;
 
 const FilNavnWrapper = styled.div`
@@ -73,9 +85,9 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
     <>
       {vedleggsliste.map((fil: IVedleggForEttersending, index: number) => {
         return (
-          <div key={index}>
+          <div key={fil.id}>
             <FlexBox>
-              <TestBox>
+              <IkonOgTekstDiv>
                 <IkonWrapper>
                   <Attachment title={'Binders'} width={24} height={29} />
                 </IkonWrapper>
@@ -87,7 +99,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                     </Lenke>
                   </BodyShort>
                 </FilNavnWrapper>
-              </TestBox>
+              </IkonOgTekstDiv>
               <SlettKnapp
                 type={'button'}
                 variant={'tertiary'}
