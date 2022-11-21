@@ -21,7 +21,7 @@ import heic2any from 'heic2any';
 import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
 import Panel from 'nav-frontend-paneler';
 import axios from 'axios';
-import KnappMedPadding from '../nav-komponenter/Knapp';
+import KnappMedPadding from '../felles/Knapp';
 import { Upload } from '@navikt/ds-icons';
 import { BodyShort } from '@navikt/ds-react';
 

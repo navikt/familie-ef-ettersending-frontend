@@ -3,7 +3,7 @@ import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
 import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
 import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
 import styled from 'styled-components';
-import KnappMedPadding from '../nav-komponenter/Knapp';
+import KnappMedPadding from '../felles/Knapp';
 import { alertMelding } from './AlertStripe';
 import { AddCircle } from '@navikt/ds-icons';
 import { Button } from '@navikt/ds-react';
