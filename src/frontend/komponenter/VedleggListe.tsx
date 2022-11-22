@@ -7,11 +7,17 @@ import { RessursStatus } from '../typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
 import Lenke from 'nav-frontend-lenker';
 import { Attachment } from '@navikt/ds-icons';
-import { BodyShort } from '@navikt/ds-react';
+import { Label } from '@navikt/ds-react';
 
-const Grid = styled.span`
-  display: grid;
-  grid-template-columns: 6.5rem 1.75rem 20rem;
+const IkonWrapper = styled.div`
+  width: 1.5rem;
+  height: 2rem;
+  margin-right: 0.25rem;
+`;
+
+const FlexBox = styled.div`
+  display: flex;
+  word-break: break-word;
 `;
 
 interface IOpplastedeVedlegg {
@@ -42,17 +48,19 @@ const VedleggListe: React.FC<IOpplastedeVedlegg> = ({
 
   return (
     <>
-      {vedleggsliste.map((fil: IVedleggForEttersending, index) => {
+      {vedleggsliste.map((fil: IVedleggForEttersending) => {
         return (
-          <Grid key={index}>
-            <BodyShort>
-              <strong>Dokumenter: </strong>
-            </BodyShort>
-            <Attachment title={'Binders'} width={24} height={29} />
-            <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
-              {fil.navn}
-            </Lenke>
-          </Grid>
+          <div key={fil.id}>
+            <Label as={'p'}>Dokumenter:</Label>
+            <FlexBox>
+              <IkonWrapper>
+                <Attachment title={'Binders'} width={24} height={29} />
+              </IkonWrapper>
+              <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
+                {fil.navn.replace(/_/g, '-')}
+              </Lenke>
+            </FlexBox>
+          </div>
         );
       })}
       {feilmelding && <AlertStripe melding={feilmelding} />}

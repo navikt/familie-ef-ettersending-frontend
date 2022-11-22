@@ -15,21 +15,34 @@ const FlexBox = styled.div`
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
-const TestBox = styled.div`
-  position: relative;
+const IkonOgTekstDiv = styled.div`
   margin-top: 0.5rem;
   display: flex;
   justify-content: space-between;
+  @media (max-width: 576px) {
+    justify-content: center;
+  }
 `;
 
 const SlettKnapp = styled(Button)`
-  min-width: 10.5rem;
+  height: 3rem;
+  min-width: 11rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  @media (max-width: 576px) {
+    margin-top: 0.5rem;
+  }
 `;
 
 const FilNavnWrapper = styled.div`
-  margin-left: 1rem;
+  margin-left: 0.5rem;
+  word-break: break-word;
 `;
 
 const Divider = styled.hr`
@@ -73,9 +86,9 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
     <>
       {vedleggsliste.map((fil: IVedleggForEttersending, index: number) => {
         return (
-          <div key={index}>
+          <div key={fil.id}>
             <FlexBox>
-              <TestBox>
+              <IkonOgTekstDiv>
                 <IkonWrapper>
                   <Attachment title={'Binders'} width={24} height={29} />
                 </IkonWrapper>
@@ -83,11 +96,11 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                   <BodyShort>
                     <strong>Navn: </strong>
                     <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
-                      {fil.navn}
+                      {fil.navn.replace(/_/g, '-')}
                     </Lenke>
                   </BodyShort>
                 </FilNavnWrapper>
-              </TestBox>
+              </IkonOgTekstDiv>
               <SlettKnapp
                 type={'button'}
                 variant={'tertiary'}
