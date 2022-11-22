@@ -17,6 +17,7 @@ const IkonWrapper = styled.div`
 
 const FlexBox = styled.div`
   display: flex;
+  word-break: break-word;
 `;
 
 interface IOpplastedeVedlegg {

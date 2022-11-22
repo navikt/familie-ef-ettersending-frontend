@@ -42,6 +42,7 @@ const SlettKnapp = styled(Button)`
 
 const FilNavnWrapper = styled.div`
   margin-left: 0.5rem;
+  word-break: break-word;
 `;
 
 const Divider = styled.hr`
