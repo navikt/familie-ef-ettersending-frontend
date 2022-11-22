@@ -11,17 +11,21 @@ import {
   stønadTypeTilTekst,
 } from '../typer/stønad';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
-import Panel from 'nav-frontend-paneler';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
 import KnappMedPadding from '../felles/Knapp';
-import { Alert } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, Panel } from '@navikt/ds-react';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
 `;
 
 const StyledPanel = styled(Panel)`
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const StyledBodyLong = styled(BodyLong)`
   margin-top: 1rem;
   margin-bottom: 1rem;
 `;
@@ -140,12 +144,14 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
       {harLåstValg && (
         <>
           <Alert variant={erDokumentasjonSendt ? 'success' : 'warning'} inline>
-            <strong>{innsending.beskrivelse}</strong>
+            <Heading level={'2'} size={'small'}>
+              {innsending.beskrivelse}
+            </Heading>
           </Alert>
-          <p>
+          <StyledBodyLong>
             <strong>Stønadstype: </strong>
             {stønadTypeTilTekst[valgtStønadType as StønadType]}
-          </p>
+          </StyledBodyLong>
           <Vedleggsopplaster
             innsending={innsending}
             slettInnsedning={slettEkstraInnsending}

@@ -29,15 +29,11 @@ export const DokumentasjonsbehovListe: React.FC<IProps> = ({
   }
 
   return (
-    <>
-      <>
-        <DokumentasjonsbehovBoks
-          key={innsending.id}
-          innsending={innsending}
-          oppdaterInnsending={oppdaterInnsending}
-          settAlertStripeMelding={settAlertStripeMelding}
-        />
-      </>
-    </>
+    <DokumentasjonsbehovBoks
+      key={innsending.id}
+      innsending={innsending}
+      oppdaterInnsending={oppdaterInnsending}
+      settAlertStripeMelding={settAlertStripeMelding}
+    />
   );
 };
