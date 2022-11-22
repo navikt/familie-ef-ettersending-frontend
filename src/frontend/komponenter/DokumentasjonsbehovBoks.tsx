@@ -3,10 +3,8 @@ import { IDokumentasjonsbehov } from '../typer/ettersending';
 import styled from 'styled-components';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import { formaterIsoDato } from '../../shared-utils/dato';
-import Lesmerpanel from 'nav-frontend-lesmerpanel';
-import { LesMerTekst } from './LesMerTekst';
 import { filstørrelse_10MB } from '../utils/filer';
-import { Alert, BodyLong, Heading, Panel } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, Panel, ReadMore } from '@navikt/ds-react';
 import { alertMelding } from './AlertStripe';
 
 const StyledPanel = styled(Panel)`
@@ -18,7 +16,8 @@ const StyledBodyLong = styled(BodyLong)`
   margin-top: 1rem;
 `;
 
-const StyledLesMerTekst = styled(LesMerTekst)`
+const ReadMoreContainer = styled.div`
+  margin-top: 0.5rem;
   margin-bottom: 2rem;
 `;
 
@@ -54,11 +53,8 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
           {`${storForbokstav(innsending.stønadType.toLocaleLowerCase())}`}
         </StyledBodyLong>
       )}
-      <StyledLesMerTekst>
-        <Lesmerpanel
-          apneTekst={'Derfor spør vi deg om denne dokumentasjonen'}
-          lukkTekst={'Derfor spør vi deg om denne dokumentasjonen'}
-        >
+      <ReadMoreContainer>
+        <ReadMore header={'Derfor spør vi deg om denne dokumentasjonen'}>
           <BodyLong>
             Vi spør deg om dette fordi vi mangler{' '}
             {innsending.beskrivelse?.toLocaleLowerCase()}. Denne dokumentasjonen
@@ -67,8 +63,8 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
             bort ifra dette hvis du allerede har sendt oss dokumentasjonen på
             annen måte.
           </BodyLong>
-        </Lesmerpanel>
-      </StyledLesMerTekst>
+        </ReadMore>
+      </ReadMoreContainer>
       <Vedleggsopplaster
         innsending={innsending}
         oppdaterInnsending={oppdaterInnsending}

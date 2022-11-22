@@ -7857,16 +7857,6 @@ nav-frontend-lenker@^2.0.2:
   resolved "https://registry.yarnpkg.com/nav-frontend-lenker/-/nav-frontend-lenker-2.0.2.tgz#a33563a9f68cd16938c7581d2e2bcbcec2760232"
   integrity sha512-Gib0qoJuuWgN60ZWqlGR+d47yRymPvlMQmgflgdTRIvvgpATwxTNaTD3qY5lFtIOJQcxImNCIuhw1y4eEjSyOg==
 
-nav-frontend-lesmerpanel-style@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/nav-frontend-lesmerpanel-style/-/nav-frontend-lesmerpanel-style-2.0.2.tgz#da90d6f46d68f4a30c18f8e1c14da0731930e174"
-  integrity sha512-8dJv7TmOnq9F2bEnYXTUxvC7R5xeQADprqQg6j65WNJu1IlIesg6RqLbjXNTNv7DP5Zu1iiDWAiAE4I0xpnM1Q==
-
-nav-frontend-lesmerpanel@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/nav-frontend-lesmerpanel/-/nav-frontend-lesmerpanel-2.0.3.tgz#34d97c8d559068174b878f4b7a75629d53a92523"
-  integrity sha512-Iu4mKEq0MS2Xb9O8MRQmMbjb1y3Co+jM0px8BOvI0mNoM6zOD+hszsQS7TpslBaZRdCW+RayqdZtVECsaC8eSQ==
-
 nav-frontend-lukknapp-style@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/nav-frontend-lukknapp-style/-/nav-frontend-lukknapp-style-2.0.2.tgz#eef84b1c3d1ecac5659507ddb6fd814da9efd1d2"
