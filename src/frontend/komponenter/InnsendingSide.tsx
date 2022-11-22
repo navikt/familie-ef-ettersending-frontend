@@ -19,10 +19,6 @@ interface IProps {
   settAlertStripeMelding: (melding: alertMelding) => void;
 }
 
-const SoknadContainer = styled.div`
-  padding-bottom: 0;
-`;
-
 const StyledDiv = styled.div`
   display: flex;
   justify-content: center;
@@ -49,13 +45,12 @@ export const InnsendingSide: React.FC<IProps> = ({
         .filter((innsending) => !ekstraInnsendingerId.includes(innsending.id))
         .map((innsending) => {
           return (
-            <SoknadContainer key={'Dokumentasjonsbehov' + innsending.id}>
-              <DokumentasjonsbehovListe
-                innsending={innsending}
-                oppdaterInnsending={oppdaterInnsending}
-                settAlertStripeMelding={settAlertStripeMelding}
-              />
-            </SoknadContainer>
+            <DokumentasjonsbehovListe
+              key={'Dokumentasjonsbehov' + innsending.id}
+              innsending={innsending}
+              oppdaterInnsending={oppdaterInnsending}
+              settAlertStripeMelding={settAlertStripeMelding}
+            />
           );
         })}
       {ettersending.dokumentasjonsbehov
