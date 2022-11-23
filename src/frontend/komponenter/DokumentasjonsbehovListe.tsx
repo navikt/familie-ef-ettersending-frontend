@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import { useApp } from '../context/AppContext';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
 import { DokumentasjonsbehovBoks } from './DokumentasjonsbehovBoks';
 import { alertMelding } from './AlertStripe';
+import styled from 'styled-components';
+import { Loader } from '@navikt/ds-react';
+
+const FlexBox = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
@@ -25,7 +31,14 @@ export const DokumentasjonsbehovListe: React.FC<IProps> = ({
   }, [context.søker]);
 
   if (laster) {
-    return <NavFrontendSpinner />;
+    return (
+      <FlexBox>
+        <Loader
+          size={'xlarge'}
+          title={'Venter på at liste over dokumentasjonsbehov hentes'}
+        />
+      </FlexBox>
+    );
   }
 
   return (

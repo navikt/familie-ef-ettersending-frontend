@@ -1,6 +1,5 @@
 import React from 'react';
 import { useApp } from './context/AppContext';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
   autentiseringsInterceptor,
   InnloggetStatus,
@@ -9,6 +8,7 @@ import sjekklisteikon from './icons/sjekklisteikon.svg';
 import styled from 'styled-components';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
 import { Normaltekst } from 'nav-frontend-typografi';
+import { Loader } from '@navikt/ds-react';
 
 const FlexBox = styled.div`
   display: flex;
@@ -81,7 +81,11 @@ const App: React.FC = () => {
       </Bakgrunn>
     );
   } else {
-    return <NavFrontendSpinner className="spinner" />;
+    return (
+      <FlexBox>
+        <Loader size={'xlarge'} title={'Venter på innlogging'}></Loader>
+      </FlexBox>
+    );
   }
 };
 

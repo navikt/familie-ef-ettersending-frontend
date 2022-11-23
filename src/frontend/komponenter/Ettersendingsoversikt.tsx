@@ -13,7 +13,6 @@ import {
   filtrerUtfylteInnsendinger,
 } from '../utils/innsendingsvalidering';
 import { v4 as uuidv4 } from 'uuid';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
   IEttersending,
   IDokumentasjonsbehov,
@@ -29,6 +28,7 @@ import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering'
 import { logDokumentasjonsbehov, logSidevisning } from '../utils/amplitude';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
 import KnappMedPadding from '../felles/Knapp';
+import { Loader } from '@navikt/ds-react';
 
 const SekundærKnapp = styled(KnappMedPadding)`
   margin: 1rem;
@@ -239,7 +239,12 @@ const Ettersendingsoversikt: React.FC = () => {
     settLasterverdi(false);
   };
 
-  if (laster) return <NavFrontendSpinner />;
+  if (laster)
+    return (
+      <DivMidtstillInnhold>
+        <Loader size={'xlarge'} title={'Venter på at siden skal lastes inn'} />
+      </DivMidtstillInnhold>
+    );
 
   return (
     <>

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Undertekst } from 'nav-frontend-typografi';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import {
   IDokumentasjonsbehov,
   IVedleggForEttersending,
 } from '../typer/ettersending';
 import { sendVedleggTilMellomlager, slåSammenVedlegg } from '../api-service';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { logFeilFilopplasting } from '../utils/amplitude';
 import {
@@ -22,7 +21,7 @@ import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad
 import axios from 'axios';
 import KnappMedPadding from '../felles/Knapp';
 import { Upload } from '@navikt/ds-icons';
-import { BodyShort } from '@navikt/ds-react';
+import { BodyShort, Loader } from '@navikt/ds-react';
 
 const Filvelger = styled.div`
   text-align: center;
@@ -271,7 +270,10 @@ const Vedleggsvelger: React.FC<IProps> = ({
       />
       {laster && (
         <SpinnerWrapper>
-          <NavFrontendSpinner />
+          <Loader
+            size={'large'}
+            title={'venter på at valgte filer skal lastes opp'}
+          />
         </SpinnerWrapper>
       )}
       <UndertekstWrapper>

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import { Select } from 'nav-frontend-skjema';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import {
   DokumentType,
   dokumenttyperForStønad,
