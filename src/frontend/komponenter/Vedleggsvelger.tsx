@@ -22,9 +22,9 @@ import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad
 import axios from 'axios';
 import KnappMedPadding from '../felles/Knapp';
 import { Upload } from '@navikt/ds-icons';
-import { BodyShort, Panel } from '@navikt/ds-react';
+import { BodyShort } from '@navikt/ds-react';
 
-const Filopplaster = styled.div`
+const Filvelger = styled.div`
   text-align: center;
   font-weight: bold;
   border: 2px dashed var(--navds-semantic-color-border);
@@ -54,10 +54,9 @@ const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
 `;
 
-const ModalWrapper = styled(Panel)`
-  margin: 1.25rem;
-  margin-top: 2rem;
-  max-width: 38rem;
+const ModalWrapper = styled.div`
+  margin-top: 3rem;
+  margin-bottom: 2rem;
 `;
 
 const UndertekstWrapper = styled(Undertekst)`
@@ -81,7 +80,7 @@ interface IProps {
   beskrivelse: string;
 }
 
-const VedleggsopplasterModal: React.FC<IProps> = ({
+const Vedleggsvelger: React.FC<IProps> = ({
   innsending,
   oppdaterInnsending,
   maxFilstørrelse,
@@ -259,13 +258,13 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
         <strong>Stønadstype: </strong>
         {stønadTypeTilTekst[stønadType as StønadType]}
       </p>
-      <Filopplaster>
+      <Filvelger>
         <div {...getRootProps()}>
           <input {...getInputProps()} />
           <OpplastingIkon title={'Last opp'} />
           <OpplastingTekst>Velg filer</OpplastingTekst>
         </div>
-      </Filopplaster>
+      </Filvelger>
       <OpplastedeVedlegg
         vedleggsliste={vedleggForSammenslåing}
         slettVedlegg={slettVedlegg}
@@ -292,4 +291,4 @@ const VedleggsopplasterModal: React.FC<IProps> = ({
   );
 };
 
-export default VedleggsopplasterModal;
+export default Vedleggsvelger;
