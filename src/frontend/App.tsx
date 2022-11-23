@@ -5,14 +5,14 @@ import {
   autentiseringsInterceptor,
   InnloggetStatus,
 } from '../shared-utils/autentisering';
-import Veileder from 'nav-frontend-veileder';
 import sjekklisteikon from './icons/sjekklisteikon.svg';
 import styled from 'styled-components';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
 import { Normaltekst } from 'nav-frontend-typografi';
 
-const SjekklisteIkon = styled.img`
-  height: 100% !important;
+const FlexBox = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 const Bakgrunn = styled.div`
@@ -65,13 +65,13 @@ const App: React.FC = () => {
     return (
       <Bakgrunn>
         <AppContainer>
-          <Veileder>
-            <SjekklisteIkon
+          <FlexBox>
+            <img
               src={sjekklisteikon}
               className="sjekklisteikon"
               alt="sjekklisteikon"
             />
-          </Veileder>
+          </FlexBox>
           <h1>Ettersending av dokumentasjon</h1>
           <Normaltekst>
             Her kan du sende inn manglende dokumentasjon til saken din

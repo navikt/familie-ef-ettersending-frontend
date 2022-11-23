@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
-import Modal from 'nav-frontend-modal';
 import {
   IDokumentasjonsbehov,
   IVedleggForEttersending,
 } from '../typer/ettersending';
-import VedleggsopplasterModal from './VedleggsopplasterModal';
+import Vedleggsvelger from './Vedleggsvelger';
 import styled from 'styled-components';
 import { StønadType } from '../typer/stønad';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import KnappMedPadding from '../felles/Knapp';
+import { ModalWrapper } from '../felles/ModalWrapper';
 
 const FlexBox = styled.div`
   display: flex;
@@ -66,13 +66,14 @@ const Vedleggsopplaster: React.FC<IProps> = ({
 
   return (
     <>
-      <Modal
-        isOpen={åpenModal}
-        onRequestClose={() => settÅpenModal(false)}
-        closeButton={true}
-        contentLabel={'Modal for opplasting av dokumentasjon'}
+      <ModalWrapper
+        tittel={''}
+        visModal={åpenModal}
+        onClose={() => settÅpenModal(false)}
+        maxWidth={38}
+        ariaLabel={beskrivelse}
       >
-        <VedleggsopplasterModal
+        <Vedleggsvelger
           oppdaterInnsending={oppdaterInnsending}
           innsending={innsending}
           lukkModal={() => settÅpenModal(false)}
@@ -80,7 +81,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           stønadType={stønadType}
           beskrivelse={beskrivelse}
         />
-      </Modal>
+      </ModalWrapper>
       <FilopplasterWrapper>
         {innsending.vedlegg.length === 0 && (
           <FlexBox>
