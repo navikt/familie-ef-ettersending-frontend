@@ -14,14 +14,20 @@ const Steg = styled.li`
   margin-right: 1.25rem;
 
   &::after {
-    width: 1.25rem;
     height: 1px;
     content: '';
     display: block;
     background-color: rgba(100, 100, 100, 1);
     position: absolute;
     top: 1rem;
-    left: 2rem;
+    width: 9.25rem;
+    left: 6rem;
+    right: auto;
+
+    @media (max-width: 650px) {
+      width: 7rem;
+      left: 3rem;
+    }
   }
 
   &:last-child {
@@ -34,11 +40,9 @@ const Steg = styled.li`
 
   min-width: 10rem;
   max-width: 10rem;
-
-  &::after {
-    width: 9.25rem;
-    left: 6rem;
-    right: auto;
+  @media (max-width: 650px) {
+    min-width: 6rem;
+    max-width: 6rem;
   }
 `;
 
