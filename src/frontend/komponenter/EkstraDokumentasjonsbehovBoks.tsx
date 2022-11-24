@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
-import { Select } from 'nav-frontend-skjema';
 import styled from 'styled-components';
 import {
   DokumentType,
@@ -14,7 +13,7 @@ import { IDokumentasjonsbehov } from '../typer/ettersending';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
 import KnappMedPadding from '../felles/Knapp';
-import { Alert, BodyLong, Heading, Panel } from '@navikt/ds-react';
+import { Alert, BodyLong, Heading, Panel, Select } from '@navikt/ds-react';
 
 const StyledSelect = styled(Select)`
   margin-top: 1rem;
@@ -115,7 +114,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
               settValgtStønadType(event.target.value as StønadType);
             }}
             value={valgtStønadType || ''}
-            autoComplete={'off'}
+            aria-autocomplete={'none'}
           >
             <option value={undefined}>Velg stønadstype</option>
             {stønadsTyper.map((stønadstype) => (
@@ -130,7 +129,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
               settValgtDokumentType(event.target.value as DokumentType);
             }}
             value={valgtDokumentType || ''}
-            autoComplete={'off'}
+            aria-autocomplete={'none'}
           >
             <option value={undefined}>Velg dokumenttype</option>
             {dokumenttyperForStønad(valgtStønadType).map((dokumenttype) => (
