@@ -7,8 +7,7 @@ import {
 import sjekklisteikon from './icons/sjekklisteikon.svg';
 import styled from 'styled-components';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
-import { Normaltekst } from 'nav-frontend-typografi';
-import { Loader } from '@navikt/ds-react';
+import { Heading, Ingress, Loader } from '@navikt/ds-react';
 
 const FlexBox = styled.div`
   display: flex;
@@ -72,10 +71,12 @@ const App: React.FC = () => {
               alt="sjekklisteikon"
             />
           </FlexBox>
-          <h1>Ettersending av dokumentasjon</h1>
-          <Normaltekst>
+          <Heading level={'1'} size={'xlarge'}>
+            Ettersending av dokumentasjon
+          </Heading>
+          <Ingress>
             Her kan du sende inn manglende dokumentasjon til saken din
-          </Normaltekst>
+          </Ingress>
           <Ettersendingsoversikt />
         </AppContainer>
       </Bakgrunn>
@@ -83,7 +84,7 @@ const App: React.FC = () => {
   } else {
     return (
       <FlexBox>
-        <Loader size={'xlarge'} title={'Venter på innlogging'}></Loader>
+        <Loader size={'xlarge'} title={'Venter på innlogging'} />
       </FlexBox>
     );
   }

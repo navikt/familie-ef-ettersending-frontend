@@ -35,7 +35,7 @@ export const DokumentasjonsbehovListe: React.FC<IProps> = ({
       <FlexBox>
         <Loader
           size={'xlarge'}
-          title={'Venter på at liste over dokumentasjonsbehov hentes'}
+          title={'Venter på at dokumentasjonsbehov hentes'}
         />
       </FlexBox>
     );

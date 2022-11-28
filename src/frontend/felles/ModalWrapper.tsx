@@ -33,7 +33,7 @@ const ModalKnapp = styled(Button)`
 `;
 
 interface ModalProps {
-  tittel: string;
+  tittel?: string;
   visModal: boolean;
   onClose?: () => void;
   aksjonsknapper?: {
@@ -70,9 +70,11 @@ export const ModalWrapper: React.FC<ModalProps> = ({
       aria-label={ariaLabel ? ariaLabel : tittel}
     >
       <Modal.Content>
-        <Tittel spacing={true} size={'medium'}>
-          {tittel}
-        </Tittel>
+        {tittel && (
+          <Tittel spacing={true} size={'xsmall'} level={'1'}>
+            {tittel}
+          </Tittel>
+        )}
         <Innhold>{children}</Innhold>
         {aksjonsknapper && (
           <ButtonContainer marginTop={aksjonsknapper.marginTop}>

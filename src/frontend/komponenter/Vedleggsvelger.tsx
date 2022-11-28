@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Undertekst } from 'nav-frontend-typografi';
 import OpplastedeVedlegg from './OpplastedeVedlegg';
 import {
   IDokumentasjonsbehov,
@@ -21,9 +20,10 @@ import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad
 import axios from 'axios';
 import KnappMedPadding from '../felles/Knapp';
 import { Upload } from '@navikt/ds-icons';
-import { BodyShort, Loader } from '@navikt/ds-react';
+import { BodyShort, Heading, Label, Loader } from '@navikt/ds-react';
 
 const Filvelger = styled.div`
+  margin-top: 1rem;
   text-align: center;
   font-weight: bold;
   border: 2px dashed var(--navds-semantic-color-border);
@@ -53,14 +53,17 @@ const StyledAlertStripe = styled(AlertStripe)`
   margin-bottom: 1rem;
 `;
 
-const ModalWrapper = styled.div`
+const Container = styled.div`
   margin-top: 3rem;
   margin-bottom: 2rem;
 `;
 
-const UndertekstWrapper = styled(Undertekst)`
+const StyledSentrertTekst = styled(BodyShort)`
   padding-top: 1rem;
-  padding-bottom: 1rem;
+  text-align: center;
+`;
+
+const SentrertTekst = styled(BodyShort)`
   text-align: center;
 `;
 
@@ -68,6 +71,21 @@ const KnappContainer = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 1rem;
+`;
+
+const FlexBox = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+`;
+
+const StyledBodyShort = styled(BodyShort)`
+  margin-left: 0.25rem;
+  align-self: baseline;
+`;
+
+const StyledLabel = styled(Label)`
+  align-self: baseline;
 `;
 
 interface IProps {
@@ -251,12 +269,16 @@ const Vedleggsvelger: React.FC<IProps> = ({
   });
 
   return (
-    <ModalWrapper>
-      <strong>{beskrivelse}</strong>
-      <p>
-        <strong>Stønadstype: </strong>
-        {stønadTypeTilTekst[stønadType as StønadType]}
-      </p>
+    <Container>
+      <Heading level={'1'} size={'xsmall'}>
+        {beskrivelse}
+      </Heading>
+      <FlexBox>
+        <StyledLabel>Stønadstype:</StyledLabel>
+        <StyledBodyShort>
+          {stønadTypeTilTekst[stønadType as StønadType]}
+        </StyledBodyShort>
+      </FlexBox>
       <Filvelger>
         <div {...getRootProps()}>
           <input {...getInputProps()} />
@@ -276,10 +298,13 @@ const Vedleggsvelger: React.FC<IProps> = ({
           />
         </SpinnerWrapper>
       )}
-      <UndertekstWrapper>
+      <StyledSentrertTekst size={'small'}>
         Hvis dokumentet du skal sende inn består av flere filer, kan du legge
-        til alle filene her. <br /> Filene blir slått sammen til ett dokument.
-      </UndertekstWrapper>
+        til alle filene her.
+      </StyledSentrertTekst>
+      <SentrertTekst size={'small'}>
+        Filene blir slått sammen til ett dokument.
+      </SentrertTekst>
       <StyledAlertStripe melding={alertStripeMelding} />
       <KnappContainer>
         <KnappMedPadding
@@ -289,7 +314,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
           Last opp
         </KnappMedPadding>
       </KnappContainer>
-    </ModalWrapper>
+    </Container>
   );
 };
 

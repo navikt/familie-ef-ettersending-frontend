@@ -67,21 +67,17 @@ export const InnsendingSide: React.FC<IProps> = ({
             />
           );
         })}
-      <>
-        <div>
-          <Button
-            variant={'tertiary'}
-            type={'button'}
-            icon={<AddCircle title={'Legg til dokumenter'} />}
-            onClick={leggTilNyDokumentasjonsbehovBoks}
-          >
-            Legg til flere dokumenter
-          </Button>
-        </div>
-        <StyledDiv>
-          <HovedKnapp onClick={visOppsummering}>Neste</HovedKnapp>
-        </StyledDiv>
-      </>
+      <Button
+        variant={'tertiary'}
+        type={'button'}
+        icon={<AddCircle title={'Legg til dokumenter'} />}
+        onClick={leggTilNyDokumentasjonsbehovBoks}
+      >
+        Legg til flere dokumenter
+      </Button>
+      <StyledDiv>
+        <HovedKnapp onClick={visOppsummering}>Neste</HovedKnapp>
+      </StyledDiv>
     </>
   );
 };

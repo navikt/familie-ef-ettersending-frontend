@@ -5,7 +5,7 @@ import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { BodyShort, Button, Link } from '@navikt/ds-react';
+import { BodyShort, Button, Label, Link } from '@navikt/ds-react';
 import { Attachment, Delete } from '@navikt/ds-icons';
 
 const FlexBox = styled.div`
@@ -53,6 +53,11 @@ const IkonWrapper = styled.div`
   height: 2rem;
 `;
 
+const StyledLabel = styled(Label)`
+  font-weight: bold;
+  display: inline;
+`;
+
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedleggForEttersending[];
   slettVedlegg: (vedlegg: IVedleggForEttersending) => void;
@@ -93,7 +98,7 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                 </IkonWrapper>
                 <FilNavnWrapper>
                   <BodyShort>
-                    <strong>Navn: </strong>
+                    <StyledLabel as={'p'}>Navn: </StyledLabel>
                     <Link href="#" onClick={() => visDokumentNyFane(fil)}>
                       {fil.navn.replace(/_/g, '-')}
                     </Link>

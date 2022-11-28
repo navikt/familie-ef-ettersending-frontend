@@ -1,11 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Undertittel } from 'nav-frontend-typografi';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
 import { stønadTypeTilTekst } from '../typer/stønad';
 import VedleggListe from './VedleggListe';
 import { formaterIsoDato } from '../../shared-utils/dato';
-import { BodyShort, Label } from '@navikt/ds-react';
+import { BodyShort, Heading, Label } from '@navikt/ds-react';
+
+const Tittel = styled(Heading)`
+  margin-top: 1rem;
+`;
 
 const Container = styled.div`
   margin-top: 2rem;
@@ -23,7 +26,9 @@ export const Oppsummering: React.FC<IProps> = ({
 }: IProps) => {
   return (
     <div>
-      <Undertittel>{tittel}</Undertittel>
+      <Tittel level={'2'} size={'medium'}>
+        {tittel}
+      </Tittel>
       {innsendinger.map((innsending, index) => {
         return (
           <Container key={index}>
