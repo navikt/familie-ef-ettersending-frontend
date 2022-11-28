@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { Undertittel } from 'nav-frontend-typografi';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
 import { stønadTypeTilTekst } from '../typer/stønad';

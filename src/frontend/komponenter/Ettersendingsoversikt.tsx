@@ -13,7 +13,6 @@ import {
   filtrerUtfylteInnsendinger,
 } from '../utils/innsendingsvalidering';
 import { v4 as uuidv4 } from 'uuid';
-import NavFrontendSpinner from 'nav-frontend-spinner';
 import {
   IEttersending,
   IDokumentasjonsbehov,
@@ -24,11 +23,12 @@ import AlertStripe, { alertMelding } from './AlertStripe';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { Oppsummering } from './Oppsummering';
 import { InnsendingSide } from './InnsendingSide';
-import Stegindikator from 'nav-frontend-stegindikator';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov, logSidevisning } from '../utils/amplitude';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
 import KnappMedPadding from '../felles/Knapp';
+import { Loader } from '@navikt/ds-react';
+import Stegindikator from './Stegindikator';
 
 const SekundærKnapp = styled(KnappMedPadding)`
   margin: 1rem;
@@ -42,11 +42,6 @@ const DivMidtstillInnhold = styled.div`
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
-`;
-
-const StyledStegindikator = styled(Stegindikator)`
-  margin-top: 2rem;
-  margin-bottom: 2rem;
 `;
 
 const Ettersendingsoversikt: React.FC = () => {
@@ -239,16 +234,16 @@ const Ettersendingsoversikt: React.FC = () => {
     settLasterverdi(false);
   };
 
-  if (laster) return <NavFrontendSpinner />;
+  if (laster)
+    return (
+      <DivMidtstillInnhold>
+        <Loader size={'xlarge'} title={'Venter på at siden skal lastes inn'} />
+      </DivMidtstillInnhold>
+    );
 
   return (
     <>
-      <StyledStegindikator
-        steg={stegForInnsending}
-        aktivtSteg={aktivtSteg}
-        visLabel={true}
-        autoResponsiv={true}
-      />
+      <Stegindikator stegListe={stegForInnsending} aktivtSteg={aktivtSteg} />
       {aktivtSteg === 0 && (
         <InnsendingSide
           ettersending={ettersending}

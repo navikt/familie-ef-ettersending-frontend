@@ -3,10 +3,9 @@ import { IVedleggForEttersending } from '../typer/ettersending';
 import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
 import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
-import Lenke from 'nav-frontend-lenker';
 import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { BodyShort, Button } from '@navikt/ds-react';
+import { BodyShort, Button, Link } from '@navikt/ds-react';
 import { Attachment, Delete } from '@navikt/ds-icons';
 
 const FlexBox = styled.div`
@@ -95,9 +94,9 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                 <FilNavnWrapper>
                   <BodyShort>
                     <strong>Navn: </strong>
-                    <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
+                    <Link href="#" onClick={() => visDokumentNyFane(fil)}>
                       {fil.navn.replace(/_/g, '-')}
-                    </Lenke>
+                    </Link>
                   </BodyShort>
                 </FilNavnWrapper>
               </IkonOgTekstDiv>

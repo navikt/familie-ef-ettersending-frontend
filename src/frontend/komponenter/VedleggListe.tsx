@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { IVedleggForEttersending } from '../typer/ettersending';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
-import Lenke from 'nav-frontend-lenker';
 import { Attachment } from '@navikt/ds-icons';
-import { Label } from '@navikt/ds-react';
+import { Label, Link } from '@navikt/ds-react';
 
 const IkonWrapper = styled.div`
   width: 1.5rem;
@@ -56,9 +55,9 @@ const VedleggListe: React.FC<IOpplastedeVedlegg> = ({
               <IkonWrapper>
                 <Attachment title={'Binders'} width={24} height={29} />
               </IkonWrapper>
-              <Lenke href="#" onClick={() => visDokumentNyFane(fil)}>
+              <Link href="#" onClick={() => visDokumentNyFane(fil)}>
                 {fil.navn.replace(/_/g, '-')}
-              </Lenke>
+              </Link>
             </FlexBox>
           </div>
         );
