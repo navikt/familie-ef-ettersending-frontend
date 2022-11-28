@@ -67,7 +67,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
   return (
     <>
       <ModalWrapper
-        tittel={''}
         visModal={åpenModal}
         onClose={() => settÅpenModal(false)}
         maxWidth={38}

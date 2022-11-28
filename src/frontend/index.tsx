@@ -1,7 +1,6 @@
 import React from 'react';
 import AppRoutes from './AppRoutes';
 import '@navikt/ds-css';
-import 'nav-frontend-core';
 import { AppProvider } from './context/AppContext';
 import { createRoot } from 'react-dom/client';
 import { Modal } from '@navikt/ds-react';

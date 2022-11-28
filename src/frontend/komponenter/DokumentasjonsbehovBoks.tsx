@@ -4,7 +4,15 @@ import styled from 'styled-components';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import { formaterIsoDato } from '../../shared-utils/dato';
 import { filstørrelse_10MB } from '../utils/filer';
-import { Alert, BodyLong, Heading, Panel, ReadMore } from '@navikt/ds-react';
+import {
+  Alert,
+  BodyLong,
+  BodyShort,
+  Heading,
+  Label,
+  Panel,
+  ReadMore,
+} from '@navikt/ds-react';
 import { alertMelding } from './AlertStripe';
 
 const StyledPanel = styled(Panel)`
@@ -12,13 +20,24 @@ const StyledPanel = styled(Panel)`
   margin-bottom: 1rem;
 `;
 
-const StyledBodyLong = styled(BodyLong)`
-  margin-top: 1rem;
+const StyledBodyShort = styled(BodyShort)`
+  margin-left: 0.25rem;
+  align-self: baseline;
+`;
+
+const StyledLabel = styled(Label)`
+  align-self: baseline;
 `;
 
 const ReadMoreContainer = styled.div`
   margin-top: 0.5rem;
   margin-bottom: 2rem;
+`;
+
+const FlexBox = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
 `;
 
 interface Props {
@@ -48,10 +67,12 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
         </Heading>
       </Alert>
       {innsending.stønadType && (
-        <StyledBodyLong>
-          <strong>Stønadstype: </strong>
-          {`${storForbokstav(innsending.stønadType.toLocaleLowerCase())}`}
-        </StyledBodyLong>
+        <FlexBox>
+          <StyledLabel>Stønadstype: </StyledLabel>
+          <StyledBodyShort>
+            {`${storForbokstav(innsending.stønadType.toLocaleLowerCase())}`}
+          </StyledBodyShort>
+        </FlexBox>
       )}
       <ReadMoreContainer>
         <ReadMore header={'Derfor spør vi deg om denne dokumentasjonen'}>
