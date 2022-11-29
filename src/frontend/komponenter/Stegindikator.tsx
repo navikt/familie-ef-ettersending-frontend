@@ -17,7 +17,7 @@ const Steg = styled.li`
     height: 1px;
     content: '';
     display: block;
-    background-color: rgba(100, 100, 100, 1);
+    background-color: var(--a-border-strong);
     position: absolute;
     top: 1rem;
     width: 9.25rem;
@@ -50,7 +50,7 @@ const StegInner = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  color: rgba(38, 38, 38, 1);
+  color: var(--a-text-on-info);
   position: relative;
   z-index: 1;
 `;
@@ -62,20 +62,20 @@ const StegNummer = styled.div<{ ferdig: boolean; aktiv: boolean }>`
   justify-content: center;
   align-items: center;
   border-radius: 1rem;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.56) inset;
+  box-shadow: 0 0 0 1px var(--a-border-strong) inset;
   background: white;
 
   ${(props) =>
     props.ferdig &&
     `
-    background: rgba(241, 241, 241, 1);`}
+    background: var(--a-bg-subtle);`}
 
   ${(props) =>
     props.aktiv &&
     `
-    background: rgba(0, 91, 130, 1);
-    color: rgba(255, 255, 255, 1);
-    box-shadow: none;
+    background: var(--a-surface-action-active);
+    color: var(--a-bg-default);
+    box-shadow: var(--a-text-on-neutral);
     transform: scale(1.2);`}
 `;
 

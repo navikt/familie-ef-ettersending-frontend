@@ -23,7 +23,7 @@ export interface IEttersending {
 }
 
 export interface IDokumentasjonsbehov {
-  id: string; // genenrer UUID ved mapping fra backend til nytt objekt
+  id: string;
   søknadsdata?: ISøknadMetadata;
   dokumenttype?: string;
   stønadType?: StønadType;

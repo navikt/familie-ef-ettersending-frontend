@@ -15,7 +15,7 @@ const FlexBox = styled.div`
 `;
 
 const Bakgrunn = styled.div`
-  background-color: #e9e7e7;
+  background-color: var(--a-bg-subtle);
   padding-top: 5rem;
   padding-bottom: 8rem;
 
@@ -27,7 +27,7 @@ const Bakgrunn = styled.div`
 const AppContainer = styled.div`
   width: 792px;
   margin: auto;
-  background-color: #ffffff;
+  background-color: var(--a-bg-default);
   padding: 56px 80px 2rem 80px;
   border-radius: 4px;
 
