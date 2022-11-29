@@ -82,6 +82,8 @@ export const dokumentTypeTilTekst: Record<DokumentType, string> = {
     'Dokumentasjon på separasjon eller skilsmisse',
   BEKREFTELSE_SEPRASJON_SØKNAD:
     'Dokumentasjon på søkt separasjon eller skilsmisse',
+  MELDT_FLYTTEENDRING:
+    'Dokumentasjon om meldt flytteendring til folkeregisteret',
   ANNET: 'Annet',
 };
 export enum DokumentType {
@@ -113,6 +115,7 @@ export enum DokumentType {
   DOKUMENTASJON_INNGÅTT_EKTESKAP = 'DOKUMENTASJON_INNGÅTT_EKTESKAP',
   DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT = 'DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT',
   BEKREFTELSE_SEPRASJON_SØKNAD = 'BEKREFTELSE_SEPRASJON_SØKNAD',
+  MELDT_FLYTTEENDRING = 'MELDT_FLYTTEENDRING',
   ANNET = 'ANNET',
 }
 
@@ -138,6 +141,7 @@ export const dokumentTyperOvergangsstønad: DokumentType[] = [
   DokumentType.DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT,
   DokumentType.BEKREFTELSE_SEPRASJON_SØKNAD,
   DokumentType.DOKUMNENTASJON_UTDANNING,
+  DokumentType.MELDT_FLYTTEENDRING,
   DokumentType.ANNET,
 ];
 
@@ -156,6 +160,7 @@ export const dokumentTyperSkolepenger: DokumentType[] = [
   DokumentType.DOKUMENTASJON_INNGÅTT_EKTESKAP,
   DokumentType.DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT,
   DokumentType.BEKREFTELSE_SEPRASJON_SØKNAD,
+  DokumentType.MELDT_FLYTTEENDRING,
   DokumentType.ANNET,
 ];
 
@@ -187,5 +192,6 @@ export const dokumentTyperBarnetilsyn: DokumentType[] = [
   DokumentType.DOKUMENTASJON_UFORMELT_SEPARERT_ELLER_SKILT,
   DokumentType.BEKREFTELSE_SEPRASJON_SØKNAD,
   DokumentType.DOKUMNENTASJON_UTDANNING,
+  DokumentType.MELDT_FLYTTEENDRING,
   DokumentType.ANNET,
 ];
