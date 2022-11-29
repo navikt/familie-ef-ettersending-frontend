@@ -26,12 +26,12 @@ const Filvelger = styled.div`
   margin-top: 1rem;
   text-align: center;
   font-weight: bold;
-  border: 2px dashed var(--navds-semantic-color-border);
+  border: 2px dashed var(--a-border-strong);
   border-radius: 4px;
-  background-color: var(--navds-semantic-color-canvas-background);
+  background-color: var(--a-gray-200);
   height: 4rem;
   line-height: 4rem;
-  color: blue;
+  color: var(--a-blue-700);
   cursor: pointer;
 `;
 
