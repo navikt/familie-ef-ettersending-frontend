@@ -1,9 +1,9 @@
 import React from 'react';
-import AppRoutes from './AppRoutes';
 import '@navikt/ds-css';
 import { AppProvider } from './context/AppContext';
 import { createRoot } from 'react-dom/client';
 import { Modal } from '@navikt/ds-react';
+import App from './App';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
@@ -14,7 +14,7 @@ Modal.setAppElement(container);
 root.render(
   <React.StrictMode>
     <AppProvider>
-      <AppRoutes />
+      <App />
     </AppProvider>
   </React.StrictMode>
 );
