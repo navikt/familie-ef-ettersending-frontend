@@ -47,10 +47,10 @@ const VedleggListe: React.FC<IOpplastedeVedlegg> = ({
 
   return (
     <>
+      <Label as={'p'}>Dokumenter:</Label>
       {vedleggsliste.map((fil: IVedleggForEttersending) => {
         return (
           <div key={fil.id}>
-            <Label as={'p'}>Dokumenter:</Label>
             <FlexBox>
               <IkonWrapper>
                 <Attachment title={'Binders'} width={24} height={29} />
