@@ -82,7 +82,7 @@ export const dokumentTypeTilTekst: Record<DokumentType, string> = {
     'Dokumentasjon på separasjon eller skilsmisse',
   BEKREFTELSE_SEPRASJON_SØKNAD:
     'Dokumentasjon på søkt separasjon eller skilsmisse',
-  MELDT_ADRESSEENDRING: 'Dokumentasjon om adresseendring',
+  MELDT_ADRESSEENDRING: 'Dokumentasjon på adresseendring',
   ANNET: 'Annet',
 };
 export enum DokumentType {
