@@ -3,7 +3,7 @@ export interface ISøker {
   egenansatt: boolean;
   fnr: string;
   forkortetNavn: string;
-  harAdressesperre: boolean;
+  erStrengtFortrolig: boolean;
   siviltilstand: string;
   statsborgerskap: string;
 }
