@@ -72,7 +72,7 @@
         "@types/webpack": "^5.28.0",
         "@types/webpack-dev-server": "^4.7.2",
         "@typescript-eslint/eslint-plugin": "^5.45.0",
-        "@typescript-eslint/parser": "^5.45.0",
+        "@typescript-eslint/parser": "^5.46.0",
         "babel-loader": "^9.1.0",
         "babel-plugin-styled-components": "^2.0.7",
         "clean-webpack-plugin": "^4.0.0",
