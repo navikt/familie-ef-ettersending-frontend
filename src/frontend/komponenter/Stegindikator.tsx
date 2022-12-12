@@ -109,7 +109,7 @@ const Stegindikator: React.FC<IStegIndikatorProps> = ({
   aktivtSteg,
 }) => {
   return (
-    <StegListe>
+    <StegListe aria-hidden={true}>
       {stegListe.map((steg) => {
         const aktivt = steg.index === aktivtSteg;
         const ferdig = steg.index < aktivtSteg;
