@@ -14,6 +14,7 @@ import {
   ReadMore,
 } from '@navikt/ds-react';
 import { alertMelding } from './AlertStripe';
+import { SuccessColored, WarningColored } from '@navikt/ds-icons';
 
 const StyledPanel = styled(Panel)`
   margin-top: 1rem;
@@ -40,6 +41,12 @@ const FlexBox = styled.div`
   align-items: center;
 `;
 
+const Tittel = styled.span`
+  display: inline-grid;
+  grid-template-columns: 1.5rem auto;
+  column-gap: 0.75rem;
+`;
+
 interface Props {
   innsending: IDokumentasjonsbehov;
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
@@ -51,7 +58,7 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
   oppdaterInnsending,
   settAlertStripeMelding,
 }: Props) => {
-  const erDokumentasjonSendt =
+  const dokumentasjonErOpplastet =
     innsending.søknadsdata?.harSendtInnTidligere ||
     innsending.vedlegg.length > 0;
 
@@ -61,11 +68,26 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
 
   return (
     <StyledPanel border>
-      <Alert variant={erDokumentasjonSendt ? 'success' : 'warning'} inline>
+      <Tittel>
+        {dokumentasjonErOpplastet ? (
+          <SuccessColored
+            height={'1.5rem'}
+            width={'1.5rem'}
+            title={
+              'Følgende dokumentasjon er lastet opp og klar til å sendes inn:'
+            }
+          />
+        ) : (
+          <WarningColored
+            height={'1.5rem'}
+            width={'1.5rem'}
+            title={'Følgende dokumentasjon er ikke lastet opp:'}
+          />
+        )}
         <Heading level={'2'} size={'small'}>
           {innsending.beskrivelse}
         </Heading>
-      </Alert>
+      </Tittel>
       {innsending.stønadType && (
         <FlexBox>
           <StyledLabel>Stønadstype: </StyledLabel>

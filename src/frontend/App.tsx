@@ -69,6 +69,7 @@ const App: React.FC = () => {
               src={sjekklisteikon}
               className="sjekklisteikon"
               alt="sjekklisteikon"
+              aria-hidden={true}
             />
           </FlexBox>
           <Heading level={'1'} size={'xlarge'}>
