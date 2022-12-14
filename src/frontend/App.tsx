@@ -7,7 +7,10 @@ import {
 import sjekklisteikon from './icons/sjekklisteikon.svg';
 import styled from 'styled-components';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
-import { Heading, Ingress, Loader } from '@navikt/ds-react';
+import { Heading, Ingress, Loader, Modal } from '@navikt/ds-react';
+
+// Gjemmer innhold i bakkant av modal for skjermlesere når modalen er åpen
+Modal.setAppElement(document.getElementById('root'));
 
 const FlexBox = styled.div`
   display: flex;

@@ -44,7 +44,8 @@ export const dokumentTypeTilTekst: Record<DokumentType, string> = {
   DOKUMENTAJSON_OM_VIRKSOMHETEN_DU_ETABLERER:
     'Næringsfaglig vurdering av virksomheten du etablerer',
   DOKUMNENTASJON_UTDANNING: 'Dokumentasjon på utdanningen du tar eller skal ta',
-  DOKUMENTASJON_UTFGIFTER_UTDANNING: 'Utgifter til skolepenger',
+  DOKUMENTASJON_UTFGIFTER_UTDANNING:
+    'Dokumentasjon på utgifter til skolepenger',
   DOKUMENTASJON_ARBEIDSKONTRAKT:
     'Arbeidskontrakt som viser at du har fått tilbud om arbeid.',
   DOKUMENTASJON_LÆRLING: 'Lærlingkontrakt',
