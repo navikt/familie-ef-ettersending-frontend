@@ -88,7 +88,12 @@ const App: React.FC = () => {
   } else {
     return (
       <FlexBox>
-        <Loader size={'xlarge'} title={'Venter på innlogging'} />
+        <Loader
+          size={'xlarge'}
+          title={'Venter på innlogging'}
+          onResize={undefined}
+          onResizeCapture={undefined}
+        />
       </FlexBox>
     );
   }
