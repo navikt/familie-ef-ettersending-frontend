@@ -22,10 +22,19 @@ spec:
   ingresses:
     - "https://familie.dev.nav.no/familie/alene-med-barn/ettersending"
     - "https://ensligmorellerfar.dev.nav.no/familie/alene-med-barn/ettersending"
+  idporten:
+    enabled: true
+    sidecar:
+      enabled: true
+      autoLogin: true
+      level: Level4
+  tokenx:
+    enabled: true
   accessPolicy:
     outbound:
-      external:
-        - host: dekoratoren.dev.nav.no
+      rules:
+        - application: familie-ef-soknad-api
+        - application: familie-ef-dokument
   resources:
     limits:
       cpu: 2000m
