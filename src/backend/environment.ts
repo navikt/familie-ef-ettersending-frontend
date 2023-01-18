@@ -29,7 +29,7 @@ const getEnv = (): EnvironmentProps => {
   if (isProd()) {
     return {
       wonderwallUrl:
-        'https://familie.nav.no/familie/alene-med-barn/soknad/oauth2/login?redirect=',
+        'https://www.nav.no/familie/alene-med-barn/ettersending/oauth2/login?redirect=',
       apiProxyUrl: 'https://www.nav.no/familie/alene-med-barn/ettersending/api',
       apiUrl: 'https://www.nav.no/familie/alene-med-barn/soknad-api',
       dokumentProxyUrl:
@@ -38,7 +38,7 @@ const getEnv = (): EnvironmentProps => {
       port: 9000,
       dekoratørEnv: 'prod',
       oauthCallbackUri:
-        'https://www.nav.no/familie/alene-med-barn/soknad/oauth2/callback',
+        'https://www.nav.no/familie/alene-med-barn/ettersending/oauth2/callback',
     };
   } else if (isDev()) {
     return {
@@ -53,7 +53,7 @@ const getEnv = (): EnvironmentProps => {
       port: 9000,
       dekoratørEnv: 'dev',
       oauthCallbackUri:
-        'https://familie.dev.nav.no/familie/alene-med-barn/soknad/oauth2/callback',
+        'https://familie.dev.nav.no/familie/alene-med-barn/ettersending/oauth2/callback',
     };
   } else {
     return {
@@ -66,7 +66,7 @@ const getEnv = (): EnvironmentProps => {
       port: 3000,
       dekoratørEnv: 'dev',
       oauthCallbackUri:
-        'https://localhost:8080/familie/alene-med-barn/soknad/oauth2/callback',
+        'https://localhost:8080/familie/alene-med-barn/ettersending/oauth2/callback',
     };
   }
 };
