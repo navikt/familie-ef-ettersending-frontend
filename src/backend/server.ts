@@ -38,10 +38,6 @@ if (process.env.NODE_ENV === 'development') {
   );
 }
 
-// Nais functions
-app.get(/^\/(internal\/)?(isAlive|isReady)\/?$/, (_req, res) =>
-  res.sendStatus(200)
-);
 app.use(routes());
 app.get('*', indexHandler);
 
