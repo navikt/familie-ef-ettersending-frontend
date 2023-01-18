@@ -21,7 +21,6 @@ spec:
     initialDelay: 5
   ingresses:
     - "https://familie.dev.nav.no/familie/alene-med-barn/ettersending"
-    - "https://ensligmorellerfar.dev.nav.no/familie/alene-med-barn/ettersending"
   idporten:
     enabled: true
     sidecar:
