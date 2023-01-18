@@ -50,7 +50,7 @@ export const verifiserAtSøkerErAutentisert = (
 };
 
 const verifiserInnloggetApi = () => {
-  return axios.get(`${environment().apiUrl}/api/innlogget`, {
+  return axios.get(`${environment().apiProxyUrl}/api/innlogget`, {
     withCredentials: true,
   });
 };
