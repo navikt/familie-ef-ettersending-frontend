@@ -31,10 +31,10 @@ const getEnv = (): EnvironmentProps => {
       wonderwallUrl:
         'https://www.nav.no/familie/alene-med-barn/ettersending/oauth2/login?redirect=',
       apiProxyUrl: 'https://www.nav.no/familie/alene-med-barn/ettersending/api',
-      apiUrl: 'https://www.nav.no/familie/alene-med-barn/soknad-api',
+      apiUrl: 'http://familie-ef-soknad-api/familie/alene-med-barn/soknad-api',
       dokumentProxyUrl:
         'https://www.nav.no/familie/alene-med-barn/ettersending/dokument',
-      dokumentUrl: 'https://www.nav.no/familie/dokument',
+      dokumentUrl: 'http://familie-dokument/familie/dokument',
       port: 9000,
       dekoratørEnv: 'prod',
       oauthCallbackUri:
@@ -46,10 +46,10 @@ const getEnv = (): EnvironmentProps => {
         'https://familie.dev.nav.no/familie/alene-med-barn/ettersending/oauth2/login?redirect=',
       apiProxyUrl:
         'https://familie.dev.nav.no/familie/alene-med-barn/ettersending/api',
-      apiUrl: 'https://familie.dev.nav.no/familie/alene-med-barn/soknad-api',
+      apiUrl: 'http://familie-ef-soknad-api/familie/alene-med-barn/soknad-api',
       dokumentProxyUrl:
         'https://familie.dev.nav.no/familie/alene-med-barn/ettersending/dokument',
-      dokumentUrl: 'https://familie-dokument.dev.nav.no/familie/dokument',
+      dokumentUrl: 'http://familie-dokument/familie/dokument',
       port: 9000,
       dekoratørEnv: 'dev',
       oauthCallbackUri:
