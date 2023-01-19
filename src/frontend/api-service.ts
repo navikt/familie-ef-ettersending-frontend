@@ -21,7 +21,7 @@ export const sendEttersending = (
   ettersendingsdata: IEttersending
 ): Promise<IKvittering> => {
   return axios
-    .post(`${environment().apiUrl}/api/ettersending`, ettersendingsdata, {
+    .post(`${environment().apiProxyUrl}/api/ettersending`, ettersendingsdata, {
       withCredentials: true,
       headers: {
         [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
@@ -32,7 +32,7 @@ export const sendEttersending = (
 
 export const hentEttersendinger = (): Promise<IEttersending[]> => {
   return axios
-    .get(`${environment().apiUrl}/api/ettersending`, {
+    .get(`${environment().apiProxyUrl}/api/ettersending`, {
       withCredentials: true,
       headers: {
         [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
@@ -45,18 +45,23 @@ export const hentOpplastetVedlegg = (
   dokumentId: string
 ): Promise<Ressurs<string>> => {
   return axios
-    .get(`${environment().dokumentUrl}/${dokumentId}`, {
-      withCredentials: true,
-      headers: {
-        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
-      },
-    })
+    .get(
+      `${
+        environment().dokumentProxyUrl
+      }/api/mapper/familievedlegg/${dokumentId}`,
+      {
+        withCredentials: true,
+        headers: {
+          [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
+        },
+      }
+    )
     .then((response: { data: Ressurs<string> }) => response.data);
 };
 
 export const hentPersoninfo = (): Promise<IPersoninfo> => {
   return axios
-    .get(`${environment().apiUrl}/api/oppslag/sokerinfo`, {
+    .get(`${environment().apiProxyUrl}/api/oppslag/sokerinfo`, {
       withCredentials: true,
       headers: {
         [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
@@ -67,7 +72,7 @@ export const hentPersoninfo = (): Promise<IPersoninfo> => {
 
 export const hentSøknader = (): Promise<ISøknadsbehov[]> => {
   return axios
-    .get(`${environment().apiUrl}/api/dokumentasjonsbehov/person`, {
+    .get(`${environment().apiProxyUrl}/api/dokumentasjonsbehov/person`, {
       withCredentials: true,
       headers: {
         [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
@@ -80,23 +85,31 @@ export const sendVedleggTilMellomlager = (
   formData: FormData
 ): Promise<string> => {
   return axios
-    .post(`${environment().dokumentUrl}`, formData, {
-      headers: {
-        'content-type': 'multipart/form-data',
-        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
-      },
-      withCredentials: true,
-    })
+    .post(
+      `${environment().dokumentProxyUrl}/api/mapper/familievedlegg/`,
+      formData,
+      {
+        headers: {
+          'content-type': 'multipart/form-data',
+          [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
+        },
+        withCredentials: true,
+      }
+    )
     .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
 };
 
 export const slåSammenVedlegg = (dokumentIder: string[]): Promise<string> => {
   return axios
-    .post(`${environment().mergeDokumentUrl}`, dokumentIder, {
-      headers: {
-        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
-      },
-      withCredentials: true,
-    })
+    .post(
+      `${environment().dokumentProxyUrl}/api/mapper/merge/familievedlegg`,
+      dokumentIder,
+      {
+        headers: {
+          [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
+        },
+        withCredentials: true,
+      }
+    )
     .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
 };

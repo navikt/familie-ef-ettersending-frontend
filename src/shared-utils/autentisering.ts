@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { Dispatch, SetStateAction } from 'react';
-import environment from '../backend/environment';
+import environment, { isLocal } from '../backend/environment';
+import { kjørerLokalt } from './miljø';
 
 export enum InnloggetStatus {
   AUTENTISERT = 'innlogget',
@@ -12,9 +13,12 @@ const er401Feil = (error: AxiosError) =>
   error && error.response && error.response.status === 401;
 
 const getLoginUrl = () => {
+  if (isLocal()) {
+    return environment().wonderwallUrl + `${window.location.origin}`;
+  }
   return (
-    environment().loginService +
-    `&redirect=${window.location.origin}/familie/alene-med-barn/ettersending`
+    environment().wonderwallUrl +
+    `${window.location.origin}/familie/alene-med-barn/ettersending`
   );
 };
 
@@ -46,7 +50,7 @@ export const verifiserAtSøkerErAutentisert = (
 };
 
 const verifiserInnloggetApi = () => {
-  return axios.get(`${environment().apiUrl}/api/innlogget`, {
+  return axios.get(`${environment().apiProxyUrl}/api/innlogget`, {
     withCredentials: true,
   });
 };

@@ -8,11 +8,8 @@ Frontend app for ettersending av dokumentasjons vedrørende søknader tilknyttet
 2. Kjør opp `familie-ef-soknad-api` med launcheren `ApplicationLocalLauncher`
 3. Kjør opp `familie-dokument` med launcheren `DevLauncherForSøknad`
 4. `yarn start:dev`
-
-For å få en gyldig cookie med `familie-ef-soknad-api` må du besøke en av følgende adresser:
-
-- http://localhost:8091/local/cookie?subject=[gyldigFødselsnummer]
-- http://localhost:8091/local/cookie?issuerId=selvbetjening&audience=aud-localhost
+5. Åpne http://localhost:3000 i nettleseren
+6. Dersom du trenger å kjøre med et annet fødselsnummer enn default: gå til http://localhost:8091/local/cookie?issuerId=tokenx&audience=familie-app&subject=[gyldigFnr]&redirect
 
 ## Henvendelser
 Spørsmål knyttet til koden eller prosjektet kan rettes mot:

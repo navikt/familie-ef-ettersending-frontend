@@ -8,6 +8,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import projectWebpackDevConfig from '../webpack/webpack.development.config';
+import routes from './routes';
 
 const app = express();
 
@@ -37,11 +38,7 @@ if (process.env.NODE_ENV === 'development') {
   );
 }
 
-// Nais functions
-app.get(/^\/(internal\/)?(isAlive|isReady)\/?$/, (_req, res) =>
-  res.sendStatus(200)
-);
-
+app.use(routes());
 app.get('*', indexHandler);
 
 console.log('server listening on port', environment().port);
