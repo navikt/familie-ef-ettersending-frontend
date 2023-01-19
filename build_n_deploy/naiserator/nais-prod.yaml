@@ -36,7 +36,7 @@ spec:
     outbound:
       rules:
         - application: familie-ef-soknad-api
-        - application: familie-ef-dokument
+        - application: familie-dokument
   resources:
     limits:
       cpu: 2000m
