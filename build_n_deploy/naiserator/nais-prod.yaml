@@ -30,7 +30,7 @@ spec:
       enabled: true
       autoLogin: true
       autoLoginIgnorePaths:
-        - /familie/alene-med-barn/ettersending/static/css/*
+        - /familie/alene-med-barn/ettersending/static/**/*.css
       level: Level4
   tokenx:
     enabled: true
