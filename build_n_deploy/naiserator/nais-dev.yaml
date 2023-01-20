@@ -29,6 +29,8 @@ spec:
     sidecar:
       enabled: true
       autoLogin: true
+      autoLoginIgnorePaths:
+        - /familie/alene-med-barn/ettersending/**/*.css
       level: Level4
   tokenx:
     enabled: true
