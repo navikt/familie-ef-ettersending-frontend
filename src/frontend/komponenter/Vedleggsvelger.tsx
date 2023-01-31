@@ -122,11 +122,14 @@ const Vedleggsvelger: React.FC<IProps> = ({
     };
   };
 
+  const skalDokumenttypeSlåsSammen = (dokumentType: string | undefined) =>
+    dokumentType !== DokumentType.ANNET;
+
   const dokumenterSkalSammenslås = (
     dokumentType: string | undefined,
     antallVedlegg: number
   ) => {
-    return !(dokumentType === DokumentType.ANNET || antallVedlegg === 1);
+    return skalDokumenttypeSlåsSammen(dokumentType) && antallVedlegg > 1;
   };
 
   const slåSammenVedleggOgOppdaterInnsending = async () => {
@@ -302,9 +305,11 @@ const Vedleggsvelger: React.FC<IProps> = ({
         Hvis dokumentet du skal sende inn består av flere filer, kan du legge
         til alle filene her.
       </StyledSentrertTekst>
-      <SentrertTekst size={'small'}>
-        Filene blir slått sammen til ett dokument.
-      </SentrertTekst>
+      {skalDokumenttypeSlåsSammen(innsending.dokumenttype) && (
+        <SentrertTekst size={'small'}>
+          Filene blir slått sammen til ett dokument.
+        </SentrertTekst>
+      )}
       <StyledAlertStripe melding={alertStripeMelding} />
       <KnappContainer>
         <KnappMedPadding
