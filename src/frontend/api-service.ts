@@ -86,7 +86,7 @@ export const sendVedleggTilMellomlager = (
 ): Promise<string> => {
   return axios
     .post(
-      `${environment().dokumentProxyUrl}/api/mapper/familievedlegg/`,
+      `${environment().dokumentProxyUrl}/api/mapper/familievedlegg`,
       formData,
       {
         headers: {
