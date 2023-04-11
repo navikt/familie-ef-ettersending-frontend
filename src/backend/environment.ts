@@ -43,17 +43,17 @@ const getEnv = (): EnvironmentProps => {
   } else if (isDev()) {
     return {
       wonderwallUrl:
-        'https://familie.dev.nav.no/familie/alene-med-barn/ettersending/oauth2/login?redirect=',
+        'https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending/oauth2/login?redirect=',
       apiProxyUrl:
-        'https://familie.dev.nav.no/familie/alene-med-barn/ettersending/api',
+        'https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending/api',
       apiUrl: 'http://familie-ef-soknad-api/familie/alene-med-barn/soknad-api',
       dokumentProxyUrl:
-        'https://familie.dev.nav.no/familie/alene-med-barn/ettersending/dokument',
+        'https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending/dokument',
       dokumentUrl: 'http://familie-dokument/familie/dokument',
       port: 9000,
       dekoratørEnv: 'dev',
       oauthCallbackUri:
-        'https://familie.dev.nav.no/familie/alene-med-barn/ettersending/oauth2/callback',
+        'https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending/oauth2/callback',
     };
   } else {
     return {
