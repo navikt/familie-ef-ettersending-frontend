@@ -3,7 +3,6 @@ import express from 'express';
 import indexHandler from './dekorator';
 import environment from './environment';
 import webpack, { MultiCompiler } from 'webpack';
-import mustacheExpress from 'mustache-express';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
@@ -12,7 +11,6 @@ import routes from './routes';
 
 const app = express();
 
-app.engine('html', mustacheExpress());
 const frontendMappe = path.join(process.cwd(), 'dist');
 
 app.set('views', frontendMappe);
