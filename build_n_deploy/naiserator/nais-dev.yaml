@@ -23,7 +23,7 @@ spec:
     path: /internal/isReady
     initialDelay: 5
   ingresses:
-    - "https://familie.dev.nav.no/familie/alene-med-barn/ettersending"
+    - "https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending"
   idporten:
     enabled: true
     sidecar:
