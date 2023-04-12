@@ -37,7 +37,6 @@ const config = mergeWithCustomize({
               importLoaders: 1,
             },
           },
-          { loader: 'less-loader' },
         ],
       },
     ],

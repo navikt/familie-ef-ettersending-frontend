@@ -44,7 +44,7 @@ const commonConfig = {
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.less'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },
   output: {
     filename: 'main.js',

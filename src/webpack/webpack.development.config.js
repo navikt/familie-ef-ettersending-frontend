@@ -46,7 +46,6 @@ const devConfig = mergeWithRules({
               importLoaders: 1,
             },
           },
-          { loader: 'less-loader' },
         ],
       },
     ],
