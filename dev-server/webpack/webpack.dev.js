@@ -1,8 +1,8 @@
-const path = require('path');
-const webpack = require('webpack');
-const { mergeWithCustomize } = require('webpack-merge');
-const common = require('./webpack.common');
-const CopyPlugin = require('copy-webpack-plugin');
+import path from 'path';
+import webpack from 'webpack';
+import { mergeWithCustomize } from 'webpack-merge';
+import common from './webpack.common';
+import CopyPlugin from 'copy-webpack-plugin';
 
 const config = mergeWithCustomize({
   'entry.familie-ef-ettersending': 'prepend',
@@ -17,7 +17,7 @@ const config = mergeWithCustomize({
     ],
   },
   output: {
-    path: path.join(__dirname, '../../frontend_development'),
+    path: path.join(process.cwd(), '../../frontend_development'),
     filename: '[name].[hash].js',
     publicPath: '/assets/',
     globalObject: 'this',
@@ -27,9 +27,9 @@ const config = mergeWithCustomize({
       {
         test: /\.(less)$/,
         use: [
-          { loader: require.resolve('style-loader') },
+          { loader: 'style-loader' },
           {
-            loader: require.resolve('css-loader'),
+            loader: 'css-loader',
             options: {
               modules: {
                 mode: 'icss',
@@ -37,7 +37,7 @@ const config = mergeWithCustomize({
               importLoaders: 1,
             },
           },
-          { loader: require.resolve('less-loader') },
+          { loader: 'less-loader' },
         ],
       },
     ],
@@ -51,12 +51,12 @@ const config = mergeWithCustomize({
     new CopyPlugin({
       patterns: [
         {
-          from: path.join(__dirname, '../../assets'),
-          to: path.join(__dirname, '../../frontend_development'),
+          from: path.join(process.cwd(), '../../assets'),
+          to: path.join(process.cwd(), '../../frontend_development'),
         },
       ],
     }),
   ],
 });
 
-module.exports = config;
+export default config;

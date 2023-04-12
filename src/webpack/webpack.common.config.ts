@@ -1,7 +1,7 @@
 import path from 'path';
 
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin.js';
 import webpackModule from 'webpack';
@@ -30,7 +30,7 @@ const commonConfig: webpack.Configuration = {
     new InterpolateHtmlPlugin(HtmlWebpackPlugin, {
       PUBLIC_URL: (process.env.BASE_PATH ?? '/') + publicUrl.substr(1),
     }),
-    new CopyWebpackPlugin({
+    new CopyPlugin({
       patterns: [
         { from: 'src/frontend/public/manifest.json', to: '.' + publicUrl },
         { from: 'src/frontend/public/favicon.ico', to: '.' + publicUrl },

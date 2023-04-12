@@ -1,8 +1,8 @@
 {
     "name": "familie-ef-ettersending",
     "version": "0.5.0",
-    "main": "main.js",
-    "module": "main.js",
+    "main": "build/backend/server.js",
+    "type": "module",
     "dependencies": {
         "@navikt/ds-css": "^2.8.11",
         "@navikt/ds-icons": "^2.8.11",
@@ -36,11 +36,11 @@
         "winston": "^3.8.2"
     },
     "scripts": {
-        "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node --es-module-specifier-resolution=node -r esm build/backend/server.js",
-        "start": "NODE_ENV=production node --es-module-specifier-resolution=node -r esm build/backend/server.js",
+        "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node --es-module-specifier-resolution=node build/backend/server.js",
+        "start": "NODE_ENV=production node --es-module-specifier-resolution=node build/backend/server.js",
         "build": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=production webpack --config src/webpack/webpack.production.config.ts && tsc -p tsconfig.backend.json",
         "build:dev": "webpack --config ./build_n_deploy/webpack/webpack.dev.js",
-        "start:mock": "NODE_ENV=development node -r esm dev-server/mock-server.js",
+        "start:mock": "NODE_ENV=development node dev-server/mock-server.js",
         "prepare": "husky install"
     },
     "lint-staged": {
@@ -58,7 +58,7 @@
         "@babel/runtime": "^7.21.0",
         "@types/fork-ts-checker-webpack-plugin": "^0.4.5",
         "@types/node": "^18.15.11",
-        "@types/react": "^18.0.34",
+        "@types/react": "^18.0.35",
         "@types/react-dom": "^18.0.11",
         "@types/styled-components": "^5.1.26",
         "@types/webpack": "^5.28.1",
@@ -68,7 +68,7 @@
         "babel-loader": "^9.1.2",
         "babel-plugin-styled-components": "^2.1.1",
         "clean-webpack-plugin": "^4.0.0",
-        "copy-webpack-plugin": "^9.0.1",
+        "copy-webpack-plugin": "^11.0.0",
         "cross-env": "^7.0.3",
         "css-loader": "^6.7.3",
         "css-minimizer-webpack-plugin": "^5.0.0",
