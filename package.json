@@ -79,6 +79,7 @@
         "husky": "^8.0.3",
         "install": "^0.13.0",
         "lint-staged": "^13.2.1",
+        "mini-css-extract-plugin": "^2.7.5",
         "prettier": "^2.8.7",
         "style-loader": "^3.3.2",
         "ts-loader": "^9.4.2",

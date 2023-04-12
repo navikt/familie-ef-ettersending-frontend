@@ -1,6 +1,7 @@
 import CssMinimizerWebpackPlugin from 'css-minimizer-webpack-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
 import { CustomizeRule, mergeWithRules } from 'webpack-merge';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import baseConfig, {
   createHtmlWebpackPlugin,
@@ -15,7 +16,13 @@ const prodConfig = mergeWithRules({
   },
 })(baseConfig, {
   mode: 'production',
-  plugins: [createHtmlWebpackPlugin(true), new CssMinimizerWebpackPlugin()],
+  plugins: [
+    createHtmlWebpackPlugin(true),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
+    new CssMinimizerWebpackPlugin(),
+  ],
   output: {
     filename: '[name].[contenthash].js',
   },
@@ -24,6 +31,7 @@ const prodConfig = mergeWithRules({
       {
         test: /\.(less|css)$/,
         use: [
+          { loader: MiniCssExtractPlugin.loader },
           {
             loader: 'css-loader',
             options: {
