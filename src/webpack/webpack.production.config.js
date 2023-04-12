@@ -1,12 +1,13 @@
 import CssMinimizerWebpackPlugin from 'css-minimizer-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserWebpackPlugin from 'terser-webpack-plugin';
-import webpack from 'webpack';
 import { CustomizeRule, mergeWithRules } from 'webpack-merge';
 
-import baseConfig, { createHtmlWebpackPlugin } from './webpack.common.config';
+import baseConfig, {
+  createHtmlWebpackPlugin,
+} from './webpack.common.config.js';
 
-const prodConfig: webpack.Configuration = mergeWithRules({
+const prodConfig = mergeWithRules({
   module: {
     rules: {
       test: CustomizeRule.Match,

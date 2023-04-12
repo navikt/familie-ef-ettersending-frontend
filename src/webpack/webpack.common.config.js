@@ -5,9 +5,8 @@ import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin.js';
 import webpackModule from 'webpack';
-import webpack from 'webpack';
 
-import { unslash } from '../shared-utils/unslash';
+import { unslash } from '../shared-utils/unslash.js';
 const { DefinePlugin } = webpackModule;
 
 export const publicUrl = '/public';
@@ -23,7 +22,7 @@ export const createHtmlWebpackPlugin = (prodMode) => {
   });
 };
 
-const commonConfig: webpack.Configuration = {
+const commonConfig = {
   mode: 'production',
   entry: ['./src/frontend/index.tsx'],
   plugins: [
