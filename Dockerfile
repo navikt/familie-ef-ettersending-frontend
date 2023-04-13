@@ -14,7 +14,6 @@ ARG NPM_TOKEN
 RUN npm config set "//npm.pkg.github.com/:_authToken" $NPM_TOKEN
 
 RUN yarn --prefer-offline --frozen-lockfile
-RUN yarn add less less-loader
 RUN yarn build
 RUN rm -f .npmrc
 

@@ -1,13 +1,12 @@
 import path from 'path';
 
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import InterpolateHtmlPlugin from 'react-dev-utils/InterpolateHtmlPlugin.js';
 import webpackModule from 'webpack';
-import webpack from 'webpack';
 
-import { unslash } from '../shared-utils/unslash';
+import { unslash } from '../shared-utils/unslash.js';
 const { DefinePlugin } = webpackModule;
 
 export const publicUrl = '/public';
@@ -23,14 +22,14 @@ export const createHtmlWebpackPlugin = (prodMode) => {
   });
 };
 
-const commonConfig: webpack.Configuration = {
+const commonConfig = {
   mode: 'production',
   entry: ['./src/frontend/index.tsx'],
   plugins: [
     new InterpolateHtmlPlugin(HtmlWebpackPlugin, {
       PUBLIC_URL: (process.env.BASE_PATH ?? '/') + publicUrl.substr(1),
     }),
-    new CopyWebpackPlugin({
+    new CopyPlugin({
       patterns: [
         { from: 'src/frontend/public/manifest.json', to: '.' + publicUrl },
         { from: 'src/frontend/public/favicon.ico', to: '.' + publicUrl },
@@ -45,7 +44,7 @@ const commonConfig: webpack.Configuration = {
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.less'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },
   output: {
     filename: 'main.js',
