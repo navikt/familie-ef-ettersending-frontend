@@ -39,6 +39,8 @@ spec:
       rules:
         - application: familie-ef-soknad-api
         - application: familie-dokument
+      external:
+        - host: nav.no
   resources:
     limits:
       cpu: 2000m
