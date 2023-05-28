@@ -66,7 +66,7 @@
         "babel-plugin-styled-components": "^2.1.1",
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
         "copy-webpack-plugin": "^11.0.0",
-        "css-loader": "^6.7.3",
+        "css-loader": "^6.8.1",
         "css-minimizer-webpack-plugin": "^5.0.0",
         "eslint": "^8.38.0",
         "eslint-config-prettier": "^8.8.0",
