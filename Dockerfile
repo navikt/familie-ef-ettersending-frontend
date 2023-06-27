@@ -1,15 +1,8 @@
-FROM ghcr.io/navikt/baseimages/node-express:18
-USER root
-RUN apk --no-cach add curl
-RUN apk add --update nodejs
-RUN apk add --update npm
-USER apprunner
+FROM cgr.dev/chainguard/node:18
 
-COPY --chown=apprunner:apprunner ./ /var/server/
+WORKDIR /var/server
 
-ARG base_path
-ENV BASE_PATH=$base_path
-
+COPY --chown=apprunner:apprunner ./ .
 ARG NPM_TOKEN
 RUN npm config set "//npm.pkg.github.com/:_authToken" $NPM_TOKEN
 
