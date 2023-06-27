@@ -9,4 +9,4 @@ COPY node_modules ./node_modules
 COPY package.json .
 
 EXPOSE 9000
-CMD ["npm", "run", "start"]
+CMD ["/usr/bin/npm", "run", "start"]
