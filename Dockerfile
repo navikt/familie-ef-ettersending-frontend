@@ -2,6 +2,9 @@ FROM cgr.dev/chainguard/node:18
 
 WORKDIR /var/server
 
+RUN apk update && \
+    apk add yarn
+
 COPY ./ .
 ARG NPM_TOKEN
 RUN npm config set "//npm.pkg.github.com/:_authToken" $NPM_TOKEN
