@@ -27,7 +27,7 @@
         "react-dev-utils": "^12.0.1",
         "react-dom": "^18.2.0",
         "react-refresh": "^0.14.0",
-        "styled-components": "^5.3.9",
+        "styled-components": "^6.0.3",
         "uuid": "^9.0.0",
         "webpack-hot-middleware": "^2.25.3",
         "winston": "^3.8.2"
