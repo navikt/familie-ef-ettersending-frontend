@@ -52,5 +52,3 @@ spec:
       value: "{{version}}"
     - name: ENV
       value: dev
-    - name: BASE_PATH
-      value: "{{base_path}}"

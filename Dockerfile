@@ -1,21 +1,12 @@
-FROM navikt/node-express:18
-USER root
-RUN apk --no-cach add curl
-RUN apk add --update nodejs
-RUN apk add --update npm
-USER apprunner
+FROM cgr.dev/chainguard/node:18
 
-COPY --chown=apprunner:apprunner ./ /var/server/
+WORKDIR /var/server
 
-ARG base_path
-ENV BASE_PATH=$base_path
-
-ARG NPM_TOKEN
-RUN npm config set "//npm.pkg.github.com/:_authToken" $NPM_TOKEN
-
-RUN yarn --prefer-offline --frozen-lockfile
-RUN yarn build
-RUN rm -f .npmrc
+COPY assets ./assets
+COPY dist ./dist
+COPY build ./build
+COPY node_modules ./node_modules
+COPY package.json .
 
 EXPOSE 9000
-CMD ["yarn", "start"]
+CMD ["/usr/bin/npm", "run", "start"]
