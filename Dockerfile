@@ -1,4 +1,4 @@
-FROM cgr.dev/chainguard/node:18
+FROM gcr.io/distroless/nodejs:18
 
 WORKDIR /var/server
 
@@ -8,5 +8,6 @@ COPY build ./build
 COPY node_modules ./node_modules
 COPY package.json .
 
+ENV NODE_ENV production
 EXPOSE 9000
-CMD ["/usr/bin/npm", "run", "start"]
+CMD ["--es-module-specifier-resolution=node", "build/backend/server.js"]
