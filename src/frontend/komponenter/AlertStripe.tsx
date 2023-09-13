@@ -10,7 +10,7 @@ export enum alertMelding {
   FEIL_NEDLASTING_DOKUMENT = 'Noe gikk galt ved uthenting av opplastet dokument',
   FEIL_SAMMENSLÅING_DOKUMENT = 'Noe gikk galt ved sammenslåing av opplastede dokumenter',
   FEIL_FOR_LITEN_FIL = 'Dokumentet du prøver å laste opp er for lite og ikke lesbart',
-  MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å trykke på knappen "Last opp fil(er)"',
+  MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å trykke på knappen "Legg til flere dokumenter". Velg stønadstype og dokumenttype og deretter "Last opp fil(er)"',
   MANGLER_BEGGE_TYPER = 'Både stønadstype og dokumenttype må være valgt',
   MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS = 'Ingen vedlegg er lastet opp',
   FEIL_VED_INNSENDING = 'Noe gikk galt ved innsending av dine dokumenter.',
