@@ -12,6 +12,11 @@ Frontend app for ettersending av dokumentasjons vedrørende søknader tilknyttet
 6. Dersom du trenger å kjøre med et annet fødselsnummer enn default: gå til http://localhost:8091/local/cookie?issuerId=tokenx&audience=familie-app&subject=[gyldigFnr]&redirect
 
 ## Henvendelser
+
 Spørsmål knyttet til koden eller prosjektet kan rettes mot:
 
-* Viktor Grøndalen Solberg, `viktor.grondalen.solberg@nav.no`
+- Viktor Grøndalen Solberg, `viktor.grondalen.solberg@nav.no`
+
+## Kode generert av GitHub Copilot
+
+Dette repoet bruker GitHub Copilot til å generere kode.
