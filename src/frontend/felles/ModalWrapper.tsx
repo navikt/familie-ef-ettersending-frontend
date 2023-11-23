@@ -1,15 +1,9 @@
 import styled from 'styled-components';
-import { Button, Heading, Modal } from '@navikt/ds-react';
+import { Button, Modal } from '@navikt/ds-react';
 import React from 'react';
 
 const ModalContainer = styled(Modal)<{ maxWidth?: number }>`
   max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}rem` : '40rem')};
-`;
-
-const Tittel = styled(Heading)`
-  margin-top: 0.5rem;
-  margin-right: 3.5rem;
-  margin-left: 2rem;
 `;
 
 const Innhold = styled.div`
@@ -33,7 +27,7 @@ const ModalKnapp = styled(Button)`
 `;
 
 interface ModalProps {
-  tittel?: string;
+  tittel: string;
   visModal: boolean;
   onClose?: () => void;
   aksjonsknapper?: {
@@ -42,7 +36,6 @@ interface ModalProps {
     marginTop?: number;
   };
   maxWidth?: number;
-  ariaLabel?: string;
   children?: React.ReactNode;
 }
 
@@ -58,23 +51,17 @@ export const ModalWrapper: React.FC<ModalProps> = ({
   onClose,
   aksjonsknapper,
   maxWidth,
-  ariaLabel,
   children,
 }) => {
   return (
     <ModalContainer
       open={visModal}
-      closeButton={!!onClose}
       onClose={onClose ? () => onClose() : () => null}
       maxWidth={maxWidth}
-      aria-label={ariaLabel ? ariaLabel : tittel}
+      aria-label={tittel}
+      header={{ heading: tittel, closeButton: !!onClose }}
     >
-      <Modal.Content>
-        {tittel && (
-          <Tittel spacing={true} size={'xsmall'} level={'1'}>
-            {tittel}
-          </Tittel>
-        )}
+      <Modal.Body>
         <Innhold>{children}</Innhold>
         {aksjonsknapper && (
           <ButtonContainer marginTop={aksjonsknapper.marginTop}>
@@ -94,7 +81,7 @@ export const ModalWrapper: React.FC<ModalProps> = ({
             </ModalKnapp>
           </ButtonContainer>
         )}
-      </Modal.Content>
+      </Modal.Body>
     </ModalContainer>
   );
 };

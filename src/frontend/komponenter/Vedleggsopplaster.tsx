@@ -55,7 +55,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
     oppdaterInnsending({
       ...innsending,
       vedlegg: [...innsending.vedlegg].filter(
-        (v: IVedleggForEttersending) => v.id !== vedlegg.id
+        (v: IVedleggForEttersending) => v.id !== vedlegg.id,
       ),
     });
   };
@@ -66,21 +66,23 @@ const Vedleggsopplaster: React.FC<IProps> = ({
 
   return (
     <>
-      <ModalWrapper
-        visModal={åpenModal}
-        onClose={() => settÅpenModal(false)}
-        maxWidth={38}
-        ariaLabel={beskrivelse}
-      >
-        <Vedleggsvelger
-          oppdaterInnsending={oppdaterInnsending}
-          innsending={innsending}
-          lukkModal={() => settÅpenModal(false)}
-          maxFilstørrelse={maxFilstørrelse}
-          stønadType={stønadType}
-          beskrivelse={beskrivelse}
-        />
-      </ModalWrapper>
+      {åpenModal && (
+        <ModalWrapper
+          visModal={åpenModal}
+          onClose={() => settÅpenModal(false)}
+          maxWidth={38}
+          tittel={'Last opp fil(er)'}
+        >
+          <Vedleggsvelger
+            oppdaterInnsending={oppdaterInnsending}
+            innsending={innsending}
+            lukkModal={() => settÅpenModal(false)}
+            maxFilstørrelse={maxFilstørrelse}
+            stønadType={stønadType}
+            beskrivelse={beskrivelse}
+          />
+        </ModalWrapper>
+      )}
       <FilopplasterWrapper>
         {innsending.vedlegg.length === 0 && (
           <FlexBox>
