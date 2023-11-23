@@ -25,7 +25,7 @@ export interface EnvironmentProps {
   oauthCallbackUri: string;
 }
 
-const getEnv = (): EnvironmentProps => {
+const environment = (): EnvironmentProps => {
   if (isProd()) {
     return {
       wonderwallUrl:
@@ -72,4 +72,4 @@ const getEnv = (): EnvironmentProps => {
 };
 
 export const isLocal = () => !isProd() && !isDev();
-export default getEnv;
+export default environment;

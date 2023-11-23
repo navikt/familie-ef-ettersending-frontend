@@ -7,10 +7,7 @@ import {
 import sjekklisteikon from './icons/sjekklisteikon.svg';
 import styled from 'styled-components';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
-import { Heading, Ingress, Loader, Modal } from '@navikt/ds-react';
-
-// Gjemmer innhold i bakkant av modal for skjermlesere når modalen er åpen
-Modal.setAppElement(document.getElementById('root'));
+import { BodyLong, Heading, Loader } from '@navikt/ds-react';
 
 const FlexBox = styled.div`
   display: flex;
@@ -78,9 +75,9 @@ const App: React.FC = () => {
           <Heading level={'1'} size={'xlarge'}>
             Ettersending av dokumentasjon
           </Heading>
-          <Ingress>
+          <BodyLong>
             Her kan du sende inn manglende dokumentasjon til saken din
-          </Ingress>
+          </BodyLong>
           <Ettersendingsoversikt />
         </AppContainer>
       </Bakgrunn>

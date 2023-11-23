@@ -5,7 +5,6 @@ import Vedleggsopplaster from './Vedleggsopplaster';
 import { formaterIsoDato } from '../../shared-utils/dato';
 import { filstørrelse_10MB } from '../utils/filer';
 import {
-  Alert,
   BodyLong,
   BodyShort,
   Heading,

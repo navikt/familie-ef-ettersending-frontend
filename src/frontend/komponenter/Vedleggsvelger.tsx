@@ -54,7 +54,7 @@ const StyledAlertStripe = styled(AlertStripe)`
 `;
 
 const Container = styled.div`
-  margin-top: 3rem;
+  margin-top: 1rem;
   margin-bottom: 2rem;
 `;
 
@@ -106,7 +106,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
   beskrivelse,
 }: IProps) => {
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
-    alertMelding.TOM
+    alertMelding.TOM,
   );
   const [laster, settLaster] = useState<boolean>(false);
   const [vedleggForSammenslåing, settVedleggForSammenslåing] = useState<
@@ -114,7 +114,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
   >([]);
 
   const leggTilVedleggPåInnsending = (
-    nyeVedlegg: IVedleggForEttersending[]
+    nyeVedlegg: IVedleggForEttersending[],
   ): IDokumentasjonsbehov => {
     return {
       ...innsending,
@@ -127,7 +127,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
 
   const dokumenterSkalSammenslås = (
     dokumentType: string | undefined,
-    antallVedlegg: number
+    antallVedlegg: number,
   ) => {
     return skalDokumenttypeSlåsSammen(dokumentType) && antallVedlegg > 1;
   };
@@ -137,12 +137,12 @@ const Vedleggsvelger: React.FC<IProps> = ({
     if (
       dokumenterSkalSammenslås(
         innsending.dokumenttype,
-        vedleggForSammenslåing.length
+        vedleggForSammenslåing.length,
       )
     ) {
       try {
         const dokumentId = await slåSammenVedlegg(
-          vedleggForSammenslåing.map((v) => v.id)
+          vedleggForSammenslåing.map((v) => v.id),
         );
         const nyInnsending = leggTilVedleggPåInnsending([
           {
@@ -168,7 +168,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
   const slettVedlegg = (vedlegg: IVedleggForEttersending): void => {
     settVedleggForSammenslåing((prevState) => {
       return prevState.filter(
-        (v: IVedleggForEttersending) => v.id !== vedlegg.id
+        (v: IVedleggForEttersending) => v.id !== vedlegg.id,
       );
     });
   };
@@ -206,7 +206,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
             filstørrelse: fil.size,
           });
         }
-      })
+      }),
     );
     settVedleggForSammenslåing((prevState) => [...prevState, ...vedleggListe]);
     settLaster(false);
@@ -260,7 +260,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
         }
 
         return fil;
-      })
+      }),
     );
     if (feilmeldingsliste.length <= 0) {
       lastOppVedlegg(filer);
