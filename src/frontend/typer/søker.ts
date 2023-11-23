@@ -20,7 +20,6 @@ interface IBarn {
   fødselsdato: string;
   harAdressesperre: boolean;
   harSammeAdresse: boolean;
-  medForelder: any; //må settes
   navn: string;
 }
 

@@ -17,7 +17,7 @@ export const stønadsTyper: StønadType[] = [
 ];
 
 export const dokumenttyperForStønad = (
-  stønadType?: StønadType
+  stønadType?: StønadType,
 ): DokumentType[] => {
   const sorterDokumenttyperPåNavn = (a: DokumentType, b: DokumentType) =>
     dokumentTypeTilTekst[a] > dokumentTypeTilTekst[b] ? 1 : -1;
@@ -31,7 +31,7 @@ export const dokumenttyperForStønad = (
       return dokumentTyperSkolepenger.sort(sorterDokumenttyperPåNavn);
     default:
       return (Object.keys(DokumentType) as Array<DokumentType>).sort(
-        sorterDokumenttyperPåNavn
+        sorterDokumenttyperPåNavn,
       );
   }
 };

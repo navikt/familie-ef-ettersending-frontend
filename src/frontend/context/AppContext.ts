@@ -9,7 +9,7 @@ import { ISøker } from '../typer/søker';
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
-    InnloggetStatus.IKKE_VERIFISERT
+    InnloggetStatus.IKKE_VERIFISERT,
   );
   const [søker, settSøker] = useState<ISøker | null>(null);
 

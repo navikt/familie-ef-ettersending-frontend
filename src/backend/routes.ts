@@ -9,21 +9,21 @@ const routes = () => {
   const expressRouter = express.Router();
 
   expressRouter.get(`${BASE_PATH}/internal/isAlive|isReady`, (req, res) =>
-    res.sendStatus(200)
+    res.sendStatus(200),
   );
 
   expressRouter.use(
     `${BASE_PATH}/api`,
     addCallId(),
     attachToken('familie-ef-soknad-api'),
-    doProxy(environment().apiUrl, `${BASE_PATH}/api`)
+    doProxy(environment().apiUrl, `${BASE_PATH}/api`),
   );
 
   expressRouter.use(
     `${BASE_PATH}/dokument`,
     addCallId(),
     attachToken('familie-dokument'),
-    doProxy(environment().dokumentUrl, `${BASE_PATH}/dokument`)
+    doProxy(environment().dokumentUrl, `${BASE_PATH}/dokument`),
   );
 
   return expressRouter;

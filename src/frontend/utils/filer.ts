@@ -42,7 +42,7 @@ export const åpnePdfIEgenTab = (blob: Blob, filnavn: string): void => {
 export const base64toBlob = (
   b64Data: string,
   contentType = '',
-  sliceSize = 512
+  sliceSize = 512,
 ): Blob => {
   const byteCharacters = atob(b64Data);
   const byteArrays = [];

@@ -6,6 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import baseConfig, {
   createHtmlWebpackPlugin,
 } from './webpack.common.config.js';
+import ESLintWebpackPlugin from 'eslint-webpack-plugin';
 
 const prodConfig = mergeWithRules({
   module: {
@@ -22,9 +23,13 @@ const prodConfig = mergeWithRules({
       filename: '[name].css',
     }),
     new CssMinimizerWebpackPlugin(),
+    new ESLintWebpackPlugin({
+      extensions: [`ts`, `tsx`],
+    }),
   ],
   output: {
     filename: '[name].[contenthash].js',
+    clean: true,
   },
   module: {
     rules: [

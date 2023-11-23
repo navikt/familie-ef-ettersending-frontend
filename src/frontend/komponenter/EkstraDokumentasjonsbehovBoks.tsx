@@ -62,13 +62,14 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
   const [valgtStønadType, settValgtStønadType] = useState<StønadType>();
   const [harLåstValg, settHarLåstValg] = useState<boolean>(false);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
-    alertMelding.TOM
+    alertMelding.TOM,
   );
 
   useEffect(() => {
     if (innsending.vedlegg.length > 0) settHarLåstValg(true);
     settValgtDokumentType(innsending.dokumenttype);
     settValgtStønadType(innsending.stønadType);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dokumentTypeOgStønadTypeErValgt = (): boolean => {

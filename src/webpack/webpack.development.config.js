@@ -5,6 +5,7 @@ import { CustomizeRule, mergeWithRules } from 'webpack-merge';
 import baseConfig, {
   createHtmlWebpackPlugin,
 } from './webpack.common.config.js';
+import ESLintWebpackPlugin from 'eslint-webpack-plugin';
 
 const devConfig = mergeWithRules({
   module: {
@@ -21,6 +22,10 @@ const devConfig = mergeWithRules({
     createHtmlWebpackPlugin(false),
     new webpack.HotModuleReplacementPlugin(),
     new ReactRefreshWebpackPlugin(),
+    new ESLintWebpackPlugin({
+      extensions: [`ts`, `tsx`],
+      cache: true,
+    }),
   ],
   module: {
     rules: [
@@ -29,7 +34,6 @@ const devConfig = mergeWithRules({
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
-          presets: ['react-app'],
           plugins: ['react-refresh/babel'],
         },
       },

@@ -47,14 +47,14 @@ const DivMidtstillInnhold = styled.div`
 const Ettersendingsoversikt: React.FC = () => {
   const [laster, settLasterverdi] = useState(true);
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
-    alertMelding.TOM
+    alertMelding.TOM,
   );
   const [ettersending, settEttersending] = useState<IEttersending>({
     dokumentasjonsbehov: [],
     personIdent: '',
   });
   const [ekstraInnsendingerId, settEkstraInnsendingerId] = useState<string[]>(
-    []
+    [],
   );
   const [
     ekstraInnsendingerSomManglerVedlegg,
@@ -103,17 +103,17 @@ const Ettersendingsoversikt: React.FC = () => {
       return {
         ...prevEttersending,
         dokumentasjonsbehov: prevEttersending.dokumentasjonsbehov.filter(
-          (innsending) => innsending.id !== id
+          (innsending) => innsending.id !== id,
         ),
       };
     });
     settEkstraInnsendingerId(
-      ekstraInnsendingerId.filter((innsendingsId) => innsendingsId != id)
+      ekstraInnsendingerId.filter((innsendingsId) => innsendingsId != id),
     );
     settEkstraInnsendingerSomManglerVedlegg(
       ekstraInnsendingerSomManglerVedlegg.filter(
-        (innsendingsId) => innsendingsId != id
-      )
+        (innsendingsId) => innsendingsId != id,
+      ),
     );
   };
 
@@ -148,7 +148,7 @@ const Ettersendingsoversikt: React.FC = () => {
       if (
         minstEttVedleggErLastetOppForEkstraDokumentasjonsboks(
           ettersending.dokumentasjonsbehov,
-          ekstraInnsendingerId
+          ekstraInnsendingerId,
         )
       ) {
         logDokumentasjonsbehov(ettersending.dokumentasjonsbehov);
@@ -158,8 +158,8 @@ const Ettersendingsoversikt: React.FC = () => {
       settEkstraInnsendingerSomManglerVedlegg(
         ekstraInnsendingerUtenVedlegg(
           ettersending.dokumentasjonsbehov,
-          ekstraInnsendingerId
-        )
+          ekstraInnsendingerId,
+        ),
       );
       return;
     }
@@ -190,6 +190,7 @@ const Ettersendingsoversikt: React.FC = () => {
 
   useEffect(() => {
     if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.søker]);
 
   const hentOgSettSøknaderOgEttersendinger = async () => {
@@ -199,7 +200,7 @@ const Ettersendingsoversikt: React.FC = () => {
     const søknaderMedEttersendinger: ISøknadsbehov[] = søknadsliste.map(
       (søknad: ISøknadsbehov) => {
         return slåSammenSøknadOgEttersendinger(søknad, ettersendinger);
-      }
+      },
     );
 
     const initielleInnsendinger: IDokumentasjonsbehov[] =
@@ -207,7 +208,7 @@ const Ettersendingsoversikt: React.FC = () => {
         return søknad.dokumentasjonsbehov.dokumentasjonsbehov
           .filter(
             (behov) =>
-              behov.opplastedeVedlegg.length === 0 && !behov.harSendtInn
+              behov.opplastedeVedlegg.length === 0 && !behov.harSendtInn,
           )
           .map((behov) => {
             return {
