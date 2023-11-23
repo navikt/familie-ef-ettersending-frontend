@@ -70,9 +70,6 @@ const commonConfig = {
         test: /\.(jsx|tsx|ts|js)?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        options: {
-          presets: ['react-app'],
-        },
       },
     ],
   },

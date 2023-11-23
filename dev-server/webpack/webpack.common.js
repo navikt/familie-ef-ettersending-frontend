@@ -20,19 +20,6 @@ const config = mergeWithCustomize({
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/,
-        enforce: 'pre',
-        exclude: /node_modules/,
-        use: [
-          {
-            options: {
-              eslintPath: 'eslint',
-            },
-            loader: 'eslint-loader',
-          },
-        ],
-      },
-      {
         test: /\.(js|ts|tsx)$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
