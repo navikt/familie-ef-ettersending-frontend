@@ -27,7 +27,7 @@ const VedleggListe: React.FC<IOpplastedeVedlegg> = ({
   vedleggsliste,
 }: IOpplastedeVedlegg) => {
   const [feilmelding, settFeilmelding] = useState<alertMelding>(
-    alertMelding.TOM
+    alertMelding.TOM,
   );
 
   const visDokumentNyFane = async (vedlegg: IVedleggForEttersending) => {
@@ -37,7 +37,7 @@ const VedleggListe: React.FC<IOpplastedeVedlegg> = ({
       if (opplastetVedlegg.status === RessursStatus.SUKSESS) {
         åpnePdfIEgenTab(
           base64toBlob(opplastetVedlegg.data, 'application/pdf'),
-          vedlegg.navn
+          vedlegg.navn,
         );
       }
     } catch (error: unknown) {

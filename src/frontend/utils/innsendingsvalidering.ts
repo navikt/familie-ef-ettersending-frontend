@@ -1,24 +1,24 @@
 import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
 
 export const minstEttVedleggErLastetOpp = (
-  dokumentasjonsbehov: IDokumentasjonsbehov[]
+  dokumentasjonsbehov: IDokumentasjonsbehov[],
 ): boolean => {
   return dokumentasjonsbehov.some(
-    (innsending) => innsending.vedlegg.length > 0
+    (innsending) => innsending.vedlegg.length > 0,
   );
 };
 
 export const minstEnBoksErAvkrysset = (
-  dokumentasjonsbehov: IDokumentasjonsbehov[]
+  dokumentasjonsbehov: IDokumentasjonsbehov[],
 ): boolean => {
   return dokumentasjonsbehov.some(
-    (innsending) => innsending.søknadsdata?.harSendtInnTidligere
+    (innsending) => innsending.søknadsdata?.harSendtInnTidligere,
   );
 };
 
 export const minstEttVedleggErLastetOppForEkstraDokumentasjonsboks = (
   dokumentasjonsbehov: IDokumentasjonsbehov[],
-  ekstraInnsendingerId: string[]
+  ekstraInnsendingerId: string[],
 ): boolean => {
   return (
     ekstraInnsendingerId.length === 0 ||
@@ -30,7 +30,7 @@ export const minstEttVedleggErLastetOppForEkstraDokumentasjonsboks = (
 
 export const ekstraInnsendingerUtenVedlegg = (
   dokumentasjonsbehov: IDokumentasjonsbehov[],
-  ekstraInnsendingerId: string[]
+  ekstraInnsendingerId: string[],
 ): string[] => {
   const innsendingerUtenVedlegg: string[] = [];
   dokumentasjonsbehov.forEach((innsending) => {
@@ -42,11 +42,11 @@ export const ekstraInnsendingerUtenVedlegg = (
 };
 
 export const filtrerUtfylteInnsendinger = (
-  ettersending: IEttersending
+  ettersending: IEttersending,
 ): IDokumentasjonsbehov[] => {
   return ettersending.dokumentasjonsbehov.filter(
     (innsending) =>
       innsending.vedlegg.length > 0 ||
-      innsending.søknadsdata?.harSendtInnTidligere
+      innsending.søknadsdata?.harSendtInnTidligere,
   );
 };

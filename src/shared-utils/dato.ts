@@ -7,7 +7,9 @@ export const datoFormat = {
 } as const;
 
 export const formaterIsoDato = (dato: string): string => {
-  return parseISO(dato).toLocaleDateString('no-NO', datoFormat);
+  return dato !== undefined
+    ? parseISO(dato).toLocaleDateString('no-NO', datoFormat)
+    : '';
 };
 
 export const dagensDatoMedTidspunktStreng = () => {

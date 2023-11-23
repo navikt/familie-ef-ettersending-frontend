@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
   // Static files
   app.use(
     '/familie/alene-med-barn/ettersending/',
-    express.static(frontendMappe, { index: false })
+    express.static(frontendMappe, { index: false }),
   );
 }
 

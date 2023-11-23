@@ -3,7 +3,7 @@ import { DokumentType, StønadType } from './stønad';
 
 export interface ISøknadsbehov {
   dokumentasjonsbehov: IDokumentasjonsbehovWrapper;
-  søknadDato: any;
+  søknadDato: string;
   stønadType: StønadType;
   søknadId: string;
 }
@@ -28,14 +28,14 @@ export interface IDokumentasjonsbehov {
   dokumenttype?: string;
   stønadType?: StønadType;
   beskrivelse?: string;
-  innsendingstidspunkt: any;
+  innsendingstidspunkt: string;
   vedlegg: IVedleggForEttersending[];
   erSammenslått?: boolean; // Settes kun internt for å vise info i frontend
 }
 
 export interface ISøknadMetadata {
   søknadId: string;
-  søknadsdato: any;
+  søknadsdato: string;
   dokumentasjonsbehovId: string;
   harSendtInnTidligere: boolean;
 }

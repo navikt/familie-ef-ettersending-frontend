@@ -7,7 +7,7 @@ import { IDokumentasjonsbehovForSøknad } from '../typer/dokumentasjonsbehov';
 
 export const slåSammenSøknadOgEttersendinger = (
   søknad: ISøknadsbehov,
-  ettersendinger: IEttersending[]
+  ettersendinger: IEttersending[],
 ): ISøknadsbehov => {
   const dokumentasjonsbehov: IDokumentasjonsbehovForSøknad[] =
     søknad.dokumentasjonsbehov.dokumentasjonsbehov.map((behov) => {

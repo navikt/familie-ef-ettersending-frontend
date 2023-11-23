@@ -14,7 +14,7 @@ const attachToken = (applicationName: ApplicationName): RequestHandler => {
     try {
       const authenticationHeader = await prepareSecuredRequest(
         req,
-        applicationName
+        applicationName,
       );
       req.headers[AUTHORIZATION_HEADER] = authenticationHeader.authorization;
       req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
@@ -23,7 +23,7 @@ const attachToken = (applicationName: ApplicationName): RequestHandler => {
       logWarn(
         `Noe gikk galt ved setting av token (${req.method} - ${req.path}): `,
         req,
-        error
+        error,
       );
       return res
         .status(401)
@@ -52,14 +52,14 @@ const utledToken = (req: Request, authorization: string | undefined) => {
 
 const prepareSecuredRequest = async (
   req: Request,
-  applicationName: ApplicationName
+  applicationName: ApplicationName,
 ) => {
   logInfo('PrepareSecuredRequest', req);
   const { authorization } = req.headers;
   const token = utledToken(req, authorization);
   logInfo('IdPorten-token found: ' + (token.length > 1), req);
   const accessToken = await exchangeToken(token, applicationName).then(
-    (accessToken) => accessToken
+    (accessToken) => accessToken,
   );
   return {
     authorization: `Bearer ${accessToken}`,

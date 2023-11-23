@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Issuer } from 'openid-client';
 import jwt from 'jsonwebtoken';
 import { v4 as uuid } from 'uuid';
@@ -17,6 +18,7 @@ class TokenXClient {
       return;
     }
     this.init()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((client: any) => {
         this.tokenxClient = client;
       })
@@ -25,7 +27,7 @@ class TokenXClient {
 
   exchangeToken = async (
     idportenToken: any,
-    applicationName: ApplicationName
+    applicationName: ApplicationName,
   ) => {
     const clientAssertion = await this.createClientAssertion();
 
@@ -91,7 +93,7 @@ class TokenXClient {
     if (!tokenxConfig.discoveryUrl) {
       logger.error('Mangler miljøvariabel TOKEN_X_WELL_KNOWN_URL');
       throw new TypeError(
-        'Miljøvariabelen "TOKEN_X_WELL_KNOWN_URL må være satt'
+        'Miljøvariabelen "TOKEN_X_WELL_KNOWN_URL må være satt',
       );
     }
     const tokenx = await Issuer.discover(tokenxConfig.discoveryUrl);
@@ -112,7 +114,7 @@ class TokenXClient {
     } catch (err) {
       logger.error(
         'Feil oppstod under parsing av jwt eller opprettelse av TokenX client',
-        err
+        err,
       );
       return Promise.reject(err);
     }

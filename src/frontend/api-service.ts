@@ -18,7 +18,7 @@ const HEADER_NAV_CONSUMER_ID = 'Nav-Consumer-Id';
 const HEADER_NAV_CONSUMER_ID_VALUE = 'familie-ef-ettersending';
 
 export const sendEttersending = (
-  ettersendingsdata: IEttersending
+  ettersendingsdata: IEttersending,
 ): Promise<IKvittering> => {
   return axios
     .post(`${environment().apiProxyUrl}/api/ettersending`, ettersendingsdata, {
@@ -42,7 +42,7 @@ export const hentEttersendinger = (): Promise<IEttersending[]> => {
 };
 
 export const hentOpplastetVedlegg = (
-  dokumentId: string
+  dokumentId: string,
 ): Promise<Ressurs<string>> => {
   return axios
     .get(
@@ -54,7 +54,7 @@ export const hentOpplastetVedlegg = (
         headers: {
           [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
         },
-      }
+      },
     )
     .then((response: { data: Ressurs<string> }) => response.data);
 };
@@ -82,7 +82,7 @@ export const hentSøknader = (): Promise<ISøknadsbehov[]> => {
 };
 
 export const sendVedleggTilMellomlager = (
-  formData: FormData
+  formData: FormData,
 ): Promise<string> => {
   return axios
     .post(
@@ -94,7 +94,7 @@ export const sendVedleggTilMellomlager = (
           [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
         },
         withCredentials: true,
-      }
+      },
     )
     .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
 };
@@ -109,7 +109,7 @@ export const slåSammenVedlegg = (dokumentIder: string[]): Promise<string> => {
           [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
         },
         withCredentials: true,
-      }
+      },
     )
     .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
 };
