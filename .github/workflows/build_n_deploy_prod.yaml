@@ -10,8 +10,9 @@ env:
   BASE_PATH: '/familie/alene-med-barn/ettersending'
 
 permissions:
-  contents: 'read'
-  id-token: 'write'
+  packages: write
+  id-token: write
+  contents: read
 
 jobs:
   build:
