@@ -1,11 +1,11 @@
-import express from 'express';
+import express, { Router } from 'express';
 import { addCallId, doProxy } from './proxy';
 import attachToken from './tokenProxy';
 import environment from './environment';
 
 const BASE_PATH = `/familie/alene-med-barn/ettersending`;
 
-const routes = () => {
+const routes = (): Router => {
   const expressRouter = express.Router();
 
   expressRouter.get(`${BASE_PATH}/internal/isAlive|isReady`, (req, res) =>
