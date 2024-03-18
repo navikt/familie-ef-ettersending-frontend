@@ -45,7 +45,8 @@ spec:
     limits:
       memory: 1024Mi
     requests:
-      memory: 512Mi
+      memory: 256Mi
+      cpu: 100m
   env:
     - name: APP_VERSION
       value: "{{version}}"
