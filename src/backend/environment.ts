@@ -57,8 +57,7 @@ const environment = (): EnvironmentProps => {
     };
   } else {
     return {
-      wonderwallUrl:
-        'http://localhost:8091/local/cookie?issuerId=tokenx&audience=familie-app&subject=21057822284&redirect=',
+      wonderwallUrl: '',
       apiUrl: 'http://localhost:8091',
       apiProxyUrl: 'http://localhost:8091',
       dokumentProxyUrl: 'http://localhost:8082/familie/dokument',
