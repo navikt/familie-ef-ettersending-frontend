@@ -59,8 +59,10 @@ const environment = (): EnvironmentProps => {
     return {
       wonderwallUrl: '',
       apiUrl: 'http://localhost:8091',
-      apiProxyUrl: 'http://localhost:8091',
-      dokumentProxyUrl: 'http://localhost:8082/familie/dokument',
+      apiProxyUrl:
+        'http://localhost:3000/familie/alene-med-barn/ettersending/api',
+      dokumentProxyUrl:
+        'http://localhost:3000/familie/alene-med-barn/ettersending/dokument',
       dokumentUrl: 'http://localhost:8082/familie/dokument',
       port: 3000,
       dekoratørEnv: 'dev',

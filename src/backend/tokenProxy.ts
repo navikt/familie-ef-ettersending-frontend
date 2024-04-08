@@ -13,7 +13,6 @@ const WONDERWALL_ID_TOKEN_HEADER = 'x-wonderwall-id-token';
 const attachToken = (applicationName: ApplicationName): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('isLocal', isLocal());
       req.headers[AUTHORIZATION_HEADER] = isLocal()
         ? await getFakedingsToken(applicationName)
         : await getAccessToken(req, applicationName);
@@ -33,18 +32,12 @@ const attachToken = (applicationName: ApplicationName): RequestHandler => {
   };
 };
 
-const erLokalt = () => {
-  return process.env.ENV === 'localhost';
-};
-
 const harBearerToken = (authorization: string) => {
   return authorization.includes('Bearer ');
 };
 
 const utledToken = (req: Request, authorization: string | undefined) => {
-  if (erLokalt()) {
-    return req.cookies['localhost-idtoken'];
-  } else if (authorization && harBearerToken(authorization)) {
+  if (authorization && harBearerToken(authorization)) {
     return authorization.split(' ')[1];
   } else {
     throw Error('Mangler authorization i header');
@@ -74,7 +67,7 @@ const getFakedingsToken = async (applicationName: string) => {
   const token = await fetch(url).then(function (body) {
     return body.text();
   });
-  console.log('Fakedings-token: ', token);
+
   return `Bearer ${token}`;
 };
 
