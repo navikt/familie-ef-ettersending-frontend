@@ -5,7 +5,7 @@ amplitude.init('default', undefined, {
   serverUrl: 'https://amplitude.nav.no/collect-auto',
   defaultTracking: false,
   ingestionMetadata: {
-    sourceName: window.location.toString().split('?')[0].split('#')[0],
+    sourceName: window.location.toString(),
   },
 });
 
