@@ -11,7 +11,6 @@ const config = mergeWithCustomize({
   mode: 'development',
   entry: {
     'familie-ef-ettersending': [
-      'babel-polyfill',
       'react-hot-loader/patch',
       'webpack-hot-middleware/client?reload=true&overlay=false',
     ],

@@ -1,5 +1,5 @@
 # familie-ef-ettersending
-Frontend app for ettersending av dokumentasjons vedrørende søknader tilknyttet stønader for enslige forsørgere.
+Frontend app for ettersending av dokumentasjon vedrørende søknader tilknyttet stønader for enslige forsørgere.
 
 ## Kjør lokalt
 1. `yarn install`
@@ -13,6 +13,7 @@ Frontend app for ettersending av dokumentasjons vedrørende søknader tilknyttet
 
 ### For eksterne
 Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på GitHub
+
 ### For NAV-ansatte
 Interne henvendelser kan sendes via Slack i kanalen #team-familie.
 
