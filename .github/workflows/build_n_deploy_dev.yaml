@@ -34,6 +34,8 @@ jobs:
           team: teamfamilie
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
   deploy:
     name: Deploy to dev
     needs: build
