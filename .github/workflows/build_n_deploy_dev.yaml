@@ -48,5 +48,5 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .deploy/nais-dev.yaml
+          RESOURCE: build_n_deploy/naiserator/nais-dev.yaml
           IMAGE: ${{ needs.build.outputs.image }}
