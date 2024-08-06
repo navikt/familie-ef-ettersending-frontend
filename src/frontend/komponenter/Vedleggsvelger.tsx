@@ -155,7 +155,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
         ]);
         oppdaterInnsending({ ...nyInnsending, erSammenslått: true });
         lukkModal();
-      } catch (error: unknown) {
+      } catch {
         settAlertStripeMelding(alertMelding.FEIL_SAMMENSLÅING_DOKUMENT);
       }
     } else {

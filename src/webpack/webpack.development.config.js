@@ -23,6 +23,7 @@ const devConfig = mergeWithRules({
     new webpack.HotModuleReplacementPlugin(),
     new ReactRefreshWebpackPlugin(),
     new ESLintWebpackPlugin({
+      configType: 'flat',
       extensions: [`ts`, `tsx`],
       cache: true,
     }),

@@ -40,7 +40,7 @@ const VedleggListe: React.FC<IOpplastedeVedlegg> = ({
           vedlegg.navn,
         );
       }
-    } catch (error: unknown) {
+    } catch {
       settFeilmelding(alertMelding.FEIL_NEDLASTING_DOKUMENT);
     }
   };

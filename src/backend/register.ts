@@ -1,4 +1,6 @@
-import { register } from 'node:module';
-import { pathToFileURL } from 'node:url';
+import { createRequire } from 'module';
 
-register('ts-node/esm', pathToFileURL('./'));
+const require = createRequire(import.meta.url);
+require('ts-node').register({
+  project: './tsconfig.json',
+});
