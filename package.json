@@ -31,14 +31,14 @@
     "winston": "^3.13.1"
   },
   "scripts": {
-    "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node --es-module-specifier-resolution=node build/backend/server.js",
-    "start": "NODE_ENV=production node --es-module-specifier-resolution=node build/backend/server.js",
+    "start:dev": "tsc -p tsconfig.backend.json && yarn set-node-options NODE_ENV=development node build/backend/server.js",
     "build": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=production webpack --config src/webpack/webpack.production.config.js && tsc -p tsconfig.backend.json",
     "build:dev": "webpack --config ./build_n_deploy/webpack/webpack.dev.js",
     "start:mock": "NODE_ENV=development node dev-server/mock-server.js",
     "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "set-node-options": "NODE_OPTIONS='--import=./build/backend/register.js --es-module-specifier-resolution=node'"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css}": [
@@ -83,6 +83,7 @@
     "prettier": "^3.3.3",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.4",
     "webpack": "^5.93.0",
