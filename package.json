@@ -38,7 +38,7 @@
     "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
     "prepare": "husky install",
-    "set-node-options": "NODE_OPTIONS='--import=./build/backend/register.js --es-module-specifier-resolution=node'"
+    "set-node-options": "NODE_OPTIONS='--loader ts-node/esm --es-module-specifier-resolution=node' NODE_ENV=development node build/backend/server.js"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css}": [
