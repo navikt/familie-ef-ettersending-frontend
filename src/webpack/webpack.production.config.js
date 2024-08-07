@@ -24,6 +24,7 @@ const prodConfig = mergeWithRules({
     }),
     new CssMinimizerWebpackPlugin(),
     new ESLintWebpackPlugin({
+      configType: 'flat',
       extensions: [`ts`, `tsx`],
     }),
   ],
