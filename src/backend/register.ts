@@ -1,6 +1,5 @@
-import { createRequire } from 'module';
+import { register } from 'ts-node';
 
-const require = createRequire(import.meta.url);
-require('ts-node').register({
+register({
   project: './tsconfig.json',
 });
