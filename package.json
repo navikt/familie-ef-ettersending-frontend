@@ -11,7 +11,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@types/uuid": "^10.0.0",
     "@amplitude/analytics-browser": "2.10.0",
-    "axios": "^1.7.3",
+    "axios": "^1.7.4",
     "constate": "^3.3.2",
     "date-fns": "^3.6.0",
     "express": "^4.19.2",
