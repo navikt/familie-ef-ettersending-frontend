@@ -7,7 +7,7 @@
     "@navikt/ds-css": "^6.15.0",
     "@navikt/ds-icons": "^3.4.3",
     "@navikt/ds-react": "^6.15.0",
-    "@navikt/nav-dekoratoren-moduler": "^2.1.6",
+    "@navikt/nav-dekoratoren-moduler": "^3.0.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@types/uuid": "^10.0.0",
     "@amplitude/analytics-browser": "2.10.0",
