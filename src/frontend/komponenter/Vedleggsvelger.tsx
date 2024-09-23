@@ -33,6 +33,7 @@ const Filvelger = styled.div`
   line-height: 4rem;
   color: var(--a-blue-700);
   cursor: pointer;
+  align-content: center;
 `;
 
 const OpplastingIkon = styled(Upload)`
