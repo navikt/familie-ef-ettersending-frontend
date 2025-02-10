@@ -1,18 +1,12 @@
-import * as amplitude from '@amplitude/analytics-browser';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
+import { getAmplitudeInstance } from '@navikt/nav-dekoratoren-moduler';
 
-amplitude.init('default', undefined, {
-  serverUrl: 'https://amplitude.nav.no/collect-auto',
-  defaultTracking: false,
-  ingestionMetadata: {
-    sourceName: window.location.toString(),
-  },
-});
+const logger = getAmplitudeInstance('dekoratoren');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function logEvent(eventName: string, eventProperties: any) {
-  amplitude.track(eventName, eventProperties);
-}
+export const logEvent = (eventName: string, eventProperties: any) => {
+  logger(eventName, eventProperties);
+};
 
 export interface FeilOpplastingProps {
   type_feil: string;
