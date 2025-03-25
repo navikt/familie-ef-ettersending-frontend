@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import axios from 'axios';
 import { Issuer } from 'openid-client';
 import jwt from 'jsonwebtoken';
 import { v4 as uuid } from 'uuid';
 import nodeJose from 'node-jose';
-import logger from './logger';
-import { ApplicationName } from './tokenProxy';
+import logger, { logInfo } from './logger';
+// import { ApplicationName } from './tokenProxy';
 import environment, { isLocal } from './environment';
 
 class TokenXClient {
@@ -18,7 +19,7 @@ class TokenXClient {
       return;
     }
     this.init()
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       .then((client: any) => {
         this.tokenxClient = client;
       })
@@ -27,28 +28,70 @@ class TokenXClient {
 
   exchangeToken = async (
     idportenToken: any,
-    applicationName: ApplicationName,
+    // applicationName: ApplicationName,
   ) => {
-    const clientAssertion = await this.createClientAssertion();
+    // const clientAssertion = await this.createClientAssertion();
 
-    return this.tokenxClient
-      .grant({
-        grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
-        client_assertion_type:
-          'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-        token_endpoint_auth_method: 'private_key_jwt',
-        client_assertion: clientAssertion,
-        subject_token_type: 'urn:ietf:params:oauth:token-type:jwt',
-        subject_token: idportenToken,
-        audience: `${tokenxConfig.clusterName}:teamfamilie:${applicationName}`,
+    const url = 'NAIS_TOKEN_INTROSPECTION_ENDPOINT';
+
+    const data = {
+      identity_provider: 'azuread',
+      target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
+      user_token: idportenToken,
+    };
+
+    const response = await axios
+      .post(url, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .then((tokenSet: any) => {
-        return Promise.resolve(tokenSet.access_token);
-      })
-      .catch((err: any) => {
-        logger.error('Feil under utveksling av token: ', err);
-        return Promise.reject(err);
+      .then((res) => {
+        logInfo('exchangeToken', res.data);
+
+        res.data;
       });
+
+    return response;
+  };
+
+  generateToken = async () => {
+    const url = 'NAIS_TOKEN_ENDPOINT';
+    const data = {
+      identity_provider: 'azuread',
+      target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
+    };
+
+    const response = axios
+      .post(url, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        logInfo('generateToken', res.data);
+        return res.data;
+      });
+
+    return response;
+    // return this.tokenxClient
+    //   .grant({
+    //     grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
+    //     client_assertion_type:
+    //       'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+    //     token_endpoint_auth_method: 'private_key_jwt',
+    //     client_assertion: clientAssertion,
+    //     subject_token_type: 'urn:ietf:params:oauth:token-type:jwt',
+    //     subject_token: idportenToken,
+    //     audience: `${tokenxConfig.clusterName}:teamfamilie:${applicationName}`,
+    //   })
+    //   .then((tokenSet: any) => {
+    //     return Promise.resolve(tokenSet.access_token);
+    //   })
+    //   .catch((err: any) => {
+    //     logger.error('Feil under utveksling av token: ', err);
+    //     return Promise.reject(err);
+    //   });
   };
 
   private createClientAssertion = async () => {

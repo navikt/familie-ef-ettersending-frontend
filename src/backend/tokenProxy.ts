@@ -3,7 +3,7 @@ import TokenXClient from './tokenx';
 import { logWarn, logInfo } from './logger';
 import { isLocal } from './environment';
 
-const { exchangeToken } = new TokenXClient();
+const { exchangeToken, generateToken } = new TokenXClient();
 
 export type ApplicationName = 'familie-ef-soknad-api' | 'familie-dokument';
 
@@ -15,7 +15,8 @@ const attachToken = (applicationName: ApplicationName): RequestHandler => {
     try {
       req.headers[AUTHORIZATION_HEADER] = isLocal()
         ? await getFakedingsToken(applicationName)
-        : await getAccessToken(req, applicationName);
+        : await getAccessToken(req);
+      // : await getAccessToken(req, applicationName);
 
       req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
       next();
@@ -46,16 +47,17 @@ const utledToken = (req: Request, authorization: string | undefined) => {
 
 const getAccessToken = async (
   req: Request,
-  applicationName: ApplicationName,
+  // applicationName: ApplicationName,
 ) => {
   logInfo('getAccessToken', req);
   const { authorization } = req.headers;
   const token = utledToken(req, authorization);
   logInfo('IdPorten-token found: ' + (token.length > 1), req);
-  const accessToken = await exchangeToken(token, applicationName).then(
+  const accessToken = await exchangeToken(token).then(
+    // const accessToken = await exchangeToken(token, applicationName).then(
     (accessToken) => accessToken,
   );
-
+  generateToken();
   return `Bearer ${accessToken}`;
 };
 
