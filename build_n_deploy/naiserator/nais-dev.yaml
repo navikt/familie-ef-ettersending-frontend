@@ -1,16 +1,16 @@
-apiVersion: "nais.io/v1alpha1"
-kind: "Application"
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
 metadata:
   name: familie-ef-ettersending
   namespace: teamfamilie
   labels:
     team: teamfamilie
   annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: "25M"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
-    texas.nais.io/enabled: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: '25M'
+    nginx.ingress.kubernetes.io/proxy-read-timeout: '120'
+    texas.nais.io/enabled: 'true'
 spec:
-  image: "{{ image }}"
+  image: '{{ image }}'
   replicas:
     min: 2
     max: 2
@@ -22,7 +22,7 @@ spec:
     path: /internal/isReady
     initialDelay: 5
   ingresses:
-    - "https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending"
+    - 'https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending'
   idporten:
     enabled: true
     sidecar:
@@ -34,6 +34,11 @@ spec:
   tokenx:
     enabled: true
   accessPolicy:
+    inbound:
+      rules:
+        - application: tokenx-token-generator
+          namespace: nais
+          cluster: dev-gcp
     outbound:
       rules:
         - application: familie-ef-soknad-api
@@ -50,6 +55,6 @@ spec:
       cpu: 20m
   env:
     - name: APP_VERSION
-      value: "{{version}}"
+      value: '{{version}}'
     - name: ENV
       value: dev
