@@ -30,17 +30,17 @@ class TokenXClient {
     // applicationName: ApplicationName,
   ) => {
     // const clientAssertion = await this.createClientAssertion();
-    const url = process.env['NAIS_TOKEN_INTROSPECTION_ENDPOINT'];
+    const url = process.env['NAIS_TOKEN_EXCHANGE_ENDPOINT'];
 
-    const data = {
+    const body = {
       identity_provider: 'azuread',
       target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
       user_token: idportenToken,
     };
 
-    logger.info(`Start exchangeToken - data: ${data}`);
+    logger.info(`Start exchangeToken - data: ${body.user_token}`);
     const response = await axios
-      .post(`${url}`, data, {
+      .post(`${url}`, body, {
         headers: {
           'Content-Type': 'application/json',
         },
