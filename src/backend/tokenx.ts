@@ -38,7 +38,7 @@ class TokenXClient {
       user_token: idportenToken,
     };
 
-    logger.info('Start exchangeToken - data', data);
+    logger.info(`Start exchangeToken - data: ${data}`);
     const response = await axios
       .post(url, data, {
         headers: {
@@ -61,7 +61,7 @@ class TokenXClient {
       target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
     };
 
-    logger.info('Start generateToken - data', data);
+    logger.info(`Start generateToken - data: ${data}`);
     const response = axios
       .post(url, data, {
         headers: {
