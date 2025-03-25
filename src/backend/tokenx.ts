@@ -30,7 +30,7 @@ class TokenXClient {
     // applicationName: ApplicationName,
   ) => {
     // const clientAssertion = await this.createClientAssertion();
-    const url = 'NAIS_TOKEN_INTROSPECTION_ENDPOINT';
+    const url = process.env['NAIS_TOKEN_INTROSPECTION_ENDPOINT'];
 
     const data = {
       identity_provider: 'azuread',
@@ -40,7 +40,7 @@ class TokenXClient {
 
     logger.info(`Start exchangeToken - data: ${data}`);
     const response = await axios
-      .post(url, data, {
+      .post(`${url}`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -55,7 +55,7 @@ class TokenXClient {
   };
 
   generateToken = async () => {
-    const url = 'NAIS_TOKEN_ENDPOINT';
+    const url = process.env['NAIS_TOKEN_ENDPOINT'];
     const data = {
       identity_provider: 'azuread',
       target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
@@ -63,7 +63,7 @@ class TokenXClient {
 
     logger.info(`Start generateToken - data: ${data}`);
     const response = axios
-      .post(url, data, {
+      .post(`${url}`, data, {
         headers: {
           'Content-Type': 'application/json',
         },
