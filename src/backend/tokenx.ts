@@ -7,7 +7,6 @@ import nodeJose from 'node-jose';
 import logger, { logInfo } from './logger';
 // import { ApplicationName } from './tokenProxy';
 import environment, { isLocal } from './environment';
-
 class TokenXClient {
   private tokenxClient: any = null;
   private audience: any = null;
@@ -31,7 +30,6 @@ class TokenXClient {
     // applicationName: ApplicationName,
   ) => {
     // const clientAssertion = await this.createClientAssertion();
-
     const url = 'NAIS_TOKEN_INTROSPECTION_ENDPOINT';
 
     const data = {
@@ -40,6 +38,7 @@ class TokenXClient {
       user_token: idportenToken,
     };
 
+    logger.info('Start exchangeToken - data', data);
     const response = await axios
       .post(url, data, {
         headers: {
@@ -62,6 +61,7 @@ class TokenXClient {
       target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
     };
 
+    logger.info('Start generateToken - data', data);
     const response = axios
       .post(url, data, {
         headers: {
