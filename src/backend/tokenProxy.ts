@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import TokenXClient from './tokenx';
-import { logWarn, logInfo } from './logger';
+import logger, { logWarn, logInfo } from './logger';
 import { isLocal } from './environment';
 
 const { exchangeToken, generateToken } = new TokenXClient();
@@ -52,7 +52,7 @@ const getAccessToken = async (
   logInfo('getAccessToken', req);
   const { authorization } = req.headers;
   const token = utledToken(req, authorization);
-  logInfo('IdPorten-token found: ' + (token.length > 1), req);
+  logger.info(`IdPorten-token ${JSON.stringify(token)}`);
   const accessToken = await exchangeToken(token).then(
     // const accessToken = await exchangeToken(token, applicationName).then(
     (accessToken) => accessToken,

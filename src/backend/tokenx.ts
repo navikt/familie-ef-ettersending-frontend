@@ -7,6 +7,7 @@ import nodeJose from 'node-jose';
 import logger, { logInfo } from './logger';
 // import { ApplicationName } from './tokenProxy';
 import environment, { isLocal } from './environment';
+import { envVar } from './envVar';
 class TokenXClient {
   private tokenxClient: any = null;
   private audience: any = null;
@@ -26,7 +27,7 @@ class TokenXClient {
   }
 
   exchangeToken = async (idportenToken: any) => {
-    const url = process.env['NAIS_TOKEN_INTROSPECTION_ENDPOINT'];
+    const url = envVar('NAIS_TOKEN_INTROSPECTION_ENDPOINT');
 
     const body = {
       identity_provider: 'azuread',
@@ -36,7 +37,7 @@ class TokenXClient {
 
     logger.info(`Start exchangeToken - body: ${JSON.stringify(body)}`);
 
-    const response = await axios.post(`${url}`, body, {
+    const response = await axios.post(url, body, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
