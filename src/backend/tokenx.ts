@@ -125,7 +125,6 @@ class TokenXClient {
         }
       });
 
-    logger.info(`exchangeToken: ${JSON.stringify(response)}`);
     logger.info(`Response er: ${response}`);
 
     return response;
