@@ -35,16 +35,24 @@ class TokenXClient {
       user_token: idportenToken,
     });
 
-    logger.info(`Start exchangeToken - body: ${body}`);
-
-    const response = await axios.post(url, body, {
+    const response = await fetch(url, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: body,
     });
 
-    logger.info(`exchangeToken ${JSON.stringify(response.data)}`);
-    return response.data;
+    logger.info(`Start exchangeToken - body: ${body}`);
+
+    // const response = await axios.post(url, body, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+
+    logger.info(`exchangeToken ${JSON.stringify(response)}`);
+    return response;
   };
 
   generateToken = async () => {
