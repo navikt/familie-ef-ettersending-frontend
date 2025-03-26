@@ -27,7 +27,7 @@ class TokenXClient {
   }
 
   exchangeToken = async (idportenToken: any) => {
-    const url = envVar('NAIS_TOKEN_INTROSPECTION_ENDPOINT');
+    const url = envVar('NAIS_TOKEN_EXCHANGE_ENDPOINT');
 
     const body = {
       identity_provider: 'azuread',
