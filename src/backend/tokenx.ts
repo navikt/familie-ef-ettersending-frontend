@@ -25,12 +25,8 @@ class TokenXClient {
       .catch(() => process.exit(1));
   }
 
-  exchangeToken = async (
-    idportenToken: any,
-    // applicationName: ApplicationName,
-  ) => {
-    // const clientAssertion = await this.createClientAssertion();
-    const url = process.env['NAIS_TOKEN_EXCHANGE_ENDPOINT'];
+  exchangeToken = async (idportenToken: any) => {
+    const url = process.env['NAIS_TOKEN_INTROSPECTION_ENDPOINT'];
 
     const body = {
       identity_provider: 'azuread',
@@ -38,20 +34,16 @@ class TokenXClient {
       user_token: idportenToken,
     };
 
-    logger.info(`Start exchangeToken - data: ${body.user_token}`);
-    const response = await axios
-      .post(`${url}`, body, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((res) => {
-        logInfo('exchangeToken', res.data);
+    logger.info(`Start exchangeToken - body: ${JSON.stringify(body)}`);
 
-        res.data;
-      });
+    const response = await axios.post(`${url}`, body, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
 
-    return response;
+    logger.info(`exchangeToken ${JSON.stringify(response.data)}`);
+    return response.data;
   };
 
   generateToken = async () => {
