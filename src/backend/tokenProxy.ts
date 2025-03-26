@@ -49,7 +49,9 @@ const getAccessToken = async (req: Request) => {
   logInfo('getAccessToken', req);
   const { authorization } = req.headers;
   const token = utledToken(req, authorization);
+
   logger.info(`IdPorten-token ${JSON.stringify(token)}`);
+
   const accessToken = await exchangeToken(
     token,
     'tokenx',
