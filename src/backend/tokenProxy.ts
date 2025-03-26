@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import TokenXClient from './tokenx';
-import logger, { logWarn, logInfo } from './logger';
+import logger, { logInfo } from './logger';
 import { isLocal } from './environment';
 
 const { exchangeToken } = new TokenXClient();
@@ -12,24 +12,13 @@ const WONDERWALL_ID_TOKEN_HEADER = 'x-wonderwall-id-token';
 
 const attachToken = (applicationName: ApplicationName): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      req.headers[AUTHORIZATION_HEADER] = isLocal()
-        ? await getFakedingsToken(applicationName)
-        : await getAccessToken(req);
-      // : await getAccessToken(req, applicationName);
+    req.headers[AUTHORIZATION_HEADER] = isLocal()
+      ? await getFakedingsToken(applicationName)
+      : await getAccessToken(req);
+    // : await getAccessToken(req, applicationName);
 
-      req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
-      next();
-    } catch (error) {
-      logWarn(
-        `Noe gikk galt ved setting av token (${req.method} - ${req.path}): `,
-        req,
-        error,
-      );
-      return res
-        .status(401)
-        .send('En uventet feil oppstod. Ingen gyldig token');
-    }
+    req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
+    next();
   };
 };
 

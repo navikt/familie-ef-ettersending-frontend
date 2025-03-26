@@ -121,6 +121,7 @@ class TokenXClient {
           // Something happened in setting up the request that triggered an Error
           logger.info('error.message');
           logger.info('Error', error.message);
+          logger.info('Error --', error);
         }
       });
 
