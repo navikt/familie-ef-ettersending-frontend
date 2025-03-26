@@ -39,7 +39,7 @@ class TokenXClient {
 
     const response = await axios.post(url, body, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
     });
 
