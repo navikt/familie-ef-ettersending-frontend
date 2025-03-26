@@ -8,6 +8,7 @@ import logger, { logInfo } from './logger';
 // import { ApplicationName } from './tokenProxy';
 import environment, { isLocal } from './environment';
 import { envVar } from './envVar';
+
 class TokenXClient {
   private tokenxClient: any = null;
   private audience: any = null;
@@ -25,6 +26,42 @@ class TokenXClient {
       })
       .catch(() => process.exit(1));
   }
+
+  validateTokenByTexas = async (idportenToken: any) => {
+    const valideTokenUrl = envVar('NAIS_TOKEN_INTROSPECTION_ENDPOINT');
+
+    const requestBody = JSON.stringify({
+      identity_provider: 'tokenx',
+      token: idportenToken,
+    });
+
+    if (!valideTokenUrl || valideTokenUrl.length <= 0) {
+      logger.error('Validerings-URL er tom eller udefinert');
+      return;
+    }
+
+    try {
+      const response = await axios.post(valideTokenUrl, requestBody, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      logger.info('Token er gyldig, fikk kontakt med Texas!', response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          logger.error(
+            `Feil validering av innlogging. Statuskode ${error.response.status}, body ${error.response.data}`,
+            error,
+          );
+          return false;
+        }
+      } else {
+        logger.error('Feil ved validering av innlogging', error);
+      }
+      throw error;
+    }
+  };
 
   exchangeToken = async (idportenToken: any) => {
     const url = envVar('NAIS_TOKEN_EXCHANGE_ENDPOINT');
