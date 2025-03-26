@@ -79,27 +79,39 @@ class TokenXClient {
 
     logger.info('Henter token med identity provider:' + identityProvider);
 
-    const body = JSON.stringify({
+    const targetBodyVanlig = JSON.stringify({
       identity_provider: identityProvider,
       target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
       user_token: idportenToken,
     });
 
-    const response = await axios.post(url, body, {
+    const targetBodyMedKolon = JSON.stringify({
+      identity_provider: identityProvider,
+      target: 'dev-gcp:teamfamilie:familie-ef-ettersending',
+      user_token: idportenToken,
+    });
+
+    const responeMedKolon = await axios.post(url, targetBodyMedKolon, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
-    logger.info(`Start exchangeToken - body: ${body}`);
+    const response = await axios.post(url, targetBodyVanlig, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-    // const response = await axios.post(url, body, {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
+    logger.info(`Start exchangeToken MED kolon - body: ${targetBodyMedKolon}`);
+    logger.info(`Start exchangeToken UTEN kolon - body: ${targetBodyVanlig}`);
 
-    logger.info(`exchangeToken ${JSON.stringify(response)}`);
+    logger.info(`exchangeToken MED kolon: ${JSON.stringify(responeMedKolon)}`);
+    logger.info(`exchangeToken UTEN kolon: ${JSON.stringify(response)}`);
+
+    logger.info(`Response med kolon er: ${responeMedKolon}`);
+    logger.info(`Response UTEN kolon er: ${response}`);
+
     return response;
   };
 

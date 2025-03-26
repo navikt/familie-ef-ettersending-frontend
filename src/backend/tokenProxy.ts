@@ -3,8 +3,7 @@ import TokenXClient from './tokenx';
 import logger, { logWarn, logInfo } from './logger';
 import { isLocal } from './environment';
 
-const { exchangeToken, generateToken, validateTokenByTexas } =
-  new TokenXClient();
+const { exchangeToken, validateTokenByTexas } = new TokenXClient();
 
 export type ApplicationName = 'familie-ef-soknad-api' | 'familie-dokument';
 
@@ -56,26 +55,13 @@ const getAccessToken = async (
   logger.info(`IdPorten-token ${JSON.stringify(token)}`);
 
   await validateTokenByTexas(token, 'idporten');
-  await validateTokenByTexas(token, 'azuread');
-  await validateTokenByTexas(token, 'tokenx');
 
-  const accessTokenMedAzure = await exchangeToken(token, 'azuread').then(
+  const accessToken = await exchangeToken(token, 'idporten').then(
     // const accessToken = await exchangeToken(token, applicationName).then(
     (accessToken) => accessToken,
   );
 
-  exchangeToken(token, 'idporten').then(
-    // const accessToken = await exchangeToken(token, applicationName).then(
-    (accessToken) => accessToken,
-  );
-
-  await exchangeToken(token, 'tokenx').then(
-    // const accessToken = await exchangeToken(token, applicationName).then(
-    (accessToken) => accessToken,
-  );
-
-  generateToken();
-  return `Bearer ${accessTokenMedAzure}`;
+  return `Bearer ${accessToken}`;
 };
 
 const getFakedingsToken = async (applicationName: string) => {
