@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { post } from 'axios';
 import { Issuer } from 'openid-client';
 import jwt from 'jsonwebtoken';
 import { v4 as uuid } from 'uuid';
@@ -8,6 +7,7 @@ import logger, { logInfo } from './logger';
 // import { ApplicationName } from './tokenProxy';
 import environment, { isLocal } from './environment';
 import { envVar } from './envVar';
+import axios from 'axios';
 
 class TokenXClient {
   private tokenxClient: any = null;
@@ -72,12 +72,10 @@ class TokenXClient {
       user_token: idportenToken,
     });
 
-    const response = await post(url, {
-      method: 'POST',
+    const response = await axios.post(url, body, {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: body,
     });
 
     logger.info(`Start exchangeToken - body: ${body}`);
