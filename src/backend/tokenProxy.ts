@@ -55,6 +55,7 @@ const getAccessToken = async (
   const token = utledToken(req, authorization);
   logger.info(`IdPorten-token ${JSON.stringify(token)}`);
 
+  await validateTokenByTexas(token, 'idporten');
   await validateTokenByTexas(token, 'azuread');
   await validateTokenByTexas(token, 'tokenx');
 
