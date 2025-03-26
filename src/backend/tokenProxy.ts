@@ -40,7 +40,7 @@ const getAccessToken = async (req: Request) => {
   const texasClient = new TexasClient();
 
   const accessToken = await texasClient
-    .exchangeToken('tokenx', token, 'dev-gcp:teamfamilie:familie-ef-soknad-api')
+    .exchangeToken('tokenx', 'dev-gcp:teamfamilie:familie-ef-soknad-api', token)
     .then((accessToken) => accessToken);
 
   return `Bearer ${accessToken}`;
