@@ -3,39 +3,37 @@ import axios from 'axios';
 import logger from './logger';
 
 export class TexasClient {
-  validateToken = async (identityProvider: string, token: string) => {
-    const validateTokenUrl = envVar('NAIS_TOKEN_INTROSPECTION_ENDPOINT');
+  private async postRequest(url: string, data: object) {
+    try {
+      const response = await axios.post(url, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      logger.error(`Request mot ${url} feilet.`, error);
+      throw error;
+    }
+  }
 
+  async validateToken(identityProvider: string, token: string) {
+    const validateTokenUrl = envVar('NAIS_TOKEN_INTROSPECTION_ENDPOINT');
     const requestBody = {
       identity_provider: identityProvider,
       token: token,
     };
 
     try {
-      const response = await axios.post(validateTokenUrl, requestBody, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      return {
-        active: response.data.active,
-      };
-    } catch (error) {
-      logger.error('Kunne ikke validere token mot Texas.', error);
-      return {
-        active: false,
-      };
+      const data = await this.postRequest(validateTokenUrl, requestBody);
+      return { active: data.active };
+    } catch {
+      return { active: false };
     }
-  };
+  }
 
-  exchangeToken = async (
-    identityProvider: string,
-    target: string,
-    token: string,
-  ) => {
+  async exchangeToken(identityProvider: string, target: string, token: string) {
     const exchangeTokenUrl = envVar('NAIS_TOKEN_EXCHANGE_ENDPOINT');
-
     const requestBody = {
       identity_provider: identityProvider,
       target: target,
@@ -43,21 +41,16 @@ export class TexasClient {
     };
 
     try {
-      const response = await axios.post(exchangeTokenUrl, requestBody, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      logger.info('Hentet ut token fra Texas', response.data);
+      const data = await this.postRequest(exchangeTokenUrl, requestBody);
+      logger.info('Hentet ut token fra Texas', data);
       return {
-        access_token: response.data.access_token,
-        expires_in: response.data.expires_in,
-        token_type: response.data.token_type,
+        access_token: data.access_token,
+        expires_in: data.expires_in,
+        token_type: data.token_type,
       };
     } catch (error) {
       logger.error('Klarte ikke å bytte token mot Texas.', error);
-      throw new Error('Token exchange failed');
+      throw new Error('Token exchange feilet');
     }
-  };
+  }
 }
