@@ -79,12 +79,18 @@ class TokenXClient {
     identityProvider: string,
     target: string,
   ) => {
-    const url = envVar('NAIS_TOKEN_EXCHANGE_ENDPOINT');
+    const exchangeTokenUrl = envVar('NAIS_TOKEN_EXCHANGE_ENDPOINT');
+    logger.info('Exchange token url er :' + exchangeTokenUrl);
+
+    if (!exchangeTokenUrl || exchangeTokenUrl.length <= 0) {
+      logger.error('Exchange token url er tom eller undefined.');
+      return;
+    }
 
     logger.info('Henter token med identity provider:' + identityProvider);
 
     const response = await axios.post(
-      url,
+      exchangeTokenUrl,
       {
         identity_provider: identityProvider,
         target: target,

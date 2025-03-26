@@ -3,7 +3,7 @@ import TokenXClient from './tokenx';
 import logger, { logWarn, logInfo } from './logger';
 import { isLocal } from './environment';
 
-const { exchangeToken, validateTokenByTexas } = new TokenXClient();
+const { exchangeToken } = new TokenXClient();
 
 export type ApplicationName = 'familie-ef-soknad-api' | 'familie-dokument';
 
@@ -50,9 +50,6 @@ const getAccessToken = async (req: Request) => {
   const { authorization } = req.headers;
   const token = utledToken(req, authorization);
   logger.info(`IdPorten-token ${JSON.stringify(token)}`);
-
-  await validateTokenByTexas(token, 'idporten');
-
   const accessToken = await exchangeToken(
     token,
     'tokenx',
