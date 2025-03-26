@@ -29,27 +29,19 @@ class TokenXClient {
   exchangeToken = async (idportenToken: any) => {
     const url = envVar('NAIS_TOKEN_EXCHANGE_ENDPOINT');
 
-    const body = {
+    const body = JSON.stringify({
       identity_provider: 'azuread',
       target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
       user_token: idportenToken,
-    };
+    });
 
-    logger.info(`Start exchangeToken - body: ${JSON.stringify(body)}`);
+    logger.info(`Start exchangeToken - body: ${body}`);
 
-    const response = await axios.post(
-      url,
-      {
-        identity_provider: 'azuread',
-        target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
-        user_token: idportenToken,
+    const response = await axios.post(url, body, {
+      headers: {
+        'Content-Type': 'application/json',
       },
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      },
-    );
+    });
 
     logger.info(`exchangeToken ${JSON.stringify(response.data)}`);
     return response.data;
