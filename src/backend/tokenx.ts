@@ -74,11 +74,13 @@ class TokenXClient {
     }
   };
 
-  exchangeToken = async (idportenToken: any) => {
+  exchangeToken = async (idportenToken: any, identityProvider: string) => {
     const url = envVar('NAIS_TOKEN_EXCHANGE_ENDPOINT');
 
+    logger.info('Henter token med identity provider:' + identityProvider);
+
     const body = JSON.stringify({
-      identity_provider: 'azuread',
+      identity_provider: identityProvider,
       target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
       user_token: idportenToken,
     });

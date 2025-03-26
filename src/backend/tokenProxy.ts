@@ -59,12 +59,23 @@ const getAccessToken = async (
   await validateTokenByTexas(token, 'azuread');
   await validateTokenByTexas(token, 'tokenx');
 
-  const accessToken = await exchangeToken(token).then(
+  const accessTokenMedAzure = await exchangeToken(token, 'azuread').then(
     // const accessToken = await exchangeToken(token, applicationName).then(
     (accessToken) => accessToken,
   );
+
+  exchangeToken(token, 'idporten').then(
+    // const accessToken = await exchangeToken(token, applicationName).then(
+    (accessToken) => accessToken,
+  );
+
+  await exchangeToken(token, 'tokenx').then(
+    // const accessToken = await exchangeToken(token, applicationName).then(
+    (accessToken) => accessToken,
+  );
+
   generateToken();
-  return `Bearer ${accessToken}`;
+  return `Bearer ${accessTokenMedAzure}`;
 };
 
 const getFakedingsToken = async (applicationName: string) => {
