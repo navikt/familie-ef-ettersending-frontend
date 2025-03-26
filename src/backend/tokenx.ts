@@ -27,11 +27,16 @@ class TokenXClient {
       .catch(() => process.exit(1));
   }
 
-  validateTokenByTexas = async (idportenToken: any) => {
+  validateTokenByTexas = async (
+    idportenToken: any,
+    identityProvider: string,
+  ) => {
     const valideTokenUrl = envVar('NAIS_TOKEN_INTROSPECTION_ENDPOINT');
 
+    logger.info('Validerer token med identity provider:' + identityProvider);
+
     const requestBody = JSON.stringify({
-      identity_provider: 'tokenx',
+      identity_provider: identityProvider,
       token: idportenToken,
     });
 
@@ -46,7 +51,13 @@ class TokenXClient {
           'Content-Type': 'application/json',
         },
       });
-      logger.info('Token er gyldig, fikk kontakt med Texas!', response.data);
+      logger.info('Fikk kontakt med Texas!', response.data);
+
+      if (response.data.active) {
+        logger.info('Token er gyldig');
+      } else {
+        logger.warn('Token er ugyldig: ', response.data.error);
+      }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         if (error.response) {

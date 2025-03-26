@@ -55,7 +55,8 @@ const getAccessToken = async (
   const token = utledToken(req, authorization);
   logger.info(`IdPorten-token ${JSON.stringify(token)}`);
 
-  validateTokenByTexas(token);
+  await validateTokenByTexas(token, 'azuread');
+  await validateTokenByTexas(token, 'tokenx');
 
   const accessToken = await exchangeToken(token).then(
     // const accessToken = await exchangeToken(token, applicationName).then(
