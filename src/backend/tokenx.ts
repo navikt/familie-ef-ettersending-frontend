@@ -116,17 +116,17 @@ class TokenXClient {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          logger.info('error.response');
-          logger.info(error.response.data);
-          logger.info(error.response.status);
-          logger.info(error.response.headers);
+          logger.error('error.response');
+          logger.error(error.response.data);
+          logger.error(error.response.status);
+          logger.error(error.response.headers);
         } else if (error.request) {
-          logger.info('error.request');
-          logger.info(error.request);
+          logger.error('error.request');
+          logger.error(error.request);
         } else {
-          logger.info('error.message');
-          logger.info('Error', error.message);
-          logger.info('Error --', error);
+          logger.error('error.message');
+          logger.error('Error', error.message);
+          logger.error('Error --', error);
         }
       }
 
