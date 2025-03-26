@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
+import axios, { post } from 'axios';
 import { Issuer } from 'openid-client';
 import jwt from 'jsonwebtoken';
 import { v4 as uuid } from 'uuid';
@@ -72,7 +72,7 @@ class TokenXClient {
       user_token: idportenToken,
     });
 
-    const response = await fetch(url, {
+    const response = await post(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
