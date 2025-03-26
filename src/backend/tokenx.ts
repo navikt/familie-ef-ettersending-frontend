@@ -9,6 +9,11 @@ import environment, { isLocal } from './environment';
 import { envVar } from './envVar';
 import axios from 'axios';
 
+type SuccessResponse = {
+  access_token: string;
+  expires_in: number;
+};
+
 class TokenXClient {
   private tokenxClient: any = null;
   private audience: any = null;
@@ -35,22 +40,24 @@ class TokenXClient {
 
     logger.info('Validerer token med identity provider:' + identityProvider);
 
-    const requestBody = JSON.stringify({
-      identity_provider: identityProvider,
-      token: idportenToken,
-    });
-
     if (!valideTokenUrl || valideTokenUrl.length <= 0) {
       logger.error('Validerings-URL er tom eller udefinert');
       return;
     }
 
     try {
-      const response = await axios.post(valideTokenUrl, requestBody, {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        valideTokenUrl,
+        {
+          identity_provider: identityProvider,
+          token: idportenToken,
         },
-      });
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
       logger.info('Fikk kontakt med Texas!', response.data);
 
       if (response.data.active) {
@@ -78,7 +85,7 @@ class TokenXClient {
     idportenToken: any,
     identityProvider: string,
     target: string,
-  ) => {
+  ): Promise<SuccessResponse | undefined> => {
     const exchangeTokenUrl = envVar('NAIS_TOKEN_EXCHANGE_ENDPOINT');
     logger.info('Exchange token url er :' + exchangeTokenUrl);
 
@@ -89,8 +96,8 @@ class TokenXClient {
 
     logger.info('Henter token med identity provider:' + identityProvider);
 
-    const response = await axios
-      .post(
+    try {
+      const response = await axios.post<SuccessResponse>(
         exchangeTokenUrl,
         {
           identity_provider: identityProvider,
@@ -102,32 +109,29 @@ class TokenXClient {
             'Content-Type': 'application/json',
           },
         },
-      )
-      .catch(function (error) {
+      );
+
+      logger.info(`Response er: ${response.data}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
         if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
           logger.info('error.response');
           logger.info(error.response.data);
           logger.info(error.response.status);
           logger.info(error.response.headers);
         } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser
-          // and an instance of http.ClientRequest in node.js
           logger.info('error.request');
           logger.info(error.request);
         } else {
-          // Something happened in setting up the request that triggered an Error
           logger.info('error.message');
           logger.info('Error', error.message);
           logger.info('Error --', error);
         }
-      });
+      }
 
-    logger.info(`Response er: ${response}`);
-
-    return response;
+      return undefined;
+    }
   };
 
   generateToken = async () => {

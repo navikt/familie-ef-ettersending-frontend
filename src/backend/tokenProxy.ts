@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import TokenXClient from './tokenx';
-import logger, { logInfo } from './logger';
+import { logInfo } from './logger';
 import { isLocal } from './environment';
 
 const { exchangeToken } = new TokenXClient();
@@ -39,16 +39,11 @@ const getAccessToken = async (req: Request) => {
   const { authorization } = req.headers;
   const token = utledToken(req, authorization);
 
-  logger.info(`IdPorten-token ${JSON.stringify(token)}`);
-
   const accessToken = await exchangeToken(
     token,
     'tokenx',
     'dev-gcp:teamfamilie:familie-ef-soknad-api',
-  ).then(
-    // const accessToken = await exchangeToken(token, applicationName).then(
-    (accessToken) => accessToken,
-  );
+  ).then((accessToken) => accessToken);
 
   return `Bearer ${accessToken}`;
 };
