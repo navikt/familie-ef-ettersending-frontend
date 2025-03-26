@@ -45,10 +45,7 @@ const utledToken = (req: Request, authorization: string | undefined) => {
   }
 };
 
-const getAccessToken = async (
-  req: Request,
-  // applicationName: ApplicationName,
-) => {
+const getAccessToken = async (req: Request) => {
   logInfo('getAccessToken', req);
   const { authorization } = req.headers;
   const token = utledToken(req, authorization);
@@ -56,7 +53,11 @@ const getAccessToken = async (
 
   await validateTokenByTexas(token, 'idporten');
 
-  const accessToken = await exchangeToken(token, 'idporten').then(
+  const accessToken = await exchangeToken(
+    token,
+    'tokenx',
+    'dev-gcp:teamfamilie:familie-ef-soknad-api',
+  ).then(
     // const accessToken = await exchangeToken(token, applicationName).then(
     (accessToken) => accessToken,
   );
