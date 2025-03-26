@@ -13,7 +13,6 @@ const attachToken = (applicationName: ApplicationName): RequestHandler => {
     req.headers[AUTHORIZATION_HEADER] = isLocal()
       ? await getFakedingsToken(applicationName)
       : await getAccessToken(req);
-    // : await getAccessToken(req, applicationName);
 
     req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
     next();
@@ -41,7 +40,9 @@ const getAccessToken = async (req: Request) => {
 
   const accessToken = await texasClient
     .exchangeToken('tokenx', 'dev-gcp:teamfamilie:familie-ef-soknad-api', token)
-    .then((accessToken) => accessToken);
+    .then((accessToken) => {
+      return accessToken.access_token;
+    });
 
   return `Bearer ${accessToken}`;
 };
