@@ -37,11 +37,19 @@ class TokenXClient {
 
     logger.info(`Start exchangeToken - body: ${JSON.stringify(body)}`);
 
-    const response = await axios.post(url, body, {
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await axios.post(
+      url,
+      {
+        identity_provider: 'azuread',
+        target: 'api://dev-gcp.teamfamilie.familie-ef-ettersending/.default',
+        user_token: idportenToken,
       },
-    });
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      },
+    );
 
     logger.info(`exchangeToken ${JSON.stringify(response.data)}`);
     return response.data;
