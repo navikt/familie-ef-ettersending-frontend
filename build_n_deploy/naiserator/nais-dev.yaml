@@ -34,11 +34,6 @@ spec:
   tokenx:
     enabled: true
   accessPolicy:
-    inbound:
-      rules:
-        - application: tokenx-token-generator
-          namespace: nais
-          cluster: dev-gcp
     outbound:
       rules:
         - application: familie-ef-soknad-api

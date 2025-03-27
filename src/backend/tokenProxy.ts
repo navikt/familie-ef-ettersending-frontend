@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { logInfo } from './logger';
+import logger, { logInfo } from './logger';
 import { isLocal } from './environment';
 import { TexasClient } from './texas';
 
@@ -11,12 +11,22 @@ const WONDERWALL_ID_TOKEN_HEADER = 'x-wonderwall-id-token';
 const attachToken = (applicationName: ApplicationName): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const audience = `dev-gcp:teamfamilie:${applicationName}`;
-    req.headers[AUTHORIZATION_HEADER] = isLocal()
-      ? await getFakedingsToken(audience)
-      : await getAccessToken(req, audience);
 
-    req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
-    next();
+    try {
+      req.headers[AUTHORIZATION_HEADER] = isLocal()
+        ? await getFakedingsToken(audience)
+        : await getAccessToken(req, audience);
+
+      req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
+      next();
+    } catch (error) {
+      logger.error(
+        `Noe gikk galt ved setting av token (${req.method} - ${req.path})) - ${error}`,
+      );
+      return res
+        .status(401)
+        .send('En uventet feil oppstod. Ingen gyldig token');
+    }
   };
 };
 
