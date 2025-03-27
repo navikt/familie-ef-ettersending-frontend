@@ -10,9 +10,10 @@ const WONDERWALL_ID_TOKEN_HEADER = 'x-wonderwall-id-token';
 
 const attachToken = (applicationName: ApplicationName): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
+    const audience = `dev-gcp:teamfamilie:${applicationName}`;
     req.headers[AUTHORIZATION_HEADER] = isLocal()
-      ? await getFakedingsToken(applicationName)
-      : await getAccessToken(req);
+      ? await getFakedingsToken(audience)
+      : await getAccessToken(req, audience);
 
     req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
     next();
@@ -31,7 +32,7 @@ const utledToken = (req: Request, authorization: string | undefined) => {
   }
 };
 
-const getAccessToken = async (req: Request) => {
+const getAccessToken = async (req: Request, audience: string) => {
   logInfo('getAccessToken', req);
   const { authorization } = req.headers;
   const token = utledToken(req, authorization);
@@ -39,7 +40,7 @@ const getAccessToken = async (req: Request) => {
   const texasClient = new TexasClient();
 
   const accessToken = await texasClient
-    .exchangeToken('tokenx', 'dev-gcp:teamfamilie:familie-ef-soknad-api', token)
+    .exchangeToken('tokenx', audience, token)
     .then((accessToken) => {
       return accessToken.access_token;
     });
@@ -47,9 +48,8 @@ const getAccessToken = async (req: Request) => {
   return `Bearer ${accessToken}`;
 };
 
-const getFakedingsToken = async (applicationName: string) => {
+const getFakedingsToken = async (audience: string) => {
   const clientId = 'dev-gcp:teamfamilie:familie-ef-ettersending';
-  const audience = `dev-gcp:teamfamilie:${applicationName}`;
 
   const url = `https://fakedings.intern.dev.nav.no/fake/tokenx?client_id=${clientId}&aud=${audience}&acr=Level4&pid=31458931375`;
   const token = await fetch(url).then(function (body) {
