@@ -7,10 +7,11 @@ export type ApplicationName = 'familie-ef-soknad-api' | 'familie-dokument';
 
 const AUTHORIZATION_HEADER = 'authorization';
 const WONDERWALL_ID_TOKEN_HEADER = 'x-wonderwall-id-token';
+const CLUSTER = isLocal() ? 'dev-gcp' : 'prod-gcp';
 
 const attachToken = (applicationName: ApplicationName): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const audience = `dev-gcp:teamfamilie:${applicationName}`;
+    const audience = `${CLUSTER}:teamfamilie:${applicationName}`;
 
     try {
       req.headers[AUTHORIZATION_HEADER] = isLocal()
