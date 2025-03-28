@@ -5,7 +5,7 @@ const isProd = () => {
   return window.location.hostname.indexOf('www') > -1;
 };
 
-const isDev = () => {
+export const isDev = () => {
   if (typeof window === 'undefined') {
     return process.env.ENV === 'dev';
   }

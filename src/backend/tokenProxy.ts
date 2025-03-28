@@ -1,13 +1,13 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import logger, { logInfo } from './logger';
-import { isLocal } from './environment';
+import { isLocal, isDev } from './environment';
 import { TexasClient } from './texas';
 
 export type ApplicationName = 'familie-ef-soknad-api' | 'familie-dokument';
 
 const AUTHORIZATION_HEADER = 'authorization';
 const WONDERWALL_ID_TOKEN_HEADER = 'x-wonderwall-id-token';
-const CLUSTER = isLocal() ? 'dev-gcp' : 'prod-gcp';
+const CLUSTER = isDev() ? 'dev-gcp' : 'prod-gcp';
 
 const attachToken = (applicationName: ApplicationName): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
