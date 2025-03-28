@@ -1,29 +1,28 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import TokenXClient from './tokenx';
-import { logWarn, logInfo } from './logger';
-import { isLocal } from './environment';
-
-const { exchangeToken } = new TokenXClient();
+import logger, { logInfo } from './logger';
+import { isLocal, isDev } from './environment';
+import { TexasClient } from './texas';
 
 export type ApplicationName = 'familie-ef-soknad-api' | 'familie-dokument';
 
 const AUTHORIZATION_HEADER = 'authorization';
 const WONDERWALL_ID_TOKEN_HEADER = 'x-wonderwall-id-token';
+const CLUSTER = isDev() ? 'dev-gcp' : 'prod-gcp';
 
 const attachToken = (applicationName: ApplicationName): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
+    const audience = `${CLUSTER}:teamfamilie:${applicationName}`;
+
     try {
       req.headers[AUTHORIZATION_HEADER] = isLocal()
-        ? await getFakedingsToken(applicationName)
-        : await getAccessToken(req, applicationName);
+        ? await getFakedingsToken(audience)
+        : await getAccessToken(req, audience);
 
       req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
       next();
     } catch (error) {
-      logWarn(
-        `Noe gikk galt ved setting av token (${req.method} - ${req.path}): `,
-        req,
-        error,
+      logger.error(
+        `Noe gikk galt ved setting av token (${req.method} - ${req.path})) - ${error}`,
       );
       return res
         .status(401)
@@ -44,24 +43,24 @@ const utledToken = (req: Request, authorization: string | undefined) => {
   }
 };
 
-const getAccessToken = async (
-  req: Request,
-  applicationName: ApplicationName,
-) => {
+const getAccessToken = async (req: Request, audience: string) => {
   logInfo('getAccessToken', req);
   const { authorization } = req.headers;
   const token = utledToken(req, authorization);
-  logInfo('IdPorten-token found: ' + (token.length > 1), req);
-  const accessToken = await exchangeToken(token, applicationName).then(
-    (accessToken) => accessToken,
-  );
+
+  const texasClient = new TexasClient();
+
+  const accessToken = await texasClient
+    .exchangeToken('tokenx', audience, token)
+    .then((accessToken) => {
+      return accessToken.access_token;
+    });
 
   return `Bearer ${accessToken}`;
 };
 
-const getFakedingsToken = async (applicationName: string) => {
+const getFakedingsToken = async (audience: string) => {
   const clientId = 'dev-gcp:teamfamilie:familie-ef-ettersending';
-  const audience = `dev-gcp:teamfamilie:${applicationName}`;
 
   const url = `https://fakedings.intern.dev.nav.no/fake/tokenx?client_id=${clientId}&aud=${audience}&acr=Level4&pid=31458931375`;
   const token = await fetch(url).then(function (body) {
