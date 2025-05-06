@@ -14,7 +14,7 @@
     "constate": "^3.3.3",
     "csp-header": "^6.1.0",
     "date-fns": "^4.1.0",
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "heic2any": "^0.0.4",
     "http-proxy-middleware": "^3.0.5",
     "html-react-parser": "^5.2.3",
