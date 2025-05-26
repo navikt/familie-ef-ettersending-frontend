@@ -55,9 +55,9 @@ spec:
       value: prod
   observability:
     autoInstrumentation:
-    enabled: true
-    runtime: nodejs
-  logging:
-    destinations:
-      - id: loki
-      - id: elastic
+      enabled: true
+      runtime: nodejs
+    logging:
+      destinations:
+        - id: loki
+        - id: elastic

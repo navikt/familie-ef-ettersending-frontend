@@ -57,7 +57,7 @@ spec:
     autoInstrumentation:
       enabled: true
       runtime: nodejs
-  logging:
-    destinations:
-      - id: loki
+    logging:
+      destinations:
+        - id: loki
       # - id: elastic
