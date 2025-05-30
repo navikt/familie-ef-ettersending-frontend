@@ -15,7 +15,7 @@ const attachToken = (applicationName: ApplicationName): RequestHandler => {
 
     try {
       req.headers[AUTHORIZATION_HEADER] = isLocal()
-        ? await getFakedingsToken(audience)
+        ? await getFakedingsToken()
         : await getAccessToken(req, audience);
 
       req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
@@ -59,8 +59,9 @@ const getAccessToken = async (req: Request, audience: string) => {
   return `Bearer ${accessToken}`;
 };
 
-const getFakedingsToken = async (audience: string) => {
+const getFakedingsToken = async () => {
   const clientId = 'dev-gcp:teamfamilie:familie-ef-ettersending';
+  const audience = 'dev-gcp:teamfamilie:familie-ef-soknad-api';
 
   const url = `https://fakedings.intern.dev.nav.no/fake/tokenx?client_id=${clientId}&aud=${audience}&acr=Level4&pid=31458931375`;
   const token = await fetch(url).then(function (body) {
