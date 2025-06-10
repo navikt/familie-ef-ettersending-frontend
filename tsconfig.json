@@ -11,8 +11,6 @@
   },
   "include": [
     "./src/backend",
-    "./src/mock-server",
-    "./src/mock-server/**/*.json",
     "src/custom.d.ts"
   ],
   "exclude": [
