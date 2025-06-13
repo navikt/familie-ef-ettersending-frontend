@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import logger, { logInfo } from './logger';
-import { isLocal, isDev } from './environment';
-import { TexasClient } from './texas';
+import logger, { logInfo } from './logger.js';
+import { isLocal, isDev } from './environment.js';
+import { TexasClient } from './texas.js';
 
 export type ApplicationName = 'familie-ef-soknad-api' | 'familie-dokument';
 

@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
-import { addCallId, doProxy } from './proxy';
-import attachToken from './tokenProxy';
-import environment from './environment';
+import { addCallId, doProxy } from './proxy.js';
+import attachToken from './tokenProxy.js';
+import environment from './environment.js';
 
 const BASE_PATH = `/familie/alene-med-barn/ettersending`;
 

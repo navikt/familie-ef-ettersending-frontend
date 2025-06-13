@@ -1,6 +1,6 @@
-import { envVar } from './envVar';
+import { envVar } from './envVar.js';
 import axios from 'axios';
-import logger from './logger';
+import logger from './logger.js';
 
 export class TexasClient {
   private async postRequest(url: string, data: object) {

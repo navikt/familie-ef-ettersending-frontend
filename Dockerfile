@@ -10,5 +10,5 @@ COPY package.json .
 
 ENV NODE_ENV production
 EXPOSE 9000
-CMD ["--import=./build/backend/register.js", "--es-module-specifier-resolution=node", "build/backend/server.js"]
+CMD ["--es-module-specifier-resolution=node", "build/backend/server.js"]
 

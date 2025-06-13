@@ -1,13 +1,13 @@
 import path from 'path';
 import express from 'express';
-import indexHandler from './dekorator';
-import environment from './environment';
+import indexHandler from './dekorator.js';
+import environment from './environment.js';
 import webpack, { MultiCompiler } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import projectWebpackDevConfig from '../webpack/webpack.development.config';
-import routes from './routes';
+import projectWebpackDevConfig from '../webpack/webpack.development.config.js';
+import routes from './routes.js';
 
 const app = express();
 
