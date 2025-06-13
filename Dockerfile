@@ -3,7 +3,6 @@ FROM gcr.io/distroless/nodejs20-debian12
 WORKDIR /var/server
 
 COPY assets ./assets
-COPY dist ./dist
 COPY build ./build
 COPY node_modules ./node_modules
 COPY package.json .
