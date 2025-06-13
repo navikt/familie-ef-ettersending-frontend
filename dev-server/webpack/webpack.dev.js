@@ -15,7 +15,7 @@ const config = mergeWithCustomize({
     ],
   },
   output: {
-    path: path.join(process.cwd(), '../../frontend_development'),
+    path: path.join(process.cwd(), 'frontend_development'),
     filename: '[name].[hash].js',
     publicPath: '/assets/',
     globalObject: 'this',

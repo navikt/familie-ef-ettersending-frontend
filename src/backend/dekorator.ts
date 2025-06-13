@@ -5,9 +5,7 @@ import logger from './logger.js';
 import environment from './environment.js';
 
 export const indexHandler: RequestHandler = (_req, res) => {
-  getHtmlWithDecorator(
-    `${path.join(process.cwd(), 'frontend_development')}/index.html`,
-  )
+  getHtmlWithDecorator(`${path.join(process.cwd(), 'dist')}/index.html`)
     .then((html) => {
       res.send(html);
     })
