@@ -1,8 +1,8 @@
 import path from 'path';
 import webpack from 'webpack';
 import { mergeWithCustomize } from 'webpack-merge';
-import common from './webpack.common';
-import CopyPlugin from 'copy-webpack-plugin';
+import common from './webpack.common.js';
+import process from 'process';
 
 const config = mergeWithCustomize({
   'entry.familie-ef-ettersending': 'prepend',
@@ -11,7 +11,6 @@ const config = mergeWithCustomize({
   mode: 'development',
   entry: {
     'familie-ef-ettersending': [
-      'react-hot-loader/patch',
       'webpack-hot-middleware/client?reload=true&overlay=false',
     ],
   },
@@ -46,14 +45,6 @@ const config = mergeWithCustomize({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.join(process.cwd(), '../../assets'),
-          to: path.join(process.cwd(), '../../frontend_development'),
-        },
-      ],
-    }),
   ],
 });
 

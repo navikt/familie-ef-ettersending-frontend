@@ -1,10 +1,8 @@
 import { RequestHandler } from 'express';
-
-import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr';
-
+import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
 import path from 'path';
-import logger from './logger';
-import environment from './environment';
+import logger from './logger.js';
+import environment from './environment.js';
 
 export const indexHandler: RequestHandler = (_req, res) => {
   getHtmlWithDecorator(`${path.join(process.cwd(), 'dist')}/index.html`)

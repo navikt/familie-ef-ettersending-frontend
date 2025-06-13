@@ -1,15 +1,11 @@
 import path from 'path';
 import webpack from 'webpack';
-import { mergeWithCustomize } from 'webpack-merge';
-import common from './webpack.common';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TypeScriptTypeChecker from 'fork-ts-checker-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import process from 'process';
 
-const config = mergeWithCustomize({
-  'entry.familie-ef-ettersending': 'prepend',
-  'module.rules': 'append',
-})(common, {
+const config = {
   entry: {
     'familie-ef-ettersending': ['./src/frontend/index.tsx'],
   },
@@ -20,12 +16,22 @@ const config = mergeWithCustomize({
   module: {
     rules: [
       {
-        test: /\.(js|ts|tsx)$/,
-        loader: 'ts-loader',
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: { transpileOnly: true },
+          },
+        ],
         exclude: /node_modules/,
-        options: {
-          transpileOnly: true,
-        },
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
       },
     ],
   },
@@ -43,7 +49,7 @@ const config = mergeWithCustomize({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(process.cwd(), '../../src/frontend/index.html'),
+      template: path.join(process.cwd(), '/src/frontend/index.html'),
       inject: 'body',
       alwaysWriteToDisk: true,
     }),
@@ -51,6 +57,6 @@ const config = mergeWithCustomize({
     new webpack.NoEmitOnErrorsPlugin(),
     new CssMinimizerPlugin(),
   ],
-});
+};
 
 export default config;
