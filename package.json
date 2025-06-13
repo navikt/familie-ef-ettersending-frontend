@@ -31,6 +31,7 @@
   "scripts": {
     "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node build/backend/server.js",
     "start": "node build/backend/server.js",
+    "build": "tsc -p tsconfig.backend.json",
     "build:dev": "webpack --config ./dev-server/webpack/webpack.dev.js",
     "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",

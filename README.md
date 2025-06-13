@@ -8,7 +8,7 @@ Frontend app for ettersending av dokumentasjon vedrørende søknader tilknyttet 
 2. Kjør opp `familie-ef-soknad-api` med launcheren `ApplicationLocalLauncher`
 3. Kjør opp `familie-dokument` med launcheren `DevLauncherForSøknad`
 4. `yarn start:dev`
-5. Åpne http://localhost:3000 i nettleseren
+5. Åpne http://localhostø:3000 i nettleseren
 6. Dersom du trenger å kjøre med et annet fødselsnummer enn default: gå til http://localhost:8091/local/cookie?issuerId=tokenx&audience=familie-app&subject=[gyldigFnr]&redirect
 
 ## Henvendelser
