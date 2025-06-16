@@ -5,7 +5,6 @@ import environment from './environment.js';
 import webpack, { MultiCompiler } from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
-
 import projectWebpackDevConfig from '../webpack/webpack.development.config.js';
 import routes from './routes.js';
 
@@ -37,7 +36,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(routes());
-app.get('*', indexHandler);
+app.get('/*splat', indexHandler);
 
 console.log('server listening on port', environment().port);
 
