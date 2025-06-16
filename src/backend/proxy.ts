@@ -3,7 +3,7 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ClientRequest, IncomingMessage } from 'http';
 import * as querystring from 'querystring';
 import { v4 as uuid } from 'uuid';
-import logger from './logger';
+import logger from './logger.js';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
   const requestBody = (req as Request).body;

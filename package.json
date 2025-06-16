@@ -16,8 +16,8 @@
     "date-fns": "^4.1.0",
     "express": "^4.21.2",
     "heic2any": "^0.0.4",
-    "http-proxy-middleware": "^3.0.5",
     "html-react-parser": "^5.2.5",
+    "http-proxy-middleware": "^3.0.5",
     "react": "^19.1.0",
     "react-dev-utils": "^12.0.1",
     "react-dom": "^19.1.0",
@@ -29,13 +29,12 @@
     "winston": "^3.17.0"
   },
   "scripts": {
-    "start:dev": "tsc -p tsconfig.backend.json && yarn set-node-options NODE_ENV=development node build/backend/server.js",
+    "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node build/backend/server.js",
     "build": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=production webpack --config src/webpack/webpack.production.config.js && tsc -p tsconfig.backend.json",
-    "build:dev": "webpack --config ./build_n_deploy/webpack/webpack.dev.js",
+    "build:dev": "webpack --config ./dev-server/webpack/webpack.dev.js && tsc -p tsconfig.backend.json",
     "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
-    "prepare": "husky install",
-    "set-node-options": "NODE_OPTIONS='--import=./build/backend/register.js --es-module-specifier-resolution=node'"
+    "prepare": "husky install"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css}": [
@@ -50,6 +49,7 @@
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
     "@babel/runtime": "^7.27.1",
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "^22.15.21",
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19.1.5",
@@ -77,7 +77,6 @@
     "prettier": "^3.5.3",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.2",
-    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1",
