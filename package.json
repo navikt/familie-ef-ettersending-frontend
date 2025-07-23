@@ -10,7 +10,7 @@
     "@navikt/nav-dekoratoren-moduler": "^3.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.1",
     "@types/uuid": "^10.0.0",
-    "axios": "^1.10.0",
+    "axios": "^1.11.0",
     "constate": "^3.3.3",
     "csp-header": "^6.1.0",
     "date-fns": "^4.1.0",
