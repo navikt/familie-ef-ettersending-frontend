@@ -16,6 +16,7 @@
     "jsx": "react-jsx",
     "typeRoots": ["../../node_modules/@types", "./@types"]
   },
+  "include": ["global.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
   "exclude": [
     "../../node_modules",
     "../../dist",
