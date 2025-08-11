@@ -5,55 +5,9 @@ import {
   InnloggetStatus,
 } from '../shared-utils/autentisering';
 import sjekklisteikon from './icons/sjekklisteikon.svg';
-import styled from 'styled-components';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
-import { BodyLong, Heading, Loader } from '@navikt/ds-react';
-
-const FlexBox = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const Bakgrunn = styled.div`
-  background-color: var(--a-bg-subtle);
-  padding-top: 5rem;
-  padding-bottom: 8rem;
-
-  @media (max-width: 480px) {
-    padding: 0;
-  }
-`;
-
-const AppContainer = styled.div`
-  width: 792px;
-  margin: auto;
-  background-color: var(--a-bg-default);
-  padding: 56px 80px 2rem 80px;
-  border-radius: 4px;
-
-  > h1 {
-    width: fit-content;
-    margin: auto;
-    padding-bottom: 32px;
-    margin-bottom: 32px;
-    margin-top: 32px;
-    border-bottom: 4px solid black;
-    text-align: center;
-  }
-
-  > p {
-    text-align: center;
-    margin-bottom: 48px;
-  }
-
-  @media (max-width: 480px) {
-    padding: 56px 15px 2rem 15px;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
+import { BodyLong, Heading, Loader, VStack } from '@navikt/ds-react';
+import styles from './App.module.css';
 
 const App: React.FC = () => {
   const context = useApp();
@@ -62,36 +16,43 @@ const App: React.FC = () => {
 
   if (context.innloggetStatus === InnloggetStatus.AUTENTISERT) {
     return (
-      <Bakgrunn>
-        <AppContainer>
-          <FlexBox>
-            <img
-              src={sjekklisteikon}
-              className="sjekklisteikon"
-              alt="sjekklisteikon"
-              aria-hidden={true}
-            />
-          </FlexBox>
-          <Heading level={'1'} size={'xlarge'}>
-            Ettersending av dokumentasjon
-          </Heading>
-          <BodyLong>
-            Her kan du sende inn manglende dokumentasjon til saken din
-          </BodyLong>
-          <Ettersendingsoversikt />
-        </AppContainer>
-      </Bakgrunn>
+      <div className={styles.bakgrunn}>
+        <div className={styles.container}>
+          <VStack gap={'4'}>
+            <VStack align={'center'}>
+              <div>
+                <img
+                  src={sjekklisteikon}
+                  className="sjekklisteikon"
+                  alt="sjekklisteikon"
+                  aria-hidden={true}
+                />
+              </div>
+            </VStack>
+
+            <Heading level={'1'} size={'large'} align="center">
+              Ettersending av dokumentasjon
+            </Heading>
+
+            <BodyLong align="center">
+              Her kan du sende inn manglende dokumentasjon til saken din
+            </BodyLong>
+
+            <Ettersendingsoversikt />
+          </VStack>
+        </div>
+      </div>
     );
   } else {
     return (
-      <FlexBox>
+      <VStack align={'center'}>
         <Loader
           size={'xlarge'}
           title={'Venter på innlogging'}
           onResize={undefined}
           onResizeCapture={undefined}
         />
-      </FlexBox>
+      </VStack>
     );
   }
 };
