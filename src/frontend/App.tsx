@@ -18,23 +18,28 @@ const App: React.FC = () => {
     return (
       <div className={styles.bakgrunn}>
         <div className={styles.container}>
-          <VStack align={'center'}>
-            <div>
-              <img
-                src={sjekklisteikon}
-                className="sjekklisteikon"
-                alt="sjekklisteikon"
-                aria-hidden={true}
-              />
-            </div>
+          <VStack gap={'4'}>
+            <VStack align={'center'}>
+              <div>
+                <img
+                  src={sjekklisteikon}
+                  className="sjekklisteikon"
+                  alt="sjekklisteikon"
+                  aria-hidden={true}
+                />
+              </div>
+            </VStack>
+
+            <Heading level={'1'} size={'large'} align="center">
+              Ettersending av dokumentasjon
+            </Heading>
+
+            <BodyLong align="center">
+              Her kan du sende inn manglende dokumentasjon til saken din
+            </BodyLong>
+
+            <Ettersendingsoversikt />
           </VStack>
-          <Heading level={'1'} size={'xlarge'}>
-            Ettersending av dokumentasjon
-          </Heading>
-          <BodyLong>
-            Her kan du sende inn manglende dokumentasjon til saken din
-          </BodyLong>
-          <Ettersendingsoversikt />
         </div>
       </div>
     );
