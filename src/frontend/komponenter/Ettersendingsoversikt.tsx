@@ -18,6 +18,7 @@ import {
   IDokumentasjonsbehov,
   ISøknadsbehov,
 } from '../typer/ettersending';
+import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { Oppsummering } from './Oppsummering';
@@ -25,8 +26,23 @@ import { InnsendingSide } from './InnsendingSide';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov, logSidevisning } from '../utils/amplitude';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
-import { Button, HStack, Loader, VStack } from '@navikt/ds-react';
+import KnappMedPadding from '../felles/Knapp';
+import { Loader } from '@navikt/ds-react';
 import Stegindikator from './Stegindikator';
+
+const SekundærKnapp = styled(KnappMedPadding)`
+  margin: 1rem;
+`;
+
+const StyledAlertStripe = styled(AlertStripe)`
+  margin-top: 1rem;
+`;
+
+const DivMidtstillInnhold = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+`;
 
 const Ettersendingsoversikt: React.FC = () => {
   const [laster, settLasterverdi] = useState(true);
@@ -221,9 +237,9 @@ const Ettersendingsoversikt: React.FC = () => {
 
   if (laster)
     return (
-      <VStack align={'center'}>
+      <DivMidtstillInnhold>
         <Loader size={'xlarge'} title={'Venter på at siden skal lastes inn'} />
-      </VStack>
+      </DivMidtstillInnhold>
     );
 
   return (
@@ -247,12 +263,14 @@ const Ettersendingsoversikt: React.FC = () => {
             tittel={EOppsummeringstitler.Innsending}
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
-          <HStack gap={'8'}>
-            <Button variant={'secondary'} onClick={gåTilForrigeSteg}>
+          <DivMidtstillInnhold>
+            <SekundærKnapp variant={'secondary'} onClick={gåTilForrigeSteg}>
               Tilbake
-            </Button>
-            <Button onClick={sendInnEttersending}>Send inn</Button>
-          </HStack>
+            </SekundærKnapp>
+            <SekundærKnapp onClick={sendInnEttersending}>
+              Send inn
+            </SekundærKnapp>
+          </DivMidtstillInnhold>
         </>
       )}
       {aktivtSteg === 2 && (
@@ -261,7 +279,7 @@ const Ettersendingsoversikt: React.FC = () => {
           innsendinger={filtrerUtfylteInnsendinger(ettersending)}
         />
       )}
-      <AlertStripe melding={alertStripeMelding} />
+      <StyledAlertStripe melding={alertStripeMelding} />
     </>
   );
 };

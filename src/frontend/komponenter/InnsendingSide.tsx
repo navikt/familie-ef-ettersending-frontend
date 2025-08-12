@@ -2,9 +2,11 @@ import React from 'react';
 import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
 import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
 import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
+import styled from 'styled-components';
+import KnappMedPadding from '../felles/Knapp';
 import { alertMelding } from './AlertStripe';
 import { AddCircle } from '@navikt/ds-icons';
-import { Button, VStack } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 
 interface IProps {
   ettersending: IEttersending;
@@ -16,6 +18,16 @@ interface IProps {
   ekstraInnsendingerUtenVedlegg: string[];
   settAlertStripeMelding: (melding: alertMelding) => void;
 }
+
+const StyledDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const HovedKnapp = styled(KnappMedPadding)`
+  margin: 1rem;
+  margin-bottom: 0;
+`;
 
 export const InnsendingSide: React.FC<IProps> = ({
   ettersending,
@@ -63,9 +75,9 @@ export const InnsendingSide: React.FC<IProps> = ({
       >
         Legg til flere dokumenter
       </Button>
-      <VStack align={'center'}>
-        <Button onClick={visOppsummering}>Neste</Button>
-      </VStack>
+      <StyledDiv>
+        <HovedKnapp onClick={visOppsummering}>Neste</HovedKnapp>
+      </StyledDiv>
     </>
   );
 };

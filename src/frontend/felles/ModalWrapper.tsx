@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import { Button, Modal } from '@navikt/ds-react';
 import React from 'react';
 
+const ModalContainer = styled(Modal)<{ maxWidth?: number }>`
+  max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}rem` : '40rem')};
+`;
+
 const Innhold = styled.div`
   margin-right: 2rem;
   margin-left: 2rem;
@@ -31,6 +35,7 @@ interface ModalProps {
     lukkKnapp: Aksjonsknapp;
     marginTop?: number;
   };
+  maxWidth?: number;
   children?: React.ReactNode;
 }
 
@@ -45,12 +50,14 @@ export const ModalWrapper: React.FC<ModalProps> = ({
   visModal,
   onClose,
   aksjonsknapper,
+  maxWidth,
   children,
 }) => {
   return (
-    <Modal
+    <ModalContainer
       open={visModal}
       onClose={onClose ? () => onClose() : () => null}
+      maxWidth={maxWidth}
       aria-label={tittel}
       header={{ heading: tittel, closeButton: !!onClose }}
     >
@@ -75,6 +82,6 @@ export const ModalWrapper: React.FC<ModalProps> = ({
           </ButtonContainer>
         )}
       </Modal.Body>
-    </Modal>
+    </ModalContainer>
   );
 };
