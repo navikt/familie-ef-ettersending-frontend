@@ -1,6 +1,6 @@
 import path from 'path';
-import process from 'process';
 
+import process from 'process';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -71,45 +71,6 @@ const commonConfig = {
         test: /\.(jsx|tsx|ts|js)?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-      },
-      {
-        test: /\.module\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                namedExport: false,
-              },
-              importLoaders: 1,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.css$/,
-        exclude: /\.module\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                mode: 'icss',
-              },
-              importLoaders: 2,
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: [['autoprefixer']],
-              },
-            },
-          },
-        ],
       },
     ],
   },
