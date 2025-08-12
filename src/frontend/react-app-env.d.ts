@@ -4,6 +4,12 @@ declare namespace NodeJS {
     readonly PUBLIC_URL: string;
   }
 }
+
+declare module '*.module.css' {
+  const classes: { readonly [key: string]: string };
+  export default classes;
+}
+
 declare module '*.svg' {
   import * as React from 'react';
 

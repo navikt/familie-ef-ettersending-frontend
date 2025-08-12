@@ -49,6 +49,20 @@ const prodConfig = mergeWithRules({
           },
         ],
       },
+      {
+        test: /\.css$/,
+        exclude: /\.module\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: false,
+              importLoaders: 2,
+            },
+          },
+        ],
+      },
     ],
   },
   optimization: {
