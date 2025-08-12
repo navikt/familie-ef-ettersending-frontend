@@ -64,14 +64,14 @@ const Vedleggsopplaster: React.FC<IProps> = ({
     return innsending.vedlegg;
   };
 
+  const tittel = 'Last opp fil(er)';
   return (
     <>
       {åpenModal && (
         <ModalWrapper
           visModal={åpenModal}
           onClose={() => settÅpenModal(false)}
-          maxWidth={38}
-          tittel={'Last opp fil(er)'}
+          tittel={tittel}
         >
           <Vedleggsvelger
             oppdaterInnsending={oppdaterInnsending}
@@ -83,6 +83,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           />
         </ModalWrapper>
       )}
+
       <FilopplasterWrapper>
         {innsending.vedlegg.length === 0 && (
           <FlexBox>
@@ -96,6 +97,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
                 Avbryt
               </KnappMedMargin>
             )}
+
             <KnappMedMargin
               variant={'secondary'}
               onClick={() => {
@@ -103,10 +105,11 @@ const Vedleggsopplaster: React.FC<IProps> = ({
                 settAlertStripeMelding(alertMelding.TOM);
               }}
             >
-              Last opp fil(er)
+              {tittel}
             </KnappMedMargin>
           </FlexBox>
         )}
+
         {innsending.vedlegg.length >= 1 && !innsending.erSammenslått && (
           <AlertStripeMedPadding
             melding={
@@ -116,9 +119,11 @@ const Vedleggsopplaster: React.FC<IProps> = ({
             }
           />
         )}
+
         {innsending.vedlegg.length >= 1 && innsending.erSammenslått && (
           <AlertStripeMedPadding melding={alertMelding.FILER_SAMMENSLÅTT} />
         )}
+
         <OpplastedeVedlegg
           vedleggsliste={visVedleggTilOpplasting()}
           slettVedlegg={slettVedlegg}

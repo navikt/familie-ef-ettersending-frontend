@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
-import styled from 'styled-components';
 import {
   DokumentType,
   dokumenttyperForStønad,
@@ -12,36 +11,15 @@ import {
 import { IDokumentasjonsbehov } from '../typer/ettersending';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
-import KnappMedPadding from '../felles/Knapp';
-import { Alert, BodyLong, Heading, Panel, Select } from '@navikt/ds-react';
-
-const StyledSelect = styled(Select)`
-  margin-top: 1rem;
-`;
-
-const StyledPanel = styled(Panel)`
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-`;
-
-const StyledBodyLong = styled(BodyLong)`
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-`;
-
-const FlexBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
-
-const KnappMedMargin = styled(KnappMedPadding)`
-  margin: 1rem 0.5rem 0rem 0.5rem;
-`;
-
-const StyledAlertStripe = styled(AlertStripe)`
-  margin-top: 1rem;
-`;
+import {
+  Alert,
+  BodyLong,
+  Box,
+  Button,
+  Heading,
+  Select,
+  VStack,
+} from '@navikt/ds-react';
 
 interface IProps {
   innsending: IDokumentasjonsbehov;
@@ -106,10 +84,10 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
   };
 
   return (
-    <StyledPanel border>
+    <Box padding={'2'} margin={'2'}>
       {!harLåstValg && (
-        <>
-          <StyledSelect
+        <VStack gap={'2'}>
+          <Select
             label="Hvilken stønadstype gjelder innsendingen for?"
             onChange={(event: ChangeEvent<HTMLSelectElement>) => {
               settValgtStønadType(event.target.value as StønadType);
@@ -123,8 +101,8 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
                 {stønadTypeTilTekst[stønadstype]}
               </option>
             ))}
-          </StyledSelect>
-          <StyledSelect
+          </Select>
+          <Select
             label="Hvilken dokumenttype gjelder innsendingen for?"
             onChange={(event: ChangeEvent<HTMLSelectElement>) => {
               settValgtDokumentType(event.target.value as DokumentType);
@@ -138,20 +116,21 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
                 {dokumentTypeTilTekst[dokumenttype]}
               </option>
             ))}
-          </StyledSelect>
-        </>
+          </Select>
+        </VStack>
       )}
+
       {harLåstValg && (
-        <>
+        <VStack gap={'2'}>
           <Alert variant={erDokumentasjonSendt ? 'success' : 'warning'} inline>
             <Heading level={'2'} size={'small'}>
               {innsending.beskrivelse}
             </Heading>
           </Alert>
-          <StyledBodyLong>
+          <BodyLong>
             <strong>Stønadstype: </strong>
             {stønadTypeTilTekst[valgtStønadType as StønadType]}
-          </StyledBodyLong>
+          </BodyLong>
           <Vedleggsopplaster
             innsending={innsending}
             slettInnsedning={slettEkstraInnsending}
@@ -163,29 +142,31 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
             }
             settAlertStripeMelding={settOverordnetAlertStripeMelding}
           />
-        </>
+        </VStack>
       )}
+
       {!harLåstValg && (
-        <FlexBox>
-          <KnappMedMargin
+        <VStack gap={'2'} align={'center'}>
+          <Button
             type={'button'}
             variant={'tertiary'}
             onClick={() => slettEkstraInnsending(innsending.id)}
             title={'Slett opplastede vedlegg'}
           >
             Avbryt
-          </KnappMedMargin>
-          <KnappMedMargin variant={'secondary'} onClick={håndterKnappeKlikk}>
+          </Button>
+          <Button variant={'secondary'} onClick={håndterKnappeKlikk}>
             Neste
-          </KnappMedMargin>
-        </FlexBox>
+          </Button>
+        </VStack>
       )}
-      <StyledAlertStripe melding={alertStripeMelding} />
+
+      <AlertStripe melding={alertStripeMelding} />
       {innsendingerUtenVedlegg.includes(innsending.id) && (
-        <StyledAlertStripe
+        <AlertStripe
           melding={alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS}
         />
       )}
-    </StyledPanel>
+    </Box>
   );
 };
