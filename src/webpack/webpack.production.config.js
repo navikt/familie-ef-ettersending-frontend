@@ -35,14 +35,14 @@ const prodConfig = mergeWithRules({
   module: {
     rules: [
       {
-        test: /\.(less|css)$/,
+        test: /\.module\.css$/,
         use: [
-          { loader: MiniCssExtractPlugin.loader },
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
               modules: {
-                mode: 'icss',
+                namedExport: false,
               },
               importLoaders: 1,
             },
@@ -57,7 +57,9 @@ const prodConfig = mergeWithRules({
           {
             loader: 'css-loader',
             options: {
-              modules: false,
+              modules: {
+                mode: 'icss',
+              },
               importLoaders: 2,
             },
           },
