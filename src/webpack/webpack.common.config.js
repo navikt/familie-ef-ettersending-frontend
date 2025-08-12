@@ -1,5 +1,4 @@
 import path from 'path';
-import process from 'process';
 
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
@@ -19,7 +18,7 @@ export const createHtmlWebpackPlugin = (prodMode) => {
     alwaysWriteToDisk: true,
     // Dette gjør at hvis vi navigerer direkte til /basepath/om-barna/ så henter vi fortsatt main.js fra /basepath/main.js
     // Det trengs kun i prod-mode, i dev-mode tar webpackDevMiddleware seg av alt
-    publicPath: prodMode ? (process.env.BASE_PATH ?? '/') : 'auto',
+    publicPath: prodMode ? process.env.BASE_PATH ?? '/' : 'auto',
   });
 };
 
@@ -71,46 +70,6 @@ const commonConfig = {
         test: /\.(jsx|tsx|ts|js)?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-      },
-
-      {
-        test: /\.module\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                namedExport: false,
-              },
-              importLoaders: 1,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.css$/,
-        exclude: /\.module\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                mode: 'icss',
-              },
-              importLoaders: 2,
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: [['autoprefixer']],
-              },
-            },
-          },
-        ],
       },
     ],
   },
