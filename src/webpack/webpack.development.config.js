@@ -26,8 +26,6 @@ const devConfig = mergeWithRules({
       configType: 'flat',
       extensions: [`ts`, `tsx`],
       cache: true,
-      emitWarning: true,
-      emitError: false,
     }),
   ],
   module: {
@@ -39,6 +37,21 @@ const devConfig = mergeWithRules({
         options: {
           plugins: ['react-refresh/babel'],
         },
+      },
+      {
+        test: /\.(less|css)$/,
+        use: [
+          { loader: 'style-loader' },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                mode: 'icss',
+              },
+              importLoaders: 1,
+            },
+          },
+        ],
       },
     ],
   },
