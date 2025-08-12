@@ -69,6 +69,14 @@ const devConfig = mergeWithRules({
               importLoaders: 2,
             },
           },
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [['autoprefixer']],
+              },
+            },
+          },
         ],
       },
     ],
