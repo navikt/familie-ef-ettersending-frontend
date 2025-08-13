@@ -16,9 +16,9 @@ const App: React.FC = () => {
 
   if (context.innloggetStatus === InnloggetStatus.AUTENTISERT) {
     return (
-      <div className={styles.bakgrunn}>
-        <div className={styles.container}>
-          <VStack gap={'4'}>
+      <VStack gap={'4'}>
+        <div className={styles.bakgrunn}>
+          <div className={styles.container}>
             <VStack align={'center'}>
               <div>
                 <img
@@ -36,9 +36,9 @@ const App: React.FC = () => {
               Her kan du sende inn manglende dokumentasjon til saken din
             </BodyLong>
             <Ettersendingsoversikt />
-          </VStack>
+          </div>
         </div>
-      </div>
+      </VStack>
     );
   } else {
     return (
