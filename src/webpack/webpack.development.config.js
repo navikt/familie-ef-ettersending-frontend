@@ -26,6 +26,8 @@ const devConfig = mergeWithRules({
       configType: 'flat',
       extensions: [`ts`, `tsx`],
       cache: true,
+      emitWarning: true,
+      emitError: false,
     }),
   ],
   module: {
