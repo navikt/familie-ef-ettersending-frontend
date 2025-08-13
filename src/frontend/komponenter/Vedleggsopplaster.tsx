@@ -70,7 +70,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
         <ModalWrapper
           visModal={åpenModal}
           onClose={() => settÅpenModal(false)}
-          maxWidth={38}
           tittel={'Last opp fil(er)'}
         >
           <Vedleggsvelger

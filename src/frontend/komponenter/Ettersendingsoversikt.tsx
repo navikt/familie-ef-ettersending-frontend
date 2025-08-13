@@ -18,7 +18,6 @@ import {
   IDokumentasjonsbehov,
   ISøknadsbehov,
 } from '../typer/ettersending';
-import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { Oppsummering } from './Oppsummering';
@@ -26,23 +25,8 @@ import { InnsendingSide } from './InnsendingSide';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov, logSidevisning } from '../utils/amplitude';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
-import KnappMedPadding from '../felles/Knapp';
-import { Loader } from '@navikt/ds-react';
+import { Button, Loader, VStack } from '@navikt/ds-react';
 import Stegindikator from './Stegindikator';
-
-const SekundærKnapp = styled(KnappMedPadding)`
-  margin: 1rem;
-`;
-
-const StyledAlertStripe = styled(AlertStripe)`
-  margin-top: 1rem;
-`;
-
-const DivMidtstillInnhold = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-`;
 
 const Ettersendingsoversikt: React.FC = () => {
   const [laster, settLasterverdi] = useState(true);
@@ -237,9 +221,9 @@ const Ettersendingsoversikt: React.FC = () => {
 
   if (laster)
     return (
-      <DivMidtstillInnhold>
+      <VStack align={'center'} justify={'space-between'}>
         <Loader size={'xlarge'} title={'Venter på at siden skal lastes inn'} />
-      </DivMidtstillInnhold>
+      </VStack>
     );
 
   return (
@@ -257,29 +241,30 @@ const Ettersendingsoversikt: React.FC = () => {
           settAlertStripeMelding={settAlertStripeMelding}
         />
       )}
+
       {aktivtSteg === 1 && (
         <>
           <Oppsummering
             tittel={EOppsummeringstitler.Innsending}
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
-          <DivMidtstillInnhold>
-            <SekundærKnapp variant={'secondary'} onClick={gåTilForrigeSteg}>
+          <VStack align={'center'} justify={'space-between'}>
+            <Button variant={'secondary'} onClick={gåTilForrigeSteg}>
               Tilbake
-            </SekundærKnapp>
-            <SekundærKnapp onClick={sendInnEttersending}>
-              Send inn
-            </SekundærKnapp>
-          </DivMidtstillInnhold>
+            </Button>
+            <Button onClick={sendInnEttersending}>Send inn</Button>
+          </VStack>
         </>
       )}
+
       {aktivtSteg === 2 && (
         <Oppsummering
           tittel={EOppsummeringstitler.Kvittering}
           innsendinger={filtrerUtfylteInnsendinger(ettersending)}
         />
       )}
-      <StyledAlertStripe melding={alertStripeMelding} />
+
+      <AlertStripe melding={alertStripeMelding} />
     </>
   );
 };
