@@ -23,5 +23,6 @@
     "../backend",
     "../webpack"
   ],
+  "include": ["**/*.ts", "**/*.tsx", "global.d.ts"],
   "lib": ["es2015", "esnext"]
 }
