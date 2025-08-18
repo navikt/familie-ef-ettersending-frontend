@@ -6,7 +6,6 @@ import {
   IVedleggForEttersending,
 } from '../typer/ettersending';
 import { sendVedleggTilMellomlager, slåSammenVedlegg } from '../api-service';
-import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { logFeilFilopplasting } from '../utils/amplitude';
 import {
@@ -18,76 +17,16 @@ import {
 import heic2any from 'heic2any';
 import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
 import axios from 'axios';
-import KnappMedPadding from '../felles/Knapp';
-import { Upload } from '@navikt/ds-icons';
-import { BodyShort, Heading, Label, Loader } from '@navikt/ds-react';
-
-const Filvelger = styled.div`
-  margin-top: 1rem;
-  text-align: center;
-  font-weight: bold;
-  border: 2px dashed var(--a-border-strong);
-  border-radius: 4px;
-  background-color: var(--a-gray-200);
-  height: 4rem;
-  line-height: 4rem;
-  color: var(--a-blue-700);
-  cursor: pointer;
-  align-content: center;
-`;
-
-const OpplastingIkon = styled(Upload)`
-  display: inline-block;
-  margin-right: 0.5rem;
-`;
-
-const OpplastingTekst = styled(BodyShort)`
-  display: inline-block;
-`;
-
-const SpinnerWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const StyledAlertStripe = styled(AlertStripe)`
-  margin-bottom: 1rem;
-`;
-
-const Container = styled.div`
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-`;
-
-const StyledSentrertTekst = styled(BodyShort)`
-  padding-top: 1rem;
-  text-align: center;
-`;
-
-const SentrertTekst = styled(BodyShort)`
-  text-align: center;
-`;
-
-const KnappContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding-top: 1rem;
-`;
-
-const FlexBox = styled.div`
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-`;
-
-const StyledBodyShort = styled(BodyShort)`
-  margin-left: 0.25rem;
-  align-self: baseline;
-`;
-
-const StyledLabel = styled(Label)`
-  align-self: baseline;
-`;
+import {
+  BodyShort,
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Loader,
+  VStack,
+} from '@navikt/ds-react';
+import { Filvelger } from './Filvelger';
 
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
@@ -273,54 +212,57 @@ const Vedleggsvelger: React.FC<IProps> = ({
   });
 
   return (
-    <Container>
-      <Heading level={'1'} size={'xsmall'}>
-        {beskrivelse}
-      </Heading>
-      <FlexBox>
-        <StyledLabel>Stønadstype:</StyledLabel>
-        <StyledBodyShort>
-          {stønadTypeTilTekst[stønadType as StønadType]}
-        </StyledBodyShort>
-      </FlexBox>
-      <Filvelger>
-        <div {...getRootProps()}>
-          <input {...getInputProps()} />
-          <OpplastingIkon title={'Last opp'} />
-          <OpplastingTekst>Velg filer</OpplastingTekst>
-        </div>
-      </Filvelger>
-      <OpplastedeVedlegg
-        vedleggsliste={vedleggForSammenslåing}
-        slettVedlegg={slettVedlegg}
-      />
-      {laster && (
-        <SpinnerWrapper>
-          <Loader
-            size={'large'}
-            title={'venter på at valgte filer skal lastes opp'}
-          />
-        </SpinnerWrapper>
-      )}
-      <StyledSentrertTekst size={'small'}>
-        Hvis dokumentet du skal sende inn består av flere filer, kan du legge
-        til alle filene her.
-      </StyledSentrertTekst>
-      {skalDokumenttypeSlåsSammen(innsending.dokumenttype) && (
-        <SentrertTekst size={'small'}>
-          Filene blir slått sammen til ett dokument.
-        </SentrertTekst>
-      )}
-      <StyledAlertStripe melding={alertStripeMelding} />
-      <KnappContainer>
-        <KnappMedPadding
-          onClick={slåSammenVedleggOgOppdaterInnsending}
-          disabled={vedleggForSammenslåing.length < 1 || laster}
-        >
-          Last opp
-        </KnappMedPadding>
-      </KnappContainer>
-    </Container>
+    <Box margin={'space-4'}>
+      <VStack gap={'1'}>
+        <Heading level={'1'} size={'xsmall'}>
+          {beskrivelse}
+        </Heading>
+
+        <HStack>
+          <BodyShort>
+            <b>Stønadstype:</b> {stønadTypeTilTekst[stønadType as StønadType]}
+          </BodyShort>
+        </HStack>
+
+        <Filvelger getRootProps={getRootProps} getInputProps={getInputProps} />
+
+        <OpplastedeVedlegg
+          vedleggsliste={vedleggForSammenslåing}
+          slettVedlegg={slettVedlegg}
+        />
+
+        {laster && (
+          <div>
+            <Loader
+              size={'large'}
+              title={'venter på at valgte filer skal lastes opp'}
+            />
+          </div>
+        )}
+
+        <BodyShort size={'small'}>
+          Hvis dokumentet du skal sende inn består av flere filer, kan du legge
+          til alle filene her.
+        </BodyShort>
+
+        {skalDokumenttypeSlåsSammen(innsending.dokumenttype) && (
+          <BodyShort size={'small'}>
+            Filene blir slått sammen til ett dokument.
+          </BodyShort>
+        )}
+
+        <AlertStripe melding={alertStripeMelding} />
+
+        <VStack align={'center'}>
+          <Button
+            onClick={slåSammenVedleggOgOppdaterInnsending}
+            disabled={vedleggForSammenslåing.length < 1 || laster}
+          >
+            Last opp
+          </Button>
+        </VStack>
+      </VStack>
+    </Box>
   );
 };
 

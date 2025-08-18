@@ -16,12 +16,6 @@ const ButtonContainer = styled.div<{ marginTop?: number }>`
   margin-bottom: 0.5rem;
 `;
 
-const ModalKnapp = styled(Button)`
-  padding-right: 1.5rem;
-  padding-left: 1.5rem;
-  margin-left: 1rem;
-`;
-
 interface ModalProps {
   tittel: string;
   visModal: boolean;
@@ -58,20 +52,20 @@ export const ModalWrapper: React.FC<ModalProps> = ({
         <Innhold>{children}</Innhold>
         {aksjonsknapper && (
           <ButtonContainer marginTop={aksjonsknapper.marginTop}>
-            <ModalKnapp
+            <Button
               variant="tertiary"
               onClick={aksjonsknapper.lukkKnapp.onClick}
               disabled={aksjonsknapper.lukkKnapp.disabled}
             >
               {aksjonsknapper.lukkKnapp.tekst}
-            </ModalKnapp>
-            <ModalKnapp
+            </Button>
+            <Button
               variant="primary"
               onClick={aksjonsknapper.hovedKnapp.onClick}
               disabled={aksjonsknapper.hovedKnapp.disabled}
             >
               {aksjonsknapper.hovedKnapp.tekst}
-            </ModalKnapp>
+            </Button>
           </ButtonContainer>
         )}
       </Modal.Body>
