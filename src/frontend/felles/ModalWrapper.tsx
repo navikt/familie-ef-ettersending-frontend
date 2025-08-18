@@ -2,10 +2,6 @@ import styled from 'styled-components';
 import { Button, Modal } from '@navikt/ds-react';
 import React from 'react';
 
-const ModalContainer = styled(Modal)<{ maxWidth?: number }>`
-  max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}rem` : '40rem')};
-`;
-
 const Innhold = styled.div`
   margin-right: 2rem;
   margin-left: 2rem;
@@ -20,12 +16,6 @@ const ButtonContainer = styled.div<{ marginTop?: number }>`
   margin-bottom: 0.5rem;
 `;
 
-const ModalKnapp = styled(Button)`
-  padding-right: 1.5rem;
-  padding-left: 1.5rem;
-  margin-left: 1rem;
-`;
-
 interface ModalProps {
   tittel: string;
   visModal: boolean;
@@ -35,7 +25,6 @@ interface ModalProps {
     lukkKnapp: Aksjonsknapp;
     marginTop?: number;
   };
-  maxWidth?: number;
   children?: React.ReactNode;
 }
 
@@ -50,14 +39,12 @@ export const ModalWrapper: React.FC<ModalProps> = ({
   visModal,
   onClose,
   aksjonsknapper,
-  maxWidth,
   children,
 }) => {
   return (
-    <ModalContainer
+    <Modal
       open={visModal}
       onClose={onClose ? () => onClose() : () => null}
-      maxWidth={maxWidth}
       aria-label={tittel}
       header={{ heading: tittel, closeButton: !!onClose }}
     >
@@ -65,23 +52,23 @@ export const ModalWrapper: React.FC<ModalProps> = ({
         <Innhold>{children}</Innhold>
         {aksjonsknapper && (
           <ButtonContainer marginTop={aksjonsknapper.marginTop}>
-            <ModalKnapp
+            <Button
               variant="tertiary"
               onClick={aksjonsknapper.lukkKnapp.onClick}
               disabled={aksjonsknapper.lukkKnapp.disabled}
             >
               {aksjonsknapper.lukkKnapp.tekst}
-            </ModalKnapp>
-            <ModalKnapp
+            </Button>
+            <Button
               variant="primary"
               onClick={aksjonsknapper.hovedKnapp.onClick}
               disabled={aksjonsknapper.hovedKnapp.disabled}
             >
               {aksjonsknapper.hovedKnapp.tekst}
-            </ModalKnapp>
+            </Button>
           </ButtonContainer>
         )}
       </Modal.Body>
-    </ModalContainer>
+    </Modal>
   );
 };

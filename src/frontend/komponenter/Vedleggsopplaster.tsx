@@ -5,30 +5,10 @@ import {
   IVedleggForEttersending,
 } from '../typer/ettersending';
 import Vedleggsvelger from './Vedleggsvelger';
-import styled from 'styled-components';
 import { StønadType } from '../typer/stønad';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import KnappMedPadding from '../felles/Knapp';
 import { ModalWrapper } from '../felles/ModalWrapper';
-
-const FlexBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
-
-const FilopplasterWrapper = styled.div`
-  max-width: 48rem;
-`;
-
-const AlertStripeMedPadding = styled(AlertStripe)`
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-`;
-
-const KnappMedMargin = styled(KnappMedPadding)`
-  margin: 0.25rem 0.5rem;
-`;
+import { Button, VStack } from '@navikt/ds-react';
 
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
@@ -70,7 +50,6 @@ const Vedleggsopplaster: React.FC<IProps> = ({
         <ModalWrapper
           visModal={åpenModal}
           onClose={() => settÅpenModal(false)}
-          maxWidth={38}
           tittel={'Last opp fil(er)'}
         >
           <Vedleggsvelger
@@ -83,20 +62,21 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           />
         </ModalWrapper>
       )}
-      <FilopplasterWrapper>
+
+      <div>
         {innsending.vedlegg.length === 0 && (
-          <FlexBox>
+          <VStack align={'center'} justify={'space-between'}>
             {slettInnsedning && (
-              <KnappMedMargin
+              <Button
                 type={'button'}
                 variant={'tertiary'}
                 onClick={() => slettInnsedning(innsending.id)}
                 title={'Slett opplastede vedlegg'}
               >
                 Avbryt
-              </KnappMedMargin>
+              </Button>
             )}
-            <KnappMedMargin
+            <Button
               variant={'secondary'}
               onClick={() => {
                 settÅpenModal(true);
@@ -104,11 +84,11 @@ const Vedleggsopplaster: React.FC<IProps> = ({
               }}
             >
               Last opp fil(er)
-            </KnappMedMargin>
-          </FlexBox>
+            </Button>
+          </VStack>
         )}
         {innsending.vedlegg.length >= 1 && !innsending.erSammenslått && (
-          <AlertStripeMedPadding
+          <AlertStripe
             melding={
               innsending.vedlegg.length === 1
                 ? alertMelding.LASTET_OPP_EN
@@ -117,13 +97,13 @@ const Vedleggsopplaster: React.FC<IProps> = ({
           />
         )}
         {innsending.vedlegg.length >= 1 && innsending.erSammenslått && (
-          <AlertStripeMedPadding melding={alertMelding.FILER_SAMMENSLÅTT} />
+          <AlertStripe melding={alertMelding.FILER_SAMMENSLÅTT} />
         )}
         <OpplastedeVedlegg
           vedleggsliste={visVedleggTilOpplasting()}
           slettVedlegg={slettVedlegg}
         />
-      </FilopplasterWrapper>
+      </div>
     </>
   );
 };
