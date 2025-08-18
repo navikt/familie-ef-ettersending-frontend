@@ -25,7 +25,7 @@ import { InnsendingSide } from './InnsendingSide';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov, logSidevisning } from '../utils/amplitude';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
-import { Button, Loader, VStack } from '@navikt/ds-react';
+import { Button, HStack, Loader, VStack } from '@navikt/ds-react';
 import Stegindikator from './Stegindikator';
 
 const Ettersendingsoversikt: React.FC = () => {
@@ -252,12 +252,12 @@ const Ettersendingsoversikt: React.FC = () => {
             tittel={EOppsummeringstitler.Innsending}
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
-          <VStack align={'center'} justify={'space-between'}>
+          <HStack gap={'space-8'} justify={'space-between'}>
             <Button variant={'secondary'} onClick={gåTilForrigeSteg}>
               Tilbake
             </Button>
             <Button onClick={sendInnEttersending}>Send inn</Button>
-          </VStack>
+          </HStack>
         </>
       )}
 
