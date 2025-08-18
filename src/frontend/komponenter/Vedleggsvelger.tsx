@@ -232,12 +232,12 @@ const Vedleggsvelger: React.FC<IProps> = ({
         />
 
         {laster && (
-          <div>
+          <VStack align={'center'}>
             <Loader
               size={'large'}
               title={'venter på at valgte filer skal lastes opp'}
             />
-          </div>
+          </VStack>
         )}
 
         <BodyShort size={'small'}>
