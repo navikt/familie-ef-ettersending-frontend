@@ -228,7 +228,11 @@ const Ettersendingsoversikt: React.FC = () => {
 
   return (
     <>
-      <Stegindikator stegListe={stegForInnsending} aktivtSteg={aktivtSteg} />
+      <Stegindikator
+        stegListe={stegForInnsending}
+        aktivtSteg={aktivtSteg}
+        settAktivtSteg={settAktivtSteg}
+      />
       {aktivtSteg === 0 && (
         <InnsendingSide
           ettersending={ettersending}

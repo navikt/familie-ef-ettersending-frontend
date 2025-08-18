@@ -76,6 +76,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
                 Avbryt
               </Button>
             )}
+
             <Button
               variant={'secondary'}
               onClick={() => {
@@ -87,6 +88,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
             </Button>
           </VStack>
         )}
+
         {innsending.vedlegg.length >= 1 && !innsending.erSammenslått && (
           <AlertStripe
             melding={
@@ -96,9 +98,11 @@ const Vedleggsopplaster: React.FC<IProps> = ({
             }
           />
         )}
+
         {innsending.vedlegg.length >= 1 && innsending.erSammenslått && (
           <AlertStripe melding={alertMelding.FILER_SAMMENSLÅTT} />
         )}
+
         <OpplastedeVedlegg
           vedleggsliste={visVedleggTilOpplasting()}
           slettVedlegg={slettVedlegg}
