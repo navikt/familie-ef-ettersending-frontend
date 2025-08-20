@@ -1,4 +1,4 @@
-const isProd = () => {
+export const isProd = () => {
   if (typeof window === 'undefined') {
     return process.env.ENV === 'prod';
   }
