@@ -1,13 +1,13 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import logger, { logInfo } from './logger.js';
-import { isLocal, isDev } from './environment.js';
+import { isLocal, isProd } from './environment.js';
 import { TexasClient } from './texas.js';
 
 export type ApplicationName = 'familie-ef-soknad-api' | 'familie-dokument';
 
 const AUTHORIZATION_HEADER = 'authorization';
 const WONDERWALL_ID_TOKEN_HEADER = 'x-wonderwall-id-token';
-const CLUSTER = isDev() ? 'dev-gcp' : 'prod-gcp';
+const CLUSTER = isProd() ? 'prod-gcp' : 'dev-gcp';
 
 const attachToken = (applicationName: ApplicationName): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +15,7 @@ const attachToken = (applicationName: ApplicationName): RequestHandler => {
 
     try {
       req.headers[AUTHORIZATION_HEADER] = isLocal()
-        ? await getFakedingsToken()
+        ? await getFakedingsToken(audience)
         : await getAccessToken(req, audience);
 
       req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
@@ -59,9 +59,8 @@ const getAccessToken = async (req: Request, audience: string) => {
   return `Bearer ${accessToken}`;
 };
 
-const getFakedingsToken = async () => {
+const getFakedingsToken = async (audience: string) => {
   const clientId = 'dev-gcp:teamfamilie:familie-ef-ettersending';
-  const audience = 'dev-gcp:teamfamilie:familie-ef-soknad-api';
 
   const url = `https://fakedings.intern.dev.nav.no/fake/tokenx?client_id=${clientId}&aud=${audience}&acr=Level4&pid=31458931375`;
   const token = await fetch(url).then(function (body) {
