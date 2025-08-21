@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import OpplastedeVedlegg from './OpplastedeVedlegg';
+import { OpplastedeVedlegg } from './OpplastedeVedlegg';
 import {
   IDokumentasjonsbehov,
   IVedleggForEttersending,
@@ -8,7 +8,7 @@ import Vedleggsvelger from './Vedleggsvelger';
 import { StønadType } from '../typer/stønad';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { ModalWrapper } from '../felles/ModalWrapper';
-import { Button, VStack } from '@navikt/ds-react';
+import { Alert, Button, VStack } from '@navikt/ds-react';
 
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
@@ -63,7 +63,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
         </ModalWrapper>
       )}
 
-      <div>
+      <VStack gap={'2'}>
         {innsending.vedlegg.length === 0 && (
           <VStack align={'center'} justify={'space-between'}>
             {slettInnsedning && (
@@ -76,6 +76,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
                 Avbryt
               </Button>
             )}
+
             <Button
               variant={'secondary'}
               onClick={() => {
@@ -87,23 +88,24 @@ const Vedleggsopplaster: React.FC<IProps> = ({
             </Button>
           </VStack>
         )}
+
         {innsending.vedlegg.length >= 1 && !innsending.erSammenslått && (
-          <AlertStripe
-            melding={
-              innsending.vedlegg.length === 1
-                ? alertMelding.LASTET_OPP_EN
-                : alertMelding.LASTET_OPP_FLERE
-            }
-          />
+          <Alert variant="success" size="small">
+            {innsending.vedlegg.length === 1
+              ? alertMelding.LASTET_OPP_EN
+              : alertMelding.LASTET_OPP_FLERE}
+          </Alert>
         )}
+
         {innsending.vedlegg.length >= 1 && innsending.erSammenslått && (
           <AlertStripe melding={alertMelding.FILER_SAMMENSLÅTT} />
         )}
+
         <OpplastedeVedlegg
           vedleggsliste={visVedleggTilOpplasting()}
           slettVedlegg={slettVedlegg}
         />
-      </div>
+      </VStack>
     </>
   );
 };

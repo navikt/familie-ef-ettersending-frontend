@@ -1,20 +1,5 @@
-import styled from 'styled-components';
 import { Button, Modal } from '@navikt/ds-react';
 import React from 'react';
-
-const Innhold = styled.div`
-  margin-right: 2rem;
-  margin-left: 2rem;
-`;
-
-const ButtonContainer = styled.div<{ marginTop?: number }>`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: ${(props) =>
-    props.marginTop ? `${props.marginTop}rem` : '1rem'};
-  margin-right: 2rem;
-  margin-bottom: 0.5rem;
-`;
 
 interface ModalProps {
   tittel: string;
@@ -49,9 +34,9 @@ export const ModalWrapper: React.FC<ModalProps> = ({
       header={{ heading: tittel, closeButton: !!onClose }}
     >
       <Modal.Body>
-        <Innhold>{children}</Innhold>
+        <div>{children}</div>
         {aksjonsknapper && (
-          <ButtonContainer marginTop={aksjonsknapper.marginTop}>
+          <div>
             <Button
               variant="tertiary"
               onClick={aksjonsknapper.lukkKnapp.onClick}
@@ -66,7 +51,7 @@ export const ModalWrapper: React.FC<ModalProps> = ({
             >
               {aksjonsknapper.hovedKnapp.tekst}
             </Button>
-          </ButtonContainer>
+          </div>
         )}
       </Modal.Body>
     </Modal>

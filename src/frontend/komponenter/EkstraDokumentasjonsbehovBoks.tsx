@@ -17,6 +17,7 @@ import {
   Box,
   Button,
   Heading,
+  HStack,
   Select,
   VStack,
 } from '@navikt/ds-react';
@@ -84,89 +85,96 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
   };
 
   return (
-    <Box padding={'2'} margin={'2'}>
-      {!harLåstValg && (
-        <VStack gap={'2'}>
-          <Select
-            label="Hvilken stønadstype gjelder innsendingen for?"
-            onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-              settValgtStønadType(event.target.value as StønadType);
-            }}
-            value={valgtStønadType || ''}
-            aria-autocomplete={'none'}
-          >
-            <option value={undefined}>Velg stønadstype</option>
-            {stønadsTyper.map((stønadstype) => (
-              <option key={stønadstype} value={stønadstype}>
-                {stønadTypeTilTekst[stønadstype]}
-              </option>
-            ))}
-          </Select>
-          <Select
-            label="Hvilken dokumenttype gjelder innsendingen for?"
-            onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-              settValgtDokumentType(event.target.value as DokumentType);
-            }}
-            value={valgtDokumentType || ''}
-            aria-autocomplete={'none'}
-          >
-            <option value={undefined}>Velg dokumenttype</option>
-            {dokumenttyperForStønad(valgtStønadType).map((dokumenttype) => (
-              <option key={dokumenttype} value={dokumenttype}>
-                {dokumentTypeTilTekst[dokumenttype]}
-              </option>
-            ))}
-          </Select>
-        </VStack>
-      )}
+    <Box padding="space-8" borderWidth="1">
+      <VStack gap={'2'}>
+        {!harLåstValg && (
+          <VStack gap={'2'}>
+            <Select
+              label="Hvilken stønadstype gjelder innsendingen for?"
+              onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+                settValgtStønadType(event.target.value as StønadType);
+              }}
+              value={valgtStønadType || ''}
+              aria-autocomplete={'none'}
+            >
+              <option value={undefined}>Velg stønadstype</option>
+              {stønadsTyper.map((stønadstype) => (
+                <option key={stønadstype} value={stønadstype}>
+                  {stønadTypeTilTekst[stønadstype]}
+                </option>
+              ))}
+            </Select>
+            <Select
+              label="Hvilken dokumenttype gjelder innsendingen for?"
+              onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+                settValgtDokumentType(event.target.value as DokumentType);
+              }}
+              value={valgtDokumentType || ''}
+              aria-autocomplete={'none'}
+            >
+              <option value={undefined}>Velg dokumenttype</option>
+              {dokumenttyperForStønad(valgtStønadType).map((dokumenttype) => (
+                <option key={dokumenttype} value={dokumenttype}>
+                  {dokumentTypeTilTekst[dokumenttype]}
+                </option>
+              ))}
+            </Select>
+          </VStack>
+        )}
 
-      {harLåstValg && (
-        <VStack gap={'2'}>
-          <Alert variant={erDokumentasjonSendt ? 'success' : 'warning'} inline>
-            <Heading level={'2'} size={'small'}>
-              {innsending.beskrivelse}
-            </Heading>
-          </Alert>
-          <BodyLong>
-            <strong>Stønadstype: </strong>
-            {stønadTypeTilTekst[valgtStønadType as StønadType]}
-          </BodyLong>
-          <Vedleggsopplaster
-            innsending={innsending}
-            slettInnsedning={slettEkstraInnsending}
-            oppdaterInnsending={oppdaterInnsending}
-            maxFilstørrelse={filstørrelse_10MB}
-            stønadType={valgtStønadType}
-            beskrivelse={
-              dokumentTypeTilTekst[valgtDokumentType as DokumentType]
-            }
-            settAlertStripeMelding={settOverordnetAlertStripeMelding}
+        {harLåstValg && (
+          <VStack gap={'2'}>
+            <Alert
+              variant={erDokumentasjonSendt ? 'success' : 'warning'}
+              inline
+            >
+              <Heading level={'2'} size={'small'}>
+                {innsending.beskrivelse}
+              </Heading>
+            </Alert>
+            <BodyLong>
+              <strong>Stønadstype: </strong>
+              {stønadTypeTilTekst[valgtStønadType as StønadType]}
+            </BodyLong>
+            <Vedleggsopplaster
+              innsending={innsending}
+              slettInnsedning={slettEkstraInnsending}
+              oppdaterInnsending={oppdaterInnsending}
+              maxFilstørrelse={filstørrelse_10MB}
+              stønadType={valgtStønadType}
+              beskrivelse={
+                dokumentTypeTilTekst[valgtDokumentType as DokumentType]
+              }
+              settAlertStripeMelding={settOverordnetAlertStripeMelding}
+            />
+          </VStack>
+        )}
+
+        {!harLåstValg && (
+          <VStack align={'center'}>
+            <HStack gap={'2'}>
+              <Button
+                type={'button'}
+                variant={'tertiary'}
+                onClick={() => slettEkstraInnsending(innsending.id)}
+                title={'Slett opplastede vedlegg'}
+              >
+                Avbryt
+              </Button>
+              <Button variant={'secondary'} onClick={håndterKnappeKlikk}>
+                Neste
+              </Button>
+            </HStack>
+          </VStack>
+        )}
+
+        <AlertStripe melding={alertStripeMelding} />
+        {innsendingerUtenVedlegg.includes(innsending.id) && (
+          <AlertStripe
+            melding={alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS}
           />
-        </VStack>
-      )}
-
-      {!harLåstValg && (
-        <VStack gap={'2'}>
-          <Button
-            type={'button'}
-            variant={'tertiary'}
-            onClick={() => slettEkstraInnsending(innsending.id)}
-            title={'Slett opplastede vedlegg'}
-          >
-            Avbryt
-          </Button>
-          <Button variant={'secondary'} onClick={håndterKnappeKlikk}>
-            Neste
-          </Button>
-        </VStack>
-      )}
-
-      <AlertStripe melding={alertStripeMelding} />
-      {innsendingerUtenVedlegg.includes(innsending.id) && (
-        <AlertStripe
-          melding={alertMelding.MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS}
-        />
-      )}
+        )}
+      </VStack>
     </Box>
   );
 };

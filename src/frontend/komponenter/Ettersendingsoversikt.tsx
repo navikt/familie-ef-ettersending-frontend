@@ -25,7 +25,7 @@ import { InnsendingSide } from './InnsendingSide';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { logDokumentasjonsbehov, logSidevisning } from '../utils/amplitude';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
-import { Button, Loader, VStack } from '@navikt/ds-react';
+import { Button, HStack, Loader, VStack } from '@navikt/ds-react';
 import Stegindikator from './Stegindikator';
 
 const Ettersendingsoversikt: React.FC = () => {
@@ -228,7 +228,12 @@ const Ettersendingsoversikt: React.FC = () => {
 
   return (
     <>
-      <Stegindikator stegListe={stegForInnsending} aktivtSteg={aktivtSteg} />
+      <Stegindikator
+        stegListe={stegForInnsending}
+        aktivtSteg={aktivtSteg}
+        settAktivtSteg={settAktivtSteg}
+      />
+
       {aktivtSteg === 0 && (
         <InnsendingSide
           ettersending={ettersending}
@@ -248,11 +253,14 @@ const Ettersendingsoversikt: React.FC = () => {
             tittel={EOppsummeringstitler.Innsending}
             innsendinger={filtrerUtfylteInnsendinger(ettersending)}
           />
-          <VStack align={'center'} justify={'space-between'}>
-            <Button variant={'secondary'} onClick={gåTilForrigeSteg}>
-              Tilbake
-            </Button>
-            <Button onClick={sendInnEttersending}>Send inn</Button>
+          <VStack align={'center'}>
+            <HStack align={'center'} gap={'space-4'}>
+              <Button variant={'secondary'} onClick={gåTilForrigeSteg}>
+                Tilbake
+              </Button>
+
+              <Button onClick={sendInnEttersending}>Send inn</Button>
+            </HStack>
           </VStack>
         </>
       )}
