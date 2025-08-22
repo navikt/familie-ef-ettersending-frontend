@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import OpplastedeVedlegg from './OpplastedeVedlegg';
+import { OpplastedeVedlegg } from './OpplastedeVedlegg';
 import {
   IDokumentasjonsbehov,
   IVedleggForEttersending,

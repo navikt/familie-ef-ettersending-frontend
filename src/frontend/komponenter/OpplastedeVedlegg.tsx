@@ -3,67 +3,16 @@ import { IVedleggForEttersending } from '../typer/ettersending';
 import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
 import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
-import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { BodyShort, Button, Label, Link } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Link, VStack } from '@navikt/ds-react';
 import { Attachment, Delete } from '@navikt/ds-icons';
-
-const FlexBox = styled.div`
-  position: relative;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: space-between;
-  @media (max-width: 576px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-`;
-
-const IkonOgTekstDiv = styled.div`
-  margin-top: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-  @media (max-width: 576px) {
-    justify-content: center;
-  }
-`;
-
-const SlettKnapp = styled(Button)`
-  height: 3rem;
-  min-width: 11rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  @media (max-width: 576px) {
-    margin-top: 0.5rem;
-  }
-`;
-
-const FilNavnWrapper = styled.div`
-  margin-left: 0.5rem;
-  word-break: break-word;
-`;
-
-const Divider = styled.hr`
-  border: 1px solid var(--navds-semantic-color-divider);
-`;
-
-const IkonWrapper = styled.div`
-  width: 1.5rem;
-  height: 2rem;
-`;
-
-const StyledLabel = styled(Label)`
-  font-weight: bold;
-  display: inline;
-`;
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedleggForEttersending[];
   slettVedlegg: (vedlegg: IVedleggForEttersending) => void;
 }
 
-const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
+export const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
   vedleggsliste,
   slettVedlegg,
 }: IOpplastedeVedlegg) => {
@@ -88,42 +37,39 @@ const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
 
   return (
     <>
-      {vedleggsliste.map((fil: IVedleggForEttersending, index: number) => {
+      {vedleggsliste.map((fil: IVedleggForEttersending) => {
         return (
           <div key={fil.id}>
-            <FlexBox>
-              <IkonOgTekstDiv>
-                <IkonWrapper>
-                  <Attachment title={'Binders'} width={24} height={29} />
-                </IkonWrapper>
-                <FilNavnWrapper>
-                  <BodyShort>
-                    <StyledLabel as={'p'}>Navn: </StyledLabel>
-                    <Link href="#" onClick={() => visDokumentNyFane(fil)}>
-                      {fil.navn.replace(/_/g, '-')}
-                    </Link>
-                  </BodyShort>
-                </FilNavnWrapper>
-              </IkonOgTekstDiv>
-              <SlettKnapp
-                type={'button'}
-                variant={'tertiary'}
-                icon={<Delete title={'Søppeldunk'} />}
-                onClick={() => {
-                  slettVedlegg(fil);
-                }}
-                size={'small'}
-              >
-                Angre opplasting
-              </SlettKnapp>
-            </FlexBox>
-            {index === vedleggsliste.length - 1 ? null : <Divider />}
+            <VStack gap={'2'}>
+              <HStack gap={'2'} align={'center'}>
+                <Attachment title={'Binders'} width={24} height={24} />
+                <BodyShort>
+                  <b>Navn:</b>{' '}
+                </BodyShort>
+                <Link href="#" onClick={() => visDokumentNyFane(fil)}>
+                  {fil.navn.replace(/_/g, '-')}
+                </Link>
+              </HStack>
+
+              <div>
+                <Button
+                  type={'button'}
+                  variant={'tertiary'}
+                  icon={<Delete title={'Søppeldunk'} />}
+                  onClick={() => {
+                    slettVedlegg(fil);
+                  }}
+                  size={'small'}
+                >
+                  Angre opplasting
+                </Button>
+              </div>
+            </VStack>
           </div>
         );
       })}
+
       {feilmelding && <AlertStripe melding={feilmelding} />}
     </>
   );
 };
-
-export default OpplastedeVedlegg;

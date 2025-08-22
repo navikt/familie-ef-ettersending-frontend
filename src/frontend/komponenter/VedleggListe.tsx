@@ -1,23 +1,10 @@
 import React, { useState } from 'react';
 import { IVedleggForEttersending } from '../typer/ettersending';
-import styled from 'styled-components';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
-import { Attachment } from '@navikt/ds-icons';
-import { Label, Link } from '@navikt/ds-react';
-
-const IkonWrapper = styled.div`
-  width: 1.5rem;
-  height: 2rem;
-  margin-right: 0.25rem;
-`;
-
-const FlexBox = styled.div`
-  display: flex;
-  word-break: break-word;
-`;
+import { BodyShort, Link, VStack } from '@navikt/ds-react';
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedleggForEttersending[];
@@ -47,21 +34,20 @@ const VedleggListe: React.FC<IOpplastedeVedlegg> = ({
 
   return (
     <>
-      <Label as={'p'}>Dokumenter:</Label>
+      <BodyShort weight="semibold">Dokumenter:</BodyShort>
+
       {vedleggsliste.map((fil: IVedleggForEttersending) => {
         return (
           <div key={fil.id}>
-            <FlexBox>
-              <IkonWrapper>
-                <Attachment title={'Binders'} width={24} height={29} />
-              </IkonWrapper>
+            <VStack>
               <Link href="#" onClick={() => visDokumentNyFane(fil)}>
                 {fil.navn.replace(/_/g, '-')}
               </Link>
-            </FlexBox>
+            </VStack>
           </div>
         );
       })}
+
       {feilmelding && <AlertStripe melding={feilmelding} />}
     </>
   );
