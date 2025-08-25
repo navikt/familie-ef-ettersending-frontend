@@ -49,7 +49,9 @@ export const verifiserAtSøkerErAutentisert = (
 };
 
 const verifiserInnloggetApi = () => {
-  return axios.get(`${environment().apiProxyUrl}/api/innlogget`, {
+  const url = `${environment().apiProxyUrl}/api/innlogget`;
+  console.log('url', url);
+  return axios.get(url, {
     withCredentials: true,
   });
 };

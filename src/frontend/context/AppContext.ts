@@ -21,6 +21,7 @@ const [AppProvider, useApp] = createUseContext(() => {
     const hentOgSettSøker = async () => {
       if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
         const personInfo = await hentPersoninfo();
+        console.log('personInfo', personInfo);
         settSøker(personInfo.søker);
       }
     };

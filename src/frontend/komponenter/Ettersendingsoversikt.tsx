@@ -178,8 +178,11 @@ const Ettersendingsoversikt: React.FC = () => {
   }, [context.søker]);
 
   const hentOgSettSøknaderOgEttersendinger = async () => {
+    console.log('Henter søknader og ettersendinger');
     const søknadsliste = await hentSøknader();
+    console.log('søknadsliste', søknadsliste);
     const ettersendinger = await hentEttersendinger();
+    console.log('ettersendinger', ettersendinger);
 
     const søknaderMedEttersendinger: ISøknadsbehov[] = søknadsliste.map(
       (søknad: ISøknadsbehov) => {
