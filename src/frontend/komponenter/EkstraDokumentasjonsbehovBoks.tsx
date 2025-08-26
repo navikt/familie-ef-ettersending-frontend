@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { type ChangeEvent, useEffect, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import {
   DokumentType,
@@ -8,7 +8,7 @@ import {
   StønadType,
   stønadTypeTilTekst,
 } from '../typer/stønad';
-import { IDokumentasjonsbehov } from '../typer/ettersending';
+import type { IDokumentasjonsbehov } from '../typer/ettersending';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { filstørrelse_10MB } from '../utils/filer';
 import {

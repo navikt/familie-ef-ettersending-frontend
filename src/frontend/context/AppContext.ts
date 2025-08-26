@@ -5,7 +5,7 @@ import {
   verifiserAtSøkerErAutentisert,
 } from '../../shared-utils/autentisering';
 import { hentPersoninfo } from '../api-service';
-import { ISøker } from '../typer/søker';
+import type { ISøker } from '../typer/søker';
 
 const [AppProvider, useApp] = createUseContext(() => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(

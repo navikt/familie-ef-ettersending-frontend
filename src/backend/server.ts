@@ -16,6 +16,9 @@ const erDevelopment = process.env.NODE_ENV === 'development';
 
 (async () => {
   if (erDevelopment) {
+    // Register API routes before Vite middleware
+    app.use(routes());
+
     const viteModule = await import('vite');
     const viteDevServer = await viteModule.createServer({
       server: { middlewareMode: true },
@@ -28,9 +31,9 @@ const erDevelopment = process.env.NODE_ENV === 'development';
       '/familie/alene-med-barn/ettersending/',
       express.static(frontendMappe, { index: false }),
     );
+    app.use(routes());
   }
 
-  app.use(routes());
   app.get('/*splat', indexHandler);
 
   console.log('server listening on port', environment().port);

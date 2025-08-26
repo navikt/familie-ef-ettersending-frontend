@@ -1,4 +1,4 @@
-import { IVedleggForSøknad } from './ettersending';
+import type { IVedleggForSøknad } from './ettersending';
 export interface IDokumentasjonsbehovForSøknad {
   id: string;
   label: string;

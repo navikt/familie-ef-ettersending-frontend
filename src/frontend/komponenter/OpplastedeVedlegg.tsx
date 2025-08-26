@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IVedleggForEttersending } from '../typer/ettersending';
+import type { IVedleggForEttersending } from '../typer/ettersending';
 import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
 import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';

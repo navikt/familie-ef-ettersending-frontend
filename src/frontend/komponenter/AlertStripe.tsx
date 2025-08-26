@@ -1,23 +1,31 @@
 import React from 'react';
 import { Alert } from '@navikt/ds-react';
 
-export enum alertMelding {
-  SENDT_INN = 'Takk. Dokumentasjon er sendt inn.',
-  LASTET_OPP_EN = 'Filen er nå klar til å sendes inn.',
-  LASTET_OPP_FLERE = 'Filene er nå klare til å sendes inn.',
-  FILER_SAMMENSLÅTT = 'Filene er sammenslått til et dokument som er klart til å sendes inn.',
-  FEIL = 'Noe gikk galt, prøv igjen',
-  FEIL_NEDLASTING_DOKUMENT = 'Noe gikk galt ved uthenting av opplastet dokument',
-  FEIL_SAMMENSLÅING_DOKUMENT = 'Noe gikk galt ved sammenslåing av opplastede dokumenter',
-  FEIL_FOR_LITEN_FIL = 'Dokumentet du prøver å laste opp er for lite og ikke lesbart',
-  MANGLER_VEDLEGG = 'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å trykke på knappen "Legg til flere dokumenter". Velg stønadstype, dokumenttype og deretter "Last opp fil(er)"',
-  MANGLER_BEGGE_TYPER = 'Både stønadstype og dokumenttype må være valgt',
-  MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS = 'Ingen vedlegg er lastet opp',
-  FEIL_VED_INNSENDING = 'Noe gikk galt ved innsending av dine dokumenter.',
-  FEIL_FILTYPE_INNSENDING = 'En eller flere filer er av feil filtype. Tillate filtyper: pdf jpg png jpeg',
-  FEIL_STØRRELSE_INNSENDING = 'En eller flere filer er for store (maksimal filstørrelse er 10MB)',
-  TOM = '',
-}
+export const alertMelding = {
+  SENDT_INN: 'Takk. Dokumentasjon er sendt inn.',
+  LASTET_OPP_EN: 'Filen er nå klar til å sendes inn.',
+  LASTET_OPP_FLERE: 'Filene er nå klare til å sendes inn.',
+  FILER_SAMMENSLÅTT:
+    'Filene er sammenslått til et dokument som er klart til å sendes inn.',
+  FEIL: 'Noe gikk galt, prøv igjen',
+  FEIL_NEDLASTING_DOKUMENT: 'Noe gikk galt ved uthenting av opplastet dokument',
+  FEIL_SAMMENSLÅING_DOKUMENT:
+    'Noe gikk galt ved sammenslåing av opplastede dokumenter',
+  FEIL_FOR_LITEN_FIL:
+    'Dokumentet du prøver å laste opp er for lite og ikke lesbart',
+  MANGLER_VEDLEGG:
+    'Du har ikke lastet opp vedlegg. Det kan du gjøre ved å trykke på knappen "Legg til flere dokumenter". Velg stønadstype, dokumenttype og deretter "Last opp fil(er)"',
+  MANGLER_BEGGE_TYPER: 'Både stønadstype og dokumenttype må være valgt',
+  MANGLER_DOKUMENTASJON_I_EKSTRA_BOKS: 'Ingen vedlegg er lastet opp',
+  FEIL_VED_INNSENDING: 'Noe gikk galt ved innsending av dine dokumenter.',
+  FEIL_FILTYPE_INNSENDING:
+    'En eller flere filer er av feil filtype. Tillate filtyper: pdf jpg png jpeg',
+  FEIL_STØRRELSE_INNSENDING:
+    'En eller flere filer er for store (maksimal filstørrelse er 10MB)',
+  TOM: '',
+};
+
+export type alertMelding = (typeof alertMelding)[keyof typeof alertMelding];
 
 interface IProps {
   melding: alertMelding;

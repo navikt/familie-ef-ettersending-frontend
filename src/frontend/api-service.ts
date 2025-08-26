@@ -1,8 +1,8 @@
 import axios from 'axios';
 import environment from '../backend/environment';
-import { IEttersending, ISøknadsbehov } from './typer/ettersending';
-import { IPersoninfo } from './typer/søker';
-import { Ressurs } from './typer/ressurs';
+import type { IEttersending, ISøknadsbehov } from './typer/ettersending';
+import type { IPersoninfo } from './typer/søker';
+import type { Ressurs } from './typer/ressurs';
 
 interface Ifamilievedlegg {
   dokumentId: string;

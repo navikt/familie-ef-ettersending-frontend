@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { OpplastedeVedlegg } from './OpplastedeVedlegg';
-import {
+import type {
   IDokumentasjonsbehov,
   IVedleggForEttersending,
 } from '../typer/ettersending';

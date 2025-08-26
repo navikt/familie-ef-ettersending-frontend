@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { IDokumentasjonsbehov } from '../typer/ettersending';
+import type { IDokumentasjonsbehov } from '../typer/ettersending';
 import { DokumentasjonsbehovBoks } from './DokumentasjonsbehovBoks';
 import { alertMelding } from './AlertStripe';
 import { Loader, VStack } from '@navikt/ds-react';

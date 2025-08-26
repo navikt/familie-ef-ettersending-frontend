@@ -1,12 +1,15 @@
 import axios, { AxiosError } from 'axios';
-import { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import environment, { isLocal } from '../backend/environment';
 
-export enum InnloggetStatus {
-  AUTENTISERT = 'innlogget',
-  FEILET = 'ikke logget inn (innlogging feilet)',
-  IKKE_VERIFISERT = 'ikke logget inn',
-}
+export const InnloggetStatus = {
+  AUTENTISERT: 'innlogget',
+  FEILET: 'ikke logget inn (innlogging feilet)',
+  IKKE_VERIFISERT: 'ikke logget inn',
+} as const;
+
+export type InnloggetStatus =
+  (typeof InnloggetStatus)[keyof typeof InnloggetStatus];
 
 const er401Feil = (error: AxiosError) =>
   error && error.response && error.response.status === 401;
@@ -39,7 +42,9 @@ export const autentiseringsInterceptor = () => {
 export const verifiserAtSøkerErAutentisert = (
   settAutentisering: Dispatch<SetStateAction<InnloggetStatus>>,
 ) => {
-  return verifiserInnloggetApi().then((response) => {
+  const veri = verifiserInnloggetApi();
+
+  return veri.then((response) => {
     if (response && 200 === response.status) {
       settAutentisering(InnloggetStatus.AUTENTISERT);
     } else {
@@ -49,9 +54,9 @@ export const verifiserAtSøkerErAutentisert = (
 };
 
 const verifiserInnloggetApi = () => {
-  const url = `${environment().apiProxyUrl}/api/innlogget`;
+  const url = `${environment().apiProxyUrl}/innlogget`;
   console.log('url', url);
   return axios.get(url, {
-    withCredentials: true,
+    // withCredentials: true,
   });
 };

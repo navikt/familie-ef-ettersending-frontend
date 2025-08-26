@@ -1,5 +1,5 @@
 import winston from 'winston';
-import { Request } from 'express';
+import type { Request } from 'express';
 
 const logger = winston.createLogger({
   transports: [

@@ -1,4 +1,7 @@
-import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
+import type {
+  IDokumentasjonsbehov,
+  IEttersending,
+} from '../typer/ettersending';
 
 export const minstEttVedleggErLastetOpp = (
   dokumentasjonsbehov: IDokumentasjonsbehov[],

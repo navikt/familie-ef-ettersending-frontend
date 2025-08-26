@@ -1,18 +1,21 @@
-export enum RessursStatus {
-  FEILET = 'FEILET',
-  HENTER = 'HENTER',
-  IKKE_HENTET = 'IKKE_HENTET',
-  IKKE_TILGANG = 'IKKE_TILGANG',
-  SUKSESS = 'SUKSESS',
-  FUNKSJONELL_FEIL = 'FUNKSJONELL_FEIL',
-}
+export const RessursStatus = {
+  FEILET: 'FEILET',
+  HENTER: 'HENTER',
+  IKKE_HENTET: 'IKKE_HENTET',
+  IKKE_TILGANG: 'IKKE_TILGANG',
+  SUKSESS: 'SUKSESS',
+  FUNKSJONELL_FEIL: 'FUNKSJONELL_FEIL',
+} as const;
+
+export type RessursStatus = (typeof RessursStatus)[keyof typeof RessursStatus];
 
 export type RessursSuksess<T> = {
   data: T;
-  status: RessursStatus.SUKSESS;
+  status: typeof RessursStatus.SUKSESS;
 };
+
 export type RessursLaster = {
-  status: RessursStatus.HENTER;
+  status: typeof RessursStatus.HENTER;
 };
 
 export type FeilMelding = {
@@ -23,12 +26,12 @@ export type FeilMelding = {
 };
 
 export type RessursFeilet =
-  | (FeilMelding & { status: RessursStatus.IKKE_TILGANG })
-  | (FeilMelding & { status: RessursStatus.FEILET })
-  | (FeilMelding & { status: RessursStatus.FUNKSJONELL_FEIL });
+  | (FeilMelding & { status: typeof RessursStatus.IKKE_TILGANG })
+  | (FeilMelding & { status: typeof RessursStatus.FEILET })
+  | (FeilMelding & { status: typeof RessursStatus.FUNKSJONELL_FEIL });
 
 export type Ressurs<T> =
-  | { status: RessursStatus.IKKE_HENTET }
+  | { status: typeof RessursStatus.IKKE_HENTET }
   | RessursLaster
   | RessursSuksess<T>
   | RessursFeilet;

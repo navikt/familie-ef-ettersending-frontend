@@ -1,5 +1,5 @@
 import React from 'react';
-import { IDokumentasjonsbehov } from '../typer/ettersending';
+import type { IDokumentasjonsbehov } from '../typer/ettersending';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import { formaterIsoDato } from '../../shared-utils/dato';
 import { filstørrelse_10MB } from '../utils/filer';

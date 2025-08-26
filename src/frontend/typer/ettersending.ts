@@ -1,4 +1,4 @@
-import { IDokumentasjonsbehovWrapper } from './dokumentasjonsbehov';
+import type { IDokumentasjonsbehovWrapper } from './dokumentasjonsbehov';
 import { DokumentType, StønadType } from './stønad';
 
 export interface ISøknadsbehov {

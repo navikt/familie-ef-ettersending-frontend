@@ -1,7 +1,10 @@
 import React from 'react';
 import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
 import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
-import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
+import type {
+  IDokumentasjonsbehov,
+  IEttersending,
+} from '../typer/ettersending';
 import { alertMelding } from './AlertStripe';
 import { AddCircle } from '@navikt/ds-icons';
 import { Button, VStack } from '@navikt/ds-react';

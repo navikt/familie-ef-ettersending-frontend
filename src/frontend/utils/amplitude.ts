@@ -1,4 +1,4 @@
-import { IDokumentasjonsbehov } from '../typer/ettersending';
+import type { IDokumentasjonsbehov } from '../typer/ettersending';
 import { getAmplitudeInstance } from '@navikt/nav-dekoratoren-moduler';
 
 const logger = getAmplitudeInstance('dekoratoren');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IDokumentasjonsbehov } from '../typer/ettersending';
+import type { IDokumentasjonsbehov } from '../typer/ettersending';
 import { stønadTypeTilTekst } from '../typer/stønad';
 import VedleggListe from './VedleggListe';
 import { formaterIsoDato } from '../../shared-utils/dato';

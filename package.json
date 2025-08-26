@@ -8,6 +8,7 @@
     "@navikt/ds-icons": "^3.4.3",
     "@navikt/ds-react": "^7.28.1",
     "@navikt/nav-dekoratoren-moduler": "^3.4.0",
+    "@types/express": "types/express",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^5.0.1",
     "axios": "^1.11.0",
@@ -27,7 +28,7 @@
     "winston": "^3.17.0"
   },
   "scripts": {
-    "dev": "vite && NODE_ENV=development",
+    "dev": "vite",
     "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node build/backend/server.js",
     "build": "tsc -b && vite build",
     "build:dev": "webpack --config ./dev-server/webpack/webpack.dev.js && tsc -p tsconfig.backend.json",

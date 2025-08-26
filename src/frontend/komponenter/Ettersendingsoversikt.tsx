@@ -13,7 +13,7 @@ import {
   filtrerUtfylteInnsendinger,
 } from '../utils/innsendingsvalidering';
 import { v4 as uuidv4 } from 'uuid';
-import {
+import type {
   IEttersending,
   IDokumentasjonsbehov,
   ISøknadsbehov,

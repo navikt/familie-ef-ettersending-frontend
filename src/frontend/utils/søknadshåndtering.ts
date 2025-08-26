@@ -1,9 +1,9 @@
-import {
+import type {
   IEttersending,
   ISøknadsbehov,
   IVedleggForEttersending,
 } from '../typer/ettersending';
-import { IDokumentasjonsbehovForSøknad } from '../typer/dokumentasjonsbehov';
+import type { IDokumentasjonsbehovForSøknad } from '../typer/dokumentasjonsbehov';
 
 export const slåSammenSøknadOgEttersendinger = (
   søknad: ISøknadsbehov,

@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import logger, { logInfo } from './logger.js';
 import { isLocal, isProd } from './environment.js';
 import { TexasClient } from './texas.js';
@@ -35,7 +35,7 @@ const harBearerToken = (authorization: string) => {
   return authorization.includes('Bearer ');
 };
 
-const utledToken = (req: Request, authorization: string | undefined) => {
+const utledToken = (_req: Request, authorization: string | undefined) => {
   if (authorization && harBearerToken(authorization)) {
     return authorization.split(' ')[1];
   } else {

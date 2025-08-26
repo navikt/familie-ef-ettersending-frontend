@@ -6,5 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
+
+    proxy: {
+      '/familie/alene-med-barn/ettersending/api': {
+        target: 'http://localhost:8091',
+        changeOrigin: true,
+      },
+    },
   },
 });
