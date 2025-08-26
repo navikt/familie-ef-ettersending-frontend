@@ -11,6 +11,8 @@ export default defineConfig({
       '/familie/alene-med-barn/ettersending/api': {
         target: 'http://localhost:8091',
         changeOrigin: true,
+        rewrite: (path) =>
+          path.replace(/^\/familie\/alene-med-barn\/ettersending/, ''),
       },
     },
   },
