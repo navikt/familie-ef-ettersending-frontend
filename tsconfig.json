@@ -1,18 +1,4 @@
 {
-  // "extends": "./tsconfig.base.json",
-  // "compilerOptions": {
-  //   "outDir": "node_dist",
-  //   "baseUrl": "./src",
-  //   "rootDir": "./src",
-  //   "resolveJsonModule": true,
-  //   "module": "ES6",
-  //   "esModuleInterop": true,
-  //   "noImplicitAny": false
-  // },
-  // "include": ["./src/backend", "src/custom.d.ts"],
-  // "exclude": ["./src/frontend"],
-  // "lib": ["es2015"],
-
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
