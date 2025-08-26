@@ -28,7 +28,7 @@
     "winston": "^3.17.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite && NODE_ENV=development",
     "build": "tsc -b && vite build",
     "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",

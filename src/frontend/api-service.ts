@@ -61,7 +61,7 @@ export const hentOpplastetVedlegg = (
 
 export const hentPersoninfo = (): Promise<IPersoninfo> => {
   return axios
-    .get(`${environment().apiProxyUrl}/api/oppslag/sokerinfo`, {
+    .get(`${environment().apiProxyUrl}/oppslag/sokerinfo`, {
       withCredentials: true,
       headers: {
         [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,

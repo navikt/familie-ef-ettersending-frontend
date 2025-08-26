@@ -42,9 +42,7 @@ export const autentiseringsInterceptor = () => {
 export const verifiserAtSøkerErAutentisert = (
   settAutentisering: Dispatch<SetStateAction<InnloggetStatus>>,
 ) => {
-  const veri = verifiserInnloggetApi();
-
-  return veri.then((response) => {
+  return verifiserInnloggetApi().then((response) => {
     if (response && 200 === response.status) {
       settAutentisering(InnloggetStatus.AUTENTISERT);
     } else {
@@ -54,9 +52,7 @@ export const verifiserAtSøkerErAutentisert = (
 };
 
 const verifiserInnloggetApi = () => {
-  const url = `${environment().apiProxyUrl}/innlogget`;
-  console.log('url', url);
-  return axios.get(url, {
-    // withCredentials: true,
+  return axios.get(`${environment().apiProxyUrl}/innlogget`, {
+    withCredentials: true,
   });
 };
