@@ -29,6 +29,7 @@
   },
   "scripts": {
     "dev": "vite && NODE_ENV=development",
+    "start:dev": "yarn build && tsc -p tsconfig.node.json && NODE_ENV=development node build/src/backend/server.js",
     "build": "tsc -b && vite build",
     "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",

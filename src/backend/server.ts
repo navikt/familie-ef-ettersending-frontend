@@ -16,7 +16,6 @@ const erDevelopment = process.env.NODE_ENV === 'development';
 
 (async () => {
   if (erDevelopment) {
-    // Register API routes before Vite middleware
     app.use(routes());
 
     const viteModule = await import('vite');
