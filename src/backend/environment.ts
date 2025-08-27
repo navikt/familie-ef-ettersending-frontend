@@ -1,5 +1,16 @@
-export const isProd = () => process.env.ENV === 'prod';
-export const isDev = () => process.env.ENV === 'dev';
+export const isProd = () => {
+  if (typeof window === 'undefined') {
+    return process.env.ENV === 'prod';
+  }
+  return window.location.hostname.indexOf('www') > -1;
+};
+
+export const isDev = () => {
+  if (typeof window === 'undefined') {
+    return process.env.ENV === 'dev';
+  }
+  return window.location.hostname.indexOf('dev') > -1;
+};
 
 // Se på disse url-ene. Her lenker dev og env til hele lenken, mens den siste har bare port 8082 og sender med resten i api-service
 
