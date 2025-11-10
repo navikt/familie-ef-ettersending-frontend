@@ -23,7 +23,7 @@
     "react-dom": "^19.2.0",
     "react-dropzone": "^14.3.8",
     "react-refresh": "^0.18.0",
-    "uuid": "^11.1.0",
+    "uuid": "^13.0.0",
     "webpack-hot-middleware": "^2.26.1",
     "winston": "^3.18.3"
   },
