@@ -7,30 +7,32 @@ registries:
     token: ${{ secrets.READER_TOKEN }}
 updates:
   - package-ecosystem: npm
-    directory: "/"
+    directory: '/'
     schedule:
       interval: weekly
-      day: "sunday"
-      time: "04:00"
+      day: 'sunday'
+      time: '04:00'
+    cooldown:
+      default-days: 4
     open-pull-requests-limit: 30
-    registries: "*"
+    registries: '*'
     versioning-strategy: increase
     groups:
       minor-and-patch-dependencies:
         patterns:
-          - "*"
+          - '*'
         update-types:
-          - "minor"
-          - "patch"
+          - 'minor'
+          - 'patch'
       major-dependencies:
         patterns:
-          - "*"
+          - '*'
         update-types:
-          - "major"
+          - 'major'
 
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: '/'
     schedule:
       interval: weekly
-      day: "sunday"
-      time: "04:00"
+      day: 'sunday'
+      time: '04:00'
