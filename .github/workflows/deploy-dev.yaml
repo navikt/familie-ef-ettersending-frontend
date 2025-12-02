@@ -1,7 +1,7 @@
 name: Deploy til dev
 on:
   workflow_dispatch:
-  pull_request:
+  pull_request: # Skal fjerne før merge
   push:
     branches:
       - main
@@ -37,7 +37,7 @@ jobs:
       - uses: nais/docker-build-push@791ebb6f74b82849c742a9bc9c97abe44c6c111f # ratchet:nais/docker-build-push@v0
         id: docker-push
         with:
-          team: etterlatte
+          team: teamfamilie
     outputs:
       image: ${{ steps.docker-push.outputs.image }}
 
