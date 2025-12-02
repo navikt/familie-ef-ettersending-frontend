@@ -13,7 +13,10 @@ import {
   VStack,
 } from '@navikt/ds-react';
 import { alertMelding } from './AlertStripe';
-import { SuccessColored, WarningColored } from '@navikt/ds-icons';
+import {
+  CheckmarkCircleIcon,
+  ExclamationmarkTriangleIcon,
+} from '@navikt/aksel-icons';
 
 interface Props {
   innsending: IDokumentasjonsbehov;
@@ -39,18 +42,14 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
       <VStack gap={'2'}>
         <HStack gap={'2'}>
           {dokumentasjonErOpplastet ? (
-            <SuccessColored
-              height={'1.5rem'}
-              width={'1.5rem'}
-              title={
-                'Følgende dokumentasjon er lastet opp og klar til å sendes inn:'
-              }
+            <CheckmarkCircleIcon
+              title="Følgende dokumentasjon er lastet opp og klar til å sendes inn:"
+              fontSize="1.5rem"
             />
           ) : (
-            <WarningColored
-              height={'1.5rem'}
-              width={'1.5rem'}
-              title={'Følgende dokumentasjon er ikke lastet opp:'}
+            <ExclamationmarkTriangleIcon
+              title="Følgende dokumentasjon er ikke lastet opp:"
+              fontSize="1.5rem"
             />
           )}
           <Heading level={'2'} size={'small'}>

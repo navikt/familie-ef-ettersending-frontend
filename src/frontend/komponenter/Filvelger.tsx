@@ -1,10 +1,10 @@
-import { Upload } from '@navikt/ds-icons';
+import React from 'react';
 import { BodyShort } from '@navikt/ds-react';
-import React, { FC } from 'react';
 import { DropzoneInputProps, DropzoneRootProps } from 'react-dropzone/.';
 import styles from './Filvelger.module.css';
+import { UploadIcon } from '@navikt/aksel-icons';
 
-export const Filvelger: FC<{
+export const Filvelger: React.FC<{
   getRootProps: <T extends DropzoneRootProps>(props?: T) => T;
   getInputProps: <T extends DropzoneInputProps>(props?: T) => T;
 }> = ({ getRootProps, getInputProps }) => {
@@ -12,7 +12,11 @@ export const Filvelger: FC<{
     <div className={styles.filvelger}>
       <div {...getRootProps()}>
         <input {...getInputProps()} />
-        <Upload className={styles.ikon} title={'Last opp'} />
+        <UploadIcon
+          className={styles.ikon}
+          title="Last opp"
+          fontSize="1.5rem"
+        />
         <BodyShort className={styles.tekst}>Velg filer</BodyShort>
       </div>
     </div>

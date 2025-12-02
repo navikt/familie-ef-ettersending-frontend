@@ -5,7 +5,7 @@ import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import { BodyShort, Button, HStack, Link, VStack } from '@navikt/ds-react';
-import { Attachment, Delete } from '@navikt/ds-icons';
+import { UploadIcon } from '@navikt/aksel-icons';
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedleggForEttersending[];
@@ -42,7 +42,7 @@ export const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
           <div key={fil.id}>
             <VStack gap={'2'}>
               <HStack gap={'2'} align={'center'}>
-                <Attachment title={'Binders'} width={24} height={24} />
+                <UploadIcon title="Binders" fontSize="1.5rem" />
                 <BodyShort>
                   <b>Navn:</b>{' '}
                 </BodyShort>
@@ -55,7 +55,7 @@ export const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
                 <Button
                   type={'button'}
                   variant={'tertiary'}
-                  icon={<Delete title={'Søppeldunk'} />}
+                  icon={<UploadIcon title="slett" fontSize="1.5rem" />}
                   onClick={() => {
                     slettVedlegg(fil);
                   }}

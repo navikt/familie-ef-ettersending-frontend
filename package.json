@@ -4,8 +4,8 @@
   "main": "build/backend/server.js",
   "type": "module",
   "dependencies": {
+    "@navikt/aksel-icons": "7.35.0",
     "@navikt/ds-css": "7.33.1",
-    "@navikt/ds-icons": "3.4.3",
     "@navikt/ds-react": "7.33.1",
     "@navikt/nav-dekoratoren-moduler": "3.5.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.6.1",
@@ -30,10 +30,9 @@
   "scripts": {
     "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node build/backend/server.js",
     "build": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=production webpack --config src/webpack/webpack.production.config.js && tsc -p tsconfig.backend.json",
-    "build:dev": "webpack --config ./dev-server/webpack/webpack.dev.js && tsc -p tsconfig.backend.json",
+    "build:dev": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=development webpack --config src/webpack/webpack.development.config.js && tsc -p tsconfig.backend.json",
     "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
-    "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
-    "prepare": "husky install"
+    "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css}": [
@@ -67,7 +66,6 @@
     "file-loader": "6.2.0",
     "fork-ts-checker-webpack-plugin": "9.1.0",
     "html-webpack-plugin": "5.6.4",
-    "husky": "9.1.7",
     "jsdom": "26.1.0",
     "lint-staged": "16.2.6",
     "mini-css-extract-plugin": "2.9.4",
@@ -80,9 +78,5 @@
     "webpack": "5.102.1",
     "webpack-cli": "6.0.1",
     "webpack-dev-server": "5.2.2"
-  },
-  "resolutions": {
-    "@types/react": "18.x",
-    "@types/react-select": "5.x"
   }
 }
