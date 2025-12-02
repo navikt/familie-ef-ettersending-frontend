@@ -6,9 +6,9 @@ on:
       - main
 
 permissions:
-  contents: "read"
-  id-token: "write"
-  actions: "read"
+  contents: 'read'
+  id-token: 'write'
+  actions: 'read'
 
 jobs:
   build:
@@ -21,8 +21,8 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ratchet:actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
-          registry-url: "https://npm.pkg.github.com"
+          cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com'
       - name: Installer npm-avhengigheter
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
@@ -32,7 +32,7 @@ jobs:
       - name: Bygg applikasjon
         run: |
           npm run build
-          npm run build:server
+          npm run build:dev
       - uses: nais/docker-build-push@791ebb6f74b82849c742a9bc9c97abe44c6c111f # ratchet:nais/docker-build-push@v0
         id: docker-push
         with:
