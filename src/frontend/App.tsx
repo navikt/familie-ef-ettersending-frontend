@@ -43,12 +43,7 @@ const App: React.FC = () => {
   } else {
     return (
       <VStack align={'center'}>
-        <Loader
-          size={'xlarge'}
-          title={'Venter på innlogging'}
-          onResize={undefined}
-          onResizeCapture={undefined}
-        />
+        <Loader size={'xlarge'} title={'Venter på innlogging'} />
       </VStack>
     );
   }
