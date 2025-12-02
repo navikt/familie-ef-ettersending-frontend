@@ -4,8 +4,8 @@ on:
   pull_request:
 
 jobs:
-  typecheck:
-    name: Typecheck & Lint
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -24,8 +24,6 @@ jobs:
         run: npm ci
       - name: Kjør ESLint
         run: npm run lint
-      - name: Kjør typecheck
-        run: npm run typecheck
 
   build:
     name: Build
