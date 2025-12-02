@@ -38,8 +38,6 @@ jobs:
         id: docker-push
         with:
           team: teamfamilie
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          image_suffix: ""
     outputs:
       image: ${{ steps.docker-push.outputs.image }}
 
