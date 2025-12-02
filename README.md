@@ -4,7 +4,7 @@ Frontend app for ettersending av dokumentasjon vedrørende søknader tilknyttet 
 
 ## Kjør lokalt
 
-1. `npm install`
+1. `npm ci`
 2. Kjør opp `familie-ef-soknad-api` med launcheren `ApplicationLocalLauncher`
 3. Kjør opp `familie-dokument` med launcheren `ApplicationLocalSoknad`
 4. `npm run start:dev`
