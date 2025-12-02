@@ -3,7 +3,7 @@ import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
 import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
 import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
 import { alertMelding } from './AlertStripe';
-import { AddCircle } from '@navikt/ds-icons';
+import { UploadIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
 
 interface IProps {
@@ -60,7 +60,7 @@ export const InnsendingSide: React.FC<IProps> = ({
       <Button
         variant={'tertiary'}
         type={'button'}
-        icon={<AddCircle title={'Legg til dokumenter'} />}
+        icon={<UploadIcon title="Legg til dokumenter" fontSize="1.5rem" />}
         onClick={leggTilNyDokumentasjonsbehovBoks}
       >
         Legg til flere dokumenter
