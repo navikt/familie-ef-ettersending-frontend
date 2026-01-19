@@ -18,7 +18,6 @@ export default [
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react/react-in-jsx-scope': 'error',
       'react/no-unescaped-entities': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
     },
