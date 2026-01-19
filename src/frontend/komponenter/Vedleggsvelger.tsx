@@ -7,7 +7,6 @@ import {
 } from '../typer/ettersending';
 import { sendVedleggTilMellomlager, slåSammenVedlegg } from '../api-service';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { logFeilFilopplasting } from '../utils/amplitude';
 import {
   erFiltypeHeic,
   formaterFilstørrelse,
@@ -138,13 +137,6 @@ const Vedleggsvelger: React.FC<IProps> = ({
               ? alertMelding.FEIL_FOR_LITEN_FIL
               : alertMelding.FEIL;
           settAlertStripeMelding(feilmelding);
-
-          logFeilFilopplasting({
-            type_feil: 'Generisk feil',
-            feilmelding: feilmelding,
-            filtype: fil.type,
-            filstørrelse: fil.size,
-          });
         }
       }),
     );
@@ -166,12 +158,6 @@ const Vedleggsvelger: React.FC<IProps> = ({
           feilmeldingsliste.push(feilmelding);
           settAlertStripeMelding(alertMelding.FEIL_STØRRELSE_INNSENDING);
 
-          logFeilFilopplasting({
-            type_feil: 'For stor fil',
-            feilmelding: feilmelding,
-            filstørrelse: fil.size,
-          });
-
           return fil;
         }
 
@@ -189,12 +175,6 @@ const Vedleggsvelger: React.FC<IProps> = ({
           const feilmelding = fil.name + ' - Ugyldig filtype';
           feilmeldingsliste.push(feilmelding);
           settAlertStripeMelding(alertMelding.FEIL_FILTYPE_INNSENDING);
-
-          logFeilFilopplasting({
-            type_feil: 'Feil filtype',
-            feilmelding: feilmelding,
-            filtype: fil.type,
-          });
 
           return fil;
         }
