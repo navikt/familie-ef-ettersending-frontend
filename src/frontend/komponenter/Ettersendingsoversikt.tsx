@@ -23,7 +23,6 @@ import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
 import { Oppsummering } from './Oppsummering';
 import { InnsendingSide } from './InnsendingSide';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
-import { logDokumentasjonsbehov, logSidevisning } from '../utils/amplitude';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
 import { Button, HStack, Loader, VStack } from '@navikt/ds-react';
 import Stegindikator from './Stegindikator';
@@ -60,16 +59,6 @@ const Ettersendingsoversikt: React.FC = () => {
       index: 2,
     },
   ];
-
-  useEffect(() => {
-    if (aktivtSteg === 0) {
-      logSidevisning('Forside');
-    } else if (aktivtSteg === 1) {
-      logSidevisning('Oppsummering');
-    } else if (aktivtSteg === 2) {
-      logSidevisning('Kvittering');
-    }
-  }, [aktivtSteg]);
 
   const oppdaterInnsending = (innsending: IDokumentasjonsbehov) => {
     settEttersending((prevEttersending) => {
@@ -135,7 +124,6 @@ const Ettersendingsoversikt: React.FC = () => {
           ekstraInnsendingerId,
         )
       ) {
-        logDokumentasjonsbehov(ettersending.dokumentasjonsbehov);
         settAktivtSteg(1);
         return;
       }
