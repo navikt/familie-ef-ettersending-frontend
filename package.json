@@ -3,6 +3,12 @@
   "version": "0.5.0",
   "main": "build/backend/server.js",
   "type": "module",
+  "scripts": {
+    "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node build/backend/server.js",
+    "build": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=production webpack --config src/webpack/webpack.production.config.js && tsc -p tsconfig.backend.json",
+    "build:dev": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=development webpack --config src/webpack/webpack.development.config.js && tsc -p tsconfig.backend.json",
+    "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'"
+  },
   "dependencies": {
     "@navikt/aksel-icons": "7.35.1",
     "@navikt/ds-css": "7.35.1",
@@ -11,7 +17,6 @@
     "@pmmmwh/react-refresh-webpack-plugin": "0.6.2",
     "@types/uuid": "10.0.0",
     "axios": "1.13.2",
-    "constate": "3.3.3",
     "csp-header": "6.2.1",
     "date-fns": "4.1.0",
     "express": "5.2.1",
@@ -26,19 +31,6 @@
     "uuid": "11.1.0",
     "webpack-hot-middleware": "2.26.1",
     "winston": "3.19.0"
-  },
-  "scripts": {
-    "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node build/backend/server.js",
-    "build": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=production webpack --config src/webpack/webpack.production.config.js && tsc -p tsconfig.backend.json",
-    "build:dev": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=development webpack --config src/webpack/webpack.development.config.js && tsc -p tsconfig.backend.json",
-    "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
-    "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix"
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
   },
   "devDependencies": {
     "@babel/core": "7.28.5",
@@ -67,7 +59,6 @@
     "fork-ts-checker-webpack-plugin": "9.1.0",
     "html-webpack-plugin": "5.6.5",
     "jsdom": "26.1.0",
-    "lint-staged": "16.2.7",
     "mini-css-extract-plugin": "2.9.4",
     "prettier": "3.7.4",
     "style-loader": "4.0.0",
