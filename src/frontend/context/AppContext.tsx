@@ -1,5 +1,10 @@
-import { useState, useEffect } from 'react';
-import createUseContext from 'constate';
+import {
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  ReactNode,
+} from 'react';
 import {
   InnloggetStatus,
   verifiserAtSøkerErAutentisert,
@@ -7,7 +12,18 @@ import {
 import { hentPersoninfo } from '../api-service';
 import { ISøker } from '../typer/søker';
 
-const [AppProvider, useApp] = createUseContext(() => {
+interface AppContextType {
+  innloggetStatus: InnloggetStatus;
+  søker: ISøker | null;
+}
+
+const AppContext = createContext<AppContextType | undefined>(undefined);
+
+interface AppProviderProps {
+  children: ReactNode;
+}
+
+export const AppProvider = ({ children }: AppProviderProps) => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
     InnloggetStatus.IKKE_VERIFISERT,
   );
@@ -24,13 +40,23 @@ const [AppProvider, useApp] = createUseContext(() => {
         settSøker(personInfo.søker);
       }
     };
+
     hentOgSettSøker();
   }, [innloggetStatus]);
 
-  return {
+  const value = {
     innloggetStatus,
     søker,
   };
-});
 
-export { AppProvider, useApp };
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+};
+
+export const useApp = () => {
+  const context = useContext(AppContext);
+  if (context === undefined) {
+    throw new Error('useApp må brukes innenfor en AppProvider');
+  }
+
+  return context;
+};

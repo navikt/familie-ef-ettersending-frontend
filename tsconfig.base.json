@@ -1,13 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2024",
     "module": "commonjs",
-    "lib": [
-      "dom",
-      "esnext",
-      "es6"
-    ],
-    "importHelpers": true,
+    "lib": ["dom", "esnext", "es6"],
     "declaration": true,
     "sourceMap": true,
     "strict": true,
@@ -21,7 +16,7 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "traceResolution": false,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
