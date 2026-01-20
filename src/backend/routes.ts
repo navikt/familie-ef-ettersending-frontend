@@ -17,7 +17,7 @@ const routes = (): Router => {
     `${BASE_PATH}/api`,
     addCallId(),
     attachToken('familie-ef-soknad-api'),
-    doProxy(environment().apiUrl),
+    doProxy(environment().apiUrl, '/api'),
   );
 
   expressRouter.use(

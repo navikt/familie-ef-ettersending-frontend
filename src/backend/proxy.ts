@@ -27,8 +27,11 @@ const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
   }
 };
 
-export const doProxy = (targetUrl: string): RequestHandler => {
-  return createProxyMiddleware({
+export const doProxy = (
+  targetUrl: string,
+  pathPrefix?: string,
+): RequestHandler => {
+  const config: any = {
     changeOrigin: true,
     logger,
     on: {
@@ -36,7 +39,15 @@ export const doProxy = (targetUrl: string): RequestHandler => {
     },
     secure: true,
     target: `${targetUrl}`,
-  });
+  };
+
+  if (pathPrefix) {
+    config.pathRewrite = (path: string) => {
+      return `${pathPrefix}${path}`;
+    };
+  }
+
+  return createProxyMiddleware(config);
 };
 
 export const addCallId = (): RequestHandler => {
