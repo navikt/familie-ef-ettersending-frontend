@@ -102,7 +102,7 @@ export const sendVedleggTilMellomlager = (
 export const slåSammenVedlegg = (dokumentIder: string[]): Promise<string> => {
   return axios
     .post(
-      `${environment().dokumentProxyUrl}/api/mapper/merge/familievedlegg`,
+      `${environment().dokumentProxyUrl}/dokument/api/mapper/merge/familievedlegg`,
       dokumentIder,
       {
         headers: {
