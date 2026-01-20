@@ -3,7 +3,6 @@ import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/i
 import path from 'path';
 import logger from './logger.js';
 import environment from './environment.js';
-import fs from 'fs';
 
 export const indexHandler: RequestHandler = async (req, res) => {
   try {
