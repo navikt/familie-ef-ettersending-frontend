@@ -31,6 +31,7 @@ export const doProxy = (
   targetUrl: string,
   pathPrefix?: string,
 ): RequestHandler => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const config: any = {
     changeOrigin: true,
     logger,
