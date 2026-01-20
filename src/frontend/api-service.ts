@@ -48,7 +48,7 @@ export const hentOpplastetVedlegg = (
     .get(
       `${
         environment().dokumentProxyUrl
-      }/api/mapper/familievedlegg/${dokumentId}`,
+      }/dokument/api/mapper/familievedlegg/${dokumentId}`,
       {
         withCredentials: true,
         headers: {
@@ -86,7 +86,7 @@ export const sendVedleggTilMellomlager = (
 ): Promise<string> => {
   return axios
     .post(
-      `${environment().dokumentProxyUrl}/api/mapper/familievedlegg`,
+      `${environment().dokumentProxyUrl}/dokument/api/mapper/familievedlegg`,
       formData,
       {
         headers: {

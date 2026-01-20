@@ -37,15 +37,7 @@ export const doProxy = (targetUrl: string, context: string): RequestHandler => {
       proxyReq: restream,
     },
     pathRewrite: (path: string) => {
-      const erLokalt =
-        !targetUrl.includes('familie-ef-soknad-api') &&
-        !targetUrl.includes('familie-dokument');
-
-      if (erLokalt) {
-        return `/${endpoint}${path}`;
-      } else {
-        return path;
-      }
+      return `/${endpoint}${path}`;
     },
     secure: true,
     target: `${targetUrl}`,
