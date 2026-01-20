@@ -6,16 +6,14 @@ import environment from './environment.js';
 
 export const indexHandler: RequestHandler = async (req, res) => {
   try {
-    const isDev = process.env.NODE_ENV === 'development';
-    const htmlPath = isDev
+    const erDev = process.env.NODE_ENV === 'development';
+    const htmlPath = erDev
       ? path.join(process.cwd(), 'src/frontend/index.html')
       : path.join(process.cwd(), 'dist/index.html');
 
-    // Først får vi HTML med dekorator
     let html = await getHtmlWithDecorator(htmlPath);
 
-    // I dev mode, transformerer Vite HTML-en etterpå
-    if (isDev && req.app.locals.vite) {
+    if (erDev && req.app.locals.vite) {
       html = await req.app.locals.vite.transformIndexHtml(
         req.originalUrl,
         html,
