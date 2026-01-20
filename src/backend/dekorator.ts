@@ -3,17 +3,32 @@ import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/i
 import path from 'path';
 import logger from './logger.js';
 import environment from './environment.js';
+import fs from 'fs';
 
-export const indexHandler: RequestHandler = (_req, res) => {
-  getHtmlWithDecorator(`${path.join(process.cwd(), 'dist')}/index.html`)
-    .then((html) => {
-      res.send(html);
-    })
-    .catch((e) => {
-      console.log(e);
-      const error = `En feil oppstod. Klikk <a href='https://www.nav.no'>her</a> for å gå tilbake til nav.no. Kontakt kundestøtte hvis problemet vedvarer.`;
-      res.status(500).send(error);
-    });
+export const indexHandler: RequestHandler = async (req, res) => {
+  try {
+    const isDev = process.env.NODE_ENV === 'development';
+    const htmlPath = isDev
+      ? path.join(process.cwd(), 'src/frontend/index.html')
+      : path.join(process.cwd(), 'dist/index.html');
+
+    // Først får vi HTML med dekorator
+    let html = await getHtmlWithDecorator(htmlPath);
+
+    // I dev mode, transformerer Vite HTML-en etterpå
+    if (isDev && req.app.locals.vite) {
+      html = await req.app.locals.vite.transformIndexHtml(
+        req.originalUrl,
+        html,
+      );
+    }
+
+    res.send(html);
+  } catch (e) {
+    console.log(e);
+    const error = `En feil oppstod. Klikk <a href='https://www.nav.no'>her</a> for å gå tilbake til nav.no. Kontakt kundestøtte hvis problemet vedvarer.`;
+    res.status(500).send(error);
+  }
 };
 
 const getHtmlWithDecorator = (filePath: string) => {

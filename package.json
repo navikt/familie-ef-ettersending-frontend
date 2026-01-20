@@ -1,12 +1,11 @@
 {
   "name": "familie-ef-ettersending",
   "version": "0.5.0",
-  "main": "build/backend/server.js",
   "type": "module",
   "scripts": {
+    "start": "node build/backend/server.js",
     "start:dev": "tsc -p tsconfig.backend.json && NODE_ENV=development node build/backend/server.js",
-    "build": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=production webpack --config src/webpack/webpack.production.config.js && tsc -p tsconfig.backend.json",
-    "build:dev": "TS_NODE_PROJECT=src/webpack/tsconfig.json NODE_ENV=development webpack --config src/webpack/webpack.development.config.js && tsc -p tsconfig.backend.json",
+    "build": "NODE_ENV=production vite build && tsc -p tsconfig.backend.json",
     "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'"
   },
   "dependencies": {
@@ -14,7 +13,6 @@
     "@navikt/ds-css": "7.35.1",
     "@navikt/ds-react": "7.35.1",
     "@navikt/nav-dekoratoren-moduler": "3.6.1",
-    "@pmmmwh/react-refresh-webpack-plugin": "0.6.2",
     "@types/uuid": "10.0.0",
     "axios": "1.13.2",
     "csp-header": "6.2.1",
@@ -24,12 +22,10 @@
     "html-react-parser": "5.2.10",
     "http-proxy-middleware": "3.0.5",
     "react": "19.2.3",
-    "react-dev-utils": "12.0.1",
     "react-dom": "19.2.3",
     "react-dropzone": "14.3.8",
     "react-refresh": "0.18.0",
     "uuid": "11.1.0",
-    "webpack-hot-middleware": "2.26.1",
     "winston": "3.19.0"
   },
   "devDependencies": {
@@ -39,25 +35,22 @@
     "@babel/preset-react": "7.28.5",
     "@babel/preset-typescript": "7.28.5",
     "@babel/runtime": "7.28.4",
-    "@svgr/webpack": "8.1.0",
+    "@eslint/js": "^9.39.1",
+    "@types/express": "5.0.6",
     "@types/node": "24.10.1",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
-    "@types/webpack": "5.28.5",
+    "@vitejs/plugin-react": "^5.1.1",
     "babel-loader": "10.0.0",
-    "case-sensitive-paths-webpack-plugin": "2.4.0",
-    "copy-webpack-plugin": "13.0.1",
     "css-loader": "7.1.2",
-    "css-minimizer-webpack-plugin": "7.0.3",
     "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "5.2.0",
-    "eslint-webpack-plugin": "5.0.2",
+    "eslint-plugin-react-refresh": "^0.4.24",
     "file-loader": "6.2.0",
-    "fork-ts-checker-webpack-plugin": "9.1.0",
-    "html-webpack-plugin": "5.6.5",
+    "globals": "^16.5.0",
     "jsdom": "26.1.0",
     "mini-css-extract-plugin": "2.9.4",
     "prettier": "3.7.4",
@@ -66,8 +59,6 @@
     "tsconfig-paths": "4.2.0",
     "typescript": "5.9.3",
     "typescript-eslint": "8.48.1",
-    "webpack": "5.103.0",
-    "webpack-cli": "6.0.1",
-    "webpack-dev-server": "5.2.2"
+    "vite": "^7.2.4"
   }
 }
