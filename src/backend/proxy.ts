@@ -27,7 +27,7 @@ const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
   }
 };
 
-export const doProxy = (targetUrl: string, context: string): RequestHandler => {
+export const doProxy = (targetUrl: string): RequestHandler => {
   return createProxyMiddleware({
     changeOrigin: true,
     logger,
