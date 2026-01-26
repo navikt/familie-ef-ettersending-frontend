@@ -27,17 +27,28 @@ const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
   }
 };
 
-export const doProxy = (targetUrl: string, context: string): RequestHandler => {
-  return createProxyMiddleware({
+export const doProxy = (
+  targetUrl: string,
+  pathPrefix?: string,
+): RequestHandler => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const config: any = {
     changeOrigin: true,
     logger,
     on: {
       proxyReq: restream,
     },
-    pathRewrite: (path: string) => path.replace(context, ''),
     secure: true,
     target: `${targetUrl}`,
-  });
+  };
+
+  if (pathPrefix) {
+    config.pathRewrite = (path: string) => {
+      return `${pathPrefix}${path}`;
+    };
+  }
+
+  return createProxyMiddleware(config);
 };
 
 export const addCallId = (): RequestHandler => {

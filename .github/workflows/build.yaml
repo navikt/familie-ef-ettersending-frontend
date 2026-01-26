@@ -46,4 +46,3 @@ jobs:
       - name: Bygg applikasjon
         run: |
           npm run build
-          npm run build:dev

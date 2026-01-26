@@ -17,14 +17,14 @@ const routes = (): Router => {
     `${BASE_PATH}/api`,
     addCallId(),
     attachToken('familie-ef-soknad-api'),
-    doProxy(environment().apiUrl, `${BASE_PATH}/api`),
+    doProxy(environment().apiUrl, '/api'),
   );
 
   expressRouter.use(
     `${BASE_PATH}/dokument`,
     addCallId(),
     attachToken('familie-dokument'),
-    doProxy(environment().dokumentUrl, `${BASE_PATH}/dokument`),
+    doProxy(environment().dokumentUrl),
   );
 
   return expressRouter;

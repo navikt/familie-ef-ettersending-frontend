@@ -1,10 +1,4 @@
-import {
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-  ReactNode,
-} from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import {
   InnloggetStatus,
   verifiserAtSøkerErAutentisert,
@@ -20,7 +14,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 interface AppProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export const AppProvider = ({ children }: AppProviderProps) => {

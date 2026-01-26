@@ -16,13 +16,7 @@
     "jsx": "react-jsx",
     "typeRoots": ["../../node_modules/@types", "./@types"]
   },
-  "exclude": [
-    "../../node_modules",
-    "../../dist",
-    "../../build",
-    "../backend",
-    "../webpack"
-  ],
+  "exclude": ["../../node_modules", "../../dist", "../../build", "../backend"],
   "include": ["**/*.ts", "**/*.tsx", "global.d.ts"],
   "lib": ["es2015", "esnext"]
 }

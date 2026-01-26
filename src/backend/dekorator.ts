@@ -4,16 +4,28 @@ import path from 'path';
 import logger from './logger.js';
 import environment from './environment.js';
 
-export const indexHandler: RequestHandler = (_req, res) => {
-  getHtmlWithDecorator(`${path.join(process.cwd(), 'dist')}/index.html`)
-    .then((html) => {
-      res.send(html);
-    })
-    .catch((e) => {
-      console.log(e);
-      const error = `En feil oppstod. Klikk <a href='https://www.nav.no'>her</a> for å gå tilbake til nav.no. Kontakt kundestøtte hvis problemet vedvarer.`;
-      res.status(500).send(error);
-    });
+export const indexHandler: RequestHandler = async (req, res) => {
+  try {
+    const erDev = process.env.NODE_ENV === 'development';
+    const htmlPath = erDev
+      ? path.join(process.cwd(), 'src/frontend/index.html')
+      : path.join(process.cwd(), 'dist/index.html');
+
+    let html = await getHtmlWithDecorator(htmlPath);
+
+    if (erDev && req.app.locals.vite) {
+      html = await req.app.locals.vite.transformIndexHtml(
+        req.originalUrl,
+        html,
+      );
+    }
+
+    res.send(html);
+  } catch (e) {
+    console.log(e);
+    const error = `En feil oppstod. Klikk <a href='https://www.nav.no'>her</a> for å gå tilbake til nav.no. Kontakt kundestøtte hvis problemet vedvarer.`;
+    res.status(500).send(error);
+  }
 };
 
 const getHtmlWithDecorator = (filePath: string) => {

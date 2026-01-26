@@ -30,10 +30,10 @@ const environment = (): EnvironmentProps => {
     return {
       wonderwallUrl:
         'https://www.nav.no/familie/alene-med-barn/ettersending/oauth2/login?redirect=',
-      apiProxyUrl: 'https://www.nav.no/familie/alene-med-barn/ettersending/api',
+      apiProxyUrl: 'https://www.nav.no/familie/alene-med-barn/ettersending',
       apiUrl: 'http://familie-ef-soknad-api/familie/alene-med-barn/soknad-api',
       dokumentProxyUrl:
-        'https://www.nav.no/familie/alene-med-barn/ettersending/dokument',
+        'https://www.nav.no/familie/alene-med-barn/ettersending',
       dokumentUrl: 'http://familie-dokument/familie/dokument',
       port: 9000,
       dekoratørEnv: 'prod',
@@ -45,10 +45,10 @@ const environment = (): EnvironmentProps => {
       wonderwallUrl:
         'https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending/oauth2/login?redirect=',
       apiProxyUrl:
-        'https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending/api',
+        'https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending',
       apiUrl: 'http://familie-ef-soknad-api/familie/alene-med-barn/soknad-api',
       dokumentProxyUrl:
-        'https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending/dokument',
+        'https://familie.ekstern.dev.nav.no/familie/alene-med-barn/ettersending',
       dokumentUrl: 'http://familie-dokument/familie/dokument',
       port: 9000,
       dekoratørEnv: 'dev',
@@ -59,10 +59,9 @@ const environment = (): EnvironmentProps => {
     return {
       wonderwallUrl: '',
       apiUrl: 'http://localhost:8091',
-      apiProxyUrl:
-        'http://localhost:3000/familie/alene-med-barn/ettersending/api',
+      apiProxyUrl: 'http://localhost:3000/familie/alene-med-barn/ettersending',
       dokumentProxyUrl:
-        'http://localhost:3000/familie/alene-med-barn/ettersending/dokument',
+        'http://localhost:3000/familie/alene-med-barn/ettersending',
       dokumentUrl: 'http://localhost:8082/familie/dokument',
       port: 3000,
       dekoratørEnv: 'dev',
