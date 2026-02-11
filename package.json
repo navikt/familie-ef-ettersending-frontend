@@ -14,7 +14,7 @@
     "@navikt/ds-react": "7.35.1",
     "@navikt/nav-dekoratoren-moduler": "3.6.1",
     "@types/uuid": "10.0.0",
-    "axios": "1.13.2",
+    "axios": "1.13.5",
     "csp-header": "6.2.1",
     "date-fns": "4.1.0",
     "express": "5.2.1",
