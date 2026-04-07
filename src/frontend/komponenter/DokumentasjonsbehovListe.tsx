@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useApp } from '../context/AppContext';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
 import { DokumentasjonsbehovBoks } from './DokumentasjonsbehovBoks';
@@ -16,13 +16,8 @@ export const DokumentasjonsbehovListe: React.FC<IProps> = ({
   oppdaterInnsending,
   settAlertStripeMelding,
 }: IProps) => {
-  const [laster, settLasterverdi] = useState(true);
-
   const context = useApp();
-
-  useEffect(() => {
-    settLasterverdi(false);
-  }, [context.søker]);
+  const laster = !context.søker;
 
   if (laster) {
     return (
