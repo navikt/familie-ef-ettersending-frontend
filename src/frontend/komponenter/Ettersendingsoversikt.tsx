@@ -161,51 +161,50 @@ const Ettersendingsoversikt: React.FC = () => {
   const context = useApp();
 
   useEffect(() => {
-    if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [context.søker]);
+    const hentOgSettSøknaderOgEttersendinger = async () => {
+      const søknadsliste = await hentSøknader();
+      const ettersendinger = await hentEttersendinger();
 
-  const hentOgSettSøknaderOgEttersendinger = async () => {
-    const søknadsliste = await hentSøknader();
-    const ettersendinger = await hentEttersendinger();
+      const søknaderMedEttersendinger: ISøknadsbehov[] = søknadsliste.map(
+        (søknad: ISøknadsbehov) => {
+          return slåSammenSøknadOgEttersendinger(søknad, ettersendinger);
+        },
+      );
 
-    const søknaderMedEttersendinger: ISøknadsbehov[] = søknadsliste.map(
-      (søknad: ISøknadsbehov) => {
-        return slåSammenSøknadOgEttersendinger(søknad, ettersendinger);
-      },
-    );
+      const initielleInnsendinger: IDokumentasjonsbehov[] =
+        søknaderMedEttersendinger.flatMap((søknad) => {
+          return søknad.dokumentasjonsbehov.dokumentasjonsbehov
+            .filter(
+              (behov) =>
+                behov.opplastedeVedlegg.length === 0 && !behov.harSendtInn,
+            )
+            .map((behov) => {
+              return {
+                id: uuidv4(),
+                søknadsdata: {
+                  søknadId: søknad.søknadId,
+                  søknadsdato: søknad.søknadDato,
+                  dokumentasjonsbehovId: behov.id,
+                  harSendtInnTidligere: behov.harSendtInn,
+                },
+                dokumenttype: behov.id,
+                beskrivelse: behov.label,
+                stønadType: søknad.stønadType,
+                innsendingstidspunkt: dagensDatoMedTidspunktStreng(),
+                vedlegg: [],
+              };
+            });
+        });
 
-    const initielleInnsendinger: IDokumentasjonsbehov[] =
-      søknaderMedEttersendinger.flatMap((søknad) => {
-        return søknad.dokumentasjonsbehov.dokumentasjonsbehov
-          .filter(
-            (behov) =>
-              behov.opplastedeVedlegg.length === 0 && !behov.harSendtInn,
-          )
-          .map((behov) => {
-            return {
-              id: uuidv4(),
-              søknadsdata: {
-                søknadId: søknad.søknadId,
-                søknadsdato: søknad.søknadDato,
-                dokumentasjonsbehovId: behov.id,
-                harSendtInnTidligere: behov.harSendtInn,
-              },
-              dokumenttype: behov.id,
-              beskrivelse: behov.label,
-              stønadType: søknad.stønadType,
-              innsendingstidspunkt: dagensDatoMedTidspunktStreng(),
-              vedlegg: [],
-            };
-          });
+      settEttersending({
+        dokumentasjonsbehov: initielleInnsendinger,
+        personIdent: context.søker!.fnr,
       });
+      settLasterverdi(false);
+    };
 
-    settEttersending({
-      dokumentasjonsbehov: initielleInnsendinger,
-      personIdent: context.søker!.fnr,
-    });
-    settLasterverdi(false);
-  };
+    if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
+  }, [context.søker]);
 
   if (laster)
     return (

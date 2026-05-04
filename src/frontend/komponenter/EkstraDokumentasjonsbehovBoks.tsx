@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import Vedleggsopplaster from './Vedleggsopplaster';
 import {
   DokumentType,
@@ -37,19 +37,18 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
   innsendingerUtenVedlegg,
   settOverordnetAlertStripeMelding,
 }: IProps) => {
-  const [valgtDokumentType, settValgtDokumentType] = useState<string>();
-  const [valgtStønadType, settValgtStønadType] = useState<StønadType>();
-  const [harLåstValg, settHarLåstValg] = useState<boolean>(false);
+  const [valgtDokumentType, settValgtDokumentType] = useState<string>(
+    innsending.dokumenttype ?? '',
+  );
+  const [valgtStønadType, settValgtStønadType] = useState<
+    StønadType | undefined
+  >(innsending.stønadType);
+  const [harLåstValg, settHarLåstValg] = useState<boolean>(
+    innsending.vedlegg.length > 0,
+  );
   const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
     alertMelding.TOM,
   );
-
-  useEffect(() => {
-    if (innsending.vedlegg.length > 0) settHarLåstValg(true);
-    settValgtDokumentType(innsending.dokumenttype);
-    settValgtStønadType(innsending.stønadType);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const dokumentTypeOgStønadTypeErValgt = (): boolean => {
     return !!(
