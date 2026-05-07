@@ -85,9 +85,9 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
 
   return (
     <Box padding="space-8" borderWidth="1">
-      <VStack gap={'2'}>
+      <VStack gap={'space-4'}>
         {!harLåstValg && (
-          <VStack gap={'2'}>
+          <VStack gap={'space-4'}>
             <Select
               label="Hvilken stønadstype gjelder innsendingen for?"
               onChange={(event: ChangeEvent<HTMLSelectElement>) => {
@@ -122,7 +122,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
         )}
 
         {harLåstValg && (
-          <VStack gap={'2'}>
+          <VStack gap={'space-4'}>
             <Alert
               variant={erDokumentasjonSendt ? 'success' : 'warning'}
               inline
@@ -151,7 +151,7 @@ export const EkstraDokumentasjonsbehovBoks: React.FC<IProps> = ({
 
         {!harLåstValg && (
           <VStack align={'center'}>
-            <HStack gap={'2'}>
+            <HStack gap={'space-4'}>
               <Button
                 type={'button'}
                 variant={'tertiary'}

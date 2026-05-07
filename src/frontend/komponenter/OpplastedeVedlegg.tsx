@@ -40,8 +40,8 @@ export const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
       {vedleggsliste.map((fil: IVedleggForEttersending) => {
         return (
           <div key={fil.id}>
-            <VStack gap={'2'}>
-              <HStack gap={'2'} align={'center'}>
+            <VStack gap={'space-4'}>
+              <HStack gap={'space-4'} align={'center'}>
                 <UploadIcon title="Binders" fontSize="1.5rem" />
                 <BodyShort>
                   <b>Navn:</b>{' '}

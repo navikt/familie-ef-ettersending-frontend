@@ -39,8 +39,8 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
 
   return (
     <Box padding="space-8" borderWidth="1">
-      <VStack gap={'2'}>
-        <HStack gap={'2'}>
+      <VStack gap={'space-4'}>
+        <HStack gap={'space-4'}>
           {dokumentasjonErOpplastet ? (
             <CheckmarkCircleIcon
               title="Følgende dokumentasjon er lastet opp og klar til å sendes inn:"

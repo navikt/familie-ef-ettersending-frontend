@@ -193,7 +193,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
 
   return (
     <Box margin={'space-4'}>
-      <VStack gap={'1'}>
+      <VStack gap={'space-2'}>
         <Heading level={'1'} size={'xsmall'}>
           {beskrivelse}
         </Heading>
