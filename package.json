@@ -13,7 +13,7 @@
     "@navikt/ds-css": "7.35.1",
     "@navikt/ds-react": "7.35.1",
     "@navikt/nav-dekoratoren-moduler": "3.7.1",
-    "axios": "1.15.2",
+    "axios": "1.16.0",
     "date-fns": "4.1.0",
     "express": "5.2.1",
     "heic2any": "0.0.4",
@@ -38,7 +38,7 @@
     "eslint-plugin-react-hooks": "7.1.1",
     "prettier": "3.8.3",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.59.1",
+    "typescript-eslint": "8.59.2",
     "vite": "7.3.2"
   }
 }
