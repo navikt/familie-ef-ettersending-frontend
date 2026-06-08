@@ -15,7 +15,7 @@ export const Oppsummering: React.FC<IProps> = ({
   tittel,
 }: IProps) => {
   return (
-    <VStack gap={'2'}>
+    <VStack gap={'space-4'}>
       <Heading level={'2'} size={'medium'}>
         {tittel}
       </Heading>
