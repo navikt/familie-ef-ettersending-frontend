@@ -1,22 +1,9 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "node_dist",
-    "baseUrl": "./src",
-    "rootDir": "./src",
+    "noEmit": true,
     "resolveJsonModule": true,
-    "module": "ES6",
-    "esModuleInterop": true,
-    "noImplicitAny": false
+    "skipLibCheck": true
   },
-  "include": [
-    "./src/backend",
-    "src/custom.d.ts"
-  ],
-  "exclude": [
-    "./src/frontend"
-  ],
-  "lib": [
-    "es2015"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

@@ -40,6 +40,12 @@ async function startServer() {
   app.get('/*splat', indexHandler);
 
   console.log('server listening on port', environment().port);
+  if (process.env.NODE_ENV === 'development') {
+    console.log(
+      'Enslig forsørger ettersending lokalt: http://localhost:' +
+        environment().port,
+    );
+  }
 
   app.listen(environment().port);
 }
