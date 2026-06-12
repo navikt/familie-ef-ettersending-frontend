@@ -1,6 +1,6 @@
 import React from 'react';
 import { BodyShort } from '@navikt/ds-react';
-import { DropzoneInputProps, DropzoneRootProps } from 'react-dropzone/.';
+import { DropzoneInputProps, DropzoneRootProps } from 'react-dropzone';
 import styles from './Filvelger.module.css';
 import { UploadIcon } from '@navikt/aksel-icons';
 

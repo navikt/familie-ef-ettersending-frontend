@@ -3,12 +3,12 @@
   "compilerOptions": {
     "allowJs": true,
     "skipLibCheck": true,
-    "module": "ESNext",
+    "module": "nodenext",
     "outDir": "./build",
     "rootDir": "./src",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "lib": ["esnext", "dom"]
   },
   "include": ["./src/backend"],
-  "exclude": ["./src/frontend"],
-  "lib": ["es2015", "esnext"]
+  "exclude": ["./src/frontend"]
 }

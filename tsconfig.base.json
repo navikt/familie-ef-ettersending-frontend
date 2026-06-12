@@ -1,24 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2024",
-    "module": "commonjs",
-    "lib": ["dom", "esnext", "es6"],
-    "declaration": true,
+    "module": "nodenext",
+    "lib": ["esnext"],
     "sourceMap": true,
     "strict": true,
-    "noImplicitAny": false,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "traceResolution": false,
+    "moduleResolution": "nodenext",
     "jsx": "react-jsx",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "esModuleInterop": true
   },
   "exclude": [
     "./src/**/*.test.tsx",
