@@ -3,7 +3,8 @@
   "compilerOptions": {
     "noEmit": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "lib": ["esnext", "dom"]
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

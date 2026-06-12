@@ -8,15 +8,16 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
+    "moduleResolution": "bundler",
     "isolatedModules": true,
     "noEmit": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "jsx": "react-jsx",
-    "typeRoots": ["../../node_modules/@types", "./@types"]
+    "typeRoots": ["../../node_modules/@types", "./@types"],
+    "lib": ["es2015", "esnext", "dom"]
   },
   "exclude": ["../../node_modules", "../../dist", "../../build", "../backend"],
-  "include": ["**/*.ts", "**/*.tsx", "global.d.ts"],
-  "lib": ["es2015", "esnext"]
+  "include": ["**/*.ts", "**/*.tsx", "global.d.ts"]
 }
