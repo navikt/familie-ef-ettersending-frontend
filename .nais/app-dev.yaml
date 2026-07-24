@@ -43,10 +43,10 @@ spec:
         - host: nav.no
   resources:
     limits:
-      memory: 512Mi
+      memory: 128Mi
     requests:
-      memory: 512Mi
-      cpu: 20m
+      memory: 128Mi
+      cpu: 50m
   env:
     - name: APP_VERSION
       value: '{{version}}'
