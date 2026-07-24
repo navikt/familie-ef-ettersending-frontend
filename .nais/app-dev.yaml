@@ -45,7 +45,7 @@ spec:
     limits:
       memory: 512Mi
     requests:
-      memory: 256Mi
+      memory: 512Mi
       cpu: 20m
   env:
     - name: APP_VERSION
