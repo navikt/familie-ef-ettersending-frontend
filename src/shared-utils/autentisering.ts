@@ -27,7 +27,7 @@ export const autentiseringsInterceptor = () => {
       return response;
     },
     (error: AxiosError) => {
-      if (er401Feil(error)) {
+      if (er401Feil(error) && !isLocal()) {
         window.location.href = getLoginUrl();
       } else {
         throw error;
@@ -39,13 +39,23 @@ export const autentiseringsInterceptor = () => {
 export const verifiserAtSøkerErAutentisert = (
   settAutentisering: Dispatch<SetStateAction<InnloggetStatus>>,
 ) => {
-  return verifiserInnloggetApi().then((response) => {
-    if (response && 200 === response.status) {
-      settAutentisering(InnloggetStatus.AUTENTISERT);
-    } else {
-      settAutentisering(InnloggetStatus.FEILET);
-    }
-  });
+  return verifiserInnloggetApi()
+    .then((response) => {
+      if (response && 200 === response.status) {
+        settAutentisering(InnloggetStatus.AUTENTISERT);
+      } else {
+        settAutentisering(InnloggetStatus.FEILET);
+      }
+    })
+    .catch((error) => {
+      if (isLocal()) {
+        console.warn('Autentisering feilet lokalt');
+        settAutentisering(InnloggetStatus.AUTENTISERT);
+      } else {
+        settAutentisering(InnloggetStatus.FEILET);
+        throw error;
+      }
+    });
 };
 
 const verifiserInnloggetApi = () => {

@@ -30,8 +30,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   useEffect(() => {
     const hentOgSettSøker = async () => {
       if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
-        const personInfo = await hentPersoninfo();
-        settSøker(personInfo.søker);
+        try {
+          const personInfo = await hentPersoninfo();
+          settSøker(personInfo.søker);
+        } catch {
+          console.warn('Klarte ikke hente søkerinfo');
+        }
       }
     };
 
