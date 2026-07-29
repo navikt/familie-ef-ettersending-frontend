@@ -6,6 +6,7 @@ import {
   sendEttersending,
 } from '../api-service';
 import { InnloggetStatus } from '../../shared-utils/autentisering';
+import { kjørerLokalt } from '../../shared-utils/miljø';
 import {
   minstEttVedleggErLastetOpp,
   minstEnBoksErAvkrysset,
@@ -208,9 +209,9 @@ const Ettersendingsoversikt: React.FC = () => {
       }
     };
 
-    if (context.innloggetStatus === InnloggetStatus.AUTENTISERT)
+    if (context.søker != null || kjørerLokalt())
       hentOgSettSøknaderOgEttersendinger();
-  }, [context.innloggetStatus]);
+  }, [context.søker, context.innloggetStatus]);
 
   if (laster)
     return (
