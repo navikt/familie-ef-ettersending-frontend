@@ -34,7 +34,9 @@ const lokalSøker: ISøker = {
 
 export const AppProvider = ({ children }: AppProviderProps) => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
-    InnloggetStatus.IKKE_VERIFISERT,
+    kjørerLokalt()
+      ? InnloggetStatus.AUTENTISERT
+      : InnloggetStatus.IKKE_VERIFISERT,
   );
 
   const [søker, settSøker] = useState<ISøker | null>(() => {
