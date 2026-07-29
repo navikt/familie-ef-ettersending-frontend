@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { Dispatch, SetStateAction } from 'react';
-import environment, { isLocal } from '../backend/environment';
+import environment, { isLocal } from '../backend/environment.js';
 
 export enum InnloggetStatus {
   AUTENTISERT = 'innlogget',
@@ -47,14 +47,8 @@ export const verifiserAtSøkerErAutentisert = (
         settAutentisering(InnloggetStatus.FEILET);
       }
     })
-    .catch((error) => {
-      if (isLocal()) {
-        console.warn('Autentisering feilet lokalt');
-        settAutentisering(InnloggetStatus.AUTENTISERT);
-      } else {
-        settAutentisering(InnloggetStatus.FEILET);
-        throw error;
-      }
+    .catch(() => {
+      settAutentisering(InnloggetStatus.FEILET);
     });
 };
 
