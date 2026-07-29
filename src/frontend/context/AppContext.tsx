@@ -34,9 +34,7 @@ const lokalSøker: ISøker = {
 
 export const AppProvider = ({ children }: AppProviderProps) => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
-    kjørerLokalt()
-      ? InnloggetStatus.AUTENTISERT
-      : InnloggetStatus.IKKE_VERIFISERT,
+    InnloggetStatus.IKKE_VERIFISERT,
   );
 
   const [søker, settSøker] = useState<ISøker | null>(() => {
@@ -54,7 +52,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   useEffect(() => {
     const hentOgSettSøker = async () => {
-      if (innloggetStatus === InnloggetStatus.AUTENTISERT && !kjørerLokalt()) {
+      if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
         try {
           const personInfo = await hentPersoninfo();
           settSøker(personInfo.søker);
