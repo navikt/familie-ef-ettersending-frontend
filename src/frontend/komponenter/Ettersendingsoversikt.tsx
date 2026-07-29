@@ -5,7 +5,6 @@ import {
   hentEttersendinger,
   sendEttersending,
 } from '../api-service';
-import { InnloggetStatus } from '../../shared-utils/autentisering';
 import { kjørerLokalt } from '../../shared-utils/miljø';
 import {
   minstEttVedleggErLastetOpp,
