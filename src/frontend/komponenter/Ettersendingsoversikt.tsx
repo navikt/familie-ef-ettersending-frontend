@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../hooks/useApp';
 import {
   hentSøknader,
   hentEttersendinger,
   sendEttersending,
 } from '../api-service';
-import { kjørerLokalt } from '../../shared-utils/miljø';
 import {
   minstEttVedleggErLastetOpp,
   minstEnBoksErAvkrysset,
@@ -208,9 +207,8 @@ const Ettersendingsoversikt: React.FC = () => {
       }
     };
 
-    if (context.søker != null || kjørerLokalt())
-      hentOgSettSøknaderOgEttersendinger();
-  }, [context.søker, context.innloggetStatus]);
+    if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
+  }, [context.søker]);
 
   if (laster)
     return (
