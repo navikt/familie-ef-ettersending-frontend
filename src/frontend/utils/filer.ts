@@ -24,6 +24,10 @@ export const støtterFiltypeHeic = (): boolean => false;
 
 export const tillateFiltyper = ['pdf', 'jpg', 'png', 'jpeg'];
 
+export const tillateFiltyperAccept = tillateFiltyper
+  .map((type) => `.${type}`)
+  .join(',');
+
 export const sjekkTillatFiltype = (fil: File | string): boolean => {
   let filtype = '';
 

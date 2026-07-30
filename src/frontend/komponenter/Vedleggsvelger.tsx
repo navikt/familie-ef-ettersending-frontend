@@ -11,6 +11,7 @@ import {
   formaterFilstørrelse,
   sjekkTillatFiltype,
   støtterFiltypeHeic,
+  tillateFiltyperAccept,
 } from '../utils/filer';
 import heic2any from 'heic2any';
 import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
@@ -224,7 +225,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
         <FileUpload.Dropzone
           label="Velg filer"
           description="Du kan laste opp PDF-, og bildefiler"
-          accept=".pdf,.jpg,.jpeg,.png"
+          accept={tillateFiltyperAccept}
           maxSizeInBytes={maxFilstørrelse}
           validator={filValidator}
           onSelect={handleFilesSelected}
