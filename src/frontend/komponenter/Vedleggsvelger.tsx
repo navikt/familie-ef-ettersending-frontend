@@ -141,49 +141,14 @@ const Vedleggsvelger: React.FC<IProps> = ({
     settLaster(false);
   };
 
-  const handleFilesSelected = async (
-    _files: unknown,
-    partitionedFiles: unknown,
-  ): Promise<void> => {
-    const feilmeldingsliste: string[] = [];
-    settAlertStripeMelding(alertMelding.TOM);
-
-    const partitioned = partitionedFiles as {
-      accepted: File[];
-      rejected: unknown[];
-    };
-    const acceptedFiles = partitioned.accepted || [];
-
-    const filer: File[] = await Promise.all(
-      acceptedFiles.map(async (fil: File): Promise<File> => {
-        if (maxFilstørrelse && fil.size > maxFilstørrelse) {
-          const maks = formaterFilstørrelse(maxFilstørrelse);
-
-          const feilmelding = `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
-
-          feilmeldingsliste.push(feilmelding);
-          settAlertStripeMelding(alertMelding.FEIL_STØRRELSE_INNSENDING);
-
-          return fil;
-        }
-
-        if (!sjekkTillatFiltype(fil)) {
-          const feilmelding = fil.name + ' - Ugyldig filtype';
-          feilmeldingsliste.push(feilmelding);
-          settAlertStripeMelding(alertMelding.FEIL_FILTYPE_INNSENDING);
-
-          return fil;
-        }
-
-        return fil;
-      }),
-    );
-    if (feilmeldingsliste.length <= 0) {
-      lastOppVedlegg(filer);
-    }
+  const håndterValgteFiler = (
+    _filer: unknown,
+    sorterteFiler: { accepted: File[]; rejected: unknown[] },
+  ): void => {
+    lastOppVedlegg(sorterteFiler.accepted);
   };
 
-  const filValidator = (fil: File): true | string => {
+  const validerFil = (fil: File): true | string => {
     if (maxFilstørrelse && fil.size > maxFilstørrelse) {
       const maks = formaterFilstørrelse(maxFilstørrelse);
       return `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
@@ -214,8 +179,8 @@ const Vedleggsvelger: React.FC<IProps> = ({
           description="Du kan laste opp PDF-, og bildefiler"
           accept={tillateFiltyperAccept}
           maxSizeInBytes={maxFilstørrelse}
-          validator={filValidator}
-          onSelect={handleFilesSelected}
+          validator={validerFil}
+          onSelect={håndterValgteFiler}
           multiple
         />
 
