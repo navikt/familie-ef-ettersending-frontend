@@ -20,13 +20,30 @@ export const erFiltypeHeic = (fil: File) => {
   );
 };
 
-export const støtterFiltypeHeic = (): boolean => false;
-export const tillateFiltyper = ['pdf', 'jpg', 'png', 'jpeg'];
+export const støtterFiltypeHeic = (): boolean => true;
 
-export const sjekkTillatFiltype = (filtype: string) => {
-  return tillateFiltyper.some((type) => {
-    return filtype.includes(type);
-  });
+export const tillateFiltyper = ['pdf', 'jpg', 'png', 'jpeg', 'doc', 'docx'];
+
+export const sjekkTillatFiltype = (fil: File | string): boolean => {
+  let filtype = '';
+  let filnavn = '';
+
+  if (fil instanceof File) {
+    filtype = fil.type.toLowerCase();
+    filnavn = fil.name.toLowerCase();
+  } else {
+    filtype = fil.toLowerCase();
+  }
+
+  if (tillateFiltyper.some((type) => filtype.includes(type))) {
+    return true;
+  }
+
+  if (filnavn) {
+    return tillateFiltyper.some((type) => filnavn.endsWith('.' + type));
+  }
+
+  return false;
 };
 
 export const åpnePdfIEgenTab = (blob: Blob, filnavn: string): void => {

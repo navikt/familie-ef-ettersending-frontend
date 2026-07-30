@@ -169,7 +169,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
           return fil;
         }
 
-        if (!sjekkTillatFiltype(fil.type)) {
+        if (!sjekkTillatFiltype(fil)) {
           if (erFiltypeHeic(fil) && støtterFiltypeHeic()) {
             const nyBlob = await heic2any({
               blob: fil,
@@ -201,7 +201,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
       return `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
     }
 
-    if (!sjekkTillatFiltype(fil.type) && !erFiltypeHeic(fil)) {
+    if (!sjekkTillatFiltype(fil) && !erFiltypeHeic(fil)) {
       return `${fil.name} - Ugyldig filtype`;
     }
 
