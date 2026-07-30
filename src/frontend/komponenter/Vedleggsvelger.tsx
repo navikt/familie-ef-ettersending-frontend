@@ -7,13 +7,10 @@ import {
 import { sendVedleggTilMellomlager, slåSammenVedlegg } from '../api-service';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import {
-  erFiltypeHeic,
   formaterFilstørrelse,
   sjekkTillatFiltype,
-  støtterFiltypeHeic,
   tillateFiltyperAccept,
 } from '../utils/filer';
-import heic2any from 'heic2any';
 import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
 import axios from 'axios';
 import {
@@ -171,16 +168,6 @@ const Vedleggsvelger: React.FC<IProps> = ({
         }
 
         if (!sjekkTillatFiltype(fil)) {
-          if (erFiltypeHeic(fil) && støtterFiltypeHeic()) {
-            const nyBlob = await heic2any({
-              blob: fil,
-              toType: 'image/jpg',
-              quality: 1,
-            });
-
-            return await new File([nyBlob as Blob], fil.name + '.jpg');
-          }
-
           const feilmelding = fil.name + ' - Ugyldig filtype';
           feilmeldingsliste.push(feilmelding);
           settAlertStripeMelding(alertMelding.FEIL_FILTYPE_INNSENDING);
@@ -202,7 +189,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
       return `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
     }
 
-    if (!sjekkTillatFiltype(fil) && !erFiltypeHeic(fil)) {
+    if (!sjekkTillatFiltype(fil)) {
       return `${fil.name} - Ugyldig filtype`;
     }
 
