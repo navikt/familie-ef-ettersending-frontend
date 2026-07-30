@@ -199,7 +199,7 @@ const Ettersendingsoversikt: React.FC = () => {
 
         settEttersending({
           dokumentasjonsbehov: initielleInnsendinger,
-          personIdent: context.søker?.fnr ?? '',
+          personIdent: context.søker!.fnr,
         });
         settLasterverdi(false);
       } catch {
