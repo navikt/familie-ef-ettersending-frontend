@@ -1,5 +1,5 @@
 import React from 'react';
-import { useApp } from '../context/AppContext';
+import { useApp } from '../hooks/useApp';
 import { IDokumentasjonsbehov } from '../typer/ettersending';
 import { DokumentasjonsbehovBoks } from './DokumentasjonsbehovBoks';
 import { alertMelding } from './AlertStripe';

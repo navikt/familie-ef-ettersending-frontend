@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import {
   InnloggetStatus,
   verifiserAtSøkerErAutentisert,
@@ -11,7 +11,7 @@ interface AppContextType {
   søker: ISøker | null;
 }
 
-const AppContext = createContext<AppContextType | undefined>(undefined);
+export const AppContext = createContext<AppContextType | undefined>(undefined);
 
 interface AppProviderProps {
   children: React.ReactNode;
@@ -30,8 +30,13 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   useEffect(() => {
     const hentOgSettSøker = async () => {
       if (innloggetStatus === InnloggetStatus.AUTENTISERT) {
-        const personInfo = await hentPersoninfo();
-        settSøker(personInfo.søker);
+        try {
+          const personInfo = await hentPersoninfo();
+          settSøker(personInfo.søker);
+        } catch (e) {
+          console.warn('Klarte ikke hente søkerinfo', e);
+          setInnloggetStatus(InnloggetStatus.FEILET);
+        }
       }
     };
 
@@ -44,13 +49,4 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-};
-
-export const useApp = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error('useApp må brukes innenfor en AppProvider');
-  }
-
-  return context;
 };

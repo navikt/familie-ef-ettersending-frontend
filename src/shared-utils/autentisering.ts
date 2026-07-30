@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { Dispatch, SetStateAction } from 'react';
-import environment, { isLocal } from '../backend/environment';
+import environment, { isLocal } from '../backend/environment.js';
 
 export enum InnloggetStatus {
   AUTENTISERT = 'innlogget',
@@ -27,7 +27,7 @@ export const autentiseringsInterceptor = () => {
       return response;
     },
     (error: AxiosError) => {
-      if (er401Feil(error)) {
+      if (er401Feil(error) && !isLocal()) {
         window.location.href = getLoginUrl();
       } else {
         throw error;
@@ -39,13 +39,17 @@ export const autentiseringsInterceptor = () => {
 export const verifiserAtSøkerErAutentisert = (
   settAutentisering: Dispatch<SetStateAction<InnloggetStatus>>,
 ) => {
-  return verifiserInnloggetApi().then((response) => {
-    if (response && 200 === response.status) {
-      settAutentisering(InnloggetStatus.AUTENTISERT);
-    } else {
+  return verifiserInnloggetApi()
+    .then((response) => {
+      if (response && 200 === response.status) {
+        settAutentisering(InnloggetStatus.AUTENTISERT);
+      } else {
+        settAutentisering(InnloggetStatus.FEILET);
+      }
+    })
+    .catch(() => {
       settAutentisering(InnloggetStatus.FEILET);
-    }
-  });
+    });
 };
 
 const verifiserInnloggetApi = () => {

@@ -28,7 +28,7 @@ export const indexHandler: RequestHandler = async (req, res) => {
   }
 };
 
-const getHtmlWithDecorator = (filePath: string) => {
+const getHtmlWithDecorator = async (filePath: string) => {
   const env = environment().dekoratørEnv;
   if (env === undefined) {
     logger.error('Mangler miljø for dekoratøren');
@@ -47,6 +47,7 @@ const getHtmlWithDecorator = (filePath: string) => {
     },
   };
 
-  return injectDecoratorServerSide(dekoratørConfig);
+  const html = await injectDecoratorServerSide(dekoratørConfig);
+  return html.replace(/<\/link>/g, '');
 };
 export default indexHandler;

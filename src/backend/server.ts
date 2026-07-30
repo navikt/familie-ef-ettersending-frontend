@@ -17,15 +17,6 @@ async function startServer() {
 
   app.use(routes());
 
-  if (process.env.NODE_ENV !== 'development') {
-    app.use(
-      '/familie/alene-med-barn/ettersending/',
-      express.static(frontendMappe, { index: false }),
-    );
-  }
-
-  app.get('/', indexHandler);
-
   if (process.env.NODE_ENV === 'development') {
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
@@ -37,6 +28,14 @@ async function startServer() {
     app.use(vite.middlewares);
   }
 
+  if (process.env.NODE_ENV !== 'development') {
+    app.use(
+      '/familie/alene-med-barn/ettersending/',
+      express.static(frontendMappe, { index: false }),
+    );
+  }
+
+  app.get('/', indexHandler);
   app.get('/*splat', indexHandler);
 
   console.log('server listening on port', environment().port);
