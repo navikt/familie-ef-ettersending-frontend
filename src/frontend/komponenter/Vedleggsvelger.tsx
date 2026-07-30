@@ -223,8 +223,8 @@ const Vedleggsvelger: React.FC<IProps> = ({
 
         <FileUpload.Dropzone
           label="Velg filer"
-          description="Du kan laste opp PDF-, Word- og bildefiler"
-          accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.heic"
+          description="Du kan laste opp PDF-, og bildefiler"
+          accept=".pdf,.jpg,.jpeg,.png"
           maxSizeInBytes={maxFilstørrelse}
           validator={filValidator}
           onSelect={handleFilesSelected}

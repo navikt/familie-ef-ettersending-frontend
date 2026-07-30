@@ -15,7 +15,7 @@ export const Filvelger: React.FC<FilvelgerProps> = ({
   label = 'Velg filer',
   description,
   onSelect,
-  accept = '.pdf,.doc,.docx,.jpg,.jpeg,.png,.heic',
+  accept = '.pdf,.jpg,.jpeg,.png',
   maxSizeInBytes,
   validator,
   disabled = false,
