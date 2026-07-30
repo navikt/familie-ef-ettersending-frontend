@@ -33,8 +33,9 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         try {
           const personInfo = await hentPersoninfo();
           settSøker(personInfo.søker);
-        } catch {
-          console.warn('Klarte ikke hente søkerinfo');
+        } catch (e) {
+          console.warn('Klarte ikke hente søkerinfo', e);
+          setInnloggetStatus(InnloggetStatus.FEILET);
         }
       }
     };
