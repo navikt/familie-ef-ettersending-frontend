@@ -29,15 +29,12 @@ export const tillateFiltyperAccept = tillateFiltyper
   .join(',');
 
 export const sjekkTillatFiltype = (fil: File | string): boolean => {
-  let filtype = '';
+  const filtype = typeof fil === 'string' ? fil.toLowerCase() : fil.type.toLowerCase();
+  const filnavn = typeof fil === 'string' ? '' : fil.name.toLowerCase();
 
-  if (fil instanceof File) {
-    filtype = fil.type.toLowerCase();
-  } else {
-    filtype = fil.toLowerCase();
-  }
-
-  return tillateFiltyper.some((type) => filtype.includes(type));
+  return tillateFiltyper.some(
+    (type) => filtype.includes(type) || filnavn.endsWith(`.${type}`),
+  );
 };
 
 export const åpnePdfIEgenTab = (blob: Blob, filnavn: string): void => {
