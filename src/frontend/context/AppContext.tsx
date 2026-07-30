@@ -5,7 +5,6 @@ import {
 } from '../../shared-utils/autentisering';
 import { hentPersoninfo } from '../api-service';
 import { ISøker } from '../typer/søker';
-import { kjørerLokalt } from '../../shared-utils/miljø';
 
 interface AppContextType {
   innloggetStatus: InnloggetStatus;
@@ -18,38 +17,14 @@ interface AppProviderProps {
   children: React.ReactNode;
 }
 
-const lokalSøker: ISøker = {
-  forkortetNavn: 'Test Testesen',
-  fnr: '31458931375',
-  adresse: {
-    adresse: 'Testveien 1',
-    postnummer: '0001',
-    poststed: 'Oslo',
-  },
-  egenansatt: false,
-  erStrengtFortrolig: false,
-  siviltilstand: 'UGIFT',
-  statsborgerskap: 'NOR',
-};
-
 export const AppProvider = ({ children }: AppProviderProps) => {
   const [innloggetStatus, setInnloggetStatus] = useState<InnloggetStatus>(
-    kjørerLokalt()
-      ? InnloggetStatus.AUTENTISERT
-      : InnloggetStatus.IKKE_VERIFISERT,
+    InnloggetStatus.IKKE_VERIFISERT,
   );
-
-  const [søker, settSøker] = useState<ISøker | null>(() => {
-    if (kjørerLokalt()) {
-      return lokalSøker;
-    }
-    return null;
-  });
+  const [søker, settSøker] = useState<ISøker | null>(null);
 
   useEffect(() => {
-    if (!kjørerLokalt()) {
-      verifiserAtSøkerErAutentisert(setInnloggetStatus);
-    }
+    verifiserAtSøkerErAutentisert(setInnloggetStatus);
   }, []);
 
   useEffect(() => {
