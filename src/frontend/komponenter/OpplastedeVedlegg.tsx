@@ -4,8 +4,7 @@ import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
 import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { BodyShort, Button, HStack, Link, VStack } from '@navikt/ds-react';
-import { UploadIcon } from '@navikt/aksel-icons';
+import { FileUpload } from '@navikt/ds-react';
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedleggForEttersending[];
@@ -37,37 +36,24 @@ export const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
 
   return (
     <>
-      {vedleggsliste.map((fil: IVedleggForEttersending) => {
-        return (
-          <div key={fil.id}>
-            <VStack gap={'space-4'}>
-              <HStack gap={'space-4'} align={'center'}>
-                <UploadIcon title="Binders" fontSize="1.5rem" />
-                <BodyShort>
-                  <b>Navn:</b>{' '}
-                </BodyShort>
-                <Link href="#" onClick={() => visDokumentNyFane(fil)}>
-                  {fil.navn.replace(/_/g, '-')}
-                </Link>
-              </HStack>
-
-              <div>
-                <Button
-                  type={'button'}
-                  variant={'tertiary'}
-                  icon={<UploadIcon title="slett" fontSize="1.5rem" />}
-                  onClick={() => {
-                    slettVedlegg(fil);
-                  }}
-                  size={'small'}
-                >
-                  Angre opplasting
-                </Button>
-              </div>
-            </VStack>
-          </div>
-        );
-      })}
+      <ul>
+        {vedleggsliste.map((fil: IVedleggForEttersending) => (
+          <li key={fil.id}>
+            <FileUpload.Item
+              file={{
+                name: fil.navn.replace(/_/g, '-'),
+                size: 0,
+              }}
+              onFileClick={() => visDokumentNyFane(fil)}
+              href="#"
+              button={{
+                action: 'delete',
+                onClick: () => slettVedlegg(fil),
+              }}
+            />
+          </li>
+        ))}
+      </ul>
 
       {feilmelding && <AlertStripe melding={feilmelding} />}
     </>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDropzone } from 'react-dropzone';
 import { OpplastedeVedlegg } from './OpplastedeVedlegg';
 import {
   IDokumentasjonsbehov,
@@ -17,15 +16,15 @@ import heic2any from 'heic2any';
 import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
 import axios from 'axios';
 import {
-  BodyShort,
   Box,
   Button,
+  FileUpload,
   Heading,
   HStack,
   Loader,
   VStack,
+  BodyShort,
 } from '@navikt/ds-react';
-import { Filvelger } from './Filvelger';
 
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
@@ -144,12 +143,21 @@ const Vedleggsvelger: React.FC<IProps> = ({
     settLaster(false);
   };
 
-  const onDrop = async (filerForOpplasting: File[]) => {
+  const handleFilesSelected = async (
+    _files: unknown,
+    partitionedFiles: unknown,
+  ): Promise<void> => {
     const feilmeldingsliste: string[] = [];
     settAlertStripeMelding(alertMelding.TOM);
 
+    const partitioned = partitionedFiles as {
+      accepted: File[];
+      rejected: unknown[];
+    };
+    const acceptedFiles = partitioned.accepted || [];
+
     const filer: File[] = await Promise.all(
-      filerForOpplasting.map(async (fil: File): Promise<File> => {
+      acceptedFiles.map(async (fil: File): Promise<File> => {
         if (maxFilstørrelse && fil.size > maxFilstørrelse) {
           const maks = formaterFilstørrelse(maxFilstørrelse);
 
@@ -187,9 +195,18 @@ const Vedleggsvelger: React.FC<IProps> = ({
     }
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-  });
+  const filValidator = (fil: File): true | string => {
+    if (maxFilstørrelse && fil.size > maxFilstørrelse) {
+      const maks = formaterFilstørrelse(maxFilstørrelse);
+      return `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
+    }
+
+    if (!sjekkTillatFiltype(fil.type) && !erFiltypeHeic(fil)) {
+      return `${fil.name} - Ugyldig filtype`;
+    }
+
+    return true;
+  };
 
   return (
     <Box margin={'space-4'}>
@@ -204,7 +221,15 @@ const Vedleggsvelger: React.FC<IProps> = ({
           </BodyShort>
         </HStack>
 
-        <Filvelger getRootProps={getRootProps} getInputProps={getInputProps} />
+        <FileUpload.Dropzone
+          label="Velg filer"
+          description="Du kan laste opp PDF-, Word- og bildefiler"
+          accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.heic"
+          maxSizeInBytes={maxFilstørrelse}
+          validator={filValidator}
+          onSelect={handleFilesSelected}
+          multiple
+        />
 
         <OpplastedeVedlegg
           vedleggsliste={vedleggForSammenslåing}
