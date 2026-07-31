@@ -43,7 +43,7 @@ export const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
             key={fil.id}
             file={{
               name: fil.navn.replace(/_/g, '-'),
-              size: fil.størrelse,
+              size: fil.størrelse ?? 0,
             }}
             onFileClick={() => visDokumentNyFane(fil)}
             href="#"
