@@ -125,6 +125,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
             id: respons,
             navn: fil.name,
             tittel: innsending.beskrivelse || 'Ukjent tittel',
+            størrelse: fil.size,
           };
           vedleggListe.push(vedlegg);
         } catch (error: unknown) {
@@ -163,7 +164,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
 
   return (
     <Box margin={'space-4'}>
-      <VStack gap={'space-2'}>
+      <VStack gap={'space-16'}>
         <Heading level={'1'} size={'xsmall'}>
           {beskrivelse}
         </Heading>
@@ -201,13 +202,10 @@ const Vedleggsvelger: React.FC<IProps> = ({
         <BodyShort size={'small'}>
           Hvis dokumentet du skal sende inn består av flere filer, kan du legge
           til alle filene her.
+          {skalDokumenttypeSlåsSammen(innsending.dokumenttype) && (
+            <> Filene blir slått sammen til ett dokument.</>
+          )}
         </BodyShort>
-
-        {skalDokumenttypeSlåsSammen(innsending.dokumenttype) && (
-          <BodyShort size={'small'}>
-            Filene blir slått sammen til ett dokument.
-          </BodyShort>
-        )}
 
         <AlertStripe melding={alertStripeMelding} />
 
