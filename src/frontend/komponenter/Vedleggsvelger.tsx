@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDropzone } from 'react-dropzone';
 import { OpplastedeVedlegg } from './OpplastedeVedlegg';
 import {
   IDokumentasjonsbehov,
@@ -8,24 +7,22 @@ import {
 import { sendVedleggTilMellomlager, slåSammenVedlegg } from '../api-service';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import {
-  erFiltypeHeic,
   formaterFilstørrelse,
   sjekkTillatFiltype,
-  støtterFiltypeHeic,
+  tillateFiltyperAccept,
 } from '../utils/filer';
-import heic2any from 'heic2any';
 import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
 import axios from 'axios';
 import {
-  BodyShort,
   Box,
   Button,
+  FileUpload,
   Heading,
   HStack,
   Loader,
   VStack,
+  BodyShort,
 } from '@navikt/ds-react';
-import { Filvelger } from './Filvelger';
 
 interface IProps {
   oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
@@ -144,52 +141,25 @@ const Vedleggsvelger: React.FC<IProps> = ({
     settLaster(false);
   };
 
-  const onDrop = async (filerForOpplasting: File[]) => {
-    const feilmeldingsliste: string[] = [];
-    settAlertStripeMelding(alertMelding.TOM);
-
-    const filer: File[] = await Promise.all(
-      filerForOpplasting.map(async (fil: File): Promise<File> => {
-        if (maxFilstørrelse && fil.size > maxFilstørrelse) {
-          const maks = formaterFilstørrelse(maxFilstørrelse);
-
-          const feilmelding = `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
-
-          feilmeldingsliste.push(feilmelding);
-          settAlertStripeMelding(alertMelding.FEIL_STØRRELSE_INNSENDING);
-
-          return fil;
-        }
-
-        if (!sjekkTillatFiltype(fil.type)) {
-          if (erFiltypeHeic(fil) && støtterFiltypeHeic()) {
-            const nyBlob = await heic2any({
-              blob: fil,
-              toType: 'image/jpg',
-              quality: 1,
-            });
-
-            return await new File([nyBlob as Blob], fil.name + '.jpg');
-          }
-
-          const feilmelding = fil.name + ' - Ugyldig filtype';
-          feilmeldingsliste.push(feilmelding);
-          settAlertStripeMelding(alertMelding.FEIL_FILTYPE_INNSENDING);
-
-          return fil;
-        }
-
-        return fil;
-      }),
-    );
-    if (feilmeldingsliste.length <= 0) {
-      lastOppVedlegg(filer);
-    }
+  const håndterValgteFiler = (
+    _filer: unknown,
+    sorterteFiler: { accepted: File[]; rejected: unknown[] },
+  ): void => {
+    lastOppVedlegg(sorterteFiler.accepted);
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-  });
+  const validerFil = (fil: File): true | string => {
+    if (maxFilstørrelse && fil.size > maxFilstørrelse) {
+      const maks = formaterFilstørrelse(maxFilstørrelse);
+      return `${fil.name} er for stor (maksimal filstørrelse er ${maks})`;
+    }
+
+    if (!sjekkTillatFiltype(fil)) {
+      return `${fil.name} - Ugyldig filtype`;
+    }
+
+    return true;
+  };
 
   return (
     <Box margin={'space-4'}>
@@ -204,7 +174,15 @@ const Vedleggsvelger: React.FC<IProps> = ({
           </BodyShort>
         </HStack>
 
-        <Filvelger getRootProps={getRootProps} getInputProps={getInputProps} />
+        <FileUpload.Dropzone
+          label="Velg filer"
+          description="Du kan laste opp PDF-, og bildefiler"
+          accept={tillateFiltyperAccept}
+          maxSizeInBytes={maxFilstørrelse}
+          validator={validerFil}
+          onSelect={håndterValgteFiler}
+          multiple
+        />
 
         <OpplastedeVedlegg
           vedleggsliste={vedleggForSammenslåing}

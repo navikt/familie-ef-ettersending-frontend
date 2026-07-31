@@ -21,12 +21,20 @@ export const erFiltypeHeic = (fil: File) => {
 };
 
 export const støtterFiltypeHeic = (): boolean => false;
+
 export const tillateFiltyper = ['pdf', 'jpg', 'png', 'jpeg'];
 
-export const sjekkTillatFiltype = (filtype: string) => {
-  return tillateFiltyper.some((type) => {
-    return filtype.includes(type);
-  });
+export const tillateFiltyperAccept = tillateFiltyper
+  .map((type) => `.${type}`)
+  .join(',');
+
+export const sjekkTillatFiltype = (fil: File | string): boolean => {
+  const filtype = typeof fil === 'string' ? fil.toLowerCase() : fil.type.toLowerCase();
+  const filnavn = typeof fil === 'string' ? '' : fil.name.toLowerCase();
+
+  return tillateFiltyper.some(
+    (type) => filtype.includes(type) || filnavn.endsWith(`.${type}`),
+  );
 };
 
 export const åpnePdfIEgenTab = (blob: Blob, filnavn: string): void => {
