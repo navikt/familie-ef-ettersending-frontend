@@ -44,4 +44,5 @@ export interface IVedleggForEttersending {
   id: string;
   navn: string;
   tittel: string;
+  størrelse?: number;
 }

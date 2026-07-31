@@ -63,7 +63,7 @@ const Vedleggsopplaster: React.FC<IProps> = ({
         </ModalWrapper>
       )}
 
-      <VStack gap={'space-2'}>
+      <VStack gap={'space-8'}>
         {innsending.vedlegg.length === 0 && (
           <VStack align={'center'} justify={'space-between'}>
             {slettInnsedning && (

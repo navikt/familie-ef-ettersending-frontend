@@ -39,7 +39,7 @@ export const DokumentasjonsbehovBoks: React.FC<Props> = ({
 
   return (
     <Box padding="space-8" borderWidth="1">
-      <VStack gap={'space-4'}>
+      <VStack gap={'space-8'}>
         <HStack gap={'space-4'}>
           {dokumentasjonErOpplastet ? (
             <CheckmarkCircleIcon

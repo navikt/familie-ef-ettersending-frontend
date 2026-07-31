@@ -18,7 +18,7 @@ const App: React.FC = () => {
     return (
       <div className={styles.bakgrunn}>
         <div className={styles.container}>
-          <VStack gap={'space-8'}>
+          <VStack gap={'space-24'}>
             <VStack align={'center'}>
               <div>
                 <img

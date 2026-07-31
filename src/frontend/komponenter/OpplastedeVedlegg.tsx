@@ -4,7 +4,7 @@ import { base64toBlob, åpnePdfIEgenTab } from '../utils/filer';
 import { hentOpplastetVedlegg } from '../api-service';
 import { RessursStatus } from '../typer/ressurs';
 import AlertStripe, { alertMelding } from './AlertStripe';
-import { FileUpload } from '@navikt/ds-react';
+import { FileUpload, VStack } from '@navikt/ds-react';
 
 interface IOpplastedeVedlegg {
   vedleggsliste: IVedleggForEttersending[];
@@ -36,24 +36,24 @@ export const OpplastedeVedlegg: React.FC<IOpplastedeVedlegg> = ({
 
   return (
     <>
-      <ul>
+      <VStack as="ul" gap="space-12">
         {vedleggsliste.map((fil: IVedleggForEttersending) => (
-          <li key={fil.id}>
-            <FileUpload.Item
-              file={{
-                name: fil.navn.replace(/_/g, '-'),
-                size: 0,
-              }}
-              onFileClick={() => visDokumentNyFane(fil)}
-              href="#"
-              button={{
-                action: 'delete',
-                onClick: () => slettVedlegg(fil),
-              }}
-            />
-          </li>
+          <FileUpload.Item
+            as="li"
+            key={fil.id}
+            file={{
+              name: fil.navn.replace(/_/g, '-'),
+              size: fil.størrelse ?? 0,
+            }}
+            onFileClick={() => visDokumentNyFane(fil)}
+            href="#"
+            button={{
+              action: 'delete',
+              onClick: () => slettVedlegg(fil),
+            }}
+          />
         ))}
-      </ul>
+      </VStack>
 
       {feilmelding && <AlertStripe melding={feilmelding} />}
     </>
