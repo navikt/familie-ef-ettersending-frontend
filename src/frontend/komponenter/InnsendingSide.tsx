@@ -27,6 +27,10 @@ export const InnsendingSide: React.FC<IProps> = ({
   ekstraInnsendingerUtenVedlegg,
   settAlertStripeMelding,
 }: IProps) => {
+  const harLastetOppNoenVedlegg = ettersending.dokumentasjonsbehov.some(
+    (innsending) => innsending.vedlegg.length > 0,
+  );
+
   return (
     <>
       {ettersending.dokumentasjonsbehov
@@ -67,7 +71,9 @@ export const InnsendingSide: React.FC<IProps> = ({
       </Button>
 
       <VStack align={'center'} justify={'space-between'}>
-        <Button onClick={visOppsummering}>Neste</Button>
+        <Button onClick={visOppsummering} disabled={!harLastetOppNoenVedlegg}>
+          Neste
+        </Button>
       </VStack>
     </>
   );

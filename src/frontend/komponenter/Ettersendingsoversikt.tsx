@@ -24,7 +24,7 @@ import { Oppsummering } from './Oppsummering';
 import { InnsendingSide } from './InnsendingSide';
 import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
 import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
-import { Button, HStack, Loader, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Loader, VStack } from '@navikt/ds-react';
 import Stegindikator from './Stegindikator';
 
 const Ettersendingsoversikt: React.FC = () => {
@@ -44,6 +44,7 @@ const Ettersendingsoversikt: React.FC = () => {
     settEkstraInnsendingerSomManglerVedlegg,
   ] = useState<string[]>([]);
   const [aktivtSteg, settAktivtSteg] = useState<number>(0);
+  const [senderInn, settSenderInn] = useState(false);
 
   const stegForInnsending = [
     {
@@ -147,6 +148,7 @@ const Ettersendingsoversikt: React.FC = () => {
   const sendInnEttersending = async () => {
     try {
       settAktivtSteg(2);
+      settSenderInn(true);
       const ettersendingTilBackend: IEttersending = {
         dokumentasjonsbehov: filtrerUtfylteInnsendinger(ettersending),
         personIdent: ettersending.personIdent,
@@ -155,6 +157,8 @@ const Ettersendingsoversikt: React.FC = () => {
       settAlertStripeMelding(alertMelding.SENDT_INN);
     } catch {
       settAlertStripeMelding(alertMelding.FEIL_VED_INNSENDING);
+    } finally {
+      settSenderInn(false);
     }
   };
 
@@ -257,10 +261,19 @@ const Ettersendingsoversikt: React.FC = () => {
       )}
 
       {aktivtSteg === 2 && (
-        <Oppsummering
-          tittel={EOppsummeringstitler.Kvittering}
-          innsendinger={filtrerUtfylteInnsendinger(ettersending)}
-        />
+        <>
+          <Oppsummering
+            tittel={EOppsummeringstitler.Kvittering}
+            innsendinger={filtrerUtfylteInnsendinger(ettersending)}
+          />
+
+          {senderInn && (
+            <HStack align={'center'} gap={'space-12'}>
+              <Loader size={'xlarge'} title={'Sender inn dokumentasjon'} />
+              <BodyShort>Dokumentasjon sendes inn...</BodyShort>
+            </HStack>
+          )}
+        </>
       )}
 
       <AlertStripe melding={alertStripeMelding} />
