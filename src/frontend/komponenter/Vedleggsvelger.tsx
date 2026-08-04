@@ -132,16 +132,14 @@ const Vedleggsvelger: React.FC<IProps> = ({
           };
           vedleggListe.push(vedlegg);
         } catch (error: unknown) {
+          const data = (error as ApiError).data as
+            | Record<string, unknown>
+            | undefined;
           const erForLitenFil =
-            (error as ApiError).data &&
-            typeof (error as ApiError).data === 'object' &&
-            (error as ApiError).data !== null &&
-            ((error as ApiError).data as Record<string, unknown>).melding ===
-              'CODE=IMAGE_DIMENSIONS_TOO_SMALL';
-          const feilmelding = erForLitenFil
-            ? alertMelding.FEIL_FOR_LITEN_FIL
-            : alertMelding.FEIL;
-          settAlertStripeMelding(feilmelding);
+            data?.melding === 'CODE=IMAGE_DIMENSIONS_TOO_SMALL';
+          settAlertStripeMelding(
+            erForLitenFil ? alertMelding.FEIL_FOR_LITEN_FIL : alertMelding.FEIL,
+          );
         }
       }),
     );
