@@ -3,7 +3,7 @@ import { useApp } from './hooks/useApp';
 import { InnloggetStatus } from '../shared-utils/autentisering';
 import sjekklisteikon from './icons/sjekklisteikon.svg';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
-import { BodyLong, Box, Heading, Loader, Page, VStack } from '@navikt/ds-react';
+import { BodyLong, Heading, Loader, Page, VStack } from '@navikt/ds-react';
 
 const App: React.FC = () => {
   const context = useApp();
