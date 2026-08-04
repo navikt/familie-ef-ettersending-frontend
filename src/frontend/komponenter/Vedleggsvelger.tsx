@@ -4,7 +4,11 @@ import {
   IDokumentasjonsbehov,
   IVedleggForEttersending,
 } from '../typer/ettersending';
-import { sendVedleggTilMellomlager, slåSammenVedlegg } from '../api-service';
+import {
+  sendVedleggTilMellomlager,
+  slåSammenVedlegg,
+  ApiError,
+} from '../api-service';
 import AlertStripe, { alertMelding } from './AlertStripe';
 import {
   formaterFilstørrelse,
@@ -12,7 +16,6 @@ import {
   tillateFiltyperAccept,
 } from '../utils/filer';
 import { DokumentType, StønadType, stønadTypeTilTekst } from '../typer/stønad';
-import axios from 'axios';
 import {
   Box,
   Button,
@@ -129,11 +132,15 @@ const Vedleggsvelger: React.FC<IProps> = ({
           };
           vedleggListe.push(vedlegg);
         } catch (error: unknown) {
-          const feilmelding =
-            axios.isAxiosError(error) &&
-            error?.response?.data?.melding === 'CODE=IMAGE_DIMENSIONS_TOO_SMALL'
-              ? alertMelding.FEIL_FOR_LITEN_FIL
-              : alertMelding.FEIL;
+          const erForLitenFil =
+            (error as ApiError).data &&
+            typeof (error as ApiError).data === 'object' &&
+            (error as ApiError).data !== null &&
+            ((error as ApiError).data as Record<string, unknown>).melding ===
+              'CODE=IMAGE_DIMENSIONS_TOO_SMALL';
+          const feilmelding = erForLitenFil
+            ? alertMelding.FEIL_FOR_LITEN_FIL
+            : alertMelding.FEIL;
           settAlertStripeMelding(feilmelding);
         }
       }),

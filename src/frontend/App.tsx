@@ -1,9 +1,6 @@
 import React from 'react';
 import { useApp } from './hooks/useApp';
-import {
-  autentiseringsInterceptor,
-  InnloggetStatus,
-} from '../shared-utils/autentisering';
+import { InnloggetStatus } from '../shared-utils/autentisering';
 import sjekklisteikon from './icons/sjekklisteikon.svg';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
 import { BodyLong, Heading, Loader, VStack } from '@navikt/ds-react';
@@ -11,8 +8,6 @@ import styles from './App.module.css';
 
 const App: React.FC = () => {
   const context = useApp();
-
-  autentiseringsInterceptor();
 
   if (context.innloggetStatus === InnloggetStatus.AUTENTISERT) {
     return (
