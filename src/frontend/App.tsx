@@ -3,16 +3,15 @@ import { useApp } from './hooks/useApp';
 import { InnloggetStatus } from '../shared-utils/autentisering';
 import sjekklisteikon from './icons/sjekklisteikon.svg';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
-import { BodyLong, Heading, Loader, VStack } from '@navikt/ds-react';
-import styles from './App.module.css';
+import { BodyLong, Heading, Loader, Page, VStack } from '@navikt/ds-react';
 
 const App: React.FC = () => {
   const context = useApp();
 
   if (context.innloggetStatus === InnloggetStatus.AUTENTISERT) {
     return (
-      <div className={styles.bakgrunn}>
-        <div className={styles.container}>
+      <Page>
+        <Page.Block as="main" width="md" gutters>
           <VStack gap={'space-24'}>
             <VStack align={'center'}>
               <div>
@@ -32,8 +31,8 @@ const App: React.FC = () => {
             </BodyLong>
             <Ettersendingsoversikt />
           </VStack>
-        </div>
-      </div>
+        </Page.Block>
+      </Page>
     );
   } else {
     return (
