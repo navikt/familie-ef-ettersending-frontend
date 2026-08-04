@@ -1,4 +1,3 @@
-import axios, { AxiosError } from 'axios';
 import { Dispatch, SetStateAction } from 'react';
 import environment, { isLocal } from '../backend/environment.js';
 
@@ -7,9 +6,6 @@ export enum InnloggetStatus {
   FEILET = 'ikke logget inn (innlogging feilet)',
   IKKE_VERIFISERT = 'ikke logget inn',
 }
-
-const er401Feil = (error: AxiosError) =>
-  error && error.response && error.response.status === 401;
 
 const getLoginUrl = () => {
   if (isLocal()) {
@@ -21,19 +17,10 @@ const getLoginUrl = () => {
   );
 };
 
-export const autentiseringsInterceptor = () => {
-  axios.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error: AxiosError) => {
-      if (er401Feil(error) && !isLocal()) {
-        window.location.href = getLoginUrl();
-      } else {
-        throw error;
-      }
-    },
-  );
+export const håndter401 = (response: Response): void => {
+  if (response.status === 401 && !isLocal()) {
+    window.location.href = getLoginUrl();
+  }
 };
 
 export const verifiserAtSøkerErAutentisert = (
@@ -41,9 +28,10 @@ export const verifiserAtSøkerErAutentisert = (
 ) => {
   return verifiserInnloggetApi()
     .then((response) => {
-      if (response && 200 === response.status) {
+      if (response.ok) {
         settAutentisering(InnloggetStatus.AUTENTISERT);
       } else {
+        håndter401(response);
         settAutentisering(InnloggetStatus.FEILET);
       }
     })
@@ -53,7 +41,7 @@ export const verifiserAtSøkerErAutentisert = (
 };
 
 const verifiserInnloggetApi = () => {
-  return axios.get(`${environment().apiProxyUrl}/api/innlogget`, {
-    withCredentials: true,
+  return fetch(`${environment().apiProxyUrl}/api/innlogget`, {
+    credentials: 'include',
   });
 };

@@ -1,16 +1,20 @@
 import { envVar } from './envVar.js';
-import axios from 'axios';
 import logger from './logger.js';
 
 export class TexasClient {
   private async postRequest(url: string, data: object) {
     try {
-      const response = await axios.post(url, data, {
+      const response = await fetch(url, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify(data),
       });
-      return response.data;
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      return response.json();
     } catch (error) {
       logger.error(`Request mot ${url} feilet.`, error);
       throw error;

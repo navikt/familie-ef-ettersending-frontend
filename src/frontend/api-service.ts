@@ -1,8 +1,8 @@
-import axios from 'axios';
 import environment from '../backend/environment';
 import { IEttersending, ISøknadsbehov } from './typer/ettersending';
 import { IPersoninfo } from './typer/søker';
 import { Ressurs } from './typer/ressurs';
+import { håndter401 } from '../shared-utils/autentisering';
 
 interface Ifamilievedlegg {
   dokumentId: string;
@@ -17,99 +17,105 @@ interface IKvittering {
 const HEADER_NAV_CONSUMER_ID = 'Nav-Consumer-Id';
 const HEADER_NAV_CONSUMER_ID_VALUE = 'familie-ef-ettersending';
 
+const HEADER_NAV_CONSUMER = {
+  [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
+};
+
+export interface ApiError extends Error {
+  status: number;
+  data?: unknown;
+}
+
+const håndterRespons = async <T>(response: Response): Promise<T> => {
+  if (!response.ok) {
+    håndter401(response);
+    const errorBody = await response.json().catch(() => undefined);
+    const error = new Error(
+      `HTTP ${response.status}: ${response.statusText}`,
+    ) as ApiError;
+    error.status = response.status;
+    error.data = errorBody;
+    throw error;
+  }
+  return response.json() as Promise<T>;
+};
+
 export const sendEttersending = (
   ettersendingsdata: IEttersending,
 ): Promise<IKvittering> => {
-  return axios
-    .post(`${environment().apiProxyUrl}/api/ettersending`, ettersendingsdata, {
-      withCredentials: true,
-      headers: {
-        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
-      },
-    })
-    .then((response) => response.data);
+  return fetch(`${environment().apiProxyUrl}/api/ettersending`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...HEADER_NAV_CONSUMER,
+    },
+    body: JSON.stringify(ettersendingsdata),
+  }).then(håndterRespons<IKvittering>);
 };
 
 export const hentEttersendinger = (): Promise<IEttersending[]> => {
-  return axios
-    .get(`${environment().apiProxyUrl}/api/ettersending`, {
-      withCredentials: true,
-      headers: {
-        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
-      },
-    })
-    .then((response: { data: IEttersending[] }) => response.data);
+  return fetch(`${environment().apiProxyUrl}/api/ettersending`, {
+    credentials: 'include',
+    headers: HEADER_NAV_CONSUMER,
+  }).then(håndterRespons<IEttersending[]>);
 };
 
 export const hentOpplastetVedlegg = (
   dokumentId: string,
 ): Promise<Ressurs<string>> => {
-  return axios
-    .get(
-      `${
-        environment().dokumentProxyUrl
-      }/dokument/api/mapper/familievedlegg/${dokumentId}`,
-      {
-        withCredentials: true,
-        headers: {
-          [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
-        },
-      },
-    )
-    .then((response: { data: Ressurs<string> }) => response.data);
+  return fetch(
+    `${environment().dokumentProxyUrl}/dokument/api/mapper/familievedlegg/${dokumentId}`,
+    {
+      credentials: 'include',
+      headers: HEADER_NAV_CONSUMER,
+    },
+  ).then(håndterRespons<Ressurs<string>>);
 };
 
 export const hentPersoninfo = (): Promise<IPersoninfo> => {
-  return axios
-    .get(`${environment().apiProxyUrl}/api/oppslag/sokerinfo`, {
-      withCredentials: true,
-      headers: {
-        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
-      },
-    })
-    .then((response: { data: IPersoninfo }) => response.data);
+  return fetch(`${environment().apiProxyUrl}/api/oppslag/sokerinfo`, {
+    credentials: 'include',
+    headers: HEADER_NAV_CONSUMER,
+  }).then(håndterRespons<IPersoninfo>);
 };
 
 export const hentSøknader = (): Promise<ISøknadsbehov[]> => {
-  return axios
-    .get(`${environment().apiProxyUrl}/api/dokumentasjonsbehov/person`, {
-      withCredentials: true,
-      headers: {
-        [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
-      },
-    })
-    .then((response: { data: ISøknadsbehov[] }) => response.data);
+  return fetch(`${environment().apiProxyUrl}/api/dokumentasjonsbehov/person`, {
+    credentials: 'include',
+    headers: HEADER_NAV_CONSUMER,
+  }).then(håndterRespons<ISøknadsbehov[]>);
 };
 
 export const sendVedleggTilMellomlager = (
   formData: FormData,
 ): Promise<string> => {
-  return axios
-    .post(
-      `${environment().dokumentProxyUrl}/dokument/api/mapper/familievedlegg`,
-      formData,
-      {
-        headers: {
-          'content-type': 'multipart/form-data',
-          [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
-        },
-        withCredentials: true,
-      },
-    )
-    .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
+  return fetch(
+    `${environment().dokumentProxyUrl}/dokument/api/mapper/familievedlegg`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: HEADER_NAV_CONSUMER,
+      body: formData,
+    },
+  )
+    .then(håndterRespons<Ifamilievedlegg>)
+    .then((data) => data.dokumentId);
 };
 
 export const slåSammenVedlegg = (dokumentIder: string[]): Promise<string> => {
-  return axios
-    .post(
-      `${environment().dokumentProxyUrl}/dokument/api/mapper/merge/familievedlegg`,
-      dokumentIder,
-      {
-        headers: {
-          [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
-        },
-        withCredentials: true,
+  return fetch(
+    `${environment().dokumentProxyUrl}/dokument/api/mapper/merge/familievedlegg`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...HEADER_NAV_CONSUMER,
       },
-    )
-    .then((response: { data: Ifamilievedlegg }) => response.data.dokumentId);
+      body: JSON.stringify(dokumentIder),
+    },
+  )
+    .then(håndterRespons<Ifamilievedlegg>)
+    .then((data) => data.dokumentId);
 };
