@@ -8,7 +8,6 @@ interface ModalProps {
   aksjonsknapper?: {
     hovedKnapp: Aksjonsknapp;
     lukkKnapp: Aksjonsknapp;
-    marginTop?: number;
   };
   children?: React.ReactNode;
 }
@@ -35,25 +34,25 @@ export const ModalWrapper: React.FC<ModalProps> = ({
     >
       <Modal.Body>
         <div>{children}</div>
-        {aksjonsknapper && (
-          <div>
-            <Button
-              variant="tertiary"
-              onClick={aksjonsknapper.lukkKnapp.onClick}
-              disabled={aksjonsknapper.lukkKnapp.disabled}
-            >
-              {aksjonsknapper.lukkKnapp.tekst}
-            </Button>
-            <Button
-              variant="primary"
-              onClick={aksjonsknapper.hovedKnapp.onClick}
-              disabled={aksjonsknapper.hovedKnapp.disabled}
-            >
-              {aksjonsknapper.hovedKnapp.tekst}
-            </Button>
-          </div>
-        )}
       </Modal.Body>
+      {aksjonsknapper && (
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={aksjonsknapper.hovedKnapp.onClick}
+            disabled={aksjonsknapper.hovedKnapp.disabled}
+          >
+            {aksjonsknapper.hovedKnapp.tekst}
+          </Button>
+          <Button
+            variant="tertiary"
+            onClick={aksjonsknapper.lukkKnapp.onClick}
+            disabled={aksjonsknapper.lukkKnapp.disabled}
+          >
+            {aksjonsknapper.lukkKnapp.tekst}
+          </Button>
+        </Modal.Footer>
+      )}
     </Modal>
   );
 };
