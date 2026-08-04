@@ -133,8 +133,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
           vedleggListe.push(vedlegg);
         } catch (error: unknown) {
           const data = (error as ApiError).data as
-            | Record<string, unknown>
-            | undefined;
+            Record<string, unknown> | undefined;
           const erForLitenFil =
             data?.melding === 'CODE=IMAGE_DIMENSIONS_TOO_SMALL';
           settAlertStripeMelding(

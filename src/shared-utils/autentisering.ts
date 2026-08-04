@@ -31,6 +31,7 @@ export const verifiserAtSøkerErAutentisert = (
       if (response.ok) {
         settAutentisering(InnloggetStatus.AUTENTISERT);
       } else {
+        håndter401(response);
         settAutentisering(InnloggetStatus.FEILET);
       }
     })
