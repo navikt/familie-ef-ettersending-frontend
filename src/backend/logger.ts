@@ -4,7 +4,10 @@ import { Request } from 'express';
 const logger = winston.createLogger({
   transports: [
     new winston.transports.Console({
-      format: winston.format.json(),
+      format: winston.format.combine(
+        winston.format.splat(),
+        winston.format.json(),
+      ),
     }),
   ],
 });
