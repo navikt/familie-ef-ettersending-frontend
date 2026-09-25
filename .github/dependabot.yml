@@ -24,12 +24,6 @@ updates:
         update-types:
           - 'minor'
           - 'patch'
-      major-dependencies:
-        patterns:
-          - '*'
-        update-types:
-          - 'major'
-
   - package-ecosystem: github-actions
     directory: '/'
     schedule:
