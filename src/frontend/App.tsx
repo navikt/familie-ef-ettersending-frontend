@@ -3,6 +3,7 @@ import { useApp } from './hooks/useApp';
 import { InnloggetStatus } from '../shared-utils/autentisering';
 import sjekklisteikon from './icons/sjekklisteikon.svg';
 import Ettersendingsoversikt from './komponenter/Ettersendingsoversikt';
+import { VedlikeholdsvarselAlert } from './komponenter/VedlikeholdsvarselAlert';
 import { BodyLong, Heading, Loader, Page, VStack } from '@navikt/ds-react';
 
 const App: React.FC = () => {
@@ -11,6 +12,7 @@ const App: React.FC = () => {
   if (context.innloggetStatus === InnloggetStatus.AUTENTISERT) {
     return (
       <Page>
+        <VedlikeholdsvarselAlert />
         <Page.Block as="main" width="md" gutters>
           <VStack gap={'space-24'}>
             <VStack align={'center'}>

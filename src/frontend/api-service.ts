@@ -2,6 +2,7 @@ import environment from '../backend/environment';
 import { IEttersending, ISøknadsbehov } from './typer/ettersending';
 import { IPersoninfo } from './typer/søker';
 import { Ressurs } from './typer/ressurs';
+import { Toggles } from './typer/toggles';
 import { håndter401 } from '../shared-utils/autentisering';
 
 interface Ifamilievedlegg {
@@ -85,6 +86,13 @@ export const hentSøknader = (): Promise<ISøknadsbehov[]> => {
     credentials: 'include',
     headers: HEADER_NAV_CONSUMER,
   }).then(håndterRespons<ISøknadsbehov[]>);
+};
+
+export const hentToggles = (): Promise<Toggles> => {
+  return fetch(`${environment().apiProxyUrl}/api/featuretoggle`, {
+    credentials: 'include',
+    headers: HEADER_NAV_CONSUMER,
+  }).then(håndterRespons<Toggles>);
 };
 
 export const sendVedleggTilMellomlager = (
