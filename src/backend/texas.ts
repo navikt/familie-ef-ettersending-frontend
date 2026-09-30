@@ -54,7 +54,7 @@ export class TexasClient {
       };
     } catch (error) {
       logger.error('Klarte ikke å bytte token mot Texas.', error);
-      throw new Error('Token exchange feilet');
+      throw new Error('Token exchange feilet', { cause: error });
     }
   }
 }
