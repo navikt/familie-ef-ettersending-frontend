@@ -31,7 +31,7 @@ export const doProxy = (
   targetUrl: string,
   pathPrefix?: string,
 ): RequestHandler => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: Preserve the existing proxy configuration typing.
   const config: any = {
     changeOrigin: true,
     logger,
