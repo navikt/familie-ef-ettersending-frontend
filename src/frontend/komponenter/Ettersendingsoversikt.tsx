@@ -1,284 +1,251 @@
-import React, { useEffect, useState } from 'react';
-import { useApp } from '../hooks/useApp';
-import {
-  hentSøknader,
-  hentEttersendinger,
-  sendEttersending,
-} from '../api-service';
-import {
-  minstEttVedleggErLastetOpp,
-  minstEnBoksErAvkrysset,
-  minstEttVedleggErLastetOppForEkstraDokumentasjonsboks,
-  ekstraInnsendingerUtenVedlegg,
-  filtrerUtfylteInnsendinger,
-} from '../utils/innsendingsvalidering';
-import { v4 as uuidv4 } from 'uuid';
-import {
-  IEttersending,
-  IDokumentasjonsbehov,
-  ISøknadsbehov,
-} from '../typer/ettersending';
-import AlertStripe, { alertMelding } from './AlertStripe';
-import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
-import { Oppsummering } from './Oppsummering';
-import { InnsendingSide } from './InnsendingSide';
-import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
-import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
 import { BodyShort, Button, HStack, Loader, VStack } from '@navikt/ds-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { dagensDatoMedTidspunktStreng } from '../../shared-utils/dato';
+import { hentEttersendinger, hentSøknader, sendEttersending } from '../api-service';
+import { useApp } from '../hooks/useApp';
+import type { IDokumentasjonsbehov, IEttersending, ISøknadsbehov } from '../typer/ettersending';
+import {
+    ekstraInnsendingerUtenVedlegg,
+    filtrerUtfylteInnsendinger,
+    minstEnBoksErAvkrysset,
+    minstEttVedleggErLastetOpp,
+    minstEttVedleggErLastetOppForEkstraDokumentasjonsboks,
+} from '../utils/innsendingsvalidering';
+import { EOppsummeringstitler } from '../utils/oppsummeringssteg';
+import { slåSammenSøknadOgEttersendinger } from '../utils/søknadshåndtering';
+import AlertStripe, { alertMelding } from './AlertStripe';
+import { InnsendingSide } from './InnsendingSide';
+import { Oppsummering } from './Oppsummering';
 import Stegindikator from './Stegindikator';
 
 const Ettersendingsoversikt: React.FC = () => {
-  const [laster, settLasterverdi] = useState(true);
-  const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(
-    alertMelding.TOM,
-  );
-  const [ettersending, settEttersending] = useState<IEttersending>({
-    dokumentasjonsbehov: [],
-    personIdent: '',
-  });
-  const [ekstraInnsendingerId, settEkstraInnsendingerId] = useState<string[]>(
-    [],
-  );
-  const [
-    ekstraInnsendingerSomManglerVedlegg,
-    settEkstraInnsendingerSomManglerVedlegg,
-  ] = useState<string[]>([]);
-  const [aktivtSteg, settAktivtSteg] = useState<number>(0);
-  const [senderInn, settSenderInn] = useState(false);
-
-  const stegForInnsending = [
-    {
-      label: 'Last opp',
-      index: 0,
-    },
-    {
-      label: 'Send inn',
-      index: 1,
-    },
-    {
-      label: 'Kvittering',
-      index: 2,
-    },
-  ];
-
-  const oppdaterInnsending = (innsending: IDokumentasjonsbehov) => {
-    settEttersending((prevEttersending) => {
-      return {
-        ...prevEttersending,
-        dokumentasjonsbehov: prevEttersending.dokumentasjonsbehov.map((i) => {
-          return i.id === innsending.id ? innsending : i;
-        }),
-      };
+    const [laster, settLasterverdi] = useState(true);
+    const [alertStripeMelding, settAlertStripeMelding] = useState<alertMelding>(alertMelding.TOM);
+    const [ettersending, settEttersending] = useState<IEttersending>({
+        dokumentasjonsbehov: [],
+        personIdent: '',
     });
-  };
+    const [ekstraInnsendingerId, settEkstraInnsendingerId] = useState<string[]>([]);
+    const [ekstraInnsendingerSomManglerVedlegg, settEkstraInnsendingerSomManglerVedlegg] = useState<string[]>([]);
+    const [aktivtSteg, settAktivtSteg] = useState<number>(0);
+    const [senderInn, settSenderInn] = useState(false);
 
-  const slettInnsending = (id: string) => {
-    settEttersending((prevEttersending) => {
-      return {
-        ...prevEttersending,
-        dokumentasjonsbehov: prevEttersending.dokumentasjonsbehov.filter(
-          (innsending) => innsending.id !== id,
-        ),
-      };
-    });
-    settEkstraInnsendingerId(
-      ekstraInnsendingerId.filter((innsendingsId) => innsendingsId != id),
-    );
-    settEkstraInnsendingerSomManglerVedlegg(
-      ekstraInnsendingerSomManglerVedlegg.filter(
-        (innsendingsId) => innsendingsId != id,
-      ),
-    );
-  };
+    const stegForInnsending = [
+        {
+            label: 'Last opp',
+            index: 0,
+        },
+        {
+            label: 'Send inn',
+            index: 1,
+        },
+        {
+            label: 'Kvittering',
+            index: 2,
+        },
+    ];
 
-  const leggTilNyInnsending = (innsending: IDokumentasjonsbehov) => {
-    settEttersending({
-      ...ettersending,
-      dokumentasjonsbehov: [...ettersending.dokumentasjonsbehov, innsending],
-    });
-  };
-
-  const leggTilNyEkstraInnsending = () => {
-    const nyInnsending: IDokumentasjonsbehov = {
-      id: uuidv4(),
-      søknadsdata: undefined,
-      dokumenttype: undefined,
-      stønadType: undefined,
-      beskrivelse: '',
-      innsendingstidspunkt: dagensDatoMedTidspunktStreng(),
-      vedlegg: [],
+    const oppdaterInnsending = (innsending: IDokumentasjonsbehov) => {
+        settEttersending(prevEttersending => {
+            return {
+                ...prevEttersending,
+                dokumentasjonsbehov: prevEttersending.dokumentasjonsbehov.map(i => {
+                    return i.id === innsending.id ? innsending : i;
+                }),
+            };
+        });
     };
-    settEkstraInnsendingerId([...ekstraInnsendingerId, nyInnsending.id]);
-    leggTilNyInnsending(nyInnsending);
-  };
 
-  const visOppsummering = () => {
-    settAlertStripeMelding(alertMelding.TOM);
-    settEkstraInnsendingerSomManglerVedlegg([]);
-    if (
-      minstEttVedleggErLastetOpp(ettersending.dokumentasjonsbehov) ||
-      minstEnBoksErAvkrysset(ettersending.dokumentasjonsbehov)
-    ) {
-      if (
-        minstEttVedleggErLastetOppForEkstraDokumentasjonsboks(
-          ettersending.dokumentasjonsbehov,
-          ekstraInnsendingerId,
-        )
-      ) {
-        settAktivtSteg(1);
-        return;
-      }
-      settEkstraInnsendingerSomManglerVedlegg(
-        ekstraInnsendingerUtenVedlegg(
-          ettersending.dokumentasjonsbehov,
-          ekstraInnsendingerId,
-        ),
-      );
-      return;
-    }
-    settAlertStripeMelding(alertMelding.MANGLER_VEDLEGG);
-  };
+    const slettInnsending = (id: string) => {
+        settEttersending(prevEttersending => {
+            return {
+                ...prevEttersending,
+                dokumentasjonsbehov: prevEttersending.dokumentasjonsbehov.filter(innsending => innsending.id !== id),
+            };
+        });
+        settEkstraInnsendingerId(ekstraInnsendingerId.filter(innsendingsId => innsendingsId != id));
+        settEkstraInnsendingerSomManglerVedlegg(
+            ekstraInnsendingerSomManglerVedlegg.filter(innsendingsId => innsendingsId != id)
+        );
+    };
 
-  const gåTilForrigeSteg = () => {
-    if (aktivtSteg > 0) {
-      settAktivtSteg(aktivtSteg - 1);
-    }
-  };
+    const leggTilNyInnsending = (innsending: IDokumentasjonsbehov) => {
+        settEttersending({
+            ...ettersending,
+            dokumentasjonsbehov: [...ettersending.dokumentasjonsbehov, innsending],
+        });
+    };
 
-  const sendInnEttersending = async () => {
-    try {
-      settAktivtSteg(2);
-      settSenderInn(true);
-      const ettersendingTilBackend: IEttersending = {
-        dokumentasjonsbehov: filtrerUtfylteInnsendinger(ettersending),
-        personIdent: ettersending.personIdent,
-      };
-      await sendEttersending(ettersendingTilBackend);
-      settAlertStripeMelding(alertMelding.SENDT_INN);
-    } catch {
-      settAlertStripeMelding(alertMelding.FEIL_VED_INNSENDING);
-    } finally {
-      settSenderInn(false);
-    }
-  };
+    const leggTilNyEkstraInnsending = () => {
+        const nyInnsending: IDokumentasjonsbehov = {
+            id: uuidv4(),
+            søknadsdata: undefined,
+            dokumenttype: undefined,
+            stønadType: undefined,
+            beskrivelse: '',
+            innsendingstidspunkt: dagensDatoMedTidspunktStreng(),
+            vedlegg: [],
+        };
+        settEkstraInnsendingerId([...ekstraInnsendingerId, nyInnsending.id]);
+        leggTilNyInnsending(nyInnsending);
+    };
 
-  const context = useApp();
+    const visOppsummering = () => {
+        settAlertStripeMelding(alertMelding.TOM);
+        settEkstraInnsendingerSomManglerVedlegg([]);
+        if (
+            minstEttVedleggErLastetOpp(ettersending.dokumentasjonsbehov) ||
+            minstEnBoksErAvkrysset(ettersending.dokumentasjonsbehov)
+        ) {
+            if (
+                minstEttVedleggErLastetOppForEkstraDokumentasjonsboks(
+                    ettersending.dokumentasjonsbehov,
+                    ekstraInnsendingerId
+                )
+            ) {
+                settAktivtSteg(1);
+                return;
+            }
+            settEkstraInnsendingerSomManglerVedlegg(
+                ekstraInnsendingerUtenVedlegg(ettersending.dokumentasjonsbehov, ekstraInnsendingerId)
+            );
+            return;
+        }
+        settAlertStripeMelding(alertMelding.MANGLER_VEDLEGG);
+    };
 
-  useEffect(() => {
-    const hentOgSettSøknaderOgEttersendinger = async () => {
-      try {
-        const søknadsliste = await hentSøknader();
-        const ettersendinger = await hentEttersendinger();
+    const gåTilForrigeSteg = () => {
+        if (aktivtSteg > 0) {
+            settAktivtSteg(aktivtSteg - 1);
+        }
+    };
 
-        const søknaderMedEttersendinger: ISøknadsbehov[] = søknadsliste.map(
-          (søknad: ISøknadsbehov) => {
-            return slåSammenSøknadOgEttersendinger(søknad, ettersendinger);
-          },
+    const sendInnEttersending = async () => {
+        try {
+            settAktivtSteg(2);
+            settSenderInn(true);
+            const ettersendingTilBackend: IEttersending = {
+                dokumentasjonsbehov: filtrerUtfylteInnsendinger(ettersending),
+                personIdent: ettersending.personIdent,
+            };
+            await sendEttersending(ettersendingTilBackend);
+            settAlertStripeMelding(alertMelding.SENDT_INN);
+        } catch {
+            settAlertStripeMelding(alertMelding.FEIL_VED_INNSENDING);
+        } finally {
+            settSenderInn(false);
+        }
+    };
+
+    const context = useApp();
+
+    useEffect(() => {
+        const hentOgSettSøknaderOgEttersendinger = async () => {
+            try {
+                const søknadsliste = await hentSøknader();
+                const ettersendinger = await hentEttersendinger();
+
+                const søknaderMedEttersendinger: ISøknadsbehov[] = søknadsliste.map((søknad: ISøknadsbehov) => {
+                    return slåSammenSøknadOgEttersendinger(søknad, ettersendinger);
+                });
+
+                const initielleInnsendinger: IDokumentasjonsbehov[] = søknaderMedEttersendinger.flatMap(søknad => {
+                    return søknad.dokumentasjonsbehov.dokumentasjonsbehov
+                        .filter(behov => behov.opplastedeVedlegg.length === 0 && !behov.harSendtInn)
+                        .map(behov => {
+                            return {
+                                id: uuidv4(),
+                                søknadsdata: {
+                                    søknadId: søknad.søknadId,
+                                    søknadsdato: søknad.søknadDato,
+                                    dokumentasjonsbehovId: behov.id,
+                                    harSendtInnTidligere: behov.harSendtInn,
+                                },
+                                dokumenttype: behov.id,
+                                beskrivelse: behov.label,
+                                stønadType: søknad.stønadType,
+                                innsendingstidspunkt: dagensDatoMedTidspunktStreng(),
+                                vedlegg: [],
+                            };
+                        });
+                });
+
+                settEttersending({
+                    dokumentasjonsbehov: initielleInnsendinger,
+                    personIdent: context.søker!.fnr,
+                });
+                settLasterverdi(false);
+            } catch {
+                settLasterverdi(false);
+            }
+        };
+
+        if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
+    }, [context.søker]);
+
+    if (laster)
+        return (
+            <VStack align={'center'} justify={'space-between'}>
+                <Loader size={'xlarge'} title={'Venter på at siden skal lastes inn'} />
+            </VStack>
         );
 
-        const initielleInnsendinger: IDokumentasjonsbehov[] =
-          søknaderMedEttersendinger.flatMap((søknad) => {
-            return søknad.dokumentasjonsbehov.dokumentasjonsbehov
-              .filter(
-                (behov) =>
-                  behov.opplastedeVedlegg.length === 0 && !behov.harSendtInn,
-              )
-              .map((behov) => {
-                return {
-                  id: uuidv4(),
-                  søknadsdata: {
-                    søknadId: søknad.søknadId,
-                    søknadsdato: søknad.søknadDato,
-                    dokumentasjonsbehovId: behov.id,
-                    harSendtInnTidligere: behov.harSendtInn,
-                  },
-                  dokumenttype: behov.id,
-                  beskrivelse: behov.label,
-                  stønadType: søknad.stønadType,
-                  innsendingstidspunkt: dagensDatoMedTidspunktStreng(),
-                  vedlegg: [],
-                };
-              });
-          });
-
-        settEttersending({
-          dokumentasjonsbehov: initielleInnsendinger,
-          personIdent: context.søker!.fnr,
-        });
-        settLasterverdi(false);
-      } catch {
-        settLasterverdi(false);
-      }
-    };
-
-    if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
-  }, [context.søker]);
-
-  if (laster)
     return (
-      <VStack align={'center'} justify={'space-between'}>
-        <Loader size={'xlarge'} title={'Venter på at siden skal lastes inn'} />
-      </VStack>
+        <>
+            <Stegindikator stegListe={stegForInnsending} aktivtSteg={aktivtSteg} settAktivtSteg={settAktivtSteg} />
+
+            {aktivtSteg === 0 && (
+                <InnsendingSide
+                    ettersending={ettersending}
+                    oppdaterInnsending={oppdaterInnsending}
+                    slettInnsending={slettInnsending}
+                    leggTilNyDokumentasjonsbehovBoks={leggTilNyEkstraInnsending}
+                    ekstraInnsendingerId={ekstraInnsendingerId}
+                    visOppsummering={visOppsummering}
+                    ekstraInnsendingerUtenVedlegg={ekstraInnsendingerSomManglerVedlegg}
+                    settAlertStripeMelding={settAlertStripeMelding}
+                />
+            )}
+
+            {aktivtSteg === 1 && (
+                <>
+                    <Oppsummering
+                        tittel={EOppsummeringstitler.Innsending}
+                        innsendinger={filtrerUtfylteInnsendinger(ettersending)}
+                    />
+                    <VStack align={'center'}>
+                        <HStack align={'center'} gap={'space-4'}>
+                            <Button variant={'secondary'} onClick={gåTilForrigeSteg}>
+                                Tilbake
+                            </Button>
+
+                            <Button onClick={sendInnEttersending}>Send inn</Button>
+                        </HStack>
+                    </VStack>
+                </>
+            )}
+
+            {aktivtSteg === 2 && (
+                <>
+                    <Oppsummering
+                        tittel={EOppsummeringstitler.Kvittering}
+                        innsendinger={filtrerUtfylteInnsendinger(ettersending)}
+                    />
+
+                    {senderInn && (
+                        <HStack align={'center'} gap={'space-12'}>
+                            <Loader size={'xlarge'} title={'Sender inn dokumentasjon'} />
+                            <BodyShort>Dokumentasjon sendes inn...</BodyShort>
+                        </HStack>
+                    )}
+                </>
+            )}
+
+            <AlertStripe melding={alertStripeMelding} />
+        </>
     );
-
-  return (
-    <>
-      <Stegindikator
-        stegListe={stegForInnsending}
-        aktivtSteg={aktivtSteg}
-        settAktivtSteg={settAktivtSteg}
-      />
-
-      {aktivtSteg === 0 && (
-        <InnsendingSide
-          ettersending={ettersending}
-          oppdaterInnsending={oppdaterInnsending}
-          slettInnsending={slettInnsending}
-          leggTilNyDokumentasjonsbehovBoks={leggTilNyEkstraInnsending}
-          ekstraInnsendingerId={ekstraInnsendingerId}
-          visOppsummering={visOppsummering}
-          ekstraInnsendingerUtenVedlegg={ekstraInnsendingerSomManglerVedlegg}
-          settAlertStripeMelding={settAlertStripeMelding}
-        />
-      )}
-
-      {aktivtSteg === 1 && (
-        <>
-          <Oppsummering
-            tittel={EOppsummeringstitler.Innsending}
-            innsendinger={filtrerUtfylteInnsendinger(ettersending)}
-          />
-          <VStack align={'center'}>
-            <HStack align={'center'} gap={'space-4'}>
-              <Button variant={'secondary'} onClick={gåTilForrigeSteg}>
-                Tilbake
-              </Button>
-
-              <Button onClick={sendInnEttersending}>Send inn</Button>
-            </HStack>
-          </VStack>
-        </>
-      )}
-
-      {aktivtSteg === 2 && (
-        <>
-          <Oppsummering
-            tittel={EOppsummeringstitler.Kvittering}
-            innsendinger={filtrerUtfylteInnsendinger(ettersending)}
-          />
-
-          {senderInn && (
-            <HStack align={'center'} gap={'space-12'}>
-              <Loader size={'xlarge'} title={'Sender inn dokumentasjon'} />
-              <BodyShort>Dokumentasjon sendes inn...</BodyShort>
-            </HStack>
-          )}
-        </>
-      )}
-
-      <AlertStripe melding={alertStripeMelding} />
-    </>
-  );
 };
 
 export default Ettersendingsoversikt;

@@ -1,14 +1,14 @@
 {
-  "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "allowJs": true,
-    "skipLibCheck": true,
-    "module": "nodenext",
-    "outDir": "./build",
-    "rootDir": "./src",
-    "resolveJsonModule": true,
-    "lib": ["esnext", "dom"]
-  },
-  "include": ["./src/backend"],
-  "exclude": ["./src/frontend"]
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "allowJs": true,
+        "skipLibCheck": true,
+        "module": "nodenext",
+        "outDir": "./build",
+        "rootDir": "./src",
+        "resolveJsonModule": true,
+        "lib": ["esnext", "dom"]
+    },
+    "include": ["./src/backend"],
+    "exclude": ["./src/frontend"]
 }

@@ -1,6 +1,6 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-import logger, { logInfo } from './logger.js';
+import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import { isLocal, isProd } from './environment.js';
+import logger, { logInfo } from './logger.js';
 import { TexasClient } from './texas.js';
 
 export type ApplicationName = 'familie-ef-soknad-api' | 'familie-dokument';
@@ -10,64 +10,56 @@ const WONDERWALL_ID_TOKEN_HEADER = 'x-wonderwall-id-token';
 const CLUSTER = isProd() ? 'prod-gcp' : 'dev-gcp';
 
 const attachToken = (applicationName: ApplicationName): RequestHandler => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    const audience = `${CLUSTER}:teamfamilie:${applicationName}`;
+    return async (req: Request, res: Response, next: NextFunction) => {
+        const audience = `${CLUSTER}:teamfamilie:${applicationName}`;
 
-    try {
-      req.headers[AUTHORIZATION_HEADER] = isLocal()
-        ? await getFakedingsToken(audience)
-        : await getAccessToken(req, audience);
+        try {
+            req.headers[AUTHORIZATION_HEADER] = isLocal()
+                ? await getFakedingsToken(audience)
+                : await getAccessToken(req, audience);
 
-      req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
-      next();
-    } catch (error) {
-      logger.error(
-        `Noe gikk galt ved setting av token (${req.method} - ${req.path})) - ${error}`,
-      );
-      return res
-        .status(401)
-        .send('En uventet feil oppstod. Ingen gyldig token');
-    }
-  };
+            req.headers[WONDERWALL_ID_TOKEN_HEADER] = '';
+            next();
+        } catch (error) {
+            logger.error(`Noe gikk galt ved setting av token (${req.method} - ${req.path})) - ${error}`);
+            return res.status(401).send('En uventet feil oppstod. Ingen gyldig token');
+        }
+    };
 };
 
 const harBearerToken = (authorization: string) => {
-  return authorization.includes('Bearer ');
+    return authorization.includes('Bearer ');
 };
 
 const utledToken = (req: Request, authorization: string | undefined) => {
-  if (authorization && harBearerToken(authorization)) {
-    return authorization.split(' ')[1];
-  } else {
-    throw Error('Mangler authorization i header');
-  }
+    if (authorization && harBearerToken(authorization)) {
+        return authorization.split(' ')[1];
+    } else {
+        throw Error('Mangler authorization i header');
+    }
 };
 
 const getAccessToken = async (req: Request, audience: string) => {
-  logInfo('getAccessToken', req);
-  const { authorization } = req.headers;
-  const token = utledToken(req, authorization);
+    logInfo('getAccessToken', req);
+    const { authorization } = req.headers;
+    const token = utledToken(req, authorization);
 
-  const texasClient = new TexasClient();
+    const texasClient = new TexasClient();
 
-  const accessToken = await texasClient
-    .exchangeToken('tokenx', audience, token)
-    .then((accessToken) => {
-      return accessToken.access_token;
+    const accessToken = await texasClient.exchangeToken('tokenx', audience, token).then(accessToken => {
+        return accessToken.access_token;
     });
 
-  return `Bearer ${accessToken}`;
+    return `Bearer ${accessToken}`;
 };
 
 const getFakedingsToken = async (audience: string) => {
-  const clientId = 'dev-gcp:teamfamilie:familie-ef-ettersending';
+    const clientId = 'dev-gcp:teamfamilie:familie-ef-ettersending';
 
-  const url = `https://fakedings.intern.dev.nav.no/fake/tokenx?client_id=${clientId}&aud=${audience}&acr=Level4&pid=31458931375`;
-  const token = await fetch(url).then(function (body) {
-    return body.text();
-  });
+    const url = `https://fakedings.intern.dev.nav.no/fake/tokenx?client_id=${clientId}&aud=${audience}&acr=Level4&pid=31458931375`;
+    const token = await fetch(url).then(body => body.text());
 
-  return `Bearer ${token}`;
+    return `Bearer ${token}`;
 };
 
 export default attachToken;

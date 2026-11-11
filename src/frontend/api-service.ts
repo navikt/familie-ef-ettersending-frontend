@@ -1,129 +1,112 @@
 import environment from '../backend/environment';
-import { IEttersending, ISøknadsbehov } from './typer/ettersending';
-import { IPersoninfo } from './typer/søker';
-import { Ressurs } from './typer/ressurs';
-import { Toggles } from './typer/toggles';
 import { håndter401 } from '../shared-utils/autentisering';
+import type { IEttersending, ISøknadsbehov } from './typer/ettersending';
+import type { Ressurs } from './typer/ressurs';
+import type { IPersoninfo } from './typer/søker';
+import type { Toggles } from './typer/toggles';
 
 interface Ifamilievedlegg {
-  dokumentId: string;
-  filnavn: string;
+    dokumentId: string;
+    filnavn: string;
 }
 
 interface IKvittering {
-  text: string;
-  mottattDato: string;
+    text: string;
+    mottattDato: string;
 }
 
 const HEADER_NAV_CONSUMER_ID = 'Nav-Consumer-Id';
 const HEADER_NAV_CONSUMER_ID_VALUE = 'familie-ef-ettersending';
 
 const HEADER_NAV_CONSUMER = {
-  [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
+    [HEADER_NAV_CONSUMER_ID]: HEADER_NAV_CONSUMER_ID_VALUE,
 };
 
 export interface ApiError extends Error {
-  status: number;
-  data?: unknown;
+    status: number;
+    data?: unknown;
 }
 
 const håndterRespons = async <T>(response: Response): Promise<T> => {
-  if (!response.ok) {
-    håndter401(response);
-    const errorBody = await response.json().catch(() => undefined);
-    const error = new Error(
-      `HTTP ${response.status}: ${response.statusText}`,
-    ) as ApiError;
-    error.status = response.status;
-    error.data = errorBody;
-    throw error;
-  }
-  return response.json() as Promise<T>;
+    if (!response.ok) {
+        håndter401(response);
+        const errorBody = await response.json().catch(() => undefined);
+        const error = new Error(`HTTP ${response.status}: ${response.statusText}`) as ApiError;
+        error.status = response.status;
+        error.data = errorBody;
+        throw error;
+    }
+    return response.json() as Promise<T>;
 };
 
-export const sendEttersending = (
-  ettersendingsdata: IEttersending,
-): Promise<IKvittering> => {
-  return fetch(`${environment().apiProxyUrl}/api/ettersending`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...HEADER_NAV_CONSUMER,
-    },
-    body: JSON.stringify(ettersendingsdata),
-  }).then(håndterRespons<IKvittering>);
+export const sendEttersending = (ettersendingsdata: IEttersending): Promise<IKvittering> => {
+    return fetch(`${environment().apiProxyUrl}/api/ettersending`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            ...HEADER_NAV_CONSUMER,
+        },
+        body: JSON.stringify(ettersendingsdata),
+    }).then(håndterRespons<IKvittering>);
 };
 
 export const hentEttersendinger = (): Promise<IEttersending[]> => {
-  return fetch(`${environment().apiProxyUrl}/api/ettersending`, {
-    credentials: 'include',
-    headers: HEADER_NAV_CONSUMER,
-  }).then(håndterRespons<IEttersending[]>);
+    return fetch(`${environment().apiProxyUrl}/api/ettersending`, {
+        credentials: 'include',
+        headers: HEADER_NAV_CONSUMER,
+    }).then(håndterRespons<IEttersending[]>);
 };
 
-export const hentOpplastetVedlegg = (
-  dokumentId: string,
-): Promise<Ressurs<string>> => {
-  return fetch(
-    `${environment().dokumentProxyUrl}/dokument/api/mapper/familievedlegg/${dokumentId}`,
-    {
-      credentials: 'include',
-      headers: HEADER_NAV_CONSUMER,
-    },
-  ).then(håndterRespons<Ressurs<string>>);
+export const hentOpplastetVedlegg = (dokumentId: string): Promise<Ressurs<string>> => {
+    return fetch(`${environment().dokumentProxyUrl}/dokument/api/mapper/familievedlegg/${dokumentId}`, {
+        credentials: 'include',
+        headers: HEADER_NAV_CONSUMER,
+    }).then(håndterRespons<Ressurs<string>>);
 };
 
 export const hentPersoninfo = (): Promise<IPersoninfo> => {
-  return fetch(`${environment().apiProxyUrl}/api/oppslag/sokerinfo`, {
-    credentials: 'include',
-    headers: HEADER_NAV_CONSUMER,
-  }).then(håndterRespons<IPersoninfo>);
+    return fetch(`${environment().apiProxyUrl}/api/oppslag/sokerinfo`, {
+        credentials: 'include',
+        headers: HEADER_NAV_CONSUMER,
+    }).then(håndterRespons<IPersoninfo>);
 };
 
 export const hentSøknader = (): Promise<ISøknadsbehov[]> => {
-  return fetch(`${environment().apiProxyUrl}/api/dokumentasjonsbehov/person`, {
-    credentials: 'include',
-    headers: HEADER_NAV_CONSUMER,
-  }).then(håndterRespons<ISøknadsbehov[]>);
+    return fetch(`${environment().apiProxyUrl}/api/dokumentasjonsbehov/person`, {
+        credentials: 'include',
+        headers: HEADER_NAV_CONSUMER,
+    }).then(håndterRespons<ISøknadsbehov[]>);
 };
 
 export const hentToggles = (): Promise<Toggles> => {
-  return fetch(`${environment().apiProxyUrl}/api/featuretoggle`, {
-    credentials: 'include',
-    headers: HEADER_NAV_CONSUMER,
-  }).then(håndterRespons<Toggles>);
+    return fetch(`${environment().apiProxyUrl}/api/featuretoggle`, {
+        credentials: 'include',
+        headers: HEADER_NAV_CONSUMER,
+    }).then(håndterRespons<Toggles>);
 };
 
-export const sendVedleggTilMellomlager = (
-  formData: FormData,
-): Promise<string> => {
-  return fetch(
-    `${environment().dokumentProxyUrl}/dokument/api/mapper/familievedlegg`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: HEADER_NAV_CONSUMER,
-      body: formData,
-    },
-  )
-    .then(håndterRespons<Ifamilievedlegg>)
-    .then((data) => data.dokumentId);
+export const sendVedleggTilMellomlager = (formData: FormData): Promise<string> => {
+    return fetch(`${environment().dokumentProxyUrl}/dokument/api/mapper/familievedlegg`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: HEADER_NAV_CONSUMER,
+        body: formData,
+    })
+        .then(håndterRespons<Ifamilievedlegg>)
+        .then(data => data.dokumentId);
 };
 
 export const slåSammenVedlegg = (dokumentIder: string[]): Promise<string> => {
-  return fetch(
-    `${environment().dokumentProxyUrl}/dokument/api/mapper/merge/familievedlegg`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        ...HEADER_NAV_CONSUMER,
-      },
-      body: JSON.stringify(dokumentIder),
-    },
-  )
-    .then(håndterRespons<Ifamilievedlegg>)
-    .then((data) => data.dokumentId);
+    return fetch(`${environment().dokumentProxyUrl}/dokument/api/mapper/merge/familievedlegg`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            ...HEADER_NAV_CONSUMER,
+        },
+        body: JSON.stringify(dokumentIder),
+    })
+        .then(håndterRespons<Ifamilievedlegg>)
+        .then(data => data.dokumentId);
 };
