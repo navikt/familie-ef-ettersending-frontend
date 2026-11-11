@@ -65,9 +65,9 @@ const Ettersendingsoversikt: React.FC = () => {
                 dokumentasjonsbehov: prevEttersending.dokumentasjonsbehov.filter(innsending => innsending.id !== id),
             };
         });
-        settEkstraInnsendingerId(ekstraInnsendingerId.filter(innsendingsId => innsendingsId != id));
+        settEkstraInnsendingerId(ekstraInnsendingerId.filter(innsendingsId => innsendingsId !== id));
         settEkstraInnsendingerSomManglerVedlegg(
-            ekstraInnsendingerSomManglerVedlegg.filter(innsendingsId => innsendingsId != id)
+            ekstraInnsendingerSomManglerVedlegg.filter(innsendingsId => innsendingsId !== id)
         );
     };
 
@@ -142,6 +142,9 @@ const Ettersendingsoversikt: React.FC = () => {
     const context = useApp();
 
     useEffect(() => {
+        const søker = context.søker;
+        if (søker == null) return;
+
         const hentOgSettSøknaderOgEttersendinger = async () => {
             try {
                 const søknadsliste = await hentSøknader();
@@ -174,7 +177,7 @@ const Ettersendingsoversikt: React.FC = () => {
 
                 settEttersending({
                     dokumentasjonsbehov: initielleInnsendinger,
-                    personIdent: context.søker!.fnr,
+                    personIdent: søker.fnr,
                 });
                 settLasterverdi(false);
             } catch {
@@ -182,7 +185,7 @@ const Ettersendingsoversikt: React.FC = () => {
             }
         };
 
-        if (context.søker != null) hentOgSettSøknaderOgEttersendinger();
+        hentOgSettSøknaderOgEttersendinger();
     }, [context.søker]);
 
     if (laster)

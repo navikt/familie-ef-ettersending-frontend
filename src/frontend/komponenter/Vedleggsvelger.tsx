@@ -50,7 +50,7 @@ const Vedleggsvelger: React.FC<IProps> = ({
                 const nyInnsending = leggTilVedleggPåInnsending([
                     {
                         navn: innsending.dokumenttype
-                            ? innsending.dokumenttype.toLowerCase() + '.pdf'
+                            ? `${innsending.dokumenttype.toLowerCase()}.pdf`
                             : vedleggForSammenslåing[0].navn,
                         tittel: vedleggForSammenslåing[0].tittel,
                         id: dokumentId,

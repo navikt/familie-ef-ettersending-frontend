@@ -17,9 +17,9 @@ export const Oppsummering: React.FC<IProps> = ({ innsendinger, tittel }: IProps)
                 {tittel}
             </Heading>
 
-            {innsendinger.map((innsending, index) => {
+            {innsendinger.map(innsending => {
                 return (
-                    <div key={index}>
+                    <div key={innsending.id}>
                         <BodyShort>
                             <Label as={'p'}>Stønadstype: </Label>
                             {innsending.stønadType && stønadTypeTilTekst[innsending.stønadType]}

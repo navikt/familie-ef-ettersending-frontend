@@ -36,7 +36,7 @@ export const InnsendingSide: React.FC<IProps> = ({
                 .map(innsending => {
                     return (
                         <DokumentasjonsbehovListe
-                            key={'Dokumentasjonsbehov' + innsending.id}
+                            key={`Dokumentasjonsbehov${innsending.id}`}
                             innsending={innsending}
                             oppdaterInnsending={oppdaterInnsending}
                             settAlertStripeMelding={settAlertStripeMelding}
@@ -49,7 +49,7 @@ export const InnsendingSide: React.FC<IProps> = ({
                 .map(innsending => {
                     return (
                         <EkstraDokumentasjonsbehovBoks
-                            key={'Ekstra dokumentasjonsbehov' + innsending.id}
+                            key={`Ekstra dokumentasjonsbehov${innsending.id}`}
                             innsending={innsending}
                             oppdaterInnsending={oppdaterInnsending}
                             slettEkstraInnsending={slettInnsending}

@@ -6,7 +6,10 @@ import { AppProvider } from './context/AppContext';
 import { TogglesProvider } from './context/TogglesContext';
 
 const container = document.getElementById('root');
-const root = createRoot(container!);
+if (!container) {
+    throw new Error('Missing root element');
+}
+const root = createRoot(container);
 
 root.render(
     <React.StrictMode>

@@ -1,5 +1,5 @@
+import path from 'node:path';
 import express from 'express';
-import path from 'path';
 import indexHandler from './dekorator.js';
 import environment from './environment.js';
 import routes from './routes.js';
@@ -37,7 +37,7 @@ async function startServer() {
 
     console.log('server listening on port', environment().port);
     if (process.env.NODE_ENV === 'development') {
-        console.log('Enslig forsørger ettersending lokalt: http://localhost:' + environment().port);
+        console.log(`Enslig forsørger ettersending lokalt: http://localhost:${environment().port}`);
     }
 
     app.listen(environment().port);

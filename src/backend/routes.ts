@@ -8,7 +8,7 @@ const BASE_PATH = `/familie/alene-med-barn/ettersending`;
 const routes = (): Router => {
     const expressRouter = express.Router();
 
-    expressRouter.get([`${BASE_PATH}/internal/isAlive`, `${BASE_PATH}/internal/isReady`], (req, res) =>
+    expressRouter.get([`${BASE_PATH}/internal/isAlive`, `${BASE_PATH}/internal/isReady`], (_req, res) =>
         res.sendStatus(200)
     );
 

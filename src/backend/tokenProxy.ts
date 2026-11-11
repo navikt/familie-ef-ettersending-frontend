@@ -31,7 +31,7 @@ const harBearerToken = (authorization: string) => {
     return authorization.includes('Bearer ');
 };
 
-const utledToken = (req: Request, authorization: string | undefined) => {
+const utledToken = (authorization: string | undefined) => {
     if (authorization && harBearerToken(authorization)) {
         return authorization.split(' ')[1];
     } else {
@@ -42,7 +42,7 @@ const utledToken = (req: Request, authorization: string | undefined) => {
 const getAccessToken = async (req: Request, audience: string) => {
     logInfo('getAccessToken', req);
     const { authorization } = req.headers;
-    const token = utledToken(req, authorization);
+    const token = utledToken(authorization);
 
     const texasClient = new TexasClient();
 

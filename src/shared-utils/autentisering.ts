@@ -9,9 +9,9 @@ export enum InnloggetStatus {
 
 const getLoginUrl = () => {
     if (isLocal()) {
-        return environment().wonderwallUrl + `${window.location.origin}`;
+        return `${environment().wonderwallUrl}${window.location.origin}`;
     }
-    return environment().wonderwallUrl + `${window.location.origin}/familie/alene-med-barn/ettersending`;
+    return `${environment().wonderwallUrl}${window.location.origin}/familie/alene-med-barn/ettersending`;
 };
 
 export const håndter401 = (response: Response): void => {

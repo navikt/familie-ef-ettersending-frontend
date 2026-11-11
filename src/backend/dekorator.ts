@@ -1,6 +1,6 @@
+import path from 'node:path';
 import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr/index.js';
 import type { RequestHandler } from 'express';
-import path from 'path';
 import environment from './environment.js';
 import logger from './logger.js';
 

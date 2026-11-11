@@ -57,7 +57,7 @@ const AlertStripe: React.FC<IProps> = ({ className, melding }: IProps) => {
             );
     }
 
-    return <></>;
+    return null;
 };
 
 export default AlertStripe;
