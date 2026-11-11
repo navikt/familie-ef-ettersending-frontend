@@ -1,80 +1,78 @@
-import React from 'react';
-import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
-import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
-import { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
-import { alertMelding } from './AlertStripe';
 import { UploadIcon } from '@navikt/aksel-icons';
 import { Button, VStack } from '@navikt/ds-react';
+import type React from 'react';
+import type { IDokumentasjonsbehov, IEttersending } from '../typer/ettersending';
+import type { alertMelding } from './AlertStripe';
+import { DokumentasjonsbehovListe } from './DokumentasjonsbehovListe';
+import { EkstraDokumentasjonsbehovBoks } from './EkstraDokumentasjonsbehovBoks';
 
 interface IProps {
-  ettersending: IEttersending;
-  oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
-  slettInnsending: (id: string) => void;
-  leggTilNyDokumentasjonsbehovBoks: () => void;
-  ekstraInnsendingerId: string[];
-  visOppsummering: () => void;
-  ekstraInnsendingerUtenVedlegg: string[];
-  settAlertStripeMelding: (melding: alertMelding) => void;
+    ettersending: IEttersending;
+    oppdaterInnsending: (innsending: IDokumentasjonsbehov) => void;
+    slettInnsending: (id: string) => void;
+    leggTilNyDokumentasjonsbehovBoks: () => void;
+    ekstraInnsendingerId: string[];
+    visOppsummering: () => void;
+    ekstraInnsendingerUtenVedlegg: string[];
+    settAlertStripeMelding: (melding: alertMelding) => void;
 }
 
 export const InnsendingSide: React.FC<IProps> = ({
-  ettersending,
-  oppdaterInnsending,
-  slettInnsending,
-  leggTilNyDokumentasjonsbehovBoks,
-  ekstraInnsendingerId,
-  visOppsummering,
-  ekstraInnsendingerUtenVedlegg,
-  settAlertStripeMelding,
+    ettersending,
+    oppdaterInnsending,
+    slettInnsending,
+    leggTilNyDokumentasjonsbehovBoks,
+    ekstraInnsendingerId,
+    visOppsummering,
+    ekstraInnsendingerUtenVedlegg,
+    settAlertStripeMelding,
 }: IProps) => {
-  const harLastetOppNoenVedlegg = ettersending.dokumentasjonsbehov.some(
-    (innsending) => innsending.vedlegg.length > 0,
-  );
+    const harLastetOppNoenVedlegg = ettersending.dokumentasjonsbehov.some(innsending => innsending.vedlegg.length > 0);
 
-  return (
-    <>
-      {ettersending.dokumentasjonsbehov
-        .filter((innsending) => !ekstraInnsendingerId.includes(innsending.id))
-        .map((innsending) => {
-          return (
-            <DokumentasjonsbehovListe
-              key={'Dokumentasjonsbehov' + innsending.id}
-              innsending={innsending}
-              oppdaterInnsending={oppdaterInnsending}
-              settAlertStripeMelding={settAlertStripeMelding}
-            />
-          );
-        })}
+    return (
+        <>
+            {ettersending.dokumentasjonsbehov
+                .filter(innsending => !ekstraInnsendingerId.includes(innsending.id))
+                .map(innsending => {
+                    return (
+                        <DokumentasjonsbehovListe
+                            key={`Dokumentasjonsbehov${innsending.id}`}
+                            innsending={innsending}
+                            oppdaterInnsending={oppdaterInnsending}
+                            settAlertStripeMelding={settAlertStripeMelding}
+                        />
+                    );
+                })}
 
-      {ettersending.dokumentasjonsbehov
-        .filter((innsending) => ekstraInnsendingerId.includes(innsending.id))
-        .map((innsending) => {
-          return (
-            <EkstraDokumentasjonsbehovBoks
-              key={'Ekstra dokumentasjonsbehov' + innsending.id}
-              innsending={innsending}
-              oppdaterInnsending={oppdaterInnsending}
-              slettEkstraInnsending={slettInnsending}
-              innsendingerUtenVedlegg={ekstraInnsendingerUtenVedlegg}
-              settOverordnetAlertStripeMelding={settAlertStripeMelding}
-            />
-          );
-        })}
+            {ettersending.dokumentasjonsbehov
+                .filter(innsending => ekstraInnsendingerId.includes(innsending.id))
+                .map(innsending => {
+                    return (
+                        <EkstraDokumentasjonsbehovBoks
+                            key={`Ekstra dokumentasjonsbehov${innsending.id}`}
+                            innsending={innsending}
+                            oppdaterInnsending={oppdaterInnsending}
+                            slettEkstraInnsending={slettInnsending}
+                            innsendingerUtenVedlegg={ekstraInnsendingerUtenVedlegg}
+                            settOverordnetAlertStripeMelding={settAlertStripeMelding}
+                        />
+                    );
+                })}
 
-      <Button
-        variant={'tertiary'}
-        type={'button'}
-        icon={<UploadIcon title="Legg til dokumenter" fontSize="1.5rem" />}
-        onClick={leggTilNyDokumentasjonsbehovBoks}
-      >
-        Legg til flere dokumenter
-      </Button>
+            <Button
+                variant={'tertiary'}
+                type={'button'}
+                icon={<UploadIcon title="Legg til dokumenter" fontSize="1.5rem" />}
+                onClick={leggTilNyDokumentasjonsbehovBoks}
+            >
+                Legg til flere dokumenter
+            </Button>
 
-      <VStack align={'center'} justify={'space-between'}>
-        <Button onClick={visOppsummering} disabled={!harLastetOppNoenVedlegg}>
-          Neste
-        </Button>
-      </VStack>
-    </>
-  );
+            <VStack align={'center'} justify={'space-between'}>
+                <Button onClick={visOppsummering} disabled={!harLastetOppNoenVedlegg}>
+                    Neste
+                </Button>
+            </VStack>
+        </>
+    );
 };

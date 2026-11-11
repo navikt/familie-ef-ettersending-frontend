@@ -1,52 +1,46 @@
-import path from 'path';
+import path from 'node:path';
 import express from 'express';
 import indexHandler from './dekorator.js';
 import environment from './environment.js';
 import routes from './routes.js';
 
 async function startServer() {
-  const app = express();
+    const app = express();
 
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
-  const frontendMappe = path.join(process.cwd(), 'dist');
+    const frontendMappe = path.join(process.cwd(), 'dist');
 
-  app.set('views', frontendMappe);
-  app.set('view engine', 'mustache');
+    app.set('views', frontendMappe);
+    app.set('view engine', 'mustache');
 
-  app.use(routes());
+    app.use(routes());
 
-  if (process.env.NODE_ENV === 'development') {
-    const { createServer: createViteServer } = await import('vite');
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'custom',
-    });
+    if (process.env.NODE_ENV === 'development') {
+        const { createServer: createViteServer } = await import('vite');
+        const vite = await createViteServer({
+            server: { middlewareMode: true },
+            appType: 'custom',
+        });
 
-    app.locals.vite = vite;
-    app.use(vite.middlewares);
-  }
+        app.locals.vite = vite;
+        app.use(vite.middlewares);
+    }
 
-  if (process.env.NODE_ENV !== 'development') {
-    app.use(
-      '/familie/alene-med-barn/ettersending/',
-      express.static(frontendMappe, { index: false }),
-    );
-  }
+    if (process.env.NODE_ENV !== 'development') {
+        app.use('/familie/alene-med-barn/ettersending/', express.static(frontendMappe, { index: false }));
+    }
 
-  app.get('/', indexHandler);
-  app.get('/*splat', indexHandler);
+    app.get('/', indexHandler);
+    app.get('/*splat', indexHandler);
 
-  console.log('server listening on port', environment().port);
-  if (process.env.NODE_ENV === 'development') {
-    console.log(
-      'Enslig forsørger ettersending lokalt: http://localhost:' +
-        environment().port,
-    );
-  }
+    console.log('server listening on port', environment().port);
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`Enslig forsørger ettersending lokalt: http://localhost:${environment().port}`);
+    }
 
-  app.listen(environment().port);
+    app.listen(environment().port);
 }
 
 startServer();
