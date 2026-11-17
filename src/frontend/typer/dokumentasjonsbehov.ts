@@ -1,11 +1,11 @@
-import { IVedleggForSøknad } from './ettersending';
+import type { IVedleggForSøknad } from './ettersending';
 export interface IDokumentasjonsbehovForSøknad {
-  id: string;
-  label: string;
-  harSendtInn: boolean;
-  opplastedeVedlegg: IVedleggForSøknad[];
+    id: string;
+    label: string;
+    harSendtInn: boolean;
+    opplastedeVedlegg: IVedleggForSøknad[];
 }
 
 export interface IDokumentasjonsbehovWrapper {
-  dokumentasjonsbehov: IDokumentasjonsbehovForSøknad[];
+    dokumentasjonsbehov: IDokumentasjonsbehovForSøknad[];
 }

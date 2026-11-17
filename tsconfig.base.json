@@ -1,18 +1,13 @@
 {
-  "compilerOptions": {
-    "module": "nodenext",
-    "lib": ["esnext"],
-    "sourceMap": true,
-    "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "nodenext",
-    "jsx": "react-jsx",
-    "esModuleInterop": true
-  },
-  "exclude": [
-    "./src/**/*.test.tsx",
-    "./src/**/*.test.ts",
-    "./src/**/*.test.jsx",
-    "./src/**/*.test.js"
-  ]
+    "compilerOptions": {
+        "module": "nodenext",
+        "lib": ["esnext"],
+        "sourceMap": true,
+        "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "nodenext",
+        "jsx": "react-jsx",
+        "esModuleInterop": true
+    },
+    "exclude": ["./src/**/*.test.tsx", "./src/**/*.test.ts", "./src/**/*.test.jsx", "./src/**/*.test.js"]
 }

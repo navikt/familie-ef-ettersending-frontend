@@ -11,6 +11,14 @@ Frontend app for ettersending av dokumentasjon vedrørende søknader tilknyttet 
 5. Åpne http://localhost:3000 i nettleseren
 6. Dersom du trenger å kjøre med et annet fødselsnummer enn default: gå til http://localhost:8091/local/cookie?issuerId=tokenx&audience=familie-app&subject=[gyldigFnr]&redirect
 
+## Kodekvalitet
+
+Prosjektet bruker Biome til linting, formatering og sortering av imports.
+
+- `npm run lint` sjekker TypeScript, lintregler, formatering og imports uten å endre filer.
+- `npm run lint:fix` retter automatisk lintfeil, formatering og imports der det er mulig.
+- `npm run format` formaterer filer uten å kjøre lintregler.
+
 ## Henvendelser
 
 ### For eksterne

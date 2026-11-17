@@ -1,33 +1,32 @@
-import express, { Router } from 'express';
+import express, { type Router } from 'express';
+import environment from './environment.js';
 import { addCallId, doProxy } from './proxy.js';
 import attachToken from './tokenProxy.js';
-import environment from './environment.js';
 
 const BASE_PATH = `/familie/alene-med-barn/ettersending`;
 
 const routes = (): Router => {
-  const expressRouter = express.Router();
+    const expressRouter = express.Router();
 
-  expressRouter.get(
-    [`${BASE_PATH}/internal/isAlive`, `${BASE_PATH}/internal/isReady`],
-    (req, res) => res.sendStatus(200),
-  );
+    expressRouter.get([`${BASE_PATH}/internal/isAlive`, `${BASE_PATH}/internal/isReady`], (_req, res) =>
+        res.sendStatus(200)
+    );
 
-  expressRouter.use(
-    `${BASE_PATH}/api`,
-    addCallId(),
-    attachToken('familie-ef-soknad-api'),
-    doProxy(environment().apiUrl, '/api'),
-  );
+    expressRouter.use(
+        `${BASE_PATH}/api`,
+        addCallId(),
+        attachToken('familie-ef-soknad-api'),
+        doProxy(environment().apiUrl, '/api')
+    );
 
-  expressRouter.use(
-    `${BASE_PATH}/dokument`,
-    addCallId(),
-    attachToken('familie-dokument'),
-    doProxy(environment().dokumentUrl),
-  );
+    expressRouter.use(
+        `${BASE_PATH}/dokument`,
+        addCallId(),
+        attachToken('familie-dokument'),
+        doProxy(environment().dokumentUrl)
+    );
 
-  return expressRouter;
+    return expressRouter;
 };
 
 export default routes;
